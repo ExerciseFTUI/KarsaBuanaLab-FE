@@ -85,7 +85,7 @@ const LoginForm: FC<LoginFormProps> = ({}) => {
               )}
             />
             <Button
-              className="w-full mt-6 bg-[#666D4B] hover:bg-[#343D2A]"
+              className="w-full mt-6 bg-[#656D4A] hover:bg-[#332D29]"
               type="submit"
             >
               Submit
