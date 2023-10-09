@@ -2,6 +2,12 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Getting Started
 
+For the first add project to own local, please run :
+
+```bash
+npm install react react-dom next
+```
+
 First, run the development server:
 
 ```bash
