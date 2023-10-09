@@ -50,7 +50,7 @@ const LoginForm: FC<LoginFormProps> = ({}) => {
   return (
     <Card className="w-[450px]">
       <CardHeader>
-        <CardTitle className="text-xl">Sign In</CardTitle>
+        <CardTitle className="text-xl">Log In</CardTitle>
         <CardDescription>To continue to Lab Karsa Buana</CardDescription>
       </CardHeader>
       <CardContent>
