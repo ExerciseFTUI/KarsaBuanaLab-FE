@@ -5,7 +5,7 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 For the first time clone the project, we need to add next environtment by use :
 
 ```bash
-npm install react react-dom next
+npm install
 ```
 
 First, run the development server:
