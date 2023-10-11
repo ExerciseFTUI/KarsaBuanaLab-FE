@@ -61,7 +61,7 @@ const Sidebar: FC<LeftSidebarProps> = ({}) => {
 
               <p
                 className={`text-sm text-normal_green  ${
-                  isActive && "text-dark_green font-semibold"
+                  isActive && "!text-dark_green font-semibold"
                 }`}
               >
                 {link.label}
@@ -78,7 +78,7 @@ const Sidebar: FC<LeftSidebarProps> = ({}) => {
                 width={24}
                 height={24}
               /> */}
-          <BiLogOut className={"text-[30px] text-dark_green"} />
+          <BiLogOut className={"text-[30px] text-normal_green"} />
           <p className="text-sm text-normal_green max-lg:hidden">Log Out</p>
         </div>
       </div>
