@@ -64,7 +64,7 @@ const Sidebar: FC<LeftSidebarProps> = ({}) => {
         })}
       </div>
       <div className="mt-10 px-2">
-        <div className="flex gap-3 cursor-pointer p-4 items-center rounded-lg hover:bg-[#C2C5AA]">
+        <div className="flex gap-3 cursor-pointer p-4 items-center rounded-lg hover:bg-[#C2C5AA] ">
           {/* <Image
                 src={"assets/logout.svg"}
                 alt="logout"
