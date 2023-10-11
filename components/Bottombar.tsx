@@ -44,7 +44,7 @@ function Bottombar() {
 
               <p
                 className={`text-sm  max-sm:hidden text-normal_green  ${
-                  isActive && "!text-red-600 font-semibold"
+                  isActive && "!text-dark_green font-semibold"
                 }`}
               >
                 {link.label.split(/\s+/)[0]}
