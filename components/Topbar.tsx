@@ -10,10 +10,11 @@ interface TopbarProps {}
 const Topbar: FC<TopbarProps> = ({}) => {
   return (
     <nav className="flex w-full items-center justify-between px-2 py-6">
-      <Link className="flex items-center gap-4" href={"/"}>
+      <div className="flex flex-col items-center gap-1">
         {/* <Image src={"assets/logo.svg"} alt="logo" width={28} height={28} /> */}
+        <p className="text-sm font-light">Pages / Dashboard</p>
         <p className="text-2xl font-bold">Dashboard</p>
-      </Link>
+      </div>
       <div className="flex items-center gap-1">
         <div className="">
           <Avatar>
