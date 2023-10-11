@@ -19,8 +19,8 @@ function Bottombar() {
   const routeSection = "/" + extractFirstPathSegment(pathname);
 
   return (
-    <section className="bottombar">
-      <div className="bottombar_container">
+    <section className="fixed bottom-0 z-10 w-full rounded-t-3xl  p-4 backdrop-blur-lg max-sm:px-7 lg:hidden">
+      <div className="flex items-center justify-between gap-3 max-sm:gap-5">
         {sidebarLinks.map((link) => {
           const isActive =
             (pathname.includes(link.route) && link.route.length > 1) ||
@@ -28,9 +28,11 @@ function Bottombar() {
 
           return (
             <Link
-              href={link.route}
+              href={routeSection + link.route}
               key={link.label}
-              className={`bottombar_link ${isActive && "bg-[#C2C5AA]"}`}
+              className={`relative flex flex-col items-center gap-1 max-w-[140px] rounded-lg p-2 sm:flex-1 sm:px-2 sm:py-2.5 ${
+                isActive && "bg-light_green"
+              }`}
             >
               <Image
                 src={link.imgURL}
@@ -40,7 +42,11 @@ function Bottombar() {
                 className="object-contain"
               />
 
-              <p className="text-sm  max-sm:hidden">
+              <p
+                className={`text-sm  max-sm:hidden text-normal_green  ${
+                  isActive && "text-dark_green font-semibold"
+                }`}
+              >
                 {link.label.split(/\s+/)[0]}
               </p>
             </Link>

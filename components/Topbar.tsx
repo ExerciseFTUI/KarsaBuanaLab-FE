@@ -4,10 +4,13 @@ import Link from "next/link";
 import React, { FC } from "react";
 import Image from "next/image";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { usePathname } from "next/navigation";
 
 interface TopbarProps {}
 
 const Topbar: FC<TopbarProps> = ({}) => {
+  const pathname = usePathname();
+
   return (
     <nav className="flex w-full items-center justify-between px-2 py-6">
       <div className="flex flex-col items-center gap-1">

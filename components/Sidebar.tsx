@@ -47,8 +47,8 @@ const Sidebar: FC<LeftSidebarProps> = ({}) => {
             <Link
               href={routeSection + link.route}
               key={link.label}
-              className={`relative hover:bg-[#C2C5AA] flex justify-start items-center gap-4 rounded-lg p-4 ${
-                isActive && "bg-[#C2C5AA]"
+              className={`relative hover:bg-light_green  flex justify-start items-center gap-4 rounded-lg p-4 ${
+                isActive && "bg-light_green"
               }`}
             >
               <Image
@@ -56,9 +56,16 @@ const Sidebar: FC<LeftSidebarProps> = ({}) => {
                 alt={link.label}
                 width={24}
                 height={24}
+                className=""
               />
 
-              <p className="text-sm ">{link.label}</p>
+              <p
+                className={`text-sm text-normal_green  ${
+                  isActive && "text-dark_green font-semibold"
+                }`}
+              >
+                {link.label}
+              </p>
             </Link>
           );
         })}
@@ -71,8 +78,8 @@ const Sidebar: FC<LeftSidebarProps> = ({}) => {
                 width={24}
                 height={24}
               /> */}
-          <BiLogOut className={"text-[30px] text-[#B2B5A4]"} />
-          <p className="text-sm max-lg:hidden">Log Out</p>
+          <BiLogOut className={"text-[30px] text-dark_green"} />
+          <p className="text-sm text-normal_green max-lg:hidden">Log Out</p>
         </div>
       </div>
     </section>
