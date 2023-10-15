@@ -5,7 +5,8 @@ export default function Home() {
     <div className="flex justify-between w-full h-screen">
       <h1>Hello World 2</h1>
 
-      <Button className="bg-red-400">Button baru</Button>
+      <Button className="bg-light_green text-dark_green justify-start hover:bg-light_green h-10"> Create  <br /> New Project</Button>
+
     </div>
   );
 }
