@@ -18,7 +18,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <div className={inter.className}>
+      <body className={inter.className}>
         <main className="flex flex-row ">
           <Sidebar />
           <section className="flex flex-col min-h-screen items-center flex-1 pt-2 px-6 pb-10 max-md:pb-32 sm:px-10">
@@ -30,7 +30,7 @@ export default function RootLayout({
         </main>
 
         <Bottombar />
-      </div>
+      </body>
     </html>
   );
 }
