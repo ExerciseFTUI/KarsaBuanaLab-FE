@@ -8,7 +8,7 @@ import { AiFillProject, AiFillFolderAdd } from 'react-icons/ai'
 export default function Home() {
   return (
     <div className="w-full h-screen">
-      <div className="flex items-center ">
+      <div className="flex items-center w-full">
         {/* Approved Offers */}
         <div className="h-auto center w-1/2 md:w-1/6 align-middle rounded-lg p-3 flex items-center">
           <BsGraphUp className="text-4xl bg-light_green p-1 rounded-lg"></BsGraphUp>
@@ -43,30 +43,29 @@ export default function Home() {
       </div>
       
       {/* Button create new project */}
-        <Button className="bg-light_green w-full md:hidden hover:bg-light_green text-dark_green font-bold justify-center text-xs text-center py-5">
+        <Button className="bg-light_green w-full md:hidden hover:bg-light_green text-dark_green font-bold justify-center md:justify-start text-xs py-5">
           <AiFillFolderAdd className="text-3xl mr-3"></AiFillFolderAdd>
           Create  <br /> New Project
         </Button>
 
       {/* <h1 className="text-dark_green mt-6 text-xl font-bold">Projects</h1> */}
-      <div className="flex w-1/3 md:w-full overflow-x-scroll h-auto">
-        <LineChart />
-        <LineChart />
-        <LineChart />
+      <div className=" flex sm:w-full overflow-x-scroll h-auto  ">
+          <LineChart />
+          <LineChart />
+          <LineChart />
       </div>
 
-      <div className=" justify-center object-center">
-        <div className="flex  w-fit overflow-x-scroll md:w-1/2 h-auto">
+      <div className={`justify-center w-full relative sm:flex`}>
+        <div className="w-fit md:w-1/2 h-auto">
           <BarChart/>
           {/* <PieChart/> */}
         </div>
-        <div className="flex  w-fit overflow-x-scroll md:w-1/2 h-auto">
+        <div className="w-fit md:w-1/2 h-auto">
           <BarChart/>
           {/* <PieChart/> */}
         </div>
       </div>
         
-
     </div>
   );
 }
