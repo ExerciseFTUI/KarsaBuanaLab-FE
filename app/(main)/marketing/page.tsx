@@ -56,11 +56,11 @@ export default function Home() {
       </div>
 
       <div className=" justify-center object-center">
-        <div className="flex bg-slate-400 w-fit overflow-x-scroll md:w-1/2 h-auto">
+        <div className="flex  w-fit overflow-x-scroll md:w-1/2 h-auto">
           <BarChart/>
           {/* <PieChart/> */}
         </div>
-        <div className="flex bg-slate-400 w-fit overflow-x-scroll md:w-1/2 h-auto">
+        <div className="flex  w-fit overflow-x-scroll md:w-1/2 h-auto">
           <BarChart/>
           {/* <PieChart/> */}
         </div>
