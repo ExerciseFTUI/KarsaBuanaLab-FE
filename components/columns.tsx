@@ -43,14 +43,18 @@ export const columns: ColumnDef<ProjectType>[] = [
   {
     accessorKey: "status",
     header: ({ column }) => {
-      return <Button variant="ghost">Status</Button>;
+      return (
+        <Button className="pl-6" variant="ghost">
+          Status
+        </Button>
+      );
     },
 
     cell: ({ row }) => {
       const status = true;
       console.log(row.original);
       return (
-        <div className="pl-3">
+        <div className="">
           <div
             className={`font-light text-white w-fit px-6 py-0.5 rounded-full ${
               status ? "bg-yellow-700" : "bg-red-400"
@@ -130,7 +134,6 @@ export const columns: ColumnDef<ProjectType>[] = [
               View project details
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>Edit</DropdownMenuItem>
 
             <DropdownMenuItem
               onClick={() => navigator.clipboard.writeText(project.noPenawaran)}

@@ -236,7 +236,7 @@ export function DataTable() {
     <div className="w-full ">
       <div className="flex items-center py-4">
         <Input
-          placeholder="Filter Judul"
+          placeholder="Filter By Project Title"
           value={(table.getColumn("judul")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
             table.getColumn("judul")?.setFilterValue(event.target.value)
@@ -270,7 +270,7 @@ export function DataTable() {
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-      <div className="rounded-t-lg text-[#666D4B] ">
+      <div className=" text-[#666D4B] ">
         <Table className="">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -294,7 +294,7 @@ export function DataTable() {
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
-                  className=""
+                  className="hover:bg-[#C2C5AA]"
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
                 >
