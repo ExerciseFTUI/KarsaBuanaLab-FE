@@ -233,7 +233,7 @@ export function DataTable() {
   });
 
   return (
-    <div className="w-full ">
+    <div className="w-full">
       <div className="flex items-center py-4">
         <Input
           placeholder="Filter By Project Title"
@@ -270,7 +270,7 @@ export function DataTable() {
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-      <div className=" text-[#666D4B] ">
+      <div className=" text-normal_green ">
         <Table className="">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -294,7 +294,7 @@ export function DataTable() {
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
-                  className="hover:bg-light_green ease-in-out duration-500"
+                  className="hover:bg-light_green ease-in-out duration-500 text-sm "
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
                 >
@@ -322,12 +322,12 @@ export function DataTable() {
         </Table>
       </div>
       <div className="flex items-center justify-end space-x-2 py-4 max-sm:flex-col gap-5">
-        <div className="flex-1 text-sm text-muted-foreground">
+        <div className="flex-1 text-sm text-normal_green">
           {/* {table.getFilteredSelectedRowModel().rows.length} of{" "} */}
           Total : {table.getFilteredRowModel().rows.length} row(s).
         </div>
         <div className="flex items-center space-x-2">
-          <p className="text-sm font-medium">Rows per page</p>
+          <p className="text-sm font-medium text-dark_green">Rows per page</p>
           <Select
             value={`${table.getState().pagination.pageSize}`}
             onValueChange={(value) => {
@@ -346,7 +346,7 @@ export function DataTable() {
             </SelectContent>
           </Select>
         </div>
-        <div className="flex w-[100px] items-center justify-center text-sm font-medium">
+        <div className="flex w-[100px] items-center justify-center text-sm font-medium text-dark_green">
           Page {table.getState().pagination.pageIndex + 1} of{" "}
           {table.getPageCount()}
         </div>
