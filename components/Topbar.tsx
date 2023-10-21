@@ -12,7 +12,7 @@ const Topbar: FC<TopbarProps> = ({}) => {
   const pathname = usePathname();
 
   return (
-    <nav className="flex w-full items-center justify-between px-2 py-6">
+    <nav className="flex w-full items-center justify-between px-2 py-6 ">
       <div className="flex flex-col items-center gap-1">
         {/* <Image src={"assets/logo.svg"} alt="logo" width={28} height={28} /> */}
         <p className="text-sm font-light">Pages / Dashboard</p>

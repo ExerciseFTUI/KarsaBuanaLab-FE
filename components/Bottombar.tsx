@@ -19,7 +19,7 @@ function Bottombar() {
   const routeSection = "/" + extractFirstPathSegment(pathname);
 
   return (
-    <section className="fixed bottom-0 z-10 w-full rounded-t-3xl p-4 backdrop-blur-lg max-sm:px-7 lg:hidden ">
+    <section className="fixed bottom-0 z-10 w-full rounded-t-3xl p-4 bg-white max-sm:px-7 lg:hidden ">
       <div className="flex items-center justify-between gap-3 max-sm:gap-5">
         {sidebarLinks.map((link) => {
           const isActive =
