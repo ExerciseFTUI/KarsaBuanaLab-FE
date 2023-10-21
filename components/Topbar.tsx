@@ -26,10 +26,12 @@ const Topbar: FC<TopbarProps> = ({}) => {
     <nav className="flex w-full items-center justify-between px-2 py-6 ">
       <div className="flex flex-col items-start gap-1">
         {/* <Image src={"assets/logo.svg"} alt="logo" width={28} height={28} /> */}
-        <p className="text-sm font-light">
+        <p className="text-sm font-light text-normal_green">
           Pages / {extractPageName(pathname)}
         </p>
-        <p className="text-2xl font-bold">{extractPageName(pathname)}</p>
+        <p className="text-2xl font-bold text-dark_green">
+          {extractPageName(pathname)}
+        </p>
       </div>
       <div className="flex items-center gap-1">
         <div className="">
