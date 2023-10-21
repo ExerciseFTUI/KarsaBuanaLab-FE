@@ -98,8 +98,9 @@ function BarChart() {
         },
     };
 
+    // h-60 w-full sm:w-60 mr-10 mt-6
     return (
-        <div className="w-auto sm:w-60 mt-6 h-auto mr-6 ">
+        <div className="h-60 w-full sm:w-60 mr-10 mt-6 ">
             <h4 className="text-xs bg-light_green w-fit px-2 rounded-md font-medium text-start">
                 Offers
             </h4>

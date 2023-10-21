@@ -1,13 +1,14 @@
 import { Button } from "@/components/ui/button";
 import { LineChart } from "@/components/chart/lineChart"
 import { BarChart } from "@/components/chart/barChart"
-import { PieChart } from "@/components/chart/pieChart"
+// import { PieChart } from "@/components/chart/pieChart"
 import { BsGraphUp } from 'react-icons/bs';
 import { AiFillProject, AiFillFolderAdd } from 'react-icons/ai'
 
 export default function Home() {
   return (
-    <div className="w-full h-screen">
+    <div className="w-full h-screen ">
+      {/* Section for Overview of Dashboard */}
       <div className="flex items-center w-full">
         {/* Approved Offers */}
         <div className="h-auto center w-1/2 md:w-1/6 align-middle rounded-lg p-3 flex items-center">
@@ -42,30 +43,28 @@ export default function Home() {
         </Button>
       </div>
       
-      {/* Button create new project */}
-        <Button className="bg-light_green w-full md:hidden hover:bg-light_green text-dark_green font-bold justify-center md:justify-start text-xs py-5">
-          <AiFillFolderAdd className="text-3xl mr-3"></AiFillFolderAdd>
-          Create  <br /> New Project
-        </Button>
+      {/* Button create new project in mobile */}
+      <Button className="bg-light_green w-full md:hidden hover:bg-light_green text-dark_green font-bold justify-center md:justify-start text-xs py-5">
+        <AiFillFolderAdd className="text-3xl mr-3"></AiFillFolderAdd>
+        Create  <br /> New Project
+      </Button>
 
-      {/* <h1 className="text-dark_green mt-6 text-xl font-bold">Projects</h1> */}
-      <div className=" flex sm:w-full overflow-x-scroll h-auto  ">
-          <LineChart />
-          <LineChart />
-          <LineChart />
-      </div>
-
-      <div className={`justify-center w-full relative sm:flex`}>
-        <div className="w-fit md:w-1/2 h-auto">
-          <BarChart/>
-          {/* <PieChart/> */}
+      {/* Section for chart */}
+      <div className=" items-center pb-24 ">
+        {/* <h1 className="text-dark_green mt-6 text-xl font-bold">Projects</h1> */}
+        <div className=" md:flex w-full h-auto ">
+            <LineChart />
+            <LineChart />
+            <LineChart />
         </div>
-        <div className="w-fit md:w-1/2 h-auto">
-          <BarChart/>
-          {/* <PieChart/> */}
-        </div>
-      </div>
         
+        {/* Bar Chart and Pie Chart  */}
+        <div className=" md:flex w-full h-auto justify-around ">
+          <BarChart/>
+          <BarChart/>
+        </div>
+      
+      </div>
     </div>
   );
 }
