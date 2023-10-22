@@ -77,7 +77,12 @@ const LoginForm: FC<LoginFormProps> = ({}) => {
                 <FormItem>
                   <FormLabel>Password</FormLabel>
                   <FormControl>
-                    <Input className="" placeholder="" {...field} />
+                    <Input
+                      type="password"
+                      className=""
+                      placeholder=""
+                      {...field}
+                    />
                   </FormControl>
 
                   <FormMessage />
