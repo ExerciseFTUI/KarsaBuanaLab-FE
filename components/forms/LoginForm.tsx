@@ -27,10 +27,17 @@ import {
 import { useForm } from "react-hook-form";
 import { loginValidation } from "@/lib/validations/LoginValidation";
 import { Input } from "../ui/input";
+import { signIn } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useToast } from "../ui/use-toast";
 
 interface LoginFormProps {}
 
 const LoginForm: FC<LoginFormProps> = ({}) => {
+  const router = useRouter();
+  const query = useSearchParams();
+  const { toast } = useToast();
+
   // 1. Define your form.
   const form = useForm<z.infer<typeof loginValidation>>({
     resolver: zodResolver(loginValidation),
@@ -45,6 +52,27 @@ const LoginForm: FC<LoginFormProps> = ({}) => {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     console.log(values);
+
+    //NextAuth SignIn
+    signIn("credentials", {
+      ...values,
+      redirect: false, //Add redirect to data object
+    }).then((callback) => {
+      console.log(callback);
+      if (callback?.error) {
+        toast({
+          description: "Invalid username or password",
+          variant: "destructive",
+          title: "Uh oh! Something went wrong.",
+        });
+      }
+      if (callback?.ok && !callback?.error) {
+        toast({ title: "Successfully logged in", description: "Welcome back" });
+        const callbackUrl = query.get("callbackUrl");
+        router.push(callbackUrl || "/");
+      }
+    });
+    // .finally(() => setIsLoading(false));
   }
 
   return (
@@ -77,7 +105,12 @@ const LoginForm: FC<LoginFormProps> = ({}) => {
                 <FormItem>
                   <FormLabel>Password</FormLabel>
                   <FormControl>
-                    <Input className="" placeholder="" {...field} />
+                    <Input
+                      type="password"
+                      className=""
+                      placeholder=""
+                      {...field}
+                    />
                   </FormControl>
 
                   <FormMessage />
