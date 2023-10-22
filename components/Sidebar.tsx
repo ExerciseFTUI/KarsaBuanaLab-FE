@@ -7,6 +7,7 @@ import { usePathname, useRouter } from "next/navigation";
 // import { sidebarLinks } from "@/constants";
 import { BiLogOut } from "react-icons/bi";
 import { sidebarLinks } from "@/constants/sidebarlinks";
+import { signOut } from "next-auth/react";
 
 function extractFirstPathSegment(path: string) {
   // Remove leading and trailing slashes and split the path by "/"
@@ -79,13 +80,17 @@ const Sidebar: FC<LeftSidebarProps> = ({}) => {
         })}
       </div>
       <div className="mt-10 px-2">
-        <div className="flex gap-3 cursor-pointer p-4 items-center rounded-lg hover:bg-[#C2C5AA] ">
+        <div
+          className="flex gap-3 cursor-pointer p-4 items-center rounded-lg hover:bg-[#C2C5AA] "
+          onClick={() => signOut()}
+        >
           {/* <Image
                 src={"assets/logout.svg"}
                 alt="logout"
                 width={24}
                 height={24}
               /> */}
+
           <BiLogOut className={"text-[30px] text-normal_green"} />
           <p className="text-sm text-normal_green max-lg:hidden">Log Out</p>
         </div>
