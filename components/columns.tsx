@@ -52,7 +52,7 @@ export const columns: ColumnDef<ProjectType>[] = [
 
     cell: ({ row }) => {
       const status = true;
-      console.log(row.original);
+      // console.log(row.original);
       return (
         <div className="">
           <div

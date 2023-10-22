@@ -294,7 +294,7 @@ export function DataTable() {
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
-                  className="hover:bg-light_green ease-in-out duration-500 text-sm "
+                  className="hover:bg-light_green ease-in-out duration-500 text-xs"
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
                 >
