@@ -21,8 +21,8 @@ export default function RootLayout({
       <body className={inter.className}>
         <main className="flex flex-row ">
           <Sidebar />
-          <section className="flex flex-col min-h-screen items-center flex-1 pt-2 px-6 pb-10 max-md:pb-32 sm:px-10 bg-[#F8F8F8]">
-            <div className="w-full">
+          <section className="flex flex-col min-h-screen items-center flex-1 pt-2 px-6 pb-10 max-lg:pb-32 sm:px-10 bg-[#F8F8F8] overflow-auto">
+            <div className="w-full ">
               <Topbar />
               {children}
             </div>

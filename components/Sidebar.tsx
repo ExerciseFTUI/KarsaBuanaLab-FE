@@ -4,13 +4,13 @@ import Link from "next/link";
 import React, { FC } from "react";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
-import { sidebarLinks } from "@/constants";
+// import { sidebarLinks } from "@/constants";
 import { BiLogOut } from "react-icons/bi";
+import { sidebarLinks } from "@/constants/sidebarlinks";
 
 function extractFirstPathSegment(path: string) {
   // Remove leading and trailing slashes and split the path by "/"
   const segments = path.replace(/^\/|\/$/g, "").split("/");
-
   // Return the first segment
   return segments[0];
 }
@@ -47,17 +47,25 @@ const Sidebar: FC<LeftSidebarProps> = ({}) => {
             <Link
               href={routeSection + link.route}
               key={link.label}
-              className={`relative hover:bg-light_green  flex justify-start items-center gap-4 rounded-lg p-4 ${
+              className={`relative hover:bg-light_green ease-in-out duration-300 flex justify-start items-center gap-4 rounded-lg p-4 ${
                 isActive && "bg-light_green"
               }`}
             >
-              <Image
+              {/* <Image
                 src={link.imgURL}
                 alt={link.label}
                 width={24}
                 height={24}
                 className=""
-              />
+              /> */}
+
+              <div
+                className={`text-2xl text-normal_green ${
+                  isActive && "!text-dark_green"
+                }`}
+              >
+                {link.icon}
+              </div>
 
               <p
                 className={`text-sm text-normal_green  ${
