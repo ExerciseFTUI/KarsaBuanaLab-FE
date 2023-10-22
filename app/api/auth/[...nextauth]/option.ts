@@ -14,19 +14,17 @@ export const options: NextAuthOptions = {
         username: {
           label: "Username:",
           type: "text",
-          placeholder: "your-cool-username",
         },
         password: {
           label: "Password:",
           type: "password",
-          placeholder: "your-awesome-password",
         },
       },
       async authorize(credentials) {
         // This is where you need to retrieve user data
         // to verify with credentials
         // Docs: https://next-auth.js.org/configuration/providers/credentials
-        const user = { id: "42", name: "Dito", password: "nextauth" };
+        const user = { id: "01", name: "admin", password: "admin" };
 
         if (
           credentials?.username === user.name &&
