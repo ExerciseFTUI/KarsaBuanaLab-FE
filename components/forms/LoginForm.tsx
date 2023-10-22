@@ -63,10 +63,11 @@ const LoginForm: FC<LoginFormProps> = ({}) => {
         toast({
           description: "Invalid username or password",
           variant: "destructive",
+          title: "Uh oh! Something went wrong.",
         });
       }
       if (callback?.ok && !callback?.error) {
-        toast({ description: "Successfully logged in" });
+        toast({ title: "Successfully logged in", description: "Welcome back" });
         const callbackUrl = query.get("callbackUrl");
         router.push(callbackUrl || "/");
       }
