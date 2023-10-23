@@ -50,7 +50,7 @@ const IdCheckForm: FC<IdCheckFormProps> = ({ setResiNumber }) => {
     setResiNumber(values.resiNumber);
   }
   return (
-    <Card className="w-full sm:w-1/2 md:w-1/3 h-full md:h-fit flex flex-col justify-center px-0 md:px-20 border-0 shadow-none">
+    <Card className="w-full sm:w-1/2 md:w-1/3 h-full md:h-fit flex flex-col justify-center px-0 lg:px-20 border-0 shadow-none">
       <CardHeader>
         <CardTitle className="text-3xl mt-10">Check Your ID</CardTitle>
       </CardHeader>
@@ -92,7 +92,8 @@ const IdCheckForm: FC<IdCheckFormProps> = ({ setResiNumber }) => {
                 Check
                 </Button>
                 <Button
-                className="w-full mt-6 py-5 bg-[#656D4A] hover:bg-[#332D29] text-lg"
+                disabled
+                className="w-full mt-6 py-5 border-2 border-moss_green bg-transparent text-moss_green text-lg"
                 type="submit"
                 >
                 Download
