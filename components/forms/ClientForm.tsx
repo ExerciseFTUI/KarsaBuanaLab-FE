@@ -3,6 +3,7 @@ import React, {useState, useEffect, FC} from 'react';
 import dynamic from 'next/dynamic';
 
 import { FiDownload } from "react-icons/fi";
+import { FiRefreshCw } from "react-icons/fi";
 
 import {
   Card,
@@ -14,6 +15,8 @@ import {
 } from "@/components/ui/card";
 import Schedule from '../client/Schedule';
 import Sample from '../client/Sample';
+import Analysis from '../client/Analysis';
+import Finished from '../client/Finished';
 
 const ClientStepper = dynamic(
   () => import('../Stepper/ClientStepper'),
@@ -29,23 +32,23 @@ interface ClientFormProps {
 const ClientForm: FC<ClientFormProps> = ({ resiNumber }) => {
   const [activeStep, setActiveStep] = useState(0);
   
+  const handleStepClick = (step: number) => {
+    setActiveStep(step);
+  };
+
   const steps = [
-    { label: 'Schedule', onClick: () => setActiveStep(0) },
-    { label: 'Sample', onClick: () => setActiveStep(1) },
-    { label: 'Analysis', onClick: () => setActiveStep(2) },
-    { label: 'Finished', onClick: () => setActiveStep(3) },
+    { label: 'Schedule', onClick: () => handleStepClick(0) },
+    { label: 'Sample', onClick: () => handleStepClick(1) },
+    { label: 'Analysis', onClick: () => handleStepClick(2) },
+    { label: 'Finished', onClick: () => handleStepClick(3) },
   ];
-
-  useEffect(() => {
-    console.log(activeStep);
-  }, [activeStep]);
-
+  
   function getSectionComponent() {
     switch(activeStep) {
-      case 0: return <Schedule/>;
-      case 1: return <Sample/>;
-      case 2: return <div className='bg-blue-700 h-5 w-5'/>;
-      case 3: return <div className='bg-green-700 h-5 w-5'/>;
+      case 0: return <Schedule />;
+      case 1: return <Sample />;
+      case 2: return <Analysis />;
+      case 3: return <Finished />;
       default: return null;
     }
   }
@@ -54,7 +57,7 @@ const ClientForm: FC<ClientFormProps> = ({ resiNumber }) => {
     <Card className="w-full md:w-2/3 h-[90vh] flex flex-col m-6 mx-10 bg-ghost_white rounded-xl">
       <CardHeader className="flex flex-row bg-dark_green px-10 rounded-xl justify-between shadow-xl">
         <CardTitle className="my-auto text-3xl text-white font-extrabold">{`ID ${resiNumber}`}</CardTitle>
-        <FiDownload className="text-4xl text-ghost_green" />
+        {activeStep !== 3 ? <FiDownload className="text-4xl text-ghost_green cursor-pointer" /> : <FiRefreshCw className="text-4xl text-ghost_white cursor-pointer"/>}
       </CardHeader>
       <div className='border-2 rounded-xl shadow-xl'>
         <ClientStepper

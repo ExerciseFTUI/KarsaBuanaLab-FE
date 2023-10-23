@@ -9,7 +9,7 @@ export default function Page() {
     <>
       <div className="w-screen flex flex-col md:flex-row">
         <IdCheckForm setResiNumber={setResiNumber} />
-        <ClientForm resiNumber={resiNumber} />
+        {resiNumber !== '' ? <ClientForm resiNumber={resiNumber} /> : <div className="w-full md:w-2/3 h-[90vh] flex flex-col m-6 mx-10 bg-ghost_white rounded-xl"/>}
       </div>
     </>
   );

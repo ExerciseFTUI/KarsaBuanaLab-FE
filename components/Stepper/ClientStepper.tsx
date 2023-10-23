@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import React, {useState} from 'react'
 
 import { Stepper} from 'react-form-stepper';
 
@@ -10,31 +10,30 @@ interface ClientStepperProps {
 }
 
 const ClientStepper: React.FC<ClientStepperProps> = (props) => {
-
     return (
         <Stepper 
         { ...props }
         connectorStateColors={true}
         styleConfig={{
-            activeBgColor: '#333d29', // Warna latar belakang langkah aktif
-            activeTextColor: '#EDECF2', // Warna teks langkah aktif
-            completedBgColor: '#333d29', // Warna latar belakang langkah yang telah selesai
-            completedTextColor: '#EDECF2', // Warna teks langkah yang telah selesai
-            inactiveBgColor: '#333d29', // Warna latar belakang langkah yang belum aktif
-            inactiveTextColor: '#EDECF2', // Warna teks langkah yang belum aktif
-            size: '3em', // Ukuran langkah
-            circleFontSize: '1.25rem', // Ukuran font isi langkah
-            labelFontSize: '1rem', // Ukuran font label langkah
-            borderRadius: '50%', // Radius sudut langkah
-            fontWeight: 500, // Ketebalan huruf label langkah
+            activeBgColor: '#333d29',
+            activeTextColor: '#EDECF2',
+            completedBgColor: '#333d29',
+            completedTextColor: '#EDECF2',
+            inactiveBgColor: '#333d29',
+            inactiveTextColor: '#EDECF2',
+            size: '3em',
+            circleFontSize: '1.25rem',
+            labelFontSize: '1rem',
+            borderRadius: '50%',
+            fontWeight: 500,
         }} 
         connectorStyleConfig={{
-            disabledColor: '#AEADB2', // Warna connector ketika dinonaktifkan
-            activeColor: '#333d29', // Warna connector aktif
-            completedColor: '#333d29', // Warna connector yang telah selesai
-            size: 10, // Ketebalan connector
-            stepSize: '3em', // Ukuran step
-            style: 'dotted', // Gaya connector (dapat berupa 'solid', 'dashed', atau 'dotted')      
+            disabledColor: '#AEADB2', 
+            activeColor: '#333d29', 
+            completedColor: '#333d29', 
+            size: 10, 
+            stepSize: '3em', 
+            style: 'dotted',     
         }}/>
     )
 }

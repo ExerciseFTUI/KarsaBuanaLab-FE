@@ -79,7 +79,6 @@ const IdCheckForm: FC<IdCheckFormProps> = ({ setResiNumber }) => {
                   <FormControl>
                     <Input className="py-6" placeholder="Input your password here" {...field} />
                   </FormControl>
-
                   <FormMessage />
                 </FormItem>
               )}
