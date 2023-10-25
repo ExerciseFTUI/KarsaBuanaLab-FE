@@ -43,7 +43,7 @@ const Sampling: FC<SamplingProps> = ({}) => {
   const parameters = watch("parameters");
 
   return (
-    <div className="w-full">
+    <div className="w-full px-10">
       <CreateSamplingSheet open={open} onOpenChange={handleOpenChange} />
       <CreateSamplingModal
         open={showCreateModal}
@@ -54,7 +54,7 @@ const Sampling: FC<SamplingProps> = ({}) => {
         onClose={() => setConfirmOpen(false)}
         form={form}
       />
-      <Tabs defaultValue="sampling" className="w-[500px]">
+      <Tabs defaultValue="sampling" className="w-[500px] max-sm:w-[420px]">
         <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="sampling">Sampling</TabsTrigger>
           <TabsTrigger value="document">Document</TabsTrigger>

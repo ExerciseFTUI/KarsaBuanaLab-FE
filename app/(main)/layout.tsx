@@ -20,7 +20,7 @@ export default function RootLayout({
     <>
       <main className="flex flex-row ">
         <Sidebar />
-        <section className="flex flex-col min-h-screen items-center flex-1 pt-2 px-6 pb-10 max-lg:pb-32 sm:px-10 bg-[#F8F8F8] overflow-auto">
+        <section className="flex flex-col min-h-screen items-center flex-1 pt-2 px-6 pb-10 max-lg:pb-32 sm:px-10 bg-[#F8F8F8] overflow-y-auto">
           <div className="w-full ">
             <Topbar />
             {children}
