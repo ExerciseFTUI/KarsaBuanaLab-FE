@@ -11,40 +11,35 @@ import { Checkbox } from "@/components/ui/checkbox"
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
 } from "@/components/ui/form"
  
 
  
 const FormSchema = z.object({
-  items: z.array(z.string()).refine((value) => value.some((item) => item), {
-    message: "You have to select at least one item.",
-  }),
+  items: z.array(z.string())
 })
  
 interface VerticalCheckboxProps {
     formLabel: string;
     items: { id: string; label: string }[];
+    defaultValue: string[];
 }
 
-const VerticalCheckbox: FC<VerticalCheckboxProps> = ({ formLabel, items }) => {
+const VerticalCheckbox: FC<VerticalCheckboxProps> = ({ formLabel, items, defaultValue }) => {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      items: [],
+      items: defaultValue,
     },
   })
  
-  function onSubmit(data: z.infer<typeof FormSchema>) {
-    
-  }
+  
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-12 mt-4 m-10">
+            <form className="space-y-12 mt-4 m-10">
                 <FormField
                 control={form.control}
                 name="items"
@@ -69,17 +64,8 @@ const VerticalCheckbox: FC<VerticalCheckboxProps> = ({ formLabel, items }) => {
                                 <div className="flex flex-row items-center space-x-3 space-y-0 z-10">
                                     <FormControl>
                                     <Checkbox
-                                        className="h-6 w-6 bg-ghost_white"
+                                        className="h-6 w-6 bg-ghost_white cursor-default"
                                         checked={field.value?.includes(item.id)}
-                                        onCheckedChange={(checked) => {
-                                        return checked
-                                            ? field.onChange([...field.value, item.id])
-                                            : field.onChange(
-                                                field.value?.filter(
-                                                (value) => value !== item.id
-                                                )
-                                            )
-                                        }}
                                     />
                                     </FormControl>
                                     <FormLabel className={`text-lg font-normal ${field.value?.includes(item.id) ? '' : 'text-moss_green'}`}>
@@ -91,11 +77,9 @@ const VerticalCheckbox: FC<VerticalCheckboxProps> = ({ formLabel, items }) => {
                         }}
                         />
                     ))}
-                    <FormMessage className="translate-y-5" />
                     </FormItem>
                 )}
                 />
-                <Button type="submit">Submit</Button>
             </form>
         </Form>
     );

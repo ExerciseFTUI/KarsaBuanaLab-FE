@@ -20,8 +20,11 @@ const Analysis: FC<AnalysisProps> = () => {
             label: "--------",
         },
     ]
+    const initialValue = [
+        "phAirLimbahDomestik"
+    ]
     return (
-        <VerticalCheckbox formLabel="Progress Analisa Sample" items={items}/>
+        <VerticalCheckbox formLabel="Progress Analisa Sample" items={items} defaultValue={initialValue}/>
     );
 };
 
