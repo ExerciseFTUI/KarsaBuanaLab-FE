@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import Link from 'next/link'
 import { LineChart } from "@/components/chart/lineChart"
 import { BarChart } from "@/components/chart/barChart"
 // import { PieChart } from "@/components/chart/pieChart"
@@ -37,10 +38,12 @@ export default function Home() {
         </div>
         
         {/* Button create new project */}
-        <Button className="bg-light_green w-1/6 max-lg:hidden hover:bg-light_green text-dark_green font-bold justify-center text-xs text-center py-5">
-          <AiFillFolderAdd className="text-3xl mr-3"></AiFillFolderAdd>
-          Create  <br /> New Project
-        </Button>
+        <Link className="bg-light_green rounded-md max-lg:hidden hover:bg-light_green text-dark_green font-bold justify-center text-xs text-center " href="/marketing/createProject">
+          <Button className=" bg-light_green text-dark_green hover:bg-light_green p-6 ">
+            <AiFillFolderAdd className="text-3xl mr-3"></AiFillFolderAdd>
+            Create  <br /> New Project
+          </Button>
+        </Link>
       </div>
       
       {/* Button create new project in mobile */}

@@ -13,6 +13,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -205,6 +206,7 @@ const data: ProjectType[] = [
 ];
 
 export function DataTable() {
+  const router = useRouter()
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -294,6 +296,7 @@ export function DataTable() {
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
+                  onClick={() => router.push(`/marketing/running/edit`)}
                   className="hover:bg-light_green ease-in-out duration-500 text-xs"
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
