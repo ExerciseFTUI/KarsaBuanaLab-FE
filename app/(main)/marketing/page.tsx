@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { LineChart } from "@/components/chart/lineChart"
 import { BarChart } from "@/components/chart/barChart"
 // import { PieChart } from "@/components/chart/pieChart"
-import { BsGraphUp } from 'react-icons/bs';
+import { BsGraphUp, BsPersonCircle } from 'react-icons/bs';
 import { AiFillProject, AiFillFolderAdd } from 'react-icons/ai'
 
 export default function Home() {
@@ -37,6 +37,19 @@ export default function Home() {
           </div>
         </div>
         
+        {/* Total Projects */}
+        <div className="h-auto center w-1/2 md:w-1/6 align-middle rounded-lg p-3 flex items-center">
+          <BsPersonCircle className="text-4xl bg-light_green p-1 rounded-lg"></BsPersonCircle>
+          <div className=" text-left text-xs md:text-sm ml-1">
+            <div>
+              Total Clients
+            </div>
+            <div className=" font-semibold">
+              82
+            </div>
+          </div>
+        </div>
+
         {/* Button create new project */}
         <Link className="bg-light_green rounded-md max-lg:hidden hover:bg-light_green text-dark_green font-bold justify-center text-xs text-center " href="/marketing/createProject">
           <Button className=" bg-light_green text-dark_green hover:bg-light_green p-6 ">

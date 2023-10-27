@@ -43,13 +43,11 @@ const CreateProjectBaseData: FC<CreateProjectBaseDataProps> = ({}) => {
         resolver: zodResolver(createProjectValidation),
         defaultValues: {
         title: "",
-        numPenawaran: "",
         custName: "",
         alamatKantor: "",
         alamatSampling: "",
         surel: "",
-        contactPerson: "62",
-        valuasiProject: "",
+        contactPerson: "",
         },
     });
 
@@ -82,9 +80,9 @@ const CreateProjectBaseData: FC<CreateProjectBaseDataProps> = ({}) => {
     }
 
     return (
-        <Card className="w-[450px] overflow-auto h-[36rem] custom-scrollbar ">
+        <Card className="w-[450px] overflow-auto custom-scrollbar ">
         <CardHeader>
-            <CardTitle className="text-xl">Project Information</CardTitle>
+            <CardTitle className="text-base font-bold ">Project Information</CardTitle>
         </CardHeader>
         <CardContent>
             <Form {...form}>
@@ -97,25 +95,6 @@ const CreateProjectBaseData: FC<CreateProjectBaseDataProps> = ({}) => {
                     <FormLabel>Title</FormLabel>
                     <FormControl>
                         <Input className="" placeholder="" {...field} />
-                    </FormControl>
-
-                    <FormMessage />
-                    </FormItem>
-                )}
-                />
-                <FormField
-                control={form.control}
-                name="numPenawaran"
-                render={({ field }) => (
-                    <FormItem>
-                    <FormLabel>Nomor Penawaran</FormLabel>
-                    <FormControl>
-                        <Input
-                        type="string"
-                        className=""
-                        placeholder=""
-                        {...field}
-                        />
                     </FormControl>
 
                     <FormMessage />
@@ -218,32 +197,6 @@ const CreateProjectBaseData: FC<CreateProjectBaseDataProps> = ({}) => {
                     </FormItem>
                 )}
                 />
-                
-                <FormField
-                control={form.control}
-                name="valuasiProject"
-                render={({ field }) => (
-                    <FormItem>
-                    <FormLabel>Valuasi Project</FormLabel>
-                    <FormControl>
-                        <Input
-                        type="string"
-                        className=""
-                        placeholder=""
-                        {...field}
-                        />
-                    </FormControl>
-
-                    <FormMessage />
-                    </FormItem>
-                )}
-                />
-                <Button
-                className="w-full mt-6 bg-[#656D4A] hover:bg-[#332D29]"
-                type="submit"
-                >
-                Submit
-                </Button>
             </form>
             </Form>
         </CardContent>
