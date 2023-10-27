@@ -1,12 +1,13 @@
 import React, { useState, FC } from "react";
 import { Button } from "../ui/button";
+import SurveyForm from "../forms/SurveyForm";
 
 interface FinishedProps {
 
 }
 
 const Finished: FC<FinishedProps> = () => {
-    const [isPaid, setIsPaid] = useState(false);
+    const [isPaid, setIsPaid] = useState(true);
 
     const paymentStatus = isPaid ? "Sudah Terbayar" : "Belum Bayar";
 
@@ -18,9 +19,7 @@ const Finished: FC<FinishedProps> = () => {
                 <p>Status pembayaran:</p> 
                 <p className="font-bold">{paymentStatus}</p>
             </div>
-            <Button disabled={!isPaid} className="flex bg-black_brown justify-center rounded-xl py-2 w-full">
-                <p className="text-xl text-ghost_white">Laporan Hasil Penelitian</p>
-            </Button>
+            <SurveyForm isPaid={isPaid}/>
             <div className="mt-2">
                 <p className="m-2 text-charcoal_green italic">Klik Tombol Refresh untuk perbarui status Pembayaran</p>
             </div>

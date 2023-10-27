@@ -91,13 +91,6 @@ const IdCheckForm: FC<IdCheckFormProps> = ({ setResiNumber }) => {
                 >
                 Check
                 </Button>
-                <Button
-                disabled
-                className="w-full mt-6 py-5 border-2 border-moss_green bg-transparent text-moss_green text-lg"
-                type="submit"
-                >
-                Download
-                </Button>
             </div>
           </form>
         </Form>

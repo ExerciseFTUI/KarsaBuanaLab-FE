@@ -20,8 +20,13 @@ const Sample: FC<SampleProps> = () => {
             label: "udara ambien",
         },
     ]
+
+    const initialValue = [
+        "airLimbahDomestik",
+        "AMDK"
+    ]
     return (
-        <VerticalCheckbox formLabel="Schedule Logbook" items={items}/>
+        <VerticalCheckbox formLabel="Schedule Logbook" items={items} defaultValue={initialValue}/>
     );
 };
 
