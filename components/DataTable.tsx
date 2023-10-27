@@ -297,7 +297,7 @@ export function DataTable() {
               table.getRowModel().rows.map((row) => (
                 <TableRow
                   onClick={() => router.push(`/marketing/running/edit`)}
-                  className="hover:bg-light_green ease-in-out duration-500 text-xs"
+                  className="hover:bg-light_green ease-in-out duration-500 text-xs hover:cursor-pointer hover:rounded-xl "
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
                 >

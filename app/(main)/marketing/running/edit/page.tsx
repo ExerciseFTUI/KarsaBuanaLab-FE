@@ -45,12 +45,13 @@ const CreateProjectBaseData: FC<CreateProjectBaseDataProps> = ({}) => {
         defaultValues: {
         title: "Analisis PT Aqua",
         numPenawaran: "VII/23/Aqua/12/2/2023",
-        numRevisi: 1,
+        numRevisi: "1",
         custName: "Sulaiman Firdaus",
         alamatKantor: "Bandung, Jawa Barat",
         alamatSampling: "Air terjun Cisawuk",
         surel: "",
         contactPerson: "6282212219878",
+        valuasiProject: "Rp 3.000.000"
         },
     });
 
@@ -255,7 +256,7 @@ const CreateProjectBaseData: FC<CreateProjectBaseDataProps> = ({}) => {
                     <FormControl>
                         <Input
                         disabled={true}
-                        type="number"
+                        type="string"
                         className=""
                         placeholder=""
                         {...field}
@@ -270,7 +271,7 @@ const CreateProjectBaseData: FC<CreateProjectBaseDataProps> = ({}) => {
                 className="w-full mt-6 bg-[#656D4A] hover:bg-[#332D29]"
                 type="submit"
                 >
-                Submit
+                Revisi
                 </Button>
             </form>
             </Form>
