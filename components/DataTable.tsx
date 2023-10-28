@@ -272,7 +272,7 @@ export function DataTable() {
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-      <div className=" text-normal_green ">
+      <div className=" text-moss_green ">
         <Table className="">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -324,7 +324,7 @@ export function DataTable() {
         </Table>
       </div>
       <div className="flex items-center justify-end space-x-2 py-4 max-sm:flex-col gap-5">
-        <div className="flex-1 text-sm text-normal_green">
+        <div className="flex-1 text-sm text-moss_green">
           {/* {table.getFilteredSelectedRowModel().rows.length} of{" "} */}
           Total : {table.getFilteredRowModel().rows.length} row(s).
         </div>

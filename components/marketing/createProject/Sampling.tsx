@@ -38,6 +38,9 @@ const parameters = [
   {
     name: "Parameter 3",
   },
+  {
+    name: "Parameter 4",
+  },
 ];
 
 const Sampling: FC<SamplingProps> = ({}) => {
@@ -73,16 +76,16 @@ const Sampling: FC<SamplingProps> = ({}) => {
           )}
           {parameters.length > 0 && (
             <>
-              <div className="p-4 gap-3 flex flex-col">
+              <ul className="p-4 grid grid-cols-2 gap-2 ">
                 {parameters.map((parameter) => (
-                  <p>{parameter.name}</p>
+                  <li className="text-xs">{parameter.name}</li>
                 ))}
-              </div>
+              </ul>
             </>
           )}
           <Separator />
           <footer className="h-[40px] px-4 p-[2px] text-xs text-neutral-500 flex items-center justify-between">
-            <p>Created at 20/11/2023</p>
+            <p>Total 4 Parameters</p>
             {isLoading && <div>Deleting...</div>}
             {!isLoading && (
               <div>

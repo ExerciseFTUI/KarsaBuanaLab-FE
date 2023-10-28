@@ -74,55 +74,44 @@ import {
 import Sampling from "@/components/marketing/createProject/Sampling";
 import { PlusIcon } from "@radix-ui/react-icons";
 import { PlusCircleIcon } from "lucide-react";
+import SamplingTab from "@/components/marketing/createProject/SamplingTab";
 
 export default function CreateProjectPage() {
   return (
-    <div className="w-full flex gap-6">
-      <CreateProjectBaseData />
-      <Tabs defaultValue="sampling" className="w-[500px] max-sm:w-[420px]">
-        <TabsList className="grid w-full grid-cols-2">
-          <TabsTrigger value="sampling">Sampling</TabsTrigger>
-          <TabsTrigger value="document">Document</TabsTrigger>
-        </TabsList>
-        <TabsContent value="sampling">
-          <Card className="overflow-y-auto h-[90vh] custom-scrollbar">
-            <CardHeader>
-              <CardTitle>Sampling</CardTitle>
-              <CardDescription>
-                Make changes to your sampling here. Click save when you're done.
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-2">
-              <Button variant={"outline"} className="w-full mb-6">
-                <PlusIcon className="mr-2 h-4 w-4" /> Add Sample
-              </Button>
-              <Sampling />
-              <Sampling />
-              <Sampling />
-              <Sampling />
-              <Sampling />
-            </CardContent>
-            <CardFooter>
-              <Button>Open Modal</Button>
-            </CardFooter>
-          </Card>
-        </TabsContent>
-        <TabsContent value="document">
-          <Card>
-            <CardHeader>
-              <CardTitle>Document</CardTitle>
-              <CardDescription>
-                Change your document here. After saving, you'll be logged out.
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-2"></CardContent>
+    <>
+      <div className="w-full flex gap-6">
+        <CreateProjectBaseData />
+        <Tabs defaultValue="sampling" className="w-[500px] max-sm:w-[420px]">
+          <TabsList className="grid w-full grid-cols-2">
+            <TabsTrigger value="sampling">Sampling</TabsTrigger>
+            <TabsTrigger value="document">Document</TabsTrigger>
+          </TabsList>
 
-            <CardFooter>
-              <Button>Save document</Button>
-            </CardFooter>
-          </Card>
-        </TabsContent>
-      </Tabs>
-    </div>
+          {/* Sample Section */}
+          <TabsContent value="sampling">
+            <SamplingTab />
+          </TabsContent>
+          {/* End Sample Section */}
+
+          {/* Document Section */}
+          <TabsContent value="document">
+            <Card>
+              <CardHeader>
+                <CardTitle>Document</CardTitle>
+                <CardDescription>
+                  Change your document here. After saving, you'll be logged out.
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-2"></CardContent>
+
+              <CardFooter>
+                <Button>Save document</Button>
+              </CardFooter>
+            </Card>
+          </TabsContent>
+          {/* End Document Section */}
+        </Tabs>
+      </div>
+    </>
   );
 }
