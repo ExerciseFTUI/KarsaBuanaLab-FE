@@ -206,7 +206,7 @@ const data: ProjectType[] = [
 ];
 
 export function DataTable() {
-  const router = useRouter()
+  const router = useRouter();
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -296,7 +296,6 @@ export function DataTable() {
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
-                  onClick={() => router.push(`/marketing/running/edit`)}
                   className="hover:bg-light_green ease-in-out duration-500 text-xs hover:cursor-pointer hover:rounded-xl "
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
