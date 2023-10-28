@@ -22,6 +22,7 @@ import {
   useFieldArray,
   useForm,
 } from "react-hook-form";
+import DocumentTab from "./DocumentTab";
 
 export default function CreateProjectPage() {
   //=============================== Sample Section
@@ -72,7 +73,8 @@ export default function CreateProjectPage() {
 
         {/* Document Section */}
         <TabsContent value="document">
-          <Card>
+          <DocumentTab />
+          {/* <Card>
             <CardHeader>
               <CardTitle>Document</CardTitle>
               <CardDescription>
@@ -80,13 +82,13 @@ export default function CreateProjectPage() {
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-2">
-              {/* Isi Komponen Document Disini */}
+              Isi Komponen Document Disini
             </CardContent>
 
             <CardFooter>
               <Button>Save document</Button>
             </CardFooter>
-          </Card>
+          </Card> */}
         </TabsContent>
         {/* End Document Section */}
       </Tabs>
