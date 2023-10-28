@@ -25,25 +25,21 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { UseFieldArrayRemove } from "react-hook-form";
 
-interface SamplingProps {}
+interface SamplingProps {
+  sampleName: string;
+  regulation: string;
+  parameters: string[];
+  deleteSample: () => void;
+}
 
-const parameters = [
-  {
-    name: "Parameter 1",
-  },
-  {
-    name: "Parameter 2",
-  },
-  {
-    name: "Parameter 3",
-  },
-  {
-    name: "Parameter 4",
-  },
-];
-
-const Sampling: FC<SamplingProps> = ({}) => {
+const Sampling: FC<SamplingProps> = ({
+  sampleName,
+  regulation,
+  parameters,
+  deleteSample,
+}) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, startTranstition] = useTransition();
 
@@ -57,13 +53,13 @@ const Sampling: FC<SamplingProps> = ({}) => {
               isOpen && "rounded-b-none"
             )}
           >
-            <span className="text-white font-bold">Sample 1</span>
+            <span className="text-white font-bold">{sampleName}</span>
             {!isOpen && <CaretDownIcon className="h-6 w-6" />}
             {isOpen && <CaretUpIcon className="h-6 w-6" />}
           </Button>
         </CollapsibleTrigger>
         <CollapsibleContent className="flex rounded-b-md flex-col dark:bg-neutral-900 shadow-lg ">
-          {parameters.length === 0 && (
+          {/* {parameters.length === 0 && (
             <Button
               variant={"ghost"}
               className="flex items-center justify-center rounded-none gap-1 p-8 py-12"
@@ -73,13 +69,15 @@ const Sampling: FC<SamplingProps> = ({}) => {
                 Create one
               </span>
             </Button>
-          )}
+          )} */}
+          {/* <p className="px-4 py-1 text-xs">{regulation}</p> */}
+          <Separator />
           {parameters.length > 0 && (
             <>
               <ul className="p-4 grid grid-cols-2 gap-2 ">
-                {parameters.map((parameter) => (
-                  <li key={parameter.name} className="text-xs">
-                    {parameter.name}
+                {parameters.map((parameter, index) => (
+                  <li key={parameter + index} className="text-xs">
+                    {parameter}
                   </li>
                 ))}
               </ul>
@@ -87,7 +85,7 @@ const Sampling: FC<SamplingProps> = ({}) => {
           )}
           <Separator />
           <footer className="h-[40px] px-4 p-[2px] text-xs text-neutral-500 flex items-center justify-between">
-            <p>Total 4 Parameters</p>
+            <p>Total {parameters.length} Parameters</p>
             {isLoading && <div>Deleting...</div>}
             {!isLoading && (
               <div>
@@ -110,14 +108,14 @@ const Sampling: FC<SamplingProps> = ({}) => {
                     </AlertDialogTitle>
                     <AlertDialogDescription>
                       This action cannot be undone. This will be permanently
-                      delete your collection and parameter inside it
+                      delete your sample and parameter inside it
                     </AlertDialogDescription>
                     <AlertDialogFooter>
                       <AlertDialogCancel>Cancel</AlertDialogCancel>
                       <AlertDialogAction
                         onClick={() => {
                           //   startTranstition(removeCollection);
-                          alert("Deleting Sample");
+                          deleteSample();
                         }}
                       >
                         Proceed

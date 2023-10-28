@@ -59,7 +59,7 @@ const CreateProjectBaseData: FC<CreateProjectBaseDataProps> = ({}) => {
   }
 
   return (
-    <Card className="w-[450px] h-screen overflow-auto custom-scrollbar ">
+    <Card className="w-[450px] max-h-screen overflow-auto custom-scrollbar ">
       <CardHeader>
         <CardTitle className="text-base font-bold ">
           Project Information

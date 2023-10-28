@@ -1,15 +1,14 @@
 "use client";
 
 import React, { FC, useState } from "react";
-import { useRouter } from "next/navigation";
-import { FiAlertTriangle } from "react-icons/fi";
 import { Dialog } from "@headlessui/react";
+import { DevTool } from "@hookform/devtools";
 
 import {
   FieldValues,
   SubmitHandler,
+  UseFieldArrayAppend,
   UseFormReturn,
-  useForm,
 } from "react-hook-form";
 
 //Shadcn
@@ -34,28 +33,49 @@ import {
 import Modal from "@/components/Modal";
 import MultipleSelect from "@/components/MultipleSelect";
 import { Button } from "@/components/ui/button";
+import { array } from "zod";
 //Shadcn
 
 interface CreateSampleModalProps {
   isOpen?: boolean;
   onClose: () => void;
   form: UseFormReturn<FieldValues, any, undefined>;
+  fields: Record<"id", string>[];
+  append: UseFieldArrayAppend<FieldValues, "samples">;
 }
 
 const CreateSampleModal: FC<CreateSampleModalProps> = ({
   onClose,
   isOpen,
   form,
+  append,
 }) => {
-  const router = useRouter();
-
   const { watch, setValue } = form;
 
-  const sampling = watch("sampling");
   const parameters = watch("parameters");
 
+  //Add to the samples array
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
-    console.log(data);
+    //Get the parameter only value
+    const parametersValue = data.parameters.map(
+      (parameter: any) => parameter.value
+    );
+
+    //Get the needed data
+    const finalSample = {
+      sampleName: data.sampling,
+      regulation: data.regulation,
+      parameters: parametersValue,
+    };
+
+    //Add to samples array
+    append(finalSample);
+
+    //Reset Parameter value
+    setValue("parameters", [""], { shouldValidate: true });
+
+    //Close Modal
+    onClose();
   };
 
   return (
@@ -94,7 +114,7 @@ const CreateSampleModal: FC<CreateSampleModalProps> = ({
                             </SelectTrigger>
                             <SelectContent>
                               <SelectGroup>
-                                <SelectLabel>Template File</SelectLabel>
+                                <SelectLabel>Select the sample</SelectLabel>
                                 <SelectItem value="Sample 1">
                                   Sample 1
                                 </SelectItem>
@@ -111,28 +131,28 @@ const CreateSampleModal: FC<CreateSampleModalProps> = ({
                   />
                   <FormField
                     control={form.control}
-                    name="regulasi"
+                    name="regulation"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Regulasi</FormLabel>
+                        <FormLabel>Regulation</FormLabel>
                         <FormControl>
                           <Select
                             disabled={!watch("sampling")}
-                            onValueChange={(regulasi) =>
-                              field.onChange(regulasi)
+                            onValueChange={(regulation) =>
+                              field.onChange(regulation)
                             }
                           >
                             <SelectTrigger className="">
-                              <SelectValue placeholder="Select the regulasi" />
+                              <SelectValue placeholder="Select the regulation" />
                             </SelectTrigger>
                             <SelectContent>
                               <SelectGroup>
-                                <SelectLabel>Template File</SelectLabel>
-                                <SelectItem value="Regulasi 1">
-                                  Regulasi 1
+                                <SelectLabel>Select the regulation</SelectLabel>
+                                <SelectItem value="regulation 1">
+                                  regulation 1
                                 </SelectItem>
-                                <SelectItem value="Regulasi 2">
-                                  Regulasi 2
+                                <SelectItem value="regulation 2">
+                                  regulation 2
                                 </SelectItem>
                               </SelectGroup>
                             </SelectContent>
@@ -144,7 +164,7 @@ const CreateSampleModal: FC<CreateSampleModalProps> = ({
                   />
                   <div className="w-full mt-2">
                     <MultipleSelect
-                      disabled={!watch("regulasi")}
+                      disabled={!watch("regulation")}
                       label="Parameters"
                       // options={users.map((user) => ({
                       //   value: user.id,
@@ -158,9 +178,9 @@ const CreateSampleModal: FC<CreateSampleModalProps> = ({
                         { value: "Parameter5", label: "Parameter 5" },
                         { value: "Parameter6", label: "Parameter 6" },
                       ]}
-                      onChange={(value) =>
-                        setValue("parameters", value, { shouldValidate: true })
-                      }
+                      onChange={(value) => {
+                        setValue("parameters", value, { shouldValidate: true });
+                      }}
                       value={parameters}
                     />
                   </div>

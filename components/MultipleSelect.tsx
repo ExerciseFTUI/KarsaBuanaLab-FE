@@ -33,6 +33,11 @@ const MultipleSelect: FC<SelectProps> = ({
           menuPortalTarget={document.body}
           styles={{
             menuPortal: (base) => ({ ...base, zIndex: 9999 }),
+            option: (base) => ({
+              ...base,
+              fontSize: "12px", // Adjust the font size to make options smaller
+              padding: "8px 12px", // Adjust padding as needed
+            }),
           }}
           classNames={{
             control: () => "text-sm",

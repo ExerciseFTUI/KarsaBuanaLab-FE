@@ -12,7 +12,7 @@ import { Button } from "@/components/ui/button";
 import { PlusIcon } from "@radix-ui/react-icons";
 import Sampling from "./Sampling";
 import CreateSampleModal from "./CreateSampleModal";
-import { FieldValues, useForm } from "react-hook-form";
+import { FieldValues, useFieldArray, useForm } from "react-hook-form";
 
 interface SamplingTabProps {}
 
@@ -22,9 +22,26 @@ const SamplingTab: FC<SamplingTabProps> = ({}) => {
   const form = useForm<FieldValues>({
     defaultValues: {
       sampling: "",
-      parameters: [],
+      regulation: "",
+      parameters: [""],
     },
   });
+
+  const { control } = form;
+
+  const {
+    fields: samples,
+    append,
+    remove,
+  } = useFieldArray({
+    control, // control props comes from useForm (optional: if you are using FormContext)
+    name: "samples", // unique name for your Field Array
+  });
+
+  //Remove Sample
+  function deleteSample(index: number) {
+    remove(index);
+  }
 
   return (
     <>
@@ -43,9 +60,24 @@ const SamplingTab: FC<SamplingTabProps> = ({}) => {
           >
             <PlusIcon className="mr-2 h-4 w-4" /> Add Sample
           </Button>
-          <Sampling />
-          <Sampling />
-          <Sampling />
+          {samples.length === 0 && (
+            <h1 className="text-center">There are no samples yet</h1>
+          )}
+          {samples.length > 0 && (
+            <>
+              {samples.map((sample: any, index) => (
+                <>
+                  <Sampling
+                    key={sample.id}
+                    sampleName={sample.sampleName}
+                    regulation={sample.regulation}
+                    parameters={sample.parameters}
+                    deleteSample={() => deleteSample(index)}
+                  />
+                </>
+              ))}
+            </>
+          )}
         </CardContent>
         <CardFooter>{/* <Button>Open Modal</Button> */}</CardFooter>
       </Card>
@@ -53,9 +85,11 @@ const SamplingTab: FC<SamplingTabProps> = ({}) => {
         isOpen={openModal}
         onClose={() => {
           setOpenModal(false);
-          form.reset();
+          // form.reset();
         }}
         form={form}
+        fields={samples}
+        append={append}
       />
     </>
   );
