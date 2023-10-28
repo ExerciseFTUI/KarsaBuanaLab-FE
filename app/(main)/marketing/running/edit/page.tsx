@@ -1,19 +1,10 @@
-"use client";
-import React, { FC } from "react";
-
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
-
-import { Button } from "@/components/ui/button";
-import {
-    Form,
-    FormControl,
-    FormDescription,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
-} from "@/components/ui/form";
+"use client"
+import React, { useState } from 'react';
+import Dropzone from "@/components/Dropzone";
+import EditProjectBaseData from "@/components/forms/EditProjectBaseData";
+import { MdOpenInNew } from "react-icons/md";
+import { ToastContainer, toast } from 'react-toastify';
+import Link from "next/link";
 
 import {
     Card,
@@ -24,260 +15,97 @@ import {
     CardTitle,
 } from "@/components/ui/card";
 
-import { useForm } from "react-hook-form";
-import { createProjectValidation } from "@/lib/validations/CreateProjectValidation";
+export default function Home() {
+    const [uploadedFiles, setUploadedFiles] = useState([]);
 
-import { signIn } from "next-auth/react";
-import { useRouter, useSearchParams } from "next/navigation";
-import { Input } from "@/components/ui/input";
-import { useToast } from "@/components/ui/use-toast";
+    const handleSubmit = () => {
+        // Log the uploaded files to the console
+        console.log("Uploaded Files:", uploadedFiles);
 
-interface CreateProjectBaseDataProps {}
-
-const CreateProjectBaseData: FC<CreateProjectBaseDataProps> = ({}) => {
-    const router = useRouter();
-    const query = useSearchParams();
-    const { toast } = useToast();
-
-  // 1. Define your form.
-    const form = useForm<z.infer<typeof createProjectValidation>>({
-        resolver: zodResolver(createProjectValidation),
-        defaultValues: {
-        title: "Analisis PT Aqua",
-        numPenawaran: "VII/23/Aqua/12/2/2023",
-        numRevisi: "1",
-        custName: "Sulaiman Firdaus",
-        alamatKantor: "Bandung, Jawa Barat",
-        alamatSampling: "Air terjun Cisawuk",
-        surel: "",
-        contactPerson: "6282212219878",
-        valuasiProject: "Rp 3.000.000"
-        },
-    });
-
-  // 2. Define a submit handler.
-    function onSubmit(values: z.infer<typeof createProjectValidation>) {
-        // Do something with the form values.
-        // ✅ This will be type-safe and validated.
-        console.log(values);
-
-        //NextAuth SignIn
-        signIn("credentials", {
-        ...values,
-        redirect: false, //Add redirect to data object
-        }).then((callback) => {
-        console.log(callback);
-        if (callback?.error) {
-            toast({
-            description: "Invalid username or password",
-            variant: "destructive",
-            title: "Uh oh! Something went wrong.",
+        // TODO: Implement the logic to submit uploadedFiles to the server
+        if (uploadedFiles.length > 0) {
+            // For demonstration purposes, show a success message using toastify
+            toast.success('Files submitted successfully!', {
+                position: toast.POSITION.TOP_RIGHT,
+            });
+        } else {
+            // If no files are uploaded, show an error message
+            toast.error('Please upload files before submitting.', {
+                position: toast.POSITION.TOP_RIGHT,
             });
         }
-        if (callback?.ok && !callback?.error) {
-            toast({ title: "Successfully logged in", description: "Welcome back" });
-            const callbackUrl = query.get("callbackUrl");
-            router.push(callbackUrl || "/");
-        }
-        });
-        // .finally(() => setIsLoading(false));
-    }
-
-    return (
-        <Card className="w-[450px] overflow-auto h-[36rem] custom-scrollbar ">
-        <CardHeader>
-            <CardTitle className="text-xl">Project Information</CardTitle>
-        </CardHeader>
-        <CardContent>
-            <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-                <FormField
-                control={form.control}
-                name="title"
-                render={({ field }) => (
-                    <FormItem>
-                    <FormLabel>Title</FormLabel>
-                    <FormControl>
-                        <Input disabled={true} className="" placeholder="" {...field} />
-                    </FormControl>
-
-                    <FormMessage />
-                    </FormItem>
-                )}
-                />
-                <FormField
-                control={form.control}
-                name="numPenawaran"
-                render={({ field }) => (
-                    <FormItem>
-                    <FormLabel>Nomor Penawaran</FormLabel>
-                    <FormControl>
-                        <Input
-                        disabled={true}
-                        type="string"
-                        className=""
-                        placeholder=""
-                        {...field}
-                        />
-                    </FormControl>
-
-                    <FormMessage />
-                    </FormItem>
-                )}
-                />
-                <FormField
-                control={form.control}
-                name="numRevisi"
-                render={({ field }) => (
-                    <FormItem>
-                    <FormLabel>Nomor Revisi</FormLabel>
-                    <FormControl>
-                        <Input
-                        disabled={true}
-                        type="number"
-                        className=""
-                        placeholder=""
-                        {...field}
-                        />
-                    </FormControl>
-
-                    <FormMessage />
-                    </FormItem>
-                )}
-                />
-                <FormField
-                control={form.control}
-                name="custName"
-                render={({ field }) => (
-                    <FormItem>
-                    <FormLabel>Nama Customer</FormLabel>
-                    <FormControl>
-                        <Input 
-                        disabled={true}
-                        type="string"
-                        className=""
-                        placeholder=""
-                        {...field}
-                        />
-                    </FormControl>
-
-                    <FormMessage />
-                    </FormItem>
-                )}
-                />
-                
-                <FormField
-                control={form.control}
-                name="alamatKantor"
-                render={({ field }) => (
-                    <FormItem>
-                    <FormLabel>Alamat Kantor</FormLabel>
-                    <FormControl>
-                        <Input
-                        disabled={true}
-                        type="string"
-                        className=""
-                        placeholder=""
-                        {...field}
-                        />
-                    </FormControl>
-
-                    <FormMessage />
-                    </FormItem>
-                )}
-                />
-                <FormField
-                control={form.control}
-                name="alamatSampling"
-                render={({ field }) => (
-                    <FormItem>
-                    <FormLabel>Alamat Sampling</FormLabel>
-                    <FormControl>
-                        <Input
-                        disabled={true}
-                        type="string"
-                        className=""
-                        placeholder=""
-                        {...field}
-                        />
-                    </FormControl>
-
-                    <FormMessage />
-                    </FormItem>
-                )}
-                />
-                <FormField
-                control={form.control}
-                name="surel"
-                render={({ field }) => (
-                    <FormItem>
-                    <FormLabel>Surel</FormLabel>
-                    <FormControl>
-                        <Input
-                        disabled={true}
-                        type="string"
-                        className=""
-                        placeholder=""
-                        {...field}
-                        />
-                    </FormControl>
-
-                    <FormMessage />
-                    </FormItem>
-                )}
-                />
-                <FormField
-                control={form.control}
-                name="contactPerson"
-                render={({ field }) => (
-                    <FormItem>
-                    <FormLabel>Contact Person</FormLabel>
-                    <FormControl>
-                        <Input
-                        disabled={true}
-                        type="phone"
-                        className=""
-                        placeholder=""
-                        {...field}
-                        />
-                    </FormControl>
-
-                    <FormMessage />
-                    </FormItem>
-                )}
-                />
-                
-                <FormField
-                control={form.control}
-                name="valuasiProject"
-                render={({ field }) => (
-                    <FormItem>
-                    <FormLabel>Valuasi Project</FormLabel>
-                    <FormControl>
-                        <Input
-                        disabled={true}
-                        type="string"
-                        className=""
-                        placeholder=""
-                        {...field}
-                        />
-                    </FormControl>
-
-                    <FormMessage />
-                    </FormItem>
-                )}
-                />
-                <Button
-                className="w-full mt-6 bg-[#656D4A] hover:bg-[#332D29]"
-                type="submit"
-                >
-                Revisi
-                </Button>
-            </form>
-            </Form>
-        </CardContent>
-        </Card>
-    );
     };
 
-export default CreateProjectBaseData;
+    // TODO: Change this arrays use the uploaded files from API
+    const buttonNames = [
+    "Surat Pemerintah",
+    "Super Semar 212"
+    ];
+
+    return (
+        <div className=" w-fit flex justify-between items-center">
+            {/* Left Card for general information project */}
+            <EditProjectBaseData/>
+            {/* End of Left Card for general information project */}
+
+            {/* Right Card for Dropzone */}
+            <Card className={`w-[48rem] overflow-auto h-[36rem] custom-scrollbar flex flex-col justify-between mx-4`}>
+                <div>
+                    <CardHeader>
+                        <CardTitle className="text-base font-bold">Detailed Files</CardTitle>
+                    </CardHeader>
+
+                    {/* Based spreadsheet files */}
+                    <div className="mx-5">
+                        <h1 className=" font-semibold mb-2 "> Based Files </h1>
+                        <div className=" grid grid-cols-2 gap-4 justify-center items-center">
+                            <a 
+                                href="#" 
+                                className="bg-light_green items-center justify-between rounded-lg px-5 py-3 hover:bg-dark_green hover:text-white font-medium flex" >
+                                Formulir Permohonan Pengajuan <MdOpenInNew/> 
+                            </a>
+                            <a  
+                                href="#" 
+                                className="bg-light_green items-center justify-between rounded-lg px-5 py-3 hover:bg-dark_green hover:text-white font-medium flex" >
+                                KUPTK <MdOpenInNew/> 
+                            </a>
+                            <a  
+                                href="#" 
+                                className="bg-light_green items-center justify-between rounded-lg px-5 py-3 hover:bg-dark_green hover:text-white font-medium flex" >
+                                Surat Penawaran <MdOpenInNew/> 
+                            </a>
+                        </div>
+                    </div>
+                    {/* End of Based spreadsheet files */}
+                    
+                    {/* Uploaded files */}
+                    <div className="mx-5 mt-5">
+                        <h1 className="font-semibold mb-2">Another Files</h1>
+                        <div className="grid grid-cols-2 gap-4 justify-center items-center">
+                            {buttonNames.map((buttonName, index) => (
+                                <a key={index} href="#" className="bg-light_green items-center justify-between rounded-lg px-5 py-3 hover:bg-dark_green hover:text-white font-medium flex">
+                                    {buttonName} <MdOpenInNew />
+                                </a>
+                            ))}
+                        </div>
+                    </div>
+                    {/* End of Uploaded files */}
+
+                    {/* Drag and drop files area */}
+                    <h1 className=" font-semibold mx-5 mt-5 "> Upload Files </h1>
+                    <Dropzone setUploadedFiles={setUploadedFiles}/>
+                    {/* End of Drag and drop files area */}
+                    
+                </div>
+                
+                {/* Button for submit */}
+                <div className='m-5 flex justify-center items-center  '>
+                    <button onClick={handleSubmit} className=' bg-light_green rounded-lg px-5 py-3 hover:bg-dark_green hover:text-white font-medium'> Submit </button>
+                </div>
+                {/* End Button for submit */}
+            </Card>
+            {/* End of Right Card for Dropzone */}
+
+        </div>
+    )
+}
