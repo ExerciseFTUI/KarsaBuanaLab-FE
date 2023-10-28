@@ -15,34 +15,31 @@ import CreateSampleModal from "./CreateSampleModal";
 import {
   FieldValues,
   SubmitHandler,
+  UseFieldArrayReturn,
+  UseFormReturn,
   useFieldArray,
   useForm,
 } from "react-hook-form";
+import { useToast } from "@/components/ui/use-toast";
 
-interface SamplingTabProps {}
+interface SamplingTabProps {
+  openModal: boolean;
+  setOpenModal: (boolean: boolean) => void;
+  form: UseFormReturn<FieldValues, any, undefined>;
+  arrayField: UseFieldArrayReturn<FieldValues, any, "id">;
+}
 
-const SamplingTab: FC<SamplingTabProps> = ({}) => {
-  const [openModal, setOpenModal] = useState(false);
-
-  const form = useForm<FieldValues>({
-    defaultValues: {
-      sampling: "",
-      regulation: "",
-      parameters: [""],
-    },
-  });
+const SamplingTab: FC<SamplingTabProps> = ({
+  form,
+  arrayField,
+  openModal,
+  setOpenModal,
+}) => {
+  const { toast } = useToast();
 
   const { control, watch, setValue, resetField } = form;
 
-  const {
-    fields: samples,
-    append,
-    remove,
-    update,
-  } = useFieldArray({
-    control, // control props comes from useForm (optional: if you are using FormContext)
-    name: "samples", // unique name for your Field Array
-  });
+  const { fields: samples, append, remove, update } = arrayField;
 
   //Add to the samples array
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
@@ -68,6 +65,12 @@ const SamplingTab: FC<SamplingTabProps> = ({}) => {
 
     //Close Modal
     setOpenModal(false);
+
+    //Display Toast
+    toast({
+      title: "Successfully adding new sample",
+      description: "Good Job",
+    });
   };
 
   //Remove Sample
