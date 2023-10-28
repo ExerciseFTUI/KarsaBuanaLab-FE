@@ -25,13 +25,23 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { UseFieldArrayRemove } from "react-hook-form";
+import {
+  FieldValues,
+  SubmitHandler,
+  UseFieldArrayRemove,
+  UseFieldArrayUpdate,
+  useForm,
+} from "react-hook-form";
+import CreateSampleModal from "./CreateSampleModal";
+import { toast, useToast } from "@/components/ui/use-toast";
 
 interface SamplingProps {
   sampleName: string;
   regulation: string;
   parameters: string[];
   deleteSample: () => void;
+  index: number;
+  update: UseFieldArrayUpdate<FieldValues, "samples">;
 }
 
 const Sampling: FC<SamplingProps> = ({
@@ -39,12 +49,68 @@ const Sampling: FC<SamplingProps> = ({
   regulation,
   parameters,
   deleteSample,
+  index,
+  update,
 }) => {
+  const [openModal, setOpenModal] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, startTranstition] = useTransition();
+  const { toast } = useToast();
+
+  //React Hook Form
+  const form = useForm<FieldValues>({
+    defaultValues: {
+      sampling: sampleName,
+      regulation: regulation,
+      parameters: [""],
+    },
+  });
+
+  const { setValue, resetField } = form;
+
+  const onSubmit: SubmitHandler<FieldValues> = (data) => {
+    //Updating Sample
+    //Get the parameter only value
+    const parametersValue = data.parameters.map(
+      (parameter: any) => parameter.value
+    );
+
+    //Get the needed data
+    const finalSample = {
+      sampleName: data.sampling,
+      regulation: data.regulation,
+      parameters: parametersValue,
+    };
+
+    update(index, finalSample);
+
+    toast({
+      title: "Successfully updating the sample",
+      description: "Good Job",
+    });
+
+    //Reset all the form
+    setValue("parameters", [""], { shouldValidate: true });
+    resetField("sampling");
+    resetField("parameters");
+  };
 
   return (
     <>
+      <CreateSampleModal
+        title="Update Sample"
+        isOpen={openModal}
+        onClose={() => {
+          setOpenModal(false);
+          //Reset Parameter value
+          setValue("parameters", [""], { shouldValidate: true });
+          resetField("sampling");
+          resetField("parameters");
+          // form.reset();
+        }}
+        form={form}
+        onSubmit={onSubmit}
+      />
       <Collapsible open={isOpen} onOpenChange={setIsOpen}>
         <CollapsibleTrigger asChild>
           <Button
@@ -90,7 +156,7 @@ const Sampling: FC<SamplingProps> = ({
             {!isLoading && (
               <div>
                 <Button
-                  onClick={() => alert("Adding new parameter")}
+                  onClick={() => setOpenModal(true)}
                   size={"icon"}
                   variant={"ghost"}
                 >

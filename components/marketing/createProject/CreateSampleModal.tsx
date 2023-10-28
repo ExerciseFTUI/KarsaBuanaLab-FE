@@ -40,58 +40,34 @@ interface CreateSampleModalProps {
   isOpen?: boolean;
   onClose: () => void;
   form: UseFormReturn<FieldValues, any, undefined>;
-  fields: Record<"id", string>[];
-  append: UseFieldArrayAppend<FieldValues, "samples">;
+  onSubmit: SubmitHandler<FieldValues>;
+  title?: string;
 }
 
 const CreateSampleModal: FC<CreateSampleModalProps> = ({
   onClose,
   isOpen,
   form,
-  append,
+  onSubmit,
+  title,
 }) => {
   const { watch, setValue } = form;
 
   const parameters = watch("parameters");
 
-  //Add to the samples array
-  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
-    //Get the parameter only value
-    const parametersValue = data.parameters.map(
-      (parameter: any) => parameter.value
-    );
-
-    //Get the needed data
-    const finalSample = {
-      sampleName: data.sampling,
-      regulation: data.regulation,
-      parameters: parametersValue,
-    };
-
-    //Add to samples array
-    append(finalSample);
-
-    //Reset Parameter value
-    setValue("parameters", [""], { shouldValidate: true });
-
-    //Close Modal
-    onClose();
-  };
-
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
-      <div className="flex items-start max-sm:flex-col max-sm:items-center">
-        <div className="ml-1 mt-3 sm:mt-0 text-center sm:text-left">
+      <div className="flex items-start max-sm:flex-col max-sm:items-center w-full">
+        <div className="ml-1 mt-3 sm:mt-0 text-center sm:text-left w-full">
           <Dialog.Title
             as="h3"
             className={"text-base leading-6 font-semibold text-gray-900"}
           >
-            Add Sample
+            {title ? title : "Add Sample"}
           </Dialog.Title>
           <div className="mt-2">
             <p className="text-sm text-gray-500">
-              Add sample to your project. You can add as many samples as you
-              want to a project.
+              {title ? title : "Add Sample"} to your project.
             </p>
             <div className="w-full mt-5">
               <Form {...form}>
@@ -108,6 +84,7 @@ const CreateSampleModal: FC<CreateSampleModalProps> = ({
                         <FormControl>
                           <Select
                             onValueChange={(sample) => field.onChange(sample)}
+                            defaultValue={watch("sampling")}
                           >
                             <SelectTrigger className="">
                               <SelectValue placeholder="Select the sample" />
@@ -141,6 +118,7 @@ const CreateSampleModal: FC<CreateSampleModalProps> = ({
                             onValueChange={(regulation) =>
                               field.onChange(regulation)
                             }
+                            defaultValue={watch("regulation")}
                           >
                             <SelectTrigger className="">
                               <SelectValue placeholder="Select the regulation" />

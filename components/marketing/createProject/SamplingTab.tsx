@@ -12,7 +12,12 @@ import { Button } from "@/components/ui/button";
 import { PlusIcon } from "@radix-ui/react-icons";
 import Sampling from "./Sampling";
 import CreateSampleModal from "./CreateSampleModal";
-import { FieldValues, useFieldArray, useForm } from "react-hook-form";
+import {
+  FieldValues,
+  SubmitHandler,
+  useFieldArray,
+  useForm,
+} from "react-hook-form";
 
 interface SamplingTabProps {}
 
@@ -27,16 +32,43 @@ const SamplingTab: FC<SamplingTabProps> = ({}) => {
     },
   });
 
-  const { control } = form;
+  const { control, watch, setValue, resetField } = form;
 
   const {
     fields: samples,
     append,
     remove,
+    update,
   } = useFieldArray({
     control, // control props comes from useForm (optional: if you are using FormContext)
     name: "samples", // unique name for your Field Array
   });
+
+  //Add to the samples array
+  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+    //Get the parameter only value
+    const parametersValue = data.parameters.map(
+      (parameter: any) => parameter.value
+    );
+
+    //Get the needed data
+    const finalSample = {
+      sampleName: data.sampling,
+      regulation: data.regulation,
+      parameters: parametersValue,
+    };
+
+    //Add to samples array
+    append(finalSample);
+
+    //Reset all the form
+    setValue("parameters", [""], { shouldValidate: true });
+    resetField("sampling");
+    resetField("parameters");
+
+    //Close Modal
+    setOpenModal(false);
+  };
 
   //Remove Sample
   function deleteSample(index: number) {
@@ -72,7 +104,9 @@ const SamplingTab: FC<SamplingTabProps> = ({}) => {
                     sampleName={sample.sampleName}
                     regulation={sample.regulation}
                     parameters={sample.parameters}
+                    index={index}
                     deleteSample={() => deleteSample(index)}
+                    update={update}
                   />
                 </>
               ))}
@@ -85,11 +119,12 @@ const SamplingTab: FC<SamplingTabProps> = ({}) => {
         isOpen={openModal}
         onClose={() => {
           setOpenModal(false);
+          //Reset Parameter value
+          setValue("parameters", [""], { shouldValidate: true });
           // form.reset();
         }}
         form={form}
-        fields={samples}
-        append={append}
+        onSubmit={onSubmit}
       />
     </>
   );
