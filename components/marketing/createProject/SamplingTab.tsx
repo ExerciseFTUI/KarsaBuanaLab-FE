@@ -26,8 +26,6 @@ const SamplingTab: FC<SamplingTabProps> = ({}) => {
     },
   });
 
-  console.log(openModal);
-
   return (
     <>
       <Card className="overflow-y-auto max-h-[90vh] custom-scrollbar">

@@ -78,7 +78,9 @@ const Sampling: FC<SamplingProps> = ({}) => {
             <>
               <ul className="p-4 grid grid-cols-2 gap-2 ">
                 {parameters.map((parameter) => (
-                  <li className="text-xs">{parameter.name}</li>
+                  <li key={parameter.name} className="text-xs">
+                    {parameter.name}
+                  </li>
                 ))}
               </ul>
             </>
