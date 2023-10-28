@@ -1,5 +1,10 @@
 "use client";
-import { Card, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { FC, useState } from "react";
 import Dropzone from "@/components/Dropzone";
 
@@ -29,13 +34,15 @@ const DocumentTab: FC<DocumentTabProps> = ({}) => {
     <>
       {/* Right Card for Dropzone */}
       <Card
-        className={`max-w-[38rem] overflow-auto h-[36rem] custom-scrollbar flex flex-col justify-between mx-4`}
+        className={`max-w-[38rem] overflow-auto h-[36rem] custom-scrollbar flex flex-col justify-between`}
       >
         <div>
           <CardHeader>
-            <CardTitle className="text-base font-bold">
-              Upload your files
-            </CardTitle>
+            <CardTitle>Upload Document</CardTitle>
+            <CardDescription>
+              Upload your document here. After saving, it'll be saved to the
+              database.
+            </CardDescription>
           </CardHeader>
 
           {/* Drag and drop files area */}
