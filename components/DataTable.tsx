@@ -56,9 +56,9 @@ const data: ProjectType[] = [
   {
     id: "1",
     noPenawaran: "PNW1",
-    judul: "Project 1 daaaaaadadadadad",
+    judul: "Project 1 daaaa",
     namaCustomer: "Customer A",
-    lokasi: "Location 1 daddddddddddddddddddddd",
+    lokasi: "Location 1 dad",
     cp: "Contact Person 1",
     nilaiPenawaran: 10000,
     createdAt: "2023-10-14",
