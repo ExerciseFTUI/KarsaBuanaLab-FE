@@ -101,17 +101,15 @@ const SamplingTab: FC<SamplingTabProps> = ({
           {samples.length > 0 && (
             <>
               {samples.map((sample: any, index) => (
-                <>
-                  <Sampling
-                    key={sample.id}
-                    sampleName={sample.sampleName}
-                    regulation={sample.regulation}
-                    parameters={sample.parameters}
-                    index={index}
-                    deleteSample={() => deleteSample(index)}
-                    update={update}
-                  />
-                </>
+                <Sampling
+                  key={sample.id}
+                  sampleName={sample.sampleName}
+                  regulation={sample.regulation}
+                  parameters={sample.parameters}
+                  index={index}
+                  deleteSample={() => deleteSample(index)}
+                  update={update}
+                />
               ))}
             </>
           )}
