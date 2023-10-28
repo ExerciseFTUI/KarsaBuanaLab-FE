@@ -26,10 +26,11 @@ import {
 
 import { useForm } from "react-hook-form";
 import { createProjectValidation } from "@/lib/validations/CreateProjectValidation";
-import { Input } from "../ui/input";
+
 import { signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useToast } from "../ui/use-toast";
+import { Input } from "@/components/ui/input";
+import { useToast } from "@/components/ui/use-toast";
 
 interface CreateProjectBaseDataProps {}
 
@@ -42,12 +43,15 @@ const CreateProjectBaseData: FC<CreateProjectBaseDataProps> = ({}) => {
     const form = useForm<z.infer<typeof createProjectValidation>>({
         resolver: zodResolver(createProjectValidation),
         defaultValues: {
-        title: "",
-        custName: "",
-        alamatKantor: "",
-        alamatSampling: "",
+        title: "Analisis PT Aqua",
+        numPenawaran: "VII/23/Aqua/12/2/2023",
+        numRevisi: "1",
+        custName: "Sulaiman Firdaus",
+        alamatKantor: "Bandung, Jawa Barat",
+        alamatSampling: "Air terjun Cisawuk",
         surel: "",
-        contactPerson: "",
+        contactPerson: "Adelia",
+        valuasiProject: "Rp 3.000.000"
         },
     });
 
@@ -80,9 +84,9 @@ const CreateProjectBaseData: FC<CreateProjectBaseDataProps> = ({}) => {
     }
 
     return (
-        <Card className="w-[450px] h-full overflow-auto custom-scrollbar ">
+        <Card className="w-[450px] overflow-auto h-[36rem] custom-scrollbar ">
         <CardHeader>
-            <CardTitle className="text-base font-bold ">Project Information</CardTitle>
+            <CardTitle className="text-xl">Project Information</CardTitle>
         </CardHeader>
         <CardContent>
             <Form {...form}>
@@ -103,12 +107,53 @@ const CreateProjectBaseData: FC<CreateProjectBaseDataProps> = ({}) => {
                 />
                 <FormField
                 control={form.control}
+                name="numPenawaran"
+                render={({ field }) => (
+                    <FormItem>
+                    <FormLabel>Nomor Penawaran</FormLabel>
+                    <FormControl>
+                        <Input
+                        disabled={true}
+                        type="string"
+                        className=""
+                        placeholder=""
+                        {...field}
+                        />
+                    </FormControl>
+
+                    <FormMessage />
+                    </FormItem>
+                )}
+                />
+                <FormField
+                control={form.control}
+                name="numRevisi"
+                render={({ field }) => (
+                    <FormItem>
+                    <FormLabel>Nomor Revisi</FormLabel>
+                    <FormControl>
+                        <Input
+                        disabled={true}
+                        type="number"
+                        className=""
+                        placeholder=""
+                        {...field}
+                        />
+                    </FormControl>
+
+                    <FormMessage />
+                    </FormItem>
+                )}
+                />
+                <FormField
+                control={form.control}
                 name="custName"
                 render={({ field }) => (
                     <FormItem>
                     <FormLabel>Nama Customer</FormLabel>
                     <FormControl>
                         <Input 
+                    
                         type="string"
                         className=""
                         placeholder=""
@@ -186,6 +231,26 @@ const CreateProjectBaseData: FC<CreateProjectBaseDataProps> = ({}) => {
                     <FormLabel>Contact Person</FormLabel>
                     <FormControl>
                         <Input
+                        type="phone"
+                        className=""
+                        placeholder=""
+                        {...field}
+                        />
+                    </FormControl>
+
+                    <FormMessage />
+                    </FormItem>
+                )}
+                />
+                
+                <FormField
+                control={form.control}
+                name="valuasiProject"
+                render={({ field }) => (
+                    <FormItem>
+                    <FormLabel>Valuasi Project</FormLabel>
+                    <FormControl>
+                        <Input
                         type="string"
                         className=""
                         placeholder=""
@@ -197,6 +262,12 @@ const CreateProjectBaseData: FC<CreateProjectBaseDataProps> = ({}) => {
                     </FormItem>
                 )}
                 />
+                <Button
+                className="w-full mt-6 bg-[#656D4A] hover:bg-[#332D29]"
+                type="submit"
+                >
+                Revisi
+                </Button>
             </form>
             </Form>
         </CardContent>

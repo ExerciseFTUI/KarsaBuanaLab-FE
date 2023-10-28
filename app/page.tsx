@@ -6,6 +6,7 @@ import IdCheckForm from "@/components/forms/IdCheckForm";
 export default function Home() {
   const [resiNumber, setResiNumber] = useState('')
   return (
+    // Mantap albert
     <>
       <div className="w-screen flex flex-col md:flex-row">
         <IdCheckForm setResiNumber={setResiNumber} />
