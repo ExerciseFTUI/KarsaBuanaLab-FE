@@ -61,7 +61,7 @@ const Sidebar: FC<LeftSidebarProps> = ({}) => {
               /> */}
 
               <div
-                className={`text-2xl text-normal_green ${
+                className={`text-2xl text-moss_green ${
                   isActive && "!text-dark_green"
                 }`}
               >
@@ -69,7 +69,7 @@ const Sidebar: FC<LeftSidebarProps> = ({}) => {
               </div>
 
               <p
-                className={`text-sm text-normal_green  ${
+                className={`text-sm text-moss_green  ${
                   isActive && "!text-dark_green font-semibold"
                 }`}
               >
@@ -91,8 +91,8 @@ const Sidebar: FC<LeftSidebarProps> = ({}) => {
                 height={24}
               /> */}
 
-          <BiLogOut className={"text-[30px] text-normal_green"} />
-          <p className="text-sm text-normal_green max-lg:hidden">Log Out</p>
+          <BiLogOut className={"text-[30px] text-moss_green"} />
+          <p className="text-sm text-moss_green max-lg:hidden">Log Out</p>
         </div>
       </div>
     </section>

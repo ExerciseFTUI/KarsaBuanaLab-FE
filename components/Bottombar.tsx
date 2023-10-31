@@ -44,7 +44,7 @@ function Bottombar() {
               /> */}
 
               <div
-                className={`text-2xl text-normal_green ${
+                className={`text-2xl text-moss_green ${
                   isActive && "!text-dark_green"
                 }`}
               >
@@ -52,7 +52,7 @@ function Bottombar() {
               </div>
 
               <p
-                className={`text-sm  max-sm:hidden text-normal_green  ${
+                className={`text-sm  max-sm:hidden text-moss_green  ${
                   isActive && "!text-dark_green font-semibold"
                 }`}
               >
