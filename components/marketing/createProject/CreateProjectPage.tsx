@@ -74,21 +74,6 @@ export default function CreateProjectPage() {
         {/* Document Section */}
         <TabsContent value="document">
           <DocumentTab />
-          {/* <Card>
-            <CardHeader>
-              <CardTitle>Document</CardTitle>
-              <CardDescription>
-                Change your document here. After saving, you'll be logged out.
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-2">
-              Isi Komponen Document Disini
-            </CardContent>
-
-            <CardFooter>
-              <Button>Save document</Button>
-            </CardFooter>
-          </Card> */}
         </TabsContent>
         {/* End Document Section */}
       </Tabs>
