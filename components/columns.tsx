@@ -196,10 +196,12 @@ export const samplingProjectPageColumns: ColumnDef<ProjectSamplingType>[] = [
     accessorKey: "status",
     header: "Status",
     cell: ({ row }) => {
+      const stat = row.getValue("status")
+
       const color =
-        row.getValue("status") == "Need Schedule"
+        stat == "Need Schedule" || stat == "Get Sample"
           ? "bg-moss_green"
-          : row.getValue("status") == "Revision"
+          : stat == "On Discuss" || stat == "Verifying"
           ? "bg-light_brown"
           : "bg-brick_red"
 
@@ -216,3 +218,8 @@ export const samplingProjectPageColumns: ColumnDef<ProjectSamplingType>[] = [
     },
   },
 ]
+
+export const samplingLetterPageColumns: ColumnDef<ProjectSamplingType>[] =
+  samplingProjectPageColumns.slice(0, -1)
+
+console.log(samplingLetterPageColumns)
