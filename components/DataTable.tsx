@@ -236,7 +236,9 @@ export function DataTable() {
 
   return (
     <div className="w-full">
+      {/* Top Search Title */}
       <div className="flex items-center py-4">
+        {/* Seach Input */}
         <Input
           placeholder="Filter By Project Title"
           value={(table.getColumn("judul")?.getFilterValue() as string) ?? ""}
@@ -245,12 +247,15 @@ export function DataTable() {
           }
           className="max-w-sm"
         />
+
+        {/* Column Visibility */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="ml-auto">
               Columns <ChevronDown className="ml-2 h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
+          
           <DropdownMenuContent align="end">
             {table
               .getAllColumns()
@@ -272,6 +277,8 @@ export function DataTable() {
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
+
+      {/* Table Content */}
       <div className=" text-moss_green ">
         <Table className="">
           <TableHeader>
@@ -292,6 +299,7 @@ export function DataTable() {
               </TableRow>
             ))}
           </TableHeader>
+
           <TableBody>
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
@@ -323,11 +331,14 @@ export function DataTable() {
           </TableBody>
         </Table>
       </div>
+
+      {/* Bottom Pagination */}
       <div className="flex items-center justify-end space-x-2 py-4 max-sm:flex-col gap-5">
         <div className="flex-1 text-sm text-moss_green">
           {/* {table.getFilteredSelectedRowModel().rows.length} of{" "} */}
           Total : {table.getFilteredRowModel().rows.length} row(s).
         </div>
+
         <div className="flex items-center space-x-2">
           <p className="text-sm font-medium text-dark_green">Rows per page</p>
           <Select
@@ -348,6 +359,7 @@ export function DataTable() {
             </SelectContent>
           </Select>
         </div>
+
         <div className="flex w-[100px] items-center justify-center text-sm font-medium text-dark_green">
           Page {table.getState().pagination.pageIndex + 1} of{" "}
           {table.getPageCount()}
