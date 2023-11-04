@@ -1,7 +1,7 @@
-import { ColumnDef } from "@tanstack/react-table";
-import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
+import { ColumnDef } from "@tanstack/react-table"
+import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { Checkbox } from "@/components/ui/checkbox"
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -10,10 +10,11 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { useRouter } from "next/navigation";
-import { ProjectType } from "@/lib/type";
+} from "@/components/ui/dropdown-menu"
+import { useRouter } from "next/navigation"
+import { ProjectSamplingType, ProjectType } from "@/lib/type"
 
+// Table Column for Marketing OnDiscuss
 export const columns: ColumnDef<ProjectType>[] = [
   //No Penawaran
   {
@@ -33,7 +34,7 @@ export const columns: ColumnDef<ProjectType>[] = [
           Project Title
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
-      );
+      )
     },
     cell: ({ row }) => (
       <div className="capitalize pl-4">{row.getValue("judul")}</div>
@@ -47,11 +48,11 @@ export const columns: ColumnDef<ProjectType>[] = [
         <Button className="pl-6" variant="ghost">
           Status
         </Button>
-      );
+      )
     },
 
     cell: ({ row }) => {
-      const status = true;
+      const status = true
       // console.log(row.original);
       return (
         <div className="">
@@ -63,7 +64,7 @@ export const columns: ColumnDef<ProjectType>[] = [
             Available
           </div>
         </div>
-      );
+      )
     },
   },
   //Lokasi
@@ -71,7 +72,7 @@ export const columns: ColumnDef<ProjectType>[] = [
     accessorKey: "lokasi",
     header: "Lokasi",
     cell: ({ row }) => {
-      return <div className="capitalize pl-0.5">{row.getValue("lokasi")}</div>;
+      return <div className="capitalize pl-0.5">{row.getValue("lokasi")}</div>
     },
   },
   //createdAt
@@ -86,18 +87,18 @@ export const columns: ColumnDef<ProjectType>[] = [
           Created At
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
-      );
+      )
     },
 
     cell: ({ row }) => {
-      const date = new Date(row.getValue("createdAt"));
+      const date = new Date(row.getValue("createdAt"))
 
-      let month = (date.getMonth() + 1).toString().padStart(2, "0"); // Months are zero-based
-      let day = date.getDate().toString().padStart(2, "0");
-      let year = date.getFullYear();
+      let month = (date.getMonth() + 1).toString().padStart(2, "0") // Months are zero-based
+      let day = date.getDate().toString().padStart(2, "0")
+      let year = date.getFullYear()
 
-      let formattedDate = month + "/" + day + "/" + year;
-      return <div className={`font-medium pl-4`}>{formattedDate}</div>;
+      let formattedDate = month + "/" + day + "/" + year
+      return <div className={`font-medium pl-4`}>{formattedDate}</div>
     },
   },
   //Last Update
@@ -108,7 +109,7 @@ export const columns: ColumnDef<ProjectType>[] = [
     ),
 
     cell: ({ row }) => {
-      return <div className={`pl-4 font-medium`}>Today</div>;
+      return <div className={`pl-4 font-medium`}>Today</div>
     },
   },
   //Action
@@ -116,8 +117,8 @@ export const columns: ColumnDef<ProjectType>[] = [
     id: "actions",
     enableHiding: false,
     cell: ({ row }) => {
-      const router = useRouter();
-      const project = row.original;
+      const router = useRouter()
+      const project = row.original
       // console.log(row.original);
 
       return (
@@ -142,7 +143,76 @@ export const columns: ColumnDef<ProjectType>[] = [
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
-      );
+      )
     },
   },
-];
+]
+
+// Table Column for Sampling Project
+export const samplingProjectPageColumns: ColumnDef<ProjectSamplingType>[] = [
+  //No Penawaran
+  {
+    accessorKey: "noPenawaran",
+    header: "No Penawaran",
+    cell: ({ row }) => <div className="">{row.getValue("noPenawaran")}</div>,
+  },
+  // Project Title
+  {
+    accessorKey: "judul",
+    header: ({ column }) => {
+      return (
+        <Button
+          className="font-light hover:bg-transparent italic"
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Project Title
+          <ArrowUpDown strokeWidth={1.5} className="ml-2 h-4 w-4" />
+        </Button>
+      )
+    },
+    cell: ({ row }) => (
+      <div className="capitalize pl-4">{row.getValue("judul")}</div>
+    ),
+  },
+  //Lokasi
+  {
+    accessorKey: "lokasi",
+    header: "Lokasi",
+    cell: ({ row }) => {
+      return <div className="capitalize pl-0.5">{row.getValue("lokasi")}</div>
+    },
+  },
+  //Contact Person
+  {
+    accessorKey: "cp",
+    header: "Contact Person",
+    cell: ({ row }) => {
+      return <div className="capitalize pl-0.5">{row.getValue("cp")}</div>
+    },
+  },
+  // Status
+  {
+    accessorKey: "status",
+    header: "Status",
+    cell: ({ row }) => {
+      const color =
+        row.getValue("status") == "Need Schedule"
+          ? "bg-moss_green"
+          : row.getValue("status") == "Revision"
+          ? "bg-light_brown"
+          : "bg-brick_red"
+
+      return (
+        <div
+          className={
+            "px-4 py-1.5 inline-block min-w-[8rem] rounded-full text-ghost_white " +
+            color
+          }
+        >
+          {row.getValue("status")}
+        </div>
+      )
+    },
+  },
+]
