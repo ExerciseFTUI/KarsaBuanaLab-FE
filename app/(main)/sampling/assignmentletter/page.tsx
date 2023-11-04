@@ -1,4 +1,4 @@
-import { DataTable } from "@/components/sampling/dataTables/ProjectDataTable"
+import { DataTable } from "@/components/sampling/dataTables/AssignmentDataTable"
 
 export default function SamplingProject() {
   return (
