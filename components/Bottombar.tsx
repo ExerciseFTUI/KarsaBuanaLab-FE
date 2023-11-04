@@ -1,6 +1,11 @@
 "use client";
 
-import { sidebarLinks } from "@/constants/sidebarlinks";
+import {
+  marketingLink,
+  samplingLinks,
+  labLinks,
+  pplhpLinks,
+} from "@/constants/sidebarlinks";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -19,10 +24,18 @@ function Bottombar() {
   const pathname = usePathname();
   const routeSection = "/" + extractFirstPathSegment(pathname);
 
+  const links = pathname.includes("marketing")
+    ? marketingLink
+    : pathname.includes("sampling")
+    ? samplingLinks
+    : pathname.includes("lab")
+    ? labLinks
+    : pplhpLinks;
+
   return (
     <section className="fixed bottom-0 z-10 w-full rounded-t-3xl p-4 bg-white max-sm:px-7 lg:hidden ">
-      <div className="flex items-center justify-between gap-3 max-sm:gap-5">
-        {sidebarLinks.map((link) => {
+      <div className="flex items-center justify-around gap-3 max-sm:gap-5">
+        {links.map((link) => {
           const isActive =
             (pathname.includes(link.route) && link.route.length > 1) ||
             pathname === routeSection + link.route;

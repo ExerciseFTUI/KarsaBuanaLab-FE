@@ -11,7 +11,7 @@ export interface ISidebarLinks {
   icon: ReactNode;
 }
 
-export const sidebarLinks: ISidebarLinks[] = [
+export const marketingLink: ISidebarLinks[] = [
   {
     icon: <AiFillHome />,
     route: "",
@@ -39,30 +39,74 @@ export const sidebarLinks: ISidebarLinks[] = [
   },
 ];
 
-// export const sidebarLinks = [
-//   {
-//     imgURL: "/assets/home.svg",
-//     route: "",
-//     label: "Dashboard",
-//   },
-//   {
-//     imgURL: "/assets/discuss.svg",
-//     route: "/ondiscuss",
-//     label: "OnDiscuss",
-//   },
-//   {
-//     imgURL: "/assets/running.svg",
-//     route: "/running",
-//     label: "Running",
-//   },
-//   {
-//     imgURL: "/assets/finished.svg",
-//     route: "/finished",
-//     label: "Finished",
-//   },
-//   {
-//     imgURL: "/assets/cancelled.svg",
-//     route: "/cancelled",
-//     label: "Cancelled",
-//   },
-// ];
+export const samplingLinks: ISidebarLinks[] = [
+  // {
+  //   icon: <AiFillHome />,
+  //   route: "",
+  //   label: "Project",
+  // },
+  {
+    icon: <HiChartBar />,
+    route: "/ondiscuss",
+    label: "Assignment Letter",
+  },
+  {
+    icon: <FaRunning />,
+    route: "/running",
+    label: "Sampling",
+  },
+];
+
+export const pplhpLinks: ISidebarLinks[] = [
+  {
+    icon: <AiFillHome />,
+    route: "",
+    label: "Dashboard",
+  },
+  {
+    icon: <HiChartBar />,
+    route: "/ondiscuss",
+    label: "Pembuatan Draft LHP",
+  },
+  {
+    icon: <FaRunning />,
+    route: "/running",
+    label: "Final Review LHP dan Printing",
+  },
+];
+
+export const labLinks: ISidebarLinks[] = [
+  {
+    icon: <AiFillHome />,
+    route: "",
+    label: "Dashboard",
+  },
+  {
+    icon: <HiChartBar />,
+    route: "/ondiscuss",
+    label: "Data Pengujian",
+  },
+  {
+    icon: <FaRunning />,
+    route: "/running",
+    label: "Verified Data",
+  },
+];
+
+export const sampleRecipientLinks: ISidebarLinks[] = [
+  {
+    icon: <AiFillHome />,
+    route: "",
+    label: "Dashboard",
+  },
+  {
+    icon: <AiFillHome />,
+    route: "",
+    label: "Projects",
+  },
+  {
+    icon: <HiChartBar />,
+    route: "/ondiscuss",
+    label: "Pengamanan",
+  },
+];
