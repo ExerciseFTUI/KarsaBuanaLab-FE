@@ -1,3 +1,5 @@
-export default function Home() {
-  return <div className="">/Sampling</div>;
+import { redirect } from "next/navigation"
+
+export default function Sampling() {
+  redirect("/sampling/project")
 }

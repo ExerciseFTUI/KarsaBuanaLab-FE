@@ -1,14 +1,20 @@
-import { HiChartBar } from "react-icons/hi";
-import { LiaRunningSolid } from "react-icons/lia";
-import { AiFillHome, AiOutlineCheckCircle } from "react-icons/ai";
-import { MdOutlineCancel } from "react-icons/md";
-import { FaRunning } from "react-icons/fa";
-import { ReactNode } from "react";
+import { HiChartBar } from "react-icons/hi"
+import { LiaRunningSolid } from "react-icons/lia"
+import { AiFillHome, AiOutlineCheckCircle } from "react-icons/ai"
+import { MdOutlineCancel } from "react-icons/md"
+import { FaRunning } from "react-icons/fa"
+import { ReactNode } from "react"
+import { GiLoveLetter, GiPaper } from "react-icons/gi"
+import { LetterCaseCapitalizeIcon } from "@radix-ui/react-icons"
+import { Archive, Mail } from "lucide-react"
+import { BsFileText } from "react-icons/bs"
+import { BiSolidBox } from "react-icons/bi"
+import { FiFileText } from "react-icons/fi"
 
 export interface ISidebarLinks {
-  route: string;
-  label: string;
-  icon: ReactNode;
+  route: string
+  label: string
+  icon: ReactNode
 }
 
 export const marketingLink: ISidebarLinks[] = [
@@ -37,25 +43,25 @@ export const marketingLink: ISidebarLinks[] = [
     route: "/cancelled",
     label: "Cancelled",
   },
-];
+]
 
 export const samplingLinks: ISidebarLinks[] = [
-  // {
-  //   icon: <AiFillHome />,
-  //   route: "",
-  //   label: "Project",
-  // },
   {
-    icon: <HiChartBar />,
-    route: "/ondiscuss",
+    icon: <AiFillHome />,
+    route: "/project",
+    label: "Project",
+  },
+  {
+    icon: <FiFileText />,
+    route: "/assignmentletter",
     label: "Assignment Letter",
   },
   {
-    icon: <FaRunning />,
-    route: "/running",
-    label: "Sampling",
+    icon: <Archive />,
+    route: "/samples",
+    label: "Samples",
   },
-];
+]
 
 export const pplhpLinks: ISidebarLinks[] = [
   {
@@ -73,7 +79,7 @@ export const pplhpLinks: ISidebarLinks[] = [
     route: "/running",
     label: "Final Review LHP dan Printing",
   },
-];
+]
 
 export const labLinks: ISidebarLinks[] = [
   {
@@ -91,7 +97,7 @@ export const labLinks: ISidebarLinks[] = [
     route: "/running",
     label: "Verified Data",
   },
-];
+]
 
 export const sampleRecipientLinks: ISidebarLinks[] = [
   {
@@ -109,4 +115,4 @@ export const sampleRecipientLinks: ISidebarLinks[] = [
     route: "/ondiscuss",
     label: "Pengamanan",
   },
-];
+]

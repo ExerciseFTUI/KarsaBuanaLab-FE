@@ -13,10 +13,10 @@ function extractPageName(pathname: string) {
   const cleanParts = parts.filter((part) => part !== "");
 
   if (!cleanParts[1]) {
-    return "Dashboard";
+    return cleanParts[0].charAt(0).toUpperCase() + cleanParts[0].slice(1) + " / Dashboard";
   }
 
-  return cleanParts[1].charAt(0).toUpperCase() + cleanParts[1].slice(1);
+  return cleanParts[0].charAt(0).toUpperCase() + cleanParts[0].slice(1) + " / " + cleanParts[1].charAt(0).toUpperCase() + cleanParts[1].slice(1);
 }
 
 const Topbar: FC<TopbarProps> = ({}) => {
@@ -27,10 +27,10 @@ const Topbar: FC<TopbarProps> = ({}) => {
       <div className="flex flex-col items-start gap-1">
         {/* <Image src={"assets/logo.svg"} alt="logo" width={28} height={28} /> */}
         <p className="text-sm font-light text-moss_green">
-          Pages / {extractPageName(pathname)}
+          {extractPageName(pathname)}
         </p>
         <p className="text-2xl font-bold text-dark_green">
-          {extractPageName(pathname)}
+          {extractPageName(pathname).split("/")[1]}
         </p>
       </div>
       <div className="flex items-center gap-1">
