@@ -71,12 +71,12 @@ export const pplhpLinks: ISidebarLinks[] = [
   },
   {
     icon: <HiChartBar />,
-    route: "/ondiscuss",
+    route: "/lhpdraft",
     label: "Pembuatan Draft LHP",
   },
   {
     icon: <FaRunning />,
-    route: "/running",
+    route: "/finalreview",
     label: "Final Review LHP dan Printing",
   },
 ]
