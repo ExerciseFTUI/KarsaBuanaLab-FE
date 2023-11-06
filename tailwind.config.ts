@@ -8,6 +8,9 @@ module.exports = {
     './src/**/*.{ts,tsx}',
 	],
   theme: {
+    fontFamily: {
+      'dm-sans': ['DM Sans', 'system-ui'],
+    },
     container: {
       center: true,
       padding: "2rem",
