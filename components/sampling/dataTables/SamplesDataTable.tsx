@@ -1,5 +1,5 @@
-"use client";
-import * as React from "react";
+"use client"
+import * as React from "react"
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -11,12 +11,11 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
-} from "@tanstack/react-table";
-import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react";
-import { useRouter } from "next/navigation";
+} from "@tanstack/react-table"
+import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react"
+import { useRouter } from "next/navigation"
 
-import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
+import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -25,8 +24,8 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Input } from "@/components/ui/input";
+} from "@/components/ui/dropdown-menu"
+import { Input } from "@/components/ui/input"
 import {
   Table,
   TableBody,
@@ -34,25 +33,26 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
+} from "@/components/ui/table"
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "./ui/select";
+} from "../../ui/select"
 import {
   ChevronLeftIcon,
   ChevronRightIcon,
   DoubleArrowLeftIcon,
   DoubleArrowRightIcon,
-} from "@radix-ui/react-icons";
-import { columns } from "@/components/columns";
-import { ProjectType } from "@/lib/type";
+} from "@radix-ui/react-icons"
+import { samplingProjectPageColumns } from "@/components/columns"
+import { ProjectSamplingType, ProjectType } from "@/lib/type"
+import { cn } from "@/lib/utils"
 
 // Create an array of 15 objects with the specified type
-const data: ProjectType[] = [
+const data: ProjectSamplingType[] = [
   {
     id: "1",
     noPenawaran: "PNW1",
@@ -62,6 +62,7 @@ const data: ProjectType[] = [
     cp: "Contact Person 1",
     nilaiPenawaran: 10000,
     createdAt: "2023-10-14",
+    status: "Get Sample",
   },
   {
     id: "2",
@@ -72,6 +73,7 @@ const data: ProjectType[] = [
     cp: "Contact Person 2",
     nilaiPenawaran: 15000,
     createdAt: "2023-10-14",
+    status: "Revision",
   },
   {
     id: "3",
@@ -82,6 +84,7 @@ const data: ProjectType[] = [
     cp: "Contact Person 3",
     nilaiPenawaran: 20000,
     createdAt: "2023-10-14",
+    status: "Revision",
   },
   {
     id: "4",
@@ -92,6 +95,7 @@ const data: ProjectType[] = [
     cp: "Contact Person 4",
     nilaiPenawaran: 25000,
     createdAt: "2023-10-14",
+    status: "Get Sample",
   },
   {
     id: "5",
@@ -102,6 +106,7 @@ const data: ProjectType[] = [
     cp: "Contact Person 5",
     nilaiPenawaran: 30000,
     createdAt: "2023-10-14",
+    status: "Verifying",
   },
   {
     id: "6",
@@ -112,6 +117,7 @@ const data: ProjectType[] = [
     cp: "Contact Person 6",
     nilaiPenawaran: 35000,
     createdAt: "2023-10-14",
+    status: "Get Sample",
   },
   {
     id: "7",
@@ -122,6 +128,7 @@ const data: ProjectType[] = [
     cp: "Contact Person 7",
     nilaiPenawaran: 40000,
     createdAt: "2023-10-14",
+    status: "Get Sample",
   },
   {
     id: "8",
@@ -132,6 +139,7 @@ const data: ProjectType[] = [
     cp: "Contact Person 8",
     nilaiPenawaran: 45000,
     createdAt: "2023-10-14",
+    status: "Get Sample",
   },
   {
     id: "9",
@@ -142,6 +150,7 @@ const data: ProjectType[] = [
     cp: "Contact Person 9",
     nilaiPenawaran: 50000,
     createdAt: "2023-10-14",
+    status: "Get Sample",
   },
   {
     id: "10",
@@ -152,6 +161,7 @@ const data: ProjectType[] = [
     cp: "Contact Person 10",
     nilaiPenawaran: 55000,
     createdAt: "2023-10-14",
+    status: "Verifying",
   },
   {
     id: "11",
@@ -162,6 +172,7 @@ const data: ProjectType[] = [
     cp: "Contact Person 11",
     nilaiPenawaran: 60000,
     createdAt: "2023-10-14",
+    status: "Get Sample",
   },
   {
     id: "12",
@@ -172,6 +183,7 @@ const data: ProjectType[] = [
     cp: "Contact Person 12",
     nilaiPenawaran: 65000,
     createdAt: "2023-10-14",
+    status: "Get Sample",
   },
   {
     id: "13",
@@ -182,6 +194,7 @@ const data: ProjectType[] = [
     cp: "Contact Person 13",
     nilaiPenawaran: 70000,
     createdAt: "2024-10-14",
+    status: "Get Sample",
   },
   {
     id: "14",
@@ -192,6 +205,7 @@ const data: ProjectType[] = [
     cp: "Contact Person 14",
     nilaiPenawaran: 75000,
     createdAt: "2023-10-14",
+    status: "Get Sample",
   },
   {
     id: "15",
@@ -202,22 +216,25 @@ const data: ProjectType[] = [
     cp: "Contact Person 15",
     nilaiPenawaran: 80000,
     createdAt: "2023-10-14",
+    status: "Get Sample",
   },
-];
+]
 
 export function DataTable() {
-  const router = useRouter();
-  const [sorting, setSorting] = React.useState<SortingState>([]);
+  const router = useRouter()
+  const [sorting, setSorting] = React.useState<SortingState>([])
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
-  );
+  )
+  const [statusFilter, setStatusFilter] = React.useState("")
+
   const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({});
-  const [rowSelection, setRowSelection] = React.useState({});
+    React.useState<VisibilityState>({})
+  const [rowSelection, setRowSelection] = React.useState({})
 
   const table = useReactTable({
     data,
-    columns,
+    columns: samplingProjectPageColumns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
@@ -232,31 +249,52 @@ export function DataTable() {
       columnVisibility,
       rowSelection,
     },
-  });
+  })
 
   return (
     <div className="w-full">
       {/* Top Search Title */}
       <div className="flex items-center py-4">
-        {/* Seach Input */}
-        <Input
-          placeholder="Filter By Project Title"
-          value={(table.getColumn("judul")?.getFilterValue() as string) ?? ""}
-          onChange={(event) =>
-            table.getColumn("judul")?.setFilterValue(event.target.value)
-          }
-          className="max-w-sm"
-        />
+        <div className="flex gap-2">
+          {/* Seach Input */}
+          <Input
+            placeholder="Filter By Project Title"
+            value={(table.getColumn("judul")?.getFilterValue() as string) ?? ""}
+            onChange={(event) =>
+              table.getColumn("judul")?.setFilterValue(event.target.value)
+            }
+            className="max-w-sm border-pastel_moss_green rounded-full focus-visible:ring-0 bg-pastel_moss_green pl-5 placeholder:text-moss_green"
+          />
+
+          {["", "Get Sample", "Verifying", "Revision"].map((s, i) => (
+            <Button
+              key={i}
+              className={cn(
+                "min-w-fit bg-transparent text-moss_green rounded-full border-2 shadow-none border-pastel_moss_green hover:bg-pastel_moss_green",
+                statusFilter == s && "bg-pastel_moss_green"
+              )}
+              onClick={() => {
+                table.getColumn("status")?.setFilterValue(s)
+                setStatusFilter(s)
+              }}
+            >
+              {s.length ? s : "All"}
+            </Button>
+          ))}
+        </div>
 
         {/* Column Visibility */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="outline" className="ml-auto">
+            <Button
+              variant="outline"
+              className="ml-auto text-moss_green focus-visible:ring-0 hover:bg-transparent hover:text-moss_green border-pastel_moss_green border-2 shadow-none"
+            >
               Columns <ChevronDown className="ml-2 h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
-          
-          <DropdownMenuContent align="end">
+
+          <DropdownMenuContent align="end" className="text-moss_green">
             {table
               .getAllColumns()
               .filter((column) => column.getCanHide())
@@ -264,7 +302,7 @@ export function DataTable() {
                 return (
                   <DropdownMenuCheckboxItem
                     key={column.id}
-                    className="capitalize"
+                    className="capitalize focus:bg-pastel_moss_green focus:text-moss_green"
                     checked={column.getIsVisible()}
                     onCheckedChange={(value) =>
                       column.toggleVisibility(!!value)
@@ -272,7 +310,7 @@ export function DataTable() {
                   >
                     {column.id}
                   </DropdownMenuCheckboxItem>
-                );
+                )
               })}
           </DropdownMenuContent>
         </DropdownMenu>
@@ -283,10 +321,13 @@ export function DataTable() {
         <Table className="">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow className="" key={headerGroup.id}>
+              <TableRow className="hover:bg-transparent" key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
                   return (
-                    <TableHead key={header.id}>
+                    <TableHead
+                      className="text-center text-moss_green font-light italic"
+                      key={header.id}
+                    >
                       {header.isPlaceholder
                         ? null
                         : flexRender(
@@ -294,7 +335,7 @@ export function DataTable() {
                             header.getContext()
                           )}
                     </TableHead>
-                  );
+                  )
                 })}
               </TableRow>
             ))}
@@ -304,9 +345,12 @@ export function DataTable() {
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
-                  className="hover:bg-light_green ease-in-out duration-500 text-xs hover:cursor-pointer hover:rounded-xl "
+                  className="hover:bg-pastel_moss_green ease-in-out duration-500 text-xs hover:cursor-pointer hover:rounded-xl text-center"
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
+                  onClick={() =>
+                    router.push("samples/" + row.getValue("noPenawaran"))
+                  }
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
@@ -321,7 +365,7 @@ export function DataTable() {
             ) : (
               <TableRow>
                 <TableCell
-                  colSpan={columns.length}
+                  colSpan={samplingProjectPageColumns.length}
                   className="h-24 text-center"
                 >
                   No results.
@@ -340,19 +384,24 @@ export function DataTable() {
         </div>
 
         <div className="flex items-center space-x-2">
-          <p className="text-sm font-medium text-dark_green">Rows per page</p>
+          <p className="text-sm font-medium text-moss_green">Rows per page</p>
           <Select
             value={`${table.getState().pagination.pageSize}`}
             onValueChange={(value) => {
-              table.setPageSize(Number(value));
+              table.setPageSize(Number(value))
             }}
           >
-            <SelectTrigger className="h-8 w-[70px]">
+            <SelectTrigger className="h-8 w-[70px] text-moss_green border-pastel_moss_green border-2 shadow-none focus:ring-0">
               <SelectValue placeholder={table.getState().pagination.pageSize} />
             </SelectTrigger>
-            <SelectContent side="top">
+
+            <SelectContent side="top" className="text-moss_green">
               {[5, 10, 15, 20, 50].map((pageSize) => (
-                <SelectItem key={pageSize} value={`${pageSize}`}>
+                <SelectItem
+                  className="focus:bg-pastel_moss_green focus:text-moss_green"
+                  key={pageSize}
+                  value={`${pageSize}`}
+                >
                   {pageSize}
                 </SelectItem>
               ))}
@@ -360,7 +409,7 @@ export function DataTable() {
           </Select>
         </div>
 
-        <div className="flex w-[100px] items-center justify-center text-sm font-medium text-dark_green">
+        <div className="flex w-[100px] items-center justify-center text-sm font-medium text-moss_green">
           Page {table.getState().pagination.pageIndex + 1} of{" "}
           {table.getPageCount()}
         </div>
@@ -368,7 +417,7 @@ export function DataTable() {
         <div className="flex items-center space-x-2">
           <Button
             variant="outline"
-            className="hidden h-8 w-8 p-0 lg:flex"
+            className="hidden h-8 w-8 p-0 lg:flex text-moss_green border-pastel_moss_green hover:bg-pastel_moss_green hover:text-moss_green"
             onClick={() => table.setPageIndex(0)}
             disabled={!table.getCanPreviousPage()}
           >
@@ -377,7 +426,7 @@ export function DataTable() {
           </Button>
           <Button
             variant="outline"
-            className="h-8 w-8 p-0"
+            className="h-8 w-8 p-0 text-moss_green border-pastel_moss_green hover:bg-pastel_moss_green hover:text-moss_green"
             onClick={() => table.previousPage()}
             disabled={!table.getCanPreviousPage()}
           >
@@ -386,7 +435,7 @@ export function DataTable() {
           </Button>
           <Button
             variant="outline"
-            className="h-8 w-8 p-0"
+            className="h-8 w-8 p-0 text-moss_green border-pastel_moss_green hover:bg-pastel_moss_green hover:text-moss_green"
             onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}
           >
@@ -395,7 +444,7 @@ export function DataTable() {
           </Button>
           <Button
             variant="outline"
-            className="hidden h-8 w-8 p-0 lg:flex"
+            className="hidden h-8 w-8 p-0 lg:flex text-moss_green border-pastel_moss_green hover:bg-pastel_moss_green hover:text-moss_green"
             onClick={() => table.setPageIndex(table.getPageCount() - 1)}
             disabled={!table.getCanNextPage()}
           >
@@ -405,5 +454,5 @@ export function DataTable() {
         </div>
       </div>
     </div>
-  );
+  )
 }

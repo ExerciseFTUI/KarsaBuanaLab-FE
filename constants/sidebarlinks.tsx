@@ -1,17 +1,23 @@
-import { HiChartBar } from "react-icons/hi";
-import { LiaRunningSolid } from "react-icons/lia";
-import { AiFillHome, AiOutlineCheckCircle } from "react-icons/ai";
-import { MdOutlineCancel } from "react-icons/md";
-import { FaRunning } from "react-icons/fa";
-import { ReactNode } from "react";
+import { HiChartBar } from "react-icons/hi"
+import { LiaRunningSolid } from "react-icons/lia"
+import { AiFillHome, AiOutlineCheckCircle } from "react-icons/ai"
+import { MdOutlineCancel } from "react-icons/md"
+import { FaRunning } from "react-icons/fa"
+import { ReactNode } from "react"
+import { GiLoveLetter, GiPaper } from "react-icons/gi"
+import { LetterCaseCapitalizeIcon } from "@radix-ui/react-icons"
+import { Archive, Mail } from "lucide-react"
+import { BsFileText } from "react-icons/bs"
+import { BiSolidBox } from "react-icons/bi"
+import { FiFileText } from "react-icons/fi"
 
 export interface ISidebarLinks {
-  route: string;
-  label: string;
-  icon: ReactNode;
+  route: string
+  label: string
+  icon: ReactNode
 }
 
-export const sidebarLinks: ISidebarLinks[] = [
+export const marketingLink: ISidebarLinks[] = [
   {
     icon: <AiFillHome />,
     route: "",
@@ -37,32 +43,76 @@ export const sidebarLinks: ISidebarLinks[] = [
     route: "/cancelled",
     label: "Cancelled",
   },
-];
+]
 
-// export const sidebarLinks = [
-//   {
-//     imgURL: "/assets/home.svg",
-//     route: "",
-//     label: "Dashboard",
-//   },
-//   {
-//     imgURL: "/assets/discuss.svg",
-//     route: "/ondiscuss",
-//     label: "OnDiscuss",
-//   },
-//   {
-//     imgURL: "/assets/running.svg",
-//     route: "/running",
-//     label: "Running",
-//   },
-//   {
-//     imgURL: "/assets/finished.svg",
-//     route: "/finished",
-//     label: "Finished",
-//   },
-//   {
-//     imgURL: "/assets/cancelled.svg",
-//     route: "/cancelled",
-//     label: "Cancelled",
-//   },
-// ];
+export const samplingLinks: ISidebarLinks[] = [
+  {
+    icon: <AiFillHome />,
+    route: "/project",
+    label: "Project",
+  },
+  {
+    icon: <FiFileText />,
+    route: "/assignmentletter",
+    label: "Assignment Letter",
+  },
+  {
+    icon: <Archive />,
+    route: "/samples",
+    label: "Samples",
+  },
+]
+
+export const pplhpLinks: ISidebarLinks[] = [
+  {
+    icon: <AiFillHome />,
+    route: "",
+    label: "Dashboard",
+  },
+  {
+    icon: <HiChartBar />,
+    route: "/ondiscuss",
+    label: "Pembuatan Draft LHP",
+  },
+  {
+    icon: <FaRunning />,
+    route: "/running",
+    label: "Final Review LHP dan Printing",
+  },
+]
+
+export const labLinks: ISidebarLinks[] = [
+  {
+    icon: <AiFillHome />,
+    route: "",
+    label: "Dashboard",
+  },
+  {
+    icon: <HiChartBar />,
+    route: "/ondiscuss",
+    label: "Data Pengujian",
+  },
+  {
+    icon: <FaRunning />,
+    route: "/running",
+    label: "Verified Data",
+  },
+]
+
+export const sampleRecipientLinks: ISidebarLinks[] = [
+  {
+    icon: <AiFillHome />,
+    route: "",
+    label: "Dashboard",
+  },
+  {
+    icon: <AiFillHome />,
+    route: "",
+    label: "Projects",
+  },
+  {
+    icon: <HiChartBar />,
+    route: "/ondiscuss",
+    label: "Pengamanan",
+  },
+]

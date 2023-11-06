@@ -4,9 +4,14 @@ import Link from "next/link";
 import React, { FC } from "react";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
-// import { sidebarLinks } from "@/constants";
+// import { marketingLink } from "@/constants";
 import { BiLogOut } from "react-icons/bi";
-import { sidebarLinks } from "@/constants/sidebarlinks";
+import {
+  marketingLink,
+  samplingLinks,
+  labLinks,
+  pplhpLinks,
+} from "@/constants/sidebarlinks";
 import { signOut } from "next-auth/react";
 
 function extractFirstPathSegment(path: string) {
@@ -24,10 +29,18 @@ const Sidebar: FC<LeftSidebarProps> = ({}) => {
   const routeSection = "/" + extractFirstPathSegment(pathname);
   //   const { userId } = useAuth();
 
+  const links = pathname.includes("marketing")
+    ? marketingLink
+    : pathname.includes("sampling")
+    ? samplingLinks
+    : pathname.includes("lab")
+    ? labLinks
+    : pplhpLinks;
+
   return (
     <section className="custom-scrollbar sticky left-0 top-0 z-20 flex h-screen w-fit flex-col justify-between overflow-auto shadow-md pb-5  max-lg:hidden ">
       <div className="px-6 py-8">
-        <div className="flex items-center justify-center  border-b pb-6">
+        <div className="flex items-center justify-center border-b pb-6">
           <Image
             src={"/assets/logo.png"}
             alt={"Logo"}
@@ -38,7 +51,7 @@ const Sidebar: FC<LeftSidebarProps> = ({}) => {
       </div>
 
       <div className="flex flex-1 w-full flex-col gap-3 px-3">
-        {sidebarLinks.map((link) => {
+        {links.map((link) => {
           const isActive =
             (pathname.includes(link.route) && link.route.length > 1) ||
             pathname === routeSection + link.route;
