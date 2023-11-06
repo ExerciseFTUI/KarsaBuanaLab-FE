@@ -40,8 +40,8 @@ const DocumentTab: FC<DocumentTabProps> = ({}) => {
           <CardHeader>
             <CardTitle>Upload Document</CardTitle>
             <CardDescription>
-              Upload your document here. After saving, it'll be saved to the
-              database.
+              Upload your document here. After saving, it&apos;ll be saved to
+              the database.
             </CardDescription>
           </CardHeader>
 
