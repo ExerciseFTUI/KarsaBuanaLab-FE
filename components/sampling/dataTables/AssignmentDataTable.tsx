@@ -254,7 +254,7 @@ export function DataTable() {
   return (
     <div className="w-full">
       {/* Top Search Title */}
-      <div className="flex gap-2">
+      <div className="flex gap-2 mt-4">
         {/* Seach Input */}
         <Input
           placeholder="Filter By Project Title"
@@ -299,7 +299,7 @@ export function DataTable() {
       </div>
 
       {/* Table Content */}
-      <div className=" text-moss_green ">
+      <div className="mt-4 text-moss_green ">
         <Table className="">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
