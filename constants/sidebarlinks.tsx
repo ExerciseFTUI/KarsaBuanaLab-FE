@@ -58,8 +58,8 @@ export const samplingLinks: ISidebarLinks[] = [
   },
   {
     icon: <Archive />,
-    route: "/samples",
-    label: "Samples",
+    route: "/sample",
+    label: "Sample",
   },
 ]
 
