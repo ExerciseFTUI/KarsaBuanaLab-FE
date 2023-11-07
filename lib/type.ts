@@ -20,4 +20,3 @@ export type ProjectSamplingType = {
   createdAt: string;
   status: string;
 };
-
