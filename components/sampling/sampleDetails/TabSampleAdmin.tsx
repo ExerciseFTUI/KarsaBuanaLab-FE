@@ -3,10 +3,10 @@
 import React from "react"
 import { SampleType } from "@/lib/type"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import HyperLinkButton from "../projectDetail/HyperlinkButton"
+import HyperLinkButton from "../HyperlinkButton"
 import { Button } from "@/components/ui/button"
 
-export default function TabSampleStaff({ samples }: { samples: SampleType[] }) {
+export default function TabSampleAdmin({ samples }: { samples: SampleType[] }) {
   const sampleStatus = ["Luthfi", "Dio", "Eriqo"]
 
   return (
