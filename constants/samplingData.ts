@@ -62,4 +62,9 @@ const sampleData: ProjectSamplingType[] = JSON.parse(projectJson).filter(
     p.status == "Get Sample" ||
     p.status == "Revision"
 )
-export { projectData, sampleData }
+
+const assignmentLetterData: ProjectSamplingType[] = JSON.parse(
+  projectJson
+).filter((p: ProjectSamplingType) => p.status == "Letter")
+
+export { projectData, sampleData, assignmentLetterData }
