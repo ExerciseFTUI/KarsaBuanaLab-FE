@@ -152,13 +152,13 @@ export const columns: ColumnDef<ProjectType>[] = [
 export const receiveProjectPageColumns: ColumnDef<ProjectSamplingType>[] = [
   //No Penawaran
   {
-    accessorKey: "noPenawaran",
+    accessorKey: "no_penawaran",
     header: "No Penawaran",
-    cell: ({ row }) => <div className="">{row.getValue("noPenawaran")}</div>,
+    cell: ({ row }) => <div className="">{row.getValue("no_penawaran")}</div>,
   },
   // Project Title
   {
-    accessorKey: "judul",
+    accessorKey: "project_name",
     header: ({ column }) => {
       return (
         <Button
@@ -169,26 +169,32 @@ export const receiveProjectPageColumns: ColumnDef<ProjectSamplingType>[] = [
           Project Title
           <ArrowUpDown strokeWidth={1.5} className="ml-2 h-4 w-4" />
         </Button>
-      );
+      )
     },
     cell: ({ row }) => (
-      <div className="capitalize pl-4">{row.getValue("judul")}</div>
+      <div className="capitalize pl-4">{row.getValue("project_name")}</div>
     ),
   },
   //Lokasi
   {
-    accessorKey: "lokasi",
+    accessorKey: "alamat_kantor",
     header: "Lokasi",
     cell: ({ row }) => {
-      return <div className="capitalize pl-0.5">{row.getValue("lokasi")}</div>;
+      return (
+        <div className="capitalize pl-0.5">{row.getValue("alamat_kantor")}</div>
+      )
     },
   },
   //Contact Person
   {
-    accessorKey: "cp",
+    accessorKey: "contact_person",
     header: "Contact Person",
     cell: ({ row }) => {
-      return <div className="capitalize pl-0.5">{row.getValue("cp")}</div>;
+      return (
+        <div className="capitalize pl-0.5">
+          {row.getValue("contact_person")}
+        </div>
+      )
     },
   },
   // Status
@@ -196,14 +202,14 @@ export const receiveProjectPageColumns: ColumnDef<ProjectSamplingType>[] = [
     accessorKey: "status",
     header: "Status",
     cell: ({ row }) => {
-      const stat = row.getValue("status");
+      const stat = row.getValue("status")
 
       const color =
         stat == "Need Schedule" || stat == "Get Sample"
           ? "bg-moss_green"
           : stat == "On Discuss" || stat == "Verifying"
           ? "bg-light_brown"
-          : "bg-brick_red";
+          : "bg-brick_red"
 
       return (
         <div
@@ -214,10 +220,10 @@ export const receiveProjectPageColumns: ColumnDef<ProjectSamplingType>[] = [
         >
           {row.getValue("status")}
         </div>
-      );
+      )
     },
   },
-];
+]
 
 // Table Column for Sampling Project
 export const samplingProjectPageColumns: ColumnDef<ProjectSamplingType>[] = [
