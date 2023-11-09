@@ -9,7 +9,7 @@ import { Separator } from "@/components/ui/separator"
 import DocumentList from "../DokumentList"
 import HyperLinkButton from "./HyperlinkButton"
 import { Button } from "@/components/ui/button"
-import { fetcher } from "@/lib/utils"
+import { cn, fetcher } from "@/lib/utils"
 
 type fetched = {
   data: ProjectSamplingType
@@ -17,9 +17,14 @@ type fetched = {
   isLoading: any
 }
 
+interface projectParams {
+  params: { np: string }
+  className?: string
+}
+
 const handleSubmit = (e: any) => e.preventDefault()
 
-export default function Project({ params }: { params: { np: string } }) {
+export default function Project({ params, className = "" }: projectParams) {
   const { data, error, isLoading }: fetched = useSWR(
     "/api/sampling/project/" + params.np,
     fetcher
@@ -31,18 +36,18 @@ export default function Project({ params }: { params: { np: string } }) {
   const { status } = data
 
   return (
-    <>
+    <div className={cn("flex", className)}>
       <ProjectDetails data={data} />
 
-      <div className="px-4 py-2 max-w-[35rem] flex flex-col">
-        <DocumentList data={data} />
+      <Separator orientation="vertical" className="w-0.5 bg-light_brown" />
 
+      <div className="px-4 py-2 flex flex-col flex-1">
+        <DocumentList data={data} />
         <div className="">
           <h1 className="text-xl font-semibold my-5">Schedule</h1>
 
           <HyperLinkButton title="Schedule" href="" className="w-full " />
         </div>
-
         <Button
           className="w-48 py-4 self-center mt-8 bg-light_brown hover:bg-dark_brown disabled:bg-transparent disabled:text-dark_brown disabled:font-bold disabled:border-2 disabled:border-dark_brown"
           onClick={(e) => handleSubmit(e)}
@@ -53,6 +58,6 @@ export default function Project({ params }: { params: { np: string } }) {
             : "Waiting"}
         </Button>
       </div>
-    </>
+    </div>
   )
 }
