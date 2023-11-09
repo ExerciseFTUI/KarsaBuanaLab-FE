@@ -3,14 +3,16 @@
 import React from "react"
 import { ProjectSamplingType } from "@/lib/type"
 import { object } from "zod"
+import { cn } from "@/lib/utils"
 
-export default function ProjectDetails({
-  data,
-}: {
+interface pdType {
   data: ProjectSamplingType
-}) {
+  className?: string
+}
+
+export default function ProjectDetails({ data, className = "" }: pdType) {
   return (
-    <div className="w-[450px] max-sm:w-[400px] max-h-screen overflow-auto custom-scrollbar px-4 py-2 border-r-2 border-r-light_brown">
+    <div className={cn("px-4 py-2 flex-1", className)}>
       <h1 className="text-2xl font-semibold mb-5">{data.project_name}</h1>
 
       <div className="">
