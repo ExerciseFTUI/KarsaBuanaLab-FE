@@ -49,18 +49,8 @@ import {
   DoubleArrowRightIcon,
 } from "@radix-ui/react-icons"
 import { samplingProjectPageColumns } from "@/components/columns"
-import { cn } from "@/lib/utils"
+import { cn, fetcher } from "@/lib/utils"
 import { ProjectSamplingType } from "@/lib/type"
-
-const fetcher = async (url: string) => {
-  const res = await fetch(url)
-  const data = await res.json()
-
-  if (res.status !== 200) {
-    throw new Error(data)
-  }
-  return JSON.parse(data)
-}
 
 export function DataTable() {
   const router = useRouter()

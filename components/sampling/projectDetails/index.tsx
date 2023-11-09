@@ -4,21 +4,12 @@ import React, { MouseEventHandler } from "react"
 import useSWR from "swr"
 import { ProjectSamplingType } from "@/lib/type"
 import { object } from "zod"
-import ProjectDetails from "./ProjectDetails"
+import ProjectDetails from "../ProjectDetails"
 import { Separator } from "@/components/ui/separator"
-import DocumentList from "./DokumentList"
+import DocumentList from "../DokumentList"
 import HyperLinkButton from "./HyperlinkButton"
 import { Button } from "@/components/ui/button"
-
-const fetcher = async (url: string) => {
-  const res = await fetch(url)
-  const data = await res.json()
-
-  if (res.status !== 200) {
-    throw new Error(data)
-  }
-  return JSON.parse(data)
-}
+import { fetcher } from "@/lib/utils"
 
 type fetched = {
   data: ProjectSamplingType
