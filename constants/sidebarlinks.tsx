@@ -1,20 +1,20 @@
-import { HiChartBar } from "react-icons/hi";
-import { LiaRunningSolid } from "react-icons/lia";
-import { AiFillHome, AiOutlineCheckCircle } from "react-icons/ai";
-import { MdOutlineCancel } from "react-icons/md";
-import { FaRunning } from "react-icons/fa";
-import { ReactNode } from "react";
-import { GiLoveLetter, GiPaper } from "react-icons/gi";
-import { LetterCaseCapitalizeIcon } from "@radix-ui/react-icons";
-import { Archive, Mail } from "lucide-react";
-import { BsFileText } from "react-icons/bs";
-import { BiSolidBox } from "react-icons/bi";
-import { FiFileText } from "react-icons/fi";
+import { HiChartBar } from "react-icons/hi"
+import { LiaRunningSolid } from "react-icons/lia"
+import { AiFillHome, AiOutlineCheckCircle } from "react-icons/ai"
+import { MdOutlineCancel } from "react-icons/md"
+import { FaRunning } from "react-icons/fa"
+import { ReactNode } from "react"
+import { GiLoveLetter, GiPaper } from "react-icons/gi"
+import { LetterCaseCapitalizeIcon } from "@radix-ui/react-icons"
+import { Archive, Mail } from "lucide-react"
+import { BsFileText } from "react-icons/bs"
+import { BiSolidBox } from "react-icons/bi"
+import { FiFileText } from "react-icons/fi"
 
 export interface ISidebarLinks {
-  route: string;
-  label: string;
-  icon: ReactNode;
+  route: string
+  label: string
+  icon: ReactNode
 }
 
 export const marketingLink: ISidebarLinks[] = [
@@ -43,7 +43,7 @@ export const marketingLink: ISidebarLinks[] = [
     route: "/cancelled",
     label: "Cancelled",
   },
-];
+]
 
 export const samplingLinks: ISidebarLinks[] = [
   {
@@ -53,7 +53,7 @@ export const samplingLinks: ISidebarLinks[] = [
   },
   {
     icon: <FiFileText />,
-    route: "/assignmentletter",
+    route: "/assignment-letter",
     label: "Assignment Letter",
   },
   {
@@ -61,7 +61,7 @@ export const samplingLinks: ISidebarLinks[] = [
     route: "/sample",
     label: "Sample",
   },
-];
+]
 
 export const pplhpLinks: ISidebarLinks[] = [
   {
@@ -79,7 +79,7 @@ export const pplhpLinks: ISidebarLinks[] = [
     route: "/running",
     label: "Final Review LHP dan Printing",
   },
-];
+]
 
 export const labLinks: ISidebarLinks[] = [
   {
@@ -97,7 +97,7 @@ export const labLinks: ISidebarLinks[] = [
     route: "/running",
     label: "Verified Data",
   },
-];
+]
 
 export const sampleReceiveLinks: ISidebarLinks[] = [
   {
@@ -115,4 +115,4 @@ export const sampleReceiveLinks: ISidebarLinks[] = [
     route: "/ondiscuss",
     label: "Pengamanan",
   },
-];
+]
