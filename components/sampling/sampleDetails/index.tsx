@@ -6,6 +6,9 @@ import { ProjectSamplingType } from "@/lib/type"
 import { fetcher } from "@/lib/utils"
 import ProjectDetails from "../ProjectDetails"
 import DocumentList from "../DokumentList"
+import { Separator } from "@/components/ui/separator"
+import TabSampleStaff from "./TabSampleStaff"
+import TabSampleAdmin from "./TabSampleAdmin"
 
 type fetched = {
   data: ProjectSamplingType
@@ -21,17 +24,28 @@ export default function Project({ params }: { params: { np: string } }) {
     fetcher
   )
 
+  let ACCOUNT_ROLE = "ADMIN"
+
   if (error) return <div>{error.message}</div>
   if (isLoading) return <div>Loading...</div>
 
-  const { status } = data
+  const { status, sampling_list } = data
 
   return (
-    <>
-      <div className="max-w-lg">
-      <ProjectDetails data={data} />
-      <DocumentList data={data} />
+    <div className="flex gap-6 max-md:flex-col max-md:items-center">
+      <div className="flex flex-col flex-1">
+        <ProjectDetails data={data} className="flex-none" />
+
+        <DocumentList data={data} className="w-56" />
       </div>
-    </>
+
+      <Separator orientation="vertical" className="bg-light_brown w-0.5" />
+
+      {ACCOUNT_ROLE == "STAFF" ? (
+        <TabSampleStaff samples={sampling_list} />
+      ) : (
+        <TabSampleAdmin samples={sampling_list} />
+      )}
+    </div>
   )
 }
