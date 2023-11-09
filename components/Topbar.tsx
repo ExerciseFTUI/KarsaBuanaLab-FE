@@ -37,7 +37,8 @@ const Topbar: FC<TopbarProps> = ({}) => {
           {pathname}
         </p>
         <p className="text-2xl font-bold text-dark_green">
-          {pathname.split(" / ")[1] + " " + (pathname.split(" / ")[2] || "")}
+          {pathname.split(" / ")[1] +
+            (pathname.split(" / ")[2] ? " Details" : "")}
         </p>
       </div>
       <div className="flex items-center gap-1">
