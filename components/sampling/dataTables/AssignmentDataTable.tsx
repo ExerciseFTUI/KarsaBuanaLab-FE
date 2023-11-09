@@ -52,7 +52,7 @@ import { ProjectSamplingType, ProjectType } from "@/lib/type"
 import { cn } from "@/lib/utils"
 
 // Create an array of 15 objects with the specified type
-const data: ProjectSamplingType[] = [
+const data: any[] = [
   {
     id: "1",
     noPenawaran: "PNW1",
@@ -258,9 +258,11 @@ export function DataTable() {
         {/* Seach Input */}
         <Input
           placeholder="Filter By Project Title"
-          value={(table.getColumn("judul")?.getFilterValue() as string) ?? ""}
+          value={
+            (table.getColumn("project_name")?.getFilterValue() as string) ?? ""
+          }
           onChange={(event) =>
-            table.getColumn("judul")?.setFilterValue(event.target.value)
+            table.getColumn("project_name")?.setFilterValue(event.target.value)
           }
           className="max-w-sm border-pastel_moss_green rounded-full focus-visible:ring-0 bg-pastel_moss_green pl-5 placeholder:text-moss_green"
         />
