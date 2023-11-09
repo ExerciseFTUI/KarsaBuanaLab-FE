@@ -2,7 +2,7 @@
 
 import { ProjectSamplingType } from "@/lib/type"
 import React from "react"
-import HyperLinkButton from "./HyperlinkButton"
+import HyperLinkButton from "./projectDetails/HyperlinkButton"
 
 export default function DocumentList({ data }: { data: ProjectSamplingType }) {
   return (
