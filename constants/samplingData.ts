@@ -56,4 +56,10 @@ const projectData: ProjectSamplingType[] = JSON.parse(projectJson).filter(
     p.status == "Revision"
 )
 
-export { projectData }
+const sampleData: ProjectSamplingType[] = JSON.parse(projectJson).filter(
+  (p: ProjectSamplingType) =>
+    p.status == "Verifying" ||
+    p.status == "Get Sample" ||
+    p.status == "Revision"
+)
+export { projectData, sampleData }
