@@ -1,5 +1,6 @@
 "use client"
 import * as React from "react"
+import useSWR from "swr"
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -48,192 +49,33 @@ import {
   DoubleArrowRightIcon,
 } from "@radix-ui/react-icons"
 import { samplingProjectPageColumns } from "@/components/columns"
-import { ProjectSamplingType, ProjectType } from "@/lib/type"
 import { cn } from "@/lib/utils"
+import { ProjectSamplingType } from "@/lib/type"
 
-// Create an array of 15 objects with the specified type
-const data: ProjectSamplingType[] = [
-  {
-    id: "1",
-    noPenawaran: "PNW1",
-    judul: "Project 1 daaaa",
-    namaCustomer: "Customer A",
-    lokasi: "Location 1 dad",
-    cp: "Contact Person 1",
-    nilaiPenawaran: 10000,
-    createdAt: "2023-10-14",
-    status: "Need Schedule",
-  },
-  {
-    id: "2",
-    noPenawaran: "PNW2",
-    judul: "Project 2",
-    namaCustomer: "Customer B",
-    lokasi: "Location 2",
-    cp: "Contact Person 2",
-    nilaiPenawaran: 15000,
-    createdAt: "2023-10-14",
-    status: "Revision",
-  },
-  {
-    id: "3",
-    noPenawaran: "PNW3",
-    judul: "Project 3",
-    namaCustomer: "Customer C",
-    lokasi: "Location 3",
-    cp: "Contact Person 3",
-    nilaiPenawaran: 20000,
-    createdAt: "2023-10-14",
-    status: "Revision",
-  },
-  {
-    id: "4",
-    noPenawaran: "PNW4",
-    judul: "Project 4",
-    namaCustomer: "Customer D",
-    lokasi: "Location 4",
-    cp: "Contact Person 4",
-    nilaiPenawaran: 25000,
-    createdAt: "2023-10-14",
-    status: "Need Schedule",
-  },
-  {
-    id: "5",
-    noPenawaran: "PNW5",
-    judul: "Project 5",
-    namaCustomer: "Customer E",
-    lokasi: "Location 5",
-    cp: "Contact Person 5",
-    nilaiPenawaran: 30000,
-    createdAt: "2023-10-14",
-    status: "On Discuss",
-  },
-  {
-    id: "6",
-    noPenawaran: "PNW6",
-    judul: "Project 6",
-    namaCustomer: "Customer F",
-    lokasi: "Location 6",
-    cp: "Contact Person 6",
-    nilaiPenawaran: 35000,
-    createdAt: "2023-10-14",
-    status: "Need Schedule",
-  },
-  {
-    id: "7",
-    noPenawaran: "PNW7",
-    judul: "Project 7",
-    namaCustomer: "Customer G",
-    lokasi: "Location 7",
-    cp: "Contact Person 7",
-    nilaiPenawaran: 40000,
-    createdAt: "2023-10-14",
-    status: "Need Schedule",
-  },
-  {
-    id: "8",
-    noPenawaran: "PNW8",
-    judul: "Project 8",
-    namaCustomer: "Customer H",
-    lokasi: "Location 8",
-    cp: "Contact Person 8",
-    nilaiPenawaran: 45000,
-    createdAt: "2023-10-14",
-    status: "Need Schedule",
-  },
-  {
-    id: "9",
-    noPenawaran: "PNW9",
-    judul: "Project 9",
-    namaCustomer: "Customer I",
-    lokasi: "Location 9",
-    cp: "Contact Person 9",
-    nilaiPenawaran: 50000,
-    createdAt: "2023-10-14",
-    status: "Need Schedule",
-  },
-  {
-    id: "10",
-    noPenawaran: "PNW10",
-    judul: "Project 10",
-    namaCustomer: "Customer J",
-    lokasi: "Location 10",
-    cp: "Contact Person 10",
-    nilaiPenawaran: 55000,
-    createdAt: "2023-10-14",
-    status: "On Discuss",
-  },
-  {
-    id: "11",
-    noPenawaran: "PNW11",
-    judul: "Project 11",
-    namaCustomer: "Customer K",
-    lokasi: "Location 11",
-    cp: "Contact Person 11",
-    nilaiPenawaran: 60000,
-    createdAt: "2023-10-14",
-    status: "Need Schedule",
-  },
-  {
-    id: "12",
-    noPenawaran: "PNW12",
-    judul: "Project 12",
-    namaCustomer: "Customer L",
-    lokasi: "Location 12",
-    cp: "Contact Person 12",
-    nilaiPenawaran: 65000,
-    createdAt: "2023-10-14",
-    status: "Need Schedule",
-  },
-  {
-    id: "13",
-    noPenawaran: "PNW13",
-    judul: "Project 13",
-    namaCustomer: "Customer M",
-    lokasi: "Location 13",
-    cp: "Contact Person 13",
-    nilaiPenawaran: 70000,
-    createdAt: "2024-10-14",
-    status: "Need Schedule",
-  },
-  {
-    id: "14",
-    noPenawaran: "PNW14",
-    judul: "Project 14",
-    namaCustomer: "Customer N",
-    lokasi: "Location 14",
-    cp: "Contact Person 14",
-    nilaiPenawaran: 75000,
-    createdAt: "2023-10-14",
-    status: "Need Schedule",
-  },
-  {
-    id: "15",
-    noPenawaran: "PNW15",
-    judul: "Project 15",
-    namaCustomer: "Customer O",
-    lokasi: "Location 15",
-    cp: "Contact Person 15",
-    nilaiPenawaran: 80000,
-    createdAt: "2023-10-14",
-    status: "Need Schedule",
-  },
-]
+const fetcher = async (url: string) => {
+  const res = await fetch(url)
+  const data = await res.json()
+
+  if (res.status !== 200) {
+    throw new Error(data)
+  }
+  return JSON.parse(data)
+}
 
 export function DataTable() {
   const router = useRouter()
   const [sorting, setSorting] = React.useState<SortingState>([])
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    []
-  )
+  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]) // prettier-ignore
   const [statusFilter, setStatusFilter] = React.useState("")
 
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({})
   const [rowSelection, setRowSelection] = React.useState({})
 
+  const { data, error, isLoading } = useSWR("/api/sampling/project", fetcher)
+
   const table = useReactTable({
-    data,
+    data: data,
     columns: samplingProjectPageColumns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -250,6 +92,10 @@ export function DataTable() {
       rowSelection,
     },
   })
+
+  if (error) return <div>{error.message}</div>
+  if (isLoading) return <div>Loading...</div>
+  if (!data) return <div>no data</div>
 
   return (
     <div className="w-full">
@@ -349,7 +195,7 @@ export function DataTable() {
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
                   onClick={() =>
-                    router.push("project/" + row.getValue("noPenawaran"))
+                    router.push("project/" + row.getValue("no_penawaran"))
                   }
                 >
                   {row.getVisibleCells().map((cell) => (
@@ -380,7 +226,7 @@ export function DataTable() {
       <div className="flex items-center justify-end space-x-2 py-4 max-sm:flex-col gap-5">
         <div className="flex-1 text-sm text-moss_green">
           {/* {table.getFilteredSelectedRowModel().rows.length} of{" "} */}
-          Total : {table.getFilteredRowModel().rows.length} row(s).
+          Total : {table.getFilteredRowModel().rows.length} project(s).
         </div>
 
         <div className="flex items-center space-x-2">
