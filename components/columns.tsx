@@ -152,13 +152,13 @@ export const columns: ColumnDef<ProjectType>[] = [
 export const samplingProjectPageColumns: ColumnDef<ProjectSamplingType>[] = [
   //No Penawaran
   {
-    accessorKey: "noPenawaran",
+    accessorKey: "no_penawaran",
     header: "No Penawaran",
-    cell: ({ row }) => <div className="">{row.getValue("noPenawaran")}</div>,
+    cell: ({ row }) => <div className="">{row.getValue("no_penawaran")}</div>,
   },
   // Project Title
   {
-    accessorKey: "judul",
+    accessorKey: "project_name",
     header: ({ column }) => {
       return (
         <Button
@@ -172,23 +172,29 @@ export const samplingProjectPageColumns: ColumnDef<ProjectSamplingType>[] = [
       )
     },
     cell: ({ row }) => (
-      <div className="capitalize pl-4">{row.getValue("judul")}</div>
+      <div className="capitalize pl-4">{row.getValue("project_name")}</div>
     ),
   },
   //Lokasi
   {
-    accessorKey: "lokasi",
+    accessorKey: "alamat_kantor",
     header: "Lokasi",
     cell: ({ row }) => {
-      return <div className="capitalize pl-0.5">{row.getValue("lokasi")}</div>
+      return (
+        <div className="capitalize pl-0.5">{row.getValue("alamat_kantor")}</div>
+      )
     },
   },
   //Contact Person
   {
-    accessorKey: "cp",
+    accessorKey: "contact_person",
     header: "Contact Person",
     cell: ({ row }) => {
-      return <div className="capitalize pl-0.5">{row.getValue("cp")}</div>
+      return (
+        <div className="capitalize pl-0.5">
+          {row.getValue("contact_person")}
+        </div>
+      )
     },
   },
   // Status
@@ -196,12 +202,12 @@ export const samplingProjectPageColumns: ColumnDef<ProjectSamplingType>[] = [
     accessorKey: "status",
     header: "Status",
     cell: ({ row }) => {
-      const stat = row.getValue("status")
+      const status: any = row.getValue("status")
 
       const color =
-        stat == "Need Schedule" || stat == "Get Sample"
+        status == "Need Schedule" || status == "Get Sample"
           ? "bg-moss_green"
-          : stat == "On Discuss" || stat == "Verifying"
+          : status == "On Discuss" || status == "Verifying"
           ? "bg-light_brown"
           : "bg-brick_red"
 
@@ -212,12 +218,11 @@ export const samplingProjectPageColumns: ColumnDef<ProjectSamplingType>[] = [
             color
           }
         >
-          {row.getValue("status")}
+          {status}
         </div>
       )
     },
   },
 ]
 
-export const samplingLetterPageColumns: ColumnDef<ProjectSamplingType>[] =
-  samplingProjectPageColumns.slice(0, -1)
+export const samplingLetterPageColumns: ColumnDef<ProjectSamplingType>[] = samplingProjectPageColumns.slice(0, -1) // prettier-ignore
