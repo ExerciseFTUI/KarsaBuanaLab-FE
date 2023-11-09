@@ -19,8 +19,9 @@ export default function HyperLinkButton({
   return (
     <Button
       asChild
+      title={title}
       className={cn(
-        "bg-light_brown font-light w-64 flex justify-between hover:bg-dark_brown py-5 rounded-xl",
+        "bg-light_brown font-light w-full flex justify-between hover:bg-dark_brown py-5 rounded-xl",
         className
       )}
     >
