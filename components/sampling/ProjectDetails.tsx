@@ -3,7 +3,7 @@
 import React from "react"
 import { ProjectSamplingType } from "@/lib/type"
 import { object } from "zod"
-import { cn } from "@/lib/utils"
+import { cn, rupiah } from "@/lib/utils"
 
 interface pdType {
   data: ProjectSamplingType
@@ -31,7 +31,9 @@ export default function ProjectDetails({ data, className = "" }: pdType) {
             <div className="mb-4" key={i}>
               <p className="text-dark_brown font-medium">{d.val} </p>
 
-              <p className="ml-4 text-light_brown">{data[key]}</p>
+              <p className="ml-4 text-light_brown">
+                {d.acc == "valuasi_proyek" ? rupiah(data[key]) : data[key]}
+              </p>
             </div>
           )
         })}

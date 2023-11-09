@@ -7,7 +7,7 @@ import { object } from "zod"
 import ProjectDetails from "../ProjectDetails"
 import { Separator } from "@/components/ui/separator"
 import DocumentList from "../DokumentList"
-import HyperLinkButton from "./HyperlinkButton"
+import HyperLinkButton from "../HyperlinkButton"
 import { Button } from "@/components/ui/button"
 import { cn, fetcher } from "@/lib/utils"
 

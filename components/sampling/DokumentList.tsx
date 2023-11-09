@@ -2,7 +2,7 @@
 
 import { ProjectSamplingType } from "@/lib/type"
 import React from "react"
-import HyperLinkButton from "./projectDetail/HyperlinkButton"
+import HyperLinkButton from "./HyperlinkButton"
 
 interface docParams {
   data: ProjectSamplingType
