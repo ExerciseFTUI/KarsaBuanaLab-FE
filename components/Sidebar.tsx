@@ -11,6 +11,7 @@ import {
   samplingLinks,
   labLinks,
   pplhpLinks,
+  sampleReceiveLinks,
 } from "@/constants/sidebarlinks";
 import { signOut } from "next-auth/react";
 
@@ -35,7 +36,11 @@ const Sidebar: FC<LeftSidebarProps> = ({}) => {
     ? samplingLinks
     : pathname.includes("lab")
     ? labLinks
+    : pathname.includes("receive")
+    ? sampleReceiveLinks
     : pplhpLinks;
+
+  //Receive
 
   return (
     <section className="custom-scrollbar sticky left-0 top-0 z-20 flex h-screen w-fit flex-col justify-between overflow-auto shadow-md pb-5  max-lg:hidden ">
@@ -46,6 +51,7 @@ const Sidebar: FC<LeftSidebarProps> = ({}) => {
             alt={"Logo"}
             width={180}
             height={180}
+            priority
           />
         </div>
       </div>

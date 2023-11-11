@@ -25,6 +25,7 @@ export type ReceiveSamplingType = {
   id: string;
   noPenawaran: string;
   judulProject: string;
+  lokasiSampel: string;
   lokasi: string;
   cp: string;
 };

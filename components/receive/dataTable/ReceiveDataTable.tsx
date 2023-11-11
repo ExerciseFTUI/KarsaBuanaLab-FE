@@ -217,9 +217,7 @@ export function DataTable() {
                   className="hover:bg-pastel_moss_green ease-in-out duration-500 text-xs hover:cursor-pointer hover:rounded-xl text-center"
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
-                  onClick={() =>
-                    router.push("project/" + row.getValue("noPenawaran"))
-                  }
+                  onClick={() => router.push("receive/review")}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
