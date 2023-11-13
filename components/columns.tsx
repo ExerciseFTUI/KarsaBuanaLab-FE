@@ -12,7 +12,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useRouter } from "next/navigation";
-import { ProjectSamplingType, ProjectType } from "@/lib/type";
+import { ProjectLHPType, ProjectSamplingType, ProjectType } from "@/lib/type";
 import Link from "next/link";
 
 // Table Column for Marketing OnDiscuss
@@ -294,3 +294,103 @@ export const samplingLetterPageColumns: ColumnDef<ProjectSamplingType>[] =
   samplingProjectPageColumns.slice(0, -1);
 
 console.log(samplingLetterPageColumns);
+
+export const LHPDraftPageColumns: ColumnDef<ProjectLHPType>[] = [
+  //No Penawaran
+  {
+    accessorKey: "noPenawaran",
+    header: "No Penawaran",
+    cell: ({ row }) => <div className="">{row.getValue("noPenawaran")}</div>,
+  },
+  {
+    accessorKey: "judul",
+    header: ({ column }) => {
+      return (
+        <Button
+          className="italic text-[#c2c5aa]"
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Judul Project
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => (
+      <div className="capitalize pl-4">{row.getValue("judul")}</div>
+    ),
+  },
+  //Status
+  {
+    accessorKey: "lokasiPengambilanSampel",
+    header: "Lokasi Pengambilan Sampel",
+    cell: ({ row }) => {
+      return <div className="capitalize pl-0.5">{row.getValue("lokasiPengambilanSampel")}</div>;
+    },
+  },
+  //Lokasi
+  {
+    accessorKey: "lokasi",
+    header: "Lokasi",
+    cell: ({ row }) => {
+      return <div className="capitalize pl-0.5">{row.getValue("lokasi")}</div>;
+    },
+  },
+  {
+    accessorKey: "cp",
+    header: "Contact Person",
+    cell: ({ row }) => {
+      return <div className="capitalize pl-0.5">{row.getValue("cp")}</div>;
+    },
+  },
+];
+
+export const PPLHPFinalReviewPageColumns: ColumnDef<ProjectLHPType>[] = [
+  //No Penawaran
+  {
+    accessorKey: "noPenawaran",
+    header: "No Penawaran",
+    cell: ({ row }) => <div className="">{row.getValue("noPenawaran")}</div>,
+  },
+  {
+    accessorKey: "judul",
+    header: ({ column }) => {
+      return (
+        <Button
+          className="italic text-[#b49a82]"
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Judul Project
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => (
+      <div className="capitalize pl-4">{row.getValue("judul")}</div>
+    ),
+  },
+  //Status
+  {
+    accessorKey: "lokasiPengambilanSampel",
+    header: "Lokasi Pengambilan Sampel",
+    cell: ({ row }) => {
+      return <div className="capitalize pl-0.5">{row.getValue("lokasiPengambilanSampel")}</div>;
+    },
+  },
+  //Lokasi
+  {
+    accessorKey: "lokasi",
+    header: "Lokasi",
+    cell: ({ row }) => {
+      return <div className="capitalize pl-0.5">{row.getValue("lokasi")}</div>;
+    },
+  },
+  {
+    accessorKey: "cp",
+    header: "Contact Person",
+    cell: ({ row }) => {
+      return <div className="capitalize pl-0.5">{row.getValue("cp")}</div>;
+    },
+  },
+];

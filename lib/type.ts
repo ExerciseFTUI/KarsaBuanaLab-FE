@@ -20,3 +20,12 @@ export type ProjectSamplingType = {
   createdAt: string;
   status: string;
 };
+
+export type ProjectLHPType = {
+  id: string;
+  noPenawaran: string;
+  judul: string;
+  lokasiPengambilanSampel: string;
+  lokasi: string;
+  cp: string;
+};
