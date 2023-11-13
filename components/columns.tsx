@@ -16,6 +16,7 @@ import {
   ProjectSamplingType,
   ProjectType,
   ReceiveSamplingType,
+  ProjectLHPType
 } from "@/lib/type";
 import Link from "next/link";
 
