@@ -33,7 +33,6 @@ interface IdCheckFormProps {
 }
 
 const IdCheckForm: FC<IdCheckFormProps> = ({ setResiNumber }) => {
-
   // 1. Define your form.
   const form = useForm<z.infer<typeof clientValidation>>({
     resolver: zodResolver(clientValidation),

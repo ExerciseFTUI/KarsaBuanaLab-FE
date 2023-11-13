@@ -53,13 +53,13 @@ export const samplingLinks: ISidebarLinks[] = [
   },
   {
     icon: <FiFileText />,
-    route: "/assignmentletter",
+    route: "/assignment-letter",
     label: "Assignment Letter",
   },
   {
     icon: <Archive />,
-    route: "/samples",
-    label: "Samples",
+    route: "/sample",
+    label: "Sample",
   },
 ]
 
@@ -71,12 +71,12 @@ export const pplhpLinks: ISidebarLinks[] = [
   },
   {
     icon: <HiChartBar />,
-    route: "/ondiscuss",
+    route: "/lhpdraft",
     label: "Pembuatan Draft LHP",
   },
   {
     icon: <FaRunning />,
-    route: "/running",
+    route: "/finalreview",
     label: "Final Review LHP dan Printing",
   },
 ]
@@ -99,12 +99,7 @@ export const labLinks: ISidebarLinks[] = [
   },
 ]
 
-export const sampleRecipientLinks: ISidebarLinks[] = [
-  {
-    icon: <AiFillHome />,
-    route: "",
-    label: "Dashboard",
-  },
+export const sampleReceiveLinks: ISidebarLinks[] = [
   {
     icon: <AiFillHome />,
     route: "",
