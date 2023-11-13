@@ -148,6 +148,77 @@ export const columns: ColumnDef<ProjectType>[] = [
   },
 ];
 
+//Table Column for Penerima Sampling
+export const receiveProjectPageColumns: ColumnDef<ProjectSamplingType>[] = [
+  //No Penawaran
+  {
+    accessorKey: "noPenawaran",
+    header: "No Penawaran",
+    cell: ({ row }) => <div className="">{row.getValue("noPenawaran")}</div>,
+  },
+  // Project Title
+  {
+    accessorKey: "judul",
+    header: ({ column }) => {
+      return (
+        <Button
+          className="font-light hover:bg-transparent italic"
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Project Title
+          <ArrowUpDown strokeWidth={1.5} className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => (
+      <div className="capitalize pl-4">{row.getValue("judul")}</div>
+    ),
+  },
+  //Lokasi
+  {
+    accessorKey: "lokasi",
+    header: "Lokasi",
+    cell: ({ row }) => {
+      return <div className="capitalize pl-0.5">{row.getValue("lokasi")}</div>;
+    },
+  },
+  //Contact Person
+  {
+    accessorKey: "cp",
+    header: "Contact Person",
+    cell: ({ row }) => {
+      return <div className="capitalize pl-0.5">{row.getValue("cp")}</div>;
+    },
+  },
+  // Status
+  {
+    accessorKey: "status",
+    header: "Status",
+    cell: ({ row }) => {
+      const stat = row.getValue("status");
+
+      const color =
+        stat == "Need Schedule" || stat == "Get Sample"
+          ? "bg-moss_green"
+          : stat == "On Discuss" || stat == "Verifying"
+          ? "bg-light_brown"
+          : "bg-brick_red";
+
+      return (
+        <div
+          className={
+            "px-4 py-1.5 inline-block min-w-[8rem] rounded-full text-ghost_white " +
+            color
+          }
+        >
+          {row.getValue("status")}
+        </div>
+      );
+    },
+  },
+];
+
 // Table Column for Sampling Project
 export const samplingProjectPageColumns: ColumnDef<ProjectSamplingType>[] = [
   //No Penawaran

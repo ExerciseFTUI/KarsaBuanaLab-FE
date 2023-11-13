@@ -29,4 +29,3 @@ export type ProjectLHPType = {
   lokasi: string;
   cp: string;
 };
-
