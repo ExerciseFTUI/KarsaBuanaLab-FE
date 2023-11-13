@@ -12,7 +12,11 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useRouter } from "next/navigation";
-import { ProjectLHPType, ProjectSamplingType, ProjectType } from "@/lib/type";
+import {
+  ProjectSamplingType,
+  ProjectType,
+  ReceiveSamplingType,
+} from "@/lib/type";
 import Link from "next/link";
 
 // Table Column for Marketing OnDiscuss
@@ -286,6 +290,61 @@ export const samplingProjectPageColumns: ColumnDef<ProjectSamplingType>[] = [
           {row.getValue("status")}
         </div>
       );
+    },
+  },
+];
+
+// Table Column for Sampling Project
+export const receiveSamplingColumns: ColumnDef<ReceiveSamplingType>[] = [
+  //No Penawaran
+  {
+    accessorKey: "noPenawaran",
+    header: "No. Penawaran",
+    cell: ({ row }) => <div className="">{row.getValue("noPenawaran")}</div>,
+  },
+  // Project Title
+  {
+    accessorKey: "judulProject",
+    header: ({ column }) => {
+      return (
+        <Button
+          className="font-light hover:bg-transparent italic"
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Project Title
+          <ArrowUpDown strokeWidth={1.5} className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => (
+      <div className="capitalize pl-4">{row.getValue("judulProject")}</div>
+    ),
+  },
+  //Lokasi Pengambilan Sampel
+  {
+    accessorKey: "lokasiSampel",
+    header: "Lokasi Pengambilan Sampel",
+    cell: ({ row }) => {
+      return (
+        <div className="capitalize pl-0.5">{row.getValue("lokasiSampel")}</div>
+      );
+    },
+  },
+  //Lokasi
+  {
+    accessorKey: "lokasi",
+    header: "Lokasi",
+    cell: ({ row }) => {
+      return <div className="capitalize pl-0.5">{row.getValue("lokasi")}</div>;
+    },
+  },
+  //Contact Person
+  {
+    accessorKey: "cp",
+    header: "Contact Person",
+    cell: ({ row }) => {
+      return <div className="capitalize pl-0.5">{row.getValue("cp")}</div>;
     },
   },
 ];

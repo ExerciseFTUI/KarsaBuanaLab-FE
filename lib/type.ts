@@ -21,11 +21,11 @@ export type ProjectSamplingType = {
   status: string;
 };
 
-export type ProjectLHPType = {
+export type ReceiveSamplingType = {
   id: string;
   noPenawaran: string;
-  judul: string;
-  lokasiPengambilanSampel: string;
+  judulProject: string;
+  lokasiSampel: string;
   lokasi: string;
   cp: string;
 };
