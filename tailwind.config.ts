@@ -23,6 +23,7 @@ module.exports = {
         black_brown: "#333D29",
         dark_brown: "#7E4F23",
         light_brown: "#9B7F5A",
+        ghost_brown: "#B19C80",
         light_green: "#C2C5AA",
         moss_green: "#666D4B",
         pastel_moss_green: "#EBEBE6",

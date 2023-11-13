@@ -49,14 +49,14 @@ import {
   DoubleArrowLeftIcon,
   DoubleArrowRightIcon,
 } from "@radix-ui/react-icons";
-import { LHPDraftPageColumns, columns } from "@/components/columns";
+import { PPLHPFinalReviewPageColumns, columns } from "@/components/columns";
 import { ProjectLHPType } from "@/lib/type";
 
-interface PPLHPDataTableProps {
+interface FinalReviewDataTableProps {
   data: ProjectLHPType[];
 }
 
-const PPLHPDataTable: FC<PPLHPDataTableProps> = ({ data }) => {
+const FinalReviewDataTable: FC<FinalReviewDataTableProps> = ({ data }) => {
   const router = useRouter();
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(
@@ -68,7 +68,7 @@ const PPLHPDataTable: FC<PPLHPDataTableProps> = ({ data }) => {
 
   const table = useReactTable({
     data,
-    columns: LHPDraftPageColumns,
+    columns: PPLHPFinalReviewPageColumns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
@@ -124,14 +124,14 @@ const PPLHPDataTable: FC<PPLHPDataTableProps> = ({ data }) => {
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-      <div className=" text-moss_green">
+      <div className=" text-light_brown">
         <Table className="italic font-dm-sans">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow className="italic" key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
                   return (
-                    <TableHead key={header.id} className="text-[#c2c5aa]">
+                    <TableHead key={header.id} className="text-[#b49a82]">
                       {header.isPlaceholder
                         ? null
                         : flexRender(
@@ -152,7 +152,7 @@ const PPLHPDataTable: FC<PPLHPDataTableProps> = ({ data }) => {
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
                   onClick={() =>
-                    router.push("lhpdraft/" + row.getValue("noPenawaran"))
+                    router.push("finalreview/" + row.getValue("noPenawaran"))
                   }
                 >
                   {row.getVisibleCells().map((cell) => (
@@ -179,7 +179,7 @@ const PPLHPDataTable: FC<PPLHPDataTableProps> = ({ data }) => {
         </Table>
       </div>
       <div className="flex items-center justify-end space-x-2 py-4 max-sm:flex-col gap-5">
-        <div className="flex-1 text-sm text-moss_green">
+        <div className="flex-1 text-sm text-light_brown">
           {/* {table.getFilteredSelectedRowModel().rows.length} of{" "} */}
           Total : {table.getFilteredRowModel().rows.length} row(s).
         </div>
@@ -251,4 +251,4 @@ const PPLHPDataTable: FC<PPLHPDataTableProps> = ({ data }) => {
   );
 }
 
-export default PPLHPDataTable;
+export default FinalReviewDataTable;
