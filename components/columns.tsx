@@ -380,7 +380,7 @@ export const LHPDraftPageColumns: ColumnDef<ProjectLHPType>[] = [
     header: ({ column }) => {
       return (
         <Button
-          className="italic text-[#c2c5aa]"
+          className="italic text-moss_green"
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >

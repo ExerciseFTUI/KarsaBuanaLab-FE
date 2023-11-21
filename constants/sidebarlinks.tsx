@@ -65,11 +65,6 @@ export const samplingLinks: ISidebarLinks[] = [
 
 export const pplhpLinks: ISidebarLinks[] = [
   {
-    icon: <AiFillHome />,
-    route: "",
-    label: "Dashboard",
-  },
-  {
     icon: <HiChartBar />,
     route: "/lhpdraft",
     label: "Pembuatan Draft LHP",
