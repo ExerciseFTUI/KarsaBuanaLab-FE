@@ -131,7 +131,7 @@ const PPLHPDataTable: FC<PPLHPDataTableProps> = ({ data }) => {
               <TableRow className="italic" key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
                   return (
-                    <TableHead key={header.id} className="text-[#c2c5aa]">
+                    <TableHead key={header.id} className="text-moss_green">
                       {header.isPlaceholder
                         ? null
                         : flexRender(
