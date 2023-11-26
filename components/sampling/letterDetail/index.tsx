@@ -36,7 +36,7 @@ export default function Project({ params }: projectParams) {
     <div className="flex w-full gap-6 max-md:flex-col max-md:items-center">
       <ProjectDetails data={data} className="w-full max-w-[32rem]" />
 
-      <Separator orientation="vertical" className="bg-light_brown w-0.5" />
+      <div className="hidden sm:block sm:w-[1.5px] sm:h-full bg-light_brown mb-4 sm:mb-0" />
 
       <TabDokumen data={data} samples={sampling_list} />
     </div>

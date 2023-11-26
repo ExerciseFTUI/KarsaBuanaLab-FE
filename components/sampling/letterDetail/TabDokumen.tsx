@@ -59,9 +59,9 @@ export default function TabDokumen({ samples, data }: dokuParams) {
         </TabsTrigger>
       </TabsList>
 
-      <TabsContent className="py-4" value="dokumen">
-        <div className="flex flex-wrap flex-col">
-          <DocumentList data={data} className="w-48" />
+      <TabsContent className="py-4 w-full" value="dokumen">
+        <div className="flex flex-wrap flex-col w-full">
+          <DocumentList data={data} className="w-full" />
 
           <h1 className="text-xl font-semibold my-5">Assignment Letter</h1>
 
@@ -77,11 +77,12 @@ export default function TabDokumen({ samples, data }: dokuParams) {
       </TabsContent>
 
       <TabsContent
-        className="py-4 flex flex-col flex-wrap"
+        className="py-4 flex flex-col flex-wrap w-full"
         value="penugasanSampel"
       >
         <h1 className="text-lg font-semibold mb-4">Pilih Petugas</h1>
-        <div className="flex flex-col gap-4">
+
+        <div className="flex flex-col gap-4 w-full">
           {samples.map((s, i) => (
             <div key={i} className="flex justify-between">
               <p className="text-dark_brown font-medium">

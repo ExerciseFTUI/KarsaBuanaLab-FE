@@ -55,7 +55,7 @@ const Dropzone = ({ setUploadedFiles }) => {
     <div>
       {/* Drag and drop files area */}
       <div
-        className={`h-32 rounded-lg grid place-items-center border-2 border-dashed border-dark_brown bg-light_brown bg-opacity-20 ${
+        className={`h-32 rounded-lg grid place-items-center border-2 border-dashed border-dark_brown bg-light_brown bg-opacity-20 p-4 ${
           isDraggedOver ? "border-4 opacity-100 " : "opacity-80"
         }`}
         {...getRootProps()}
