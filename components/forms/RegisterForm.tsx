@@ -1,6 +1,6 @@
 "use client";
 import React, { FC } from "react";
-
+import axios from "axios";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 
@@ -16,6 +16,15 @@ import {
 } from "@/components/ui/form";
 
 import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+
+import {
   Card,
   CardContent,
   CardDescription,
@@ -25,25 +34,53 @@ import {
 } from "@/components/ui/card";
 
 import { useForm } from "react-hook-form";
-import { registerValidation } from "@/lib/validations/RegisterValidation";
+import { registerValidation, registerValidationType } from "@/lib/validations/RegisterValidation";
 import { Input } from "../ui/input";
 
 interface RegisterFormProps {}
+
+async function postRegister(values : registerValidationType) : Promise<string> {
+  try {
+    let config = {
+      method: 'post',
+      maxBodyLength: Infinity,
+      url: 'http://localhost:3000/auth/register',
+      headers: { 
+        'Content-Type': 'application/json'
+      },
+      data : values
+    };
+
+    const response = await axios.request(config);
+    return response.data.message
+  } catch (error : any) {
+    console.log(error.response.data.message)
+    return error.response.data.message
+  }
+}
 
 const RegisterForm: FC<RegisterFormProps> = ({}) => {
   const form = useForm<z.infer<typeof registerValidation>>({
     resolver: zodResolver(registerValidation),
     defaultValues: {
       username: "",
+      email: "", // Added email field
       password: "",
       confirmPassword: "", // Added confirm password field
-      email: "", // Added email field
       role: "", // Added role field
+      division: "", // Added title fiels
     },
   });
 
-  function onSubmit(values: z.infer<typeof registerValidation>) {
-    console.log(values);
+  async function onSubmit(values: z.infer<typeof registerValidation>) {
+      const result = await postRegister(values);
+      
+      if(result === "User created") {
+        window.alert(result)
+        form.reset()
+      } else {
+        window.alert(result)
+      }
   }
 
   return (
@@ -90,7 +127,7 @@ const RegisterForm: FC<RegisterFormProps> = ({}) => {
                 <FormItem>
                   <FormLabel>Password</FormLabel>
                   <FormControl>
-                    <Input className="" placeholder="" {...field} />
+                    <Input type="password" className="" placeholder="" {...field} />
                   </FormControl>
 
                   <FormMessage />
@@ -104,23 +141,76 @@ const RegisterForm: FC<RegisterFormProps> = ({}) => {
                 <FormItem>
                   <FormLabel>Confirm Password</FormLabel>
                   <FormControl>
-                    <Input className="" placeholder="" {...field} />
+                    <Input type="password" className="" placeholder="" {...field} />
                   </FormControl>
 
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <FormField // Added role field
+            <FormField
               control={form.control}
               name="role"
               render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Role</FormLabel>
-                  <FormControl>
-                    <Input className="" placeholder="" {...field} />
-                  </FormControl>
-
+                <FormItem >
+                  <div className=" w-full flex justify-between items-center">
+                    <FormLabel className="mr-10">Role</FormLabel>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild className="w-72">
+                        <Button className="border-2 border-light_green" variant="outline">
+                          {field.value ? field.value : "Select Role"}
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent className="w-72">
+                        <DropdownMenuLabel>Roles</DropdownMenuLabel>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem onSelect={() => field.onChange("ADMIN")}>
+                          ADMIN
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onSelect={() => field.onChange("STAFF")}>
+                          STAFF
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </div>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField // Added role field
+              control={form.control}
+              name="division"
+              render={({ field }) => (
+                <FormItem >
+                  <div className=" w-full flex justify-between items-center">
+                    <FormLabel className="mr-10">Division</FormLabel>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger className=" w-72" asChild>
+                        <Button className=" border-2 border-light_green" variant="outline">
+                          {field.value ? field.value : "Select Division"}
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent className="w-72">
+                        <DropdownMenuLabel>Division</DropdownMenuLabel>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem onSelect={() => field.onChange("Marketing")}>
+                          Marketing
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onSelect={() => field.onChange("Sampling")}>
+                          Sampling
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onSelect={() => field.onChange("Sampling Recipient")}>
+                          Sampling Recipient
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onSelect={() => field.onChange("PPLHP")}>
+                          PPLHP
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onSelect={() => field.onChange("Lab")}>
+                          Lab
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </div>
                   <FormMessage />
                 </FormItem>
               )}
