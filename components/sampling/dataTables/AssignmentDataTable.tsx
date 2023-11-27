@@ -17,7 +17,7 @@ import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
-  DropdownMenuCheckboxItem, 
+  DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
@@ -89,7 +89,7 @@ export function DataTable() {
   return (
     <div className="w-full">
       {/* Top Search Title */}
-      <div className="flex gap-2 mt-4">
+      <div className="flex flex-wrap gap-2 mt-4">
         {/* Seach Input */}
         <Input
           placeholder="Filter By Project Title"
