@@ -1,10 +1,10 @@
-import EditSample from '@/components/marketing/editSample/EditSample'
+import AddSample from '@/components/marketing/addSample/AddSample'
 import React from 'react'
 
 const test = () => {
   return (
     <>
-      <EditSample/>
+      <AddSample/>
     </>
   )
 }
