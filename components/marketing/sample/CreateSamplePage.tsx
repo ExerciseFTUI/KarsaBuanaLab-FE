@@ -16,9 +16,7 @@ const CreateSamplePage = () => {
                 {/* Information for sampling and regulation */}
                 <div className=' border border-dark_green rounded-lg p-3 h-full'>
                     {/* Add sampling Button */}
-                    <Link href={"./createSample/Test"}>
                     <button className=' p-3 flex hover:opacity-70 justify-center font-bold text-xl border-light_green border-2 rounded-lg w-full bg-dark_green text-white '> Create New Sample</button>
-                    </Link>
                     {/* End of Add sampling Button */}
 
                     {/* Sampling choose */}
@@ -28,7 +26,7 @@ const CreateSamplePage = () => {
                         <div className=' flex justify-between w-full items-center'>
                             <SearchableDropdown value={value} setValue={setValue} />
                             {value !== "" && (
-                                <Link href={'/marketing/createSample'}>
+                                <Link href={'/marketing/createSample/Test'}>
                                     <div className='mx-5 w-fit text-blue-800 hover:cursor-pointer underline'>
                                         Edit sample {value}
                                     </div>

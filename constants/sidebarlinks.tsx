@@ -40,8 +40,8 @@ export const marketingLink: ISidebarLinks[] = [
   },
   {
     icon: <HiChartBar />,
-    route: "/createSample",
-    label: "Create Sample",
+    route: "/sample",
+    label: "Sample",
   },
 ]
 

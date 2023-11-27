@@ -51,7 +51,7 @@ const TableRegulation : React.FC<tableRegulationProps> = ({value, regulation, se
   return (
     <div className="w-fit border-2 border-dark_green rounded-xl p-5  items-center justify-center">
         <p className=" text-xs mb-3 opacity-70 ">Click on target regulation to see the detail of parameters</p>
-        <Table className="">
+        <Table className=" w-full">
             <TableCaption>Lists regulation of sample {value} </TableCaption>
             <TableHeader>
                 <TableRow>
@@ -70,6 +70,7 @@ const TableRegulation : React.FC<tableRegulationProps> = ({value, regulation, se
             )}
             </TableBody>
         </Table>
+            <div className="hover:bg-dark_green hover:text-white hover:cursor-pointer w-full rounded-lg p-3 font-semibold flex justify-center bg-light_green"> + Add Regulation </div>
     </div>
   )
 }
