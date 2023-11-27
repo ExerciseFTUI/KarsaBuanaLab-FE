@@ -25,37 +25,13 @@ import {
 } from "@/components/ui/card";
 
 import { useForm } from "react-hook-form";
-import { loginValidation, loginValidationType } from "@/lib/validations/LoginValidation";
+import { loginValidation } from "@/lib/validations/LoginValidation";
 import { Input } from "../ui/input";
 import { signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useToast } from "../ui/use-toast";
-import axios from "axios";
-import { access } from "fs";
 
 interface LoginFormProps {}
-
-async function postLogin(values:loginValidationType) {
-  try {
-    let config = {
-      method: 'post',
-      maxBodyLength: Infinity,
-      url: 'http://localhost:3000/auth/login',
-      headers: {
-        'authorization': '', 
-        'Content-Type' : 'application/json'
-      },
-      data: values
-    };
-
-    const response = await axios.request(config);
-    // console.log(JSON.stringify(response.data));
-    return (response.data.accessToken, response.data.refreshToken)
-  } catch (error : any) {
-    // console.log(error);
-    return (error)
-  }
-}
 
 const LoginForm: FC<LoginFormProps> = ({}) => {
   const router = useRouter();
@@ -72,45 +48,30 @@ const LoginForm: FC<LoginFormProps> = ({}) => {
   });
 
   // 2. Define a submit handler.
-  async function onSubmit(values: z.infer<typeof loginValidation>) {
-    // Call API
-    const result = await postLogin(values);
-
+  function onSubmit(values: z.infer<typeof loginValidation>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
-    // console.log(result);
+    console.log(values);  
 
-    if (result.accessToken === null) {
-      toast({
-          description: "Invalid email or password",
+    //NextAuth SignIn
+    signIn("credentials", {
+      ...values,
+      redirect: false, //Add redirect to data object
+    }).then((callback) => {
+      console.log(callback);
+      if (callback?.error) {
+        toast({
+          description: "Invalid username or password",
           variant: "destructive",
           title: "Uh oh! Something went wrong.",
         });
-    } else {
-      toast({ title: "Successfully logged in", description: "Welcome back" });
+      }
+      if (callback?.ok && !callback?.error) {
+        toast({ title: "Successfully logged in", description: "Welcome back" });
         const callbackUrl = query.get("callbackUrl");
         router.push(callbackUrl || "/");
-    }
-
-    //NextAuth SignIn
-    // signIn("credentials", {
-    //   ...values,
-    //   redirect: false, //Add redirect to data object
-    // }).then((callback) => {
-    //   console.log(callback);
-    //   if (callback?.error) {
-    //     toast({
-    //       description: "Invalid email or password",
-    //       variant: "destructive",
-    //       title: "Uh oh! Something went wrong.",
-    //     });
-    //   }
-    //   if (callback?.ok && !callback?.error) {
-    //     toast({ title: "Successfully logged in", description: "Welcome back" });
-    //     const callbackUrl = query.get("callbackUrl");
-    //     router.push(callbackUrl || "/");
-    //   }
-    // });
+      }
+    });
     // .finally(() => setIsLoading(false));
   }
 
@@ -128,7 +89,7 @@ const LoginForm: FC<LoginFormProps> = ({}) => {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Email</FormLabel>
+                  <FormLabel>Username</FormLabel>
                   <FormControl>
                     <Input className="" placeholder="" {...field} />
                   </FormControl>
