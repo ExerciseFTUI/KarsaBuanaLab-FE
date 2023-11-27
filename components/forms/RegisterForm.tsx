@@ -16,6 +16,15 @@ import {
 } from "@/components/ui/form";
 
 import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+
+import {
   Card,
   CardContent,
   CardDescription,
@@ -55,9 +64,9 @@ const RegisterForm: FC<RegisterFormProps> = ({}) => {
     resolver: zodResolver(registerValidation),
     defaultValues: {
       username: "",
+      email: "", // Added email field
       password: "",
       confirmPassword: "", // Added confirm password field
-      email: "", // Added email field
       role: "", // Added role field
       division: "", // Added title fiels
     },
@@ -65,11 +74,13 @@ const RegisterForm: FC<RegisterFormProps> = ({}) => {
 
   async function onSubmit(values: z.infer<typeof registerValidation>) {
       const result = await postRegister(values);
-      // console.log(result)
-      window.alert(result)
-
-      if(result === "User created") 
+      
+      if(result === "User created") {
+        window.alert(result)
         form.reset()
+      } else {
+        window.alert(result)
+      }
   }
 
   return (
@@ -137,16 +148,31 @@ const RegisterForm: FC<RegisterFormProps> = ({}) => {
                 </FormItem>
               )}
             />
-            <FormField // Added role field
+            <FormField
               control={form.control}
               name="role"
               render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Role</FormLabel>
-                  <FormControl>
-                    <Input className="" placeholder="" {...field} />
-                  </FormControl>
-
+                <FormItem >
+                  <div className=" w-full flex justify-between items-center">
+                    <FormLabel className="mr-10">Role</FormLabel>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild className="w-72">
+                        <Button className="border-2 border-light_green" variant="outline">
+                          {field.value ? field.value : "Select Role"}
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent className="w-72">
+                        <DropdownMenuLabel>Roles</DropdownMenuLabel>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem onSelect={() => field.onChange("ADMIN")}>
+                          ADMIN
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onSelect={() => field.onChange("STAFF")}>
+                          STAFF
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </div>
                   <FormMessage />
                 </FormItem>
               )}
@@ -155,12 +181,36 @@ const RegisterForm: FC<RegisterFormProps> = ({}) => {
               control={form.control}
               name="division"
               render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Division</FormLabel>
-                  <FormControl>
-                    <Input className="" placeholder="" {...field} />
-                  </FormControl>
-
+                <FormItem >
+                  <div className=" w-full flex justify-between items-center">
+                    <FormLabel className="mr-10">Division</FormLabel>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger className=" w-72" asChild>
+                        <Button className=" border-2 border-light_green" variant="outline">
+                          {field.value ? field.value : "Select Division"}
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent className="w-72">
+                        <DropdownMenuLabel>Division</DropdownMenuLabel>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem onSelect={() => field.onChange("Marketing")}>
+                          Marketing
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onSelect={() => field.onChange("Sampling")}>
+                          Sampling
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onSelect={() => field.onChange("Sampling Recipient")}>
+                          Sampling Recipient
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onSelect={() => field.onChange("PPLHP")}>
+                          PPLHP
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onSelect={() => field.onChange("Lab")}>
+                          Lab
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </div>
                   <FormMessage />
                 </FormItem>
               )}
