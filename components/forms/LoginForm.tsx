@@ -65,6 +65,9 @@ const LoginForm: FC<LoginFormProps> = ({}) => {
           variant: "destructive",
           title: "Uh oh! Something went wrong.",
         });
+        // Need to delete
+        const callbackUrl = query.get("callbackUrl");
+        router.push(callbackUrl || "/");
       }
       if (callback?.ok && !callback?.error) {
         toast({ title: "Successfully logged in", description: "Welcome back" });
