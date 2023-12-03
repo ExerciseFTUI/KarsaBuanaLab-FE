@@ -93,7 +93,7 @@ export function DataTable() {
     <div className="w-full">
       {/* Top Search Title */}
       <div className="flex flex-wrap items-center py-4">
-        <div className="flex gap-2 flex-wrap">
+        <div className="flex gap-2 flex-wrap w-full">
           {/* Seach Input */}
           <Input
             placeholder="Filter By Project Title"
