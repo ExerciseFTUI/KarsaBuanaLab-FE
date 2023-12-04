@@ -1,5 +1,5 @@
 import { ColumnDef } from "@tanstack/react-table"
-import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react"
+import { ArrowUpDown, MoreHorizontal } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import {
@@ -10,15 +10,16 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { useRouter } from "next/navigation";
+} from "@/components/ui/dropdown-menu"
 import {
-  ProjectSamplingType,
   ProjectType,
   ReceiveSamplingType,
-  ProjectLHPType
-} from "@/lib/type";
-import Link from "next/link";
+  ProjectLHPType,
+  UserType,
+  SamplingType,
+  BaseSampleType,
+} from "@/lib/type"
+import Link from "next/link"
 
 // Table Column for Marketing OnDiscuss
 export const columns: ColumnDef<ProjectType>[] = [
@@ -142,7 +143,9 @@ export const columns: ColumnDef<ProjectType>[] = [
             <DropdownMenuSeparator />
 
             <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(project.noPenawaran)}
+              onClick={() =>
+                navigator.clipboard.writeText(project.no_penawaran)
+              }
             >
               Copy No Penawaran
             </DropdownMenuItem>
@@ -154,7 +157,7 @@ export const columns: ColumnDef<ProjectType>[] = [
 ]
 
 //Table Column for Penerima Sampling
-export const receiveProjectPageColumns: ColumnDef<ProjectSamplingType>[] = [
+export const receiveProjectPageColumns: ColumnDef<ProjectType>[] = [
   //No Penawaran
   {
     accessorKey: "no_penawaran",
@@ -231,83 +234,6 @@ export const receiveProjectPageColumns: ColumnDef<ProjectSamplingType>[] = [
 ]
 
 // Table Column for Sampling Project
-export const samplingProjectPageColumns: ColumnDef<ProjectSamplingType>[] = [
-  //No Penawaran
-  {
-    accessorKey: "no_penawaran",
-    header: "No Penawaran",
-    cell: ({ row }) => <div className="">{row.getValue("no_penawaran")}</div>,
-  },
-  // Project Title
-  {
-    accessorKey: "project_name",
-    header: ({ column }) => {
-      return (
-        <Button
-          className="font-light hover:bg-transparent italic"
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Project Title
-          <ArrowUpDown strokeWidth={1.5} className="ml-2 h-4 w-4" />
-        </Button>
-      )
-    },
-    cell: ({ row }) => (
-      <div className="capitalize pl-4">{row.getValue("project_name")}</div>
-    ),
-  },
-  //Lokasi
-  {
-    accessorKey: "alamat_kantor",
-    header: "Lokasi",
-    cell: ({ row }) => {
-      return (
-        <div className="capitalize pl-0.5">{row.getValue("alamat_kantor")}</div>
-      )
-    },
-  },
-  //Contact Person
-  {
-    accessorKey: "contact_person",
-    header: "Contact Person",
-    cell: ({ row }) => {
-      return (
-        <div className="capitalize pl-0.5">
-          {row.getValue("contact_person")}
-        </div>
-      )
-    },
-  },
-  // Status
-  {
-    accessorKey: "status",
-    header: "Status",
-    cell: ({ row }) => {
-      const status: any = row.getValue("status")
-
-      const color =
-        status == "Need Schedule" || status == "Get Sample"
-          ? "bg-moss_green"
-          : status == "On Discuss" || status == "Verifying"
-          ? "bg-light_brown"
-          : "bg-brick_red"
-
-      return (
-        <div
-          className={
-            "px-4 py-1.5 inline-block min-w-[8rem] rounded-full text-ghost_white " +
-            color
-          }
-        >
-          {status}
-        </div>
-      )
-    },
-  },
-];
-
-// Table Column for Sampling Project
 export const receiveSamplingColumns: ColumnDef<ReceiveSamplingType>[] = [
   //No Penawaran
   {
@@ -328,7 +254,7 @@ export const receiveSamplingColumns: ColumnDef<ReceiveSamplingType>[] = [
           Project Title
           <ArrowUpDown strokeWidth={1.5} className="ml-2 h-4 w-4" />
         </Button>
-      );
+      )
     },
     cell: ({ row }) => (
       <div className="capitalize pl-4">{row.getValue("judulProject")}</div>
@@ -341,7 +267,7 @@ export const receiveSamplingColumns: ColumnDef<ReceiveSamplingType>[] = [
     cell: ({ row }) => {
       return (
         <div className="capitalize pl-0.5">{row.getValue("lokasiSampel")}</div>
-      );
+      )
     },
   },
   //Lokasi
@@ -349,7 +275,7 @@ export const receiveSamplingColumns: ColumnDef<ReceiveSamplingType>[] = [
     accessorKey: "lokasi",
     header: "Lokasi",
     cell: ({ row }) => {
-      return <div className="capitalize pl-0.5">{row.getValue("lokasi")}</div>;
+      return <div className="capitalize pl-0.5">{row.getValue("lokasi")}</div>
     },
   },
   //Contact Person
@@ -357,16 +283,10 @@ export const receiveSamplingColumns: ColumnDef<ReceiveSamplingType>[] = [
     accessorKey: "cp",
     header: "Contact Person",
     cell: ({ row }) => {
-      return <div className="capitalize pl-0.5">{row.getValue("cp")}</div>;
+      return <div className="capitalize pl-0.5">{row.getValue("cp")}</div>
     },
   },
-];
-
-export const samplingLetterPageColumns: ColumnDef<ProjectSamplingType>[] =
-  samplingProjectPageColumns.slice(0, -1);
-
-console.log(samplingLetterPageColumns);
-
+]
 
 export const LHPDraftPageColumns: ColumnDef<ProjectLHPType>[] = [
   //No Penawaran
@@ -387,7 +307,7 @@ export const LHPDraftPageColumns: ColumnDef<ProjectLHPType>[] = [
           Judul Project
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
-      );
+      )
     },
     cell: ({ row }) => (
       <div className="capitalize pl-4">{row.getValue("judul")}</div>
@@ -398,7 +318,11 @@ export const LHPDraftPageColumns: ColumnDef<ProjectLHPType>[] = [
     accessorKey: "lokasiPengambilanSampel",
     header: "Lokasi Pengambilan Sampel",
     cell: ({ row }) => {
-      return <div className="capitalize pl-0.5">{row.getValue("lokasiPengambilanSampel")}</div>;
+      return (
+        <div className="capitalize pl-0.5">
+          {row.getValue("lokasiPengambilanSampel")}
+        </div>
+      )
     },
   },
   //Lokasi
@@ -406,17 +330,17 @@ export const LHPDraftPageColumns: ColumnDef<ProjectLHPType>[] = [
     accessorKey: "lokasi",
     header: "Lokasi",
     cell: ({ row }) => {
-      return <div className="capitalize pl-0.5">{row.getValue("lokasi")}</div>;
+      return <div className="capitalize pl-0.5">{row.getValue("lokasi")}</div>
     },
   },
   {
     accessorKey: "cp",
     header: "Contact Person",
     cell: ({ row }) => {
-      return <div className="capitalize pl-0.5">{row.getValue("cp")}</div>;
+      return <div className="capitalize pl-0.5">{row.getValue("cp")}</div>
     },
   },
-];
+]
 
 export const PPLHPFinalReviewPageColumns: ColumnDef<ProjectLHPType>[] = [
   //No Penawaran
@@ -437,7 +361,7 @@ export const PPLHPFinalReviewPageColumns: ColumnDef<ProjectLHPType>[] = [
           Judul Project
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
-      );
+      )
     },
     cell: ({ row }) => (
       <div className="capitalize pl-4">{row.getValue("judul")}</div>
@@ -448,7 +372,11 @@ export const PPLHPFinalReviewPageColumns: ColumnDef<ProjectLHPType>[] = [
     accessorKey: "lokasiPengambilanSampel",
     header: "Lokasi Pengambilan Sampel",
     cell: ({ row }) => {
-      return <div className="capitalize pl-0.5">{row.getValue("lokasiPengambilanSampel")}</div>;
+      return (
+        <div className="capitalize pl-0.5">
+          {row.getValue("lokasiPengambilanSampel")}
+        </div>
+      )
     },
   },
   //Lokasi
@@ -456,14 +384,14 @@ export const PPLHPFinalReviewPageColumns: ColumnDef<ProjectLHPType>[] = [
     accessorKey: "lokasi",
     header: "Lokasi",
     cell: ({ row }) => {
-      return <div className="capitalize pl-0.5">{row.getValue("lokasi")}</div>;
+      return <div className="capitalize pl-0.5">{row.getValue("lokasi")}</div>
     },
   },
   {
     accessorKey: "cp",
     header: "Contact Person",
     cell: ({ row }) => {
-      return <div className="capitalize pl-0.5">{row.getValue("cp")}</div>;
+      return <div className="capitalize pl-0.5">{row.getValue("cp")}</div>
     },
   },
-];
+]

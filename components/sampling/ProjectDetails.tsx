@@ -1,18 +1,23 @@
 "use client"
 
 import React from "react"
-import { ProjectSamplingType } from "@/lib/type"
+import { ProjectType } from "@/lib/type"
 import { object } from "zod"
 import { cn, rupiah } from "@/lib/utils"
 
 interface pdType {
-  data: ProjectSamplingType
+  data: ProjectType
   className?: string
 }
 
 export default function ProjectDetails({ data, className = "" }: pdType) {
   return (
-    <div className={cn("px-4 py-2 flex-1", className)}>
+    <div
+      className={cn(
+        "px-4 py-2 flex-1 border-r-light_brown border-b-2 sm:border-r-2 sm:border-b-0",
+        className
+      )}
+    >
       <h1 className="text-2xl font-semibold mb-5">{data.project_name}</h1>
 
       <div className="">

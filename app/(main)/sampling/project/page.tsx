@@ -1,9 +1,9 @@
-import { DataTable } from "@/components/sampling/dataTables/ProjectDataTable"
+import { SamplingProjectDataTables } from "@/components/sampling/dataTables"
 
 export default function SamplingProject() {
   return (
     <div className="flex flex-col w-full ">
-      <DataTable />
+      <SamplingProjectDataTables />
     </div>
   )
 }

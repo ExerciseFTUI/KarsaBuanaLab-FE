@@ -1,6 +1,7 @@
 "use client"
 import * as React from "react"
 import {
+  ColumnDef,
   ColumnFiltersState,
   SortingState,
   VisibilityState,
@@ -43,29 +44,29 @@ import {
   DoubleArrowLeftIcon,
   DoubleArrowRightIcon,
 } from "@radix-ui/react-icons"
-import { samplingLetterPageColumns } from "@/components/columns"
-import { fetcher } from "@/lib/utils"
+import { cn, fetcher } from "@/lib/utils"
 import useSWR from "swr"
 
-export function DataTable() {
+interface DataTableProps {
+  status: string[]
+  columns: ColumnDef<any>[]
+  endpoint: "sample" | "assignment-letter" | "project"
+}
+
+// prettier-ignore
+export function DataTable({status, columns, endpoint}: DataTableProps) {
   const router = useRouter()
+
   const [sorting, setSorting] = React.useState<SortingState>([])
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    []
-  )
+  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
+  const [columnVisibility, setColumnVisibility] =React.useState<VisibilityState>({})
+  const [statusFilter, setStatusFilter] = React.useState("")
 
-  const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({})
-  const [rowSelection, setRowSelection] = React.useState({})
-
-  const { data, error, isLoading } = useSWR(
-    "/api/sampling/assignment-letter",
-    fetcher
-  )
+  const { data, isLoading, error } = useSWR("/api/sampling/" + endpoint, fetcher)
 
   const table = useReactTable({
-    data: data,
-    columns: samplingLetterPageColumns,
+    data,
+    columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
@@ -73,12 +74,10 @@ export function DataTable() {
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
-    onRowSelectionChange: setRowSelection,
     state: {
       sorting,
       columnFilters,
       columnVisibility,
-      rowSelection,
     },
   })
 
@@ -89,18 +88,39 @@ export function DataTable() {
   return (
     <div className="w-full">
       {/* Top Search Title */}
-      <div className="flex flex-wrap gap-2 mt-4">
-        {/* Seach Input */}
-        <Input
-          placeholder="Filter By Project Title"
-          value={
-            (table.getColumn("project_name")?.getFilterValue() as string) ?? ""
-          }
-          onChange={(event) =>
-            table.getColumn("project_name")?.setFilterValue(event.target.value)
-          }
-          className="max-w-sm border-pastel_moss_green rounded-full focus-visible:ring-0 bg-pastel_moss_green pl-5 placeholder:text-moss_green"
-        />
+      <div className="flex flex-wrap items-center py-4">
+        <div className="flex gap-2 flex-wrap w-full mb-2">
+          {/* Seach Input */}
+          <Input
+            placeholder="Filter By Project Title"
+            value={
+              (table.getColumn("project_name")?.getFilterValue() as string) ??
+              ""
+            }
+            onChange={(event) =>
+              table
+                .getColumn("project_name")
+                ?.setFilterValue(event.target.value)
+            }
+            className="max-w-sm border-pastel_moss_green rounded-full focus-visible:ring-0 bg-pastel_moss_green pl-5 placeholder:text-moss_green"
+          />
+
+          {status.map((s, i) => (
+            <Button
+              key={i}
+              className={cn(
+                "min-w-fit bg-transparent text-moss_green rounded-full border-2 shadow-none border-pastel_moss_green hover:bg-pastel_moss_green",
+                statusFilter == s && "bg-pastel_moss_green"
+              )}
+              onClick={() => {
+                table.getColumn("status")?.setFilterValue(s)
+                setStatusFilter(s)
+              }}
+            >
+              {s.length ? s : "All"}
+            </Button>
+          ))}
+        </div>
 
         {/* Column Visibility */}
         <DropdownMenu>
@@ -136,8 +156,7 @@ export function DataTable() {
       </div>
 
       {/* Table Content */}
-      <div className="mt-4 text-moss_green ">
-        <Table className="">
+        <Table className="text-moss_green">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow className="hover:bg-transparent" key={headerGroup.id}>
@@ -164,17 +183,15 @@ export function DataTable() {
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
-                  className="hover:bg-pastel_moss_green ease-in-out duration-500 text-xs hover:cursor-pointer hover:rounded-xl text-center"
+                  className={cn("hover:bg-pastel_moss_green ease-in-out duration-500 text-xs hover:cursor-pointer hover:rounded-xl text-center", endpoint == "assignment-letter" && "text-xs h-12")}
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
                   onClick={() =>
-                    router.push(
-                      "assignment-letter/" + row.getValue("no_penawaran")
-                    )
+                    router.push(endpoint + "/" + row.getValue("no_penawaran"))
                   }
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell className="py-4" key={cell.id}>
+                    <TableCell key={cell.id}>
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext()
@@ -186,7 +203,7 @@ export function DataTable() {
             ) : (
               <TableRow>
                 <TableCell
-                  colSpan={samplingLetterPageColumns.length}
+                  colSpan={columns.length}
                   className="h-24 text-center"
                 >
                   No results.
@@ -195,17 +212,15 @@ export function DataTable() {
             )}
           </TableBody>
         </Table>
-      </div>
 
       {/* Bottom Pagination */}
       <div className="flex items-center justify-end space-x-2 py-4 max-sm:flex-col gap-5">
         <div className="flex-1 text-sm text-moss_green">
-          {/* {table.getFilteredSelectedRowModel().rows.length} of{" "} */}
-          Total : {table.getFilteredRowModel().rows.length} row(s).
+          Total : {table.getFilteredRowModel().rows.length} project(s).
         </div>
 
         <div className="flex items-center space-x-2">
-          <p className="text-sm font-medium text-moss_green">Rows per page</p>
+          <p className="text-sm font-medium text-moss_green">Projects per page</p>
           <Select
             value={`${table.getState().pagination.pageSize}`}
             onValueChange={(value) => {

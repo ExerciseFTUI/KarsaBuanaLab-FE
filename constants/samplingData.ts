@@ -1,19 +1,54 @@
-import { ProjectSamplingType, SampleType } from "@/lib/type"
+import { FileType, ProjectType, SamplingType, UserType } from "@/lib/type"
 import { randomInt, randomUUID } from "crypto"
-import projectJson from "@/constants/projectData.json"
 
-function generateRandomData(length: number = 100): ProjectSamplingType[] {
-  let data: ProjectSamplingType[] = []
+import projectJson from "@/constants/data/projectData.json"
+import userJson from "@/constants/data/userData.json"
+
+function generateRandomData(length: number = 100): ProjectType[] {
+  let data: ProjectType[] = []
 
   for (let i = 1; i <= length; i++) {
-    let temp: ProjectSamplingType = {
+    let file: FileType = {
+      file_id: randomUUID().slice(0, 8),
+      file_name: "File " + i,
+    }
+
+    let samplingList: SamplingType[] = []
+
+    for (let j = 1; j <= 5; j++) {
+      let sample: SamplingType = {
+        fileId: randomUUID().slice(0, 8),
+        assigned_to: [],
+        base_sample_list: [
+          {
+            sample_name: "Base Sample " + j,
+            amount: randomInt(12),
+          },
+        ],
+        harga: randomInt(750000).toString(),
+        jadwal: new Date(),
+        location: "Lokasi Sample " + j,
+        param: [],
+        regulation: {
+          file: [file],
+          param: [],
+          regulation_name: "Regulation " + j,
+        },
+        sample_name: "Sample " + j,
+        status: "Status",
+      }
+
+      samplingList.push(sample)
+    }
+
+    let temp: ProjectType = {
       no_penawaran: "PNW" + (i < 10 ? "0" + i : i + ""),
       no_sampling: randomUUID().slice(0, 8),
       client_name: "Client " + i,
       project_name: "Project " + i,
       alamat_kantor: "Kantor " + i,
       alamat_sampling: "Alamat Sample " + i,
-      surel: "domain" + i + "@mail.com",
+      surel: "nama" + i + "@mail.com",
       contact_person: "Orang " + i,
       status: [
         "Get Sample",
@@ -27,20 +62,10 @@ function generateRandomData(length: number = 100): ProjectSamplingType[] {
       password: "password" + i,
       jumlah_revisi: i,
       valuasi_proyek: randomInt(500000),
-      surat_penawaran: "Surat Penawaran" + i,
+      surat_penawaran: "Surat Penawaran " + i,
       created_year: "2023-" + randomInt(1, 12) + "-" + randomInt(0, 31),
-      sampling_list: [],
-      file: { file_nama: "File " + i, file_id: "fileId" + i },
-    }
-
-    for (let j = 1; j <= 5; j++) {
-      temp.sampling_list.push({
-        sample_name: "Sample " + j,
-        harga: randomInt(500000) + "",
-        fileId: "fileId" + j,
-        regulation: "Regulation " + ["A", "B", "C", "D"][randomInt(0, 4)],
-        location: "Lokasi Sampel " + j,
-      })
+      sampling_list: samplingList,
+      file: [file],
     }
 
     data.push(temp)
@@ -49,22 +74,40 @@ function generateRandomData(length: number = 100): ProjectSamplingType[] {
   return data
 }
 
-const projectData: ProjectSamplingType[] = JSON.parse(projectJson).filter(
-  (p: ProjectSamplingType) =>
+const sampleProjectData: ProjectType[] = JSON.parse(
+  JSON.stringify(projectJson)
+).filter(
+  (p: ProjectType) =>
     p.status == "Need Schedule" ||
     p.status == "On Discuss" ||
     p.status == "Revision"
 )
 
-const sampleData: ProjectSamplingType[] = JSON.parse(projectJson).filter(
-  (p: ProjectSamplingType) =>
+const sampleSamplingData: ProjectType[] = JSON.parse(
+  JSON.stringify(projectJson)
+).filter(
+  (p: ProjectType) =>
     p.status == "Verifying" ||
     p.status == "Get Sample" ||
     p.status == "Revision"
 )
 
-const assignmentLetterData: ProjectSamplingType[] = JSON.parse(
-  projectJson
-).filter((p: ProjectSamplingType) => p.status == "Letter")
+const sampleLetterData: ProjectType[] = JSON.parse(
+  JSON.stringify(projectJson)
+).filter((p: ProjectType) => p.status == "Letter")
 
-export { projectData, sampleData, assignmentLetterData }
+const userMarketingData: UserType[] = JSON.parse(
+  JSON.stringify(userJson)
+).filter((p: UserType) => p.division == "Marketing")
+
+const userAssistantData: UserType[] = JSON.parse(
+  JSON.stringify(userJson)
+).filter((p: UserType) => p.division == "Assistant")
+
+export {
+  sampleProjectData,
+  sampleSamplingData,
+  sampleLetterData,
+  userMarketingData,
+  userAssistantData,
+}
