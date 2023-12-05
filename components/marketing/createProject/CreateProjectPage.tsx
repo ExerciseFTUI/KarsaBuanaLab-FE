@@ -2,20 +2,8 @@
 
 import CreateProjectBaseData from "@/components/forms/CreateProjectBaseData";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import Sampling from "@/components/marketing/createProject/Sampling";
-import { PlusIcon } from "@radix-ui/react-icons";
-import { PlusCircleIcon } from "lucide-react";
 import SamplingTab from "@/components/marketing/createProject/SamplingTab";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   FieldValues,
   SubmitHandler,
@@ -23,10 +11,14 @@ import {
   useForm,
 } from "react-hook-form";
 import DocumentTab from "./DocumentTab";
+import { createProjectValidation } from "@/lib/validations/CreateProjectValidation";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 
 export default function CreateProjectPage() {
   //=============================== Sample Section
   const [openModal, setOpenModal] = useState(false);
+
   const sampleForm = useForm<FieldValues>({
     defaultValues: {
       sampling: "",
@@ -42,18 +34,47 @@ export default function CreateProjectPage() {
     name: "samples",
   });
 
+  useEffect(() => {
+    console.log(arrayField.fields);
+  }, [arrayField.fields]);
+
   //All the samples get save in here
   const { fields: samples } = arrayField;
 
   //================================= End Sample Section
 
+  //================================= Project Information Section
+
+  const form = useForm<z.infer<typeof createProjectValidation>>({
+    resolver: zodResolver(createProjectValidation),
+    defaultValues: {
+      title: "",
+      custName: "",
+      alamatKantor: "",
+      alamatSampling: "",
+      surel: "",
+      contactPerson: "",
+    },
+  });
+
+  // 2. Define a submit handler.
+  async function onSubmit(values: z.infer<typeof createProjectValidation>) {
+    // Do something with the form values.
+    // ✅ This will be type-safe and validated.
+    console.log(values);
+  }
+
+  //================================= End Project Information Section
+
   //=============================== Document Section
+
+  const [uploadedFiles, setUploadedFiles] = useState([]);
 
   //=============================== End Document Section
 
   return (
     <div className="flex gap-6 max-md:flex-col max-md:items-center">
-      <CreateProjectBaseData />
+      <CreateProjectBaseData form={form} onSubmit={onSubmit} />
       <Tabs defaultValue="sampling" className="w-[40rem] max-sm:w-[420px]">
         <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="sampling">Sampling</TabsTrigger>
@@ -73,7 +94,10 @@ export default function CreateProjectPage() {
 
         {/* Document Section */}
         <TabsContent value="document">
-          <DocumentTab />
+          <DocumentTab
+            uploadedFiles={uploadedFiles}
+            setUploadedFiles={setUploadedFiles}
+          />
         </TabsContent>
         {/* End Document Section */}
       </Tabs>
