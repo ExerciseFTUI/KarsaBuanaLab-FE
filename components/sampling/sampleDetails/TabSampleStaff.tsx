@@ -4,15 +4,23 @@ import React from "react"
 import { SamplingType } from "@/lib/type"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import HyperLinkButton from "../HyperlinkButton"
-import { Button } from "@/components/ui/button"
 import { SampleStaffDataTable } from "./SampleStaffDataTable"
-import { GroupStaffDataTable } from "./GroupStaffDataTable"
+import { userAssistantData } from "@/constants/samplingData"
+import { getCoreRowModel, useReactTable } from "@tanstack/react-table"
+import { groupUserStaffColumns } from "../DataTableColumns"
+import { UserDataTable } from "../UserDataTable"
 
-export default function TabSampleStaff({
-  samples,
-}: {
-  samples: SamplingType[]
-}) {
+const data = userAssistantData.slice(0, 5)
+
+// prettier-ignore
+export default function TabSampleStaff({ samples }: { samples: SamplingType[] }) {
+
+  const table = useReactTable({
+    data,
+    columns: groupUserStaffColumns,
+    getCoreRowModel: getCoreRowModel(),
+  })
+
   return (
     <Tabs defaultValue="sampel" className="flex-1">
       <TabsList className="grid w-full grid-cols-2 shadow-none bg-transparent">
@@ -51,9 +59,7 @@ export default function TabSampleStaff({
       </TabsContent>
 
       <TabsContent className="py-4" value="grup">
-        <div className="w-full">
-          <GroupStaffDataTable />
-        </div>
+        <UserDataTable table={table} />
       </TabsContent>
     </Tabs>
   )

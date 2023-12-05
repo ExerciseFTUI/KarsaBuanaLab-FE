@@ -25,7 +25,7 @@ export function UserDataTable({ table }: params) {
               return (
                 <TableHead
                   key={header.id}
-                  className="text-center  text-light_brown"
+                  className="text-center  text-dark_brown font-semibold"
                 >
                   {header.isPlaceholder
                     ? null

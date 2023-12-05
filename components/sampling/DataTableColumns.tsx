@@ -130,6 +130,9 @@ export const groupUserSelectableColumns: ColumnDef<UserType>[] = [
   },
 ]
 
+export const groupUserStaffColumns: ColumnDef<UserType>[] =
+  groupUserSelectableColumns.slice(1, groupUserSelectableColumns.length)
+
 export const staffGroupListColumns: ColumnDef<UserType>[] = [
   {
     accessorKey: "name",

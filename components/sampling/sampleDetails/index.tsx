@@ -31,8 +31,8 @@ export default function Project({ params }: { params: { np: string } }) {
 
   return (
     <div className="flex gap-6 max-md:flex-col max-md:items-center">
-      <div className="flex flex-col flex-1">
-        <ProjectDetails data={data} className="flex-none" />
+      <div className="flex flex-col flex-1 sm:border-r-light_brown sm:border-r-2 border-b-2 border-b-light_brown sm:border-b-0">
+        <ProjectDetails data={data} className="flex-none border-none" />
 
         <DocumentList data={data} className="w-full sm:w-56" />
       </div>
