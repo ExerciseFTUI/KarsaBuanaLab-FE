@@ -21,6 +21,7 @@ const DocumentTab: FC<DocumentTabProps> = ({
 
   const handleSubmit = () => {
     // TODO: Implement your logic to submit uploadedFiles to the server
+
     if (uploadedFiles.length > 0) {
       // For demonstration purposes, show a success message using toastify
       alert("Files submitted successfully!");

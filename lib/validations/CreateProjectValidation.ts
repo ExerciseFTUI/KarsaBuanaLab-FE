@@ -4,9 +4,12 @@ export const createProjectValidation = z.object({
   title: z.string().min(5, {
     message: "Please input title more than 5 words",
   }),
-  // numPenawaran: z.string().min(5, {
-  //     message: "Please input title more than 5 words",
-  // }),
+  numPenawaran: z
+    .string()
+    .min(5, {
+      message: "Please input title more than 5 words",
+    })
+    .optional(),
   custName: z.string().min(5, {
     message: "Please input title more than 5 words",
   }),
@@ -22,12 +25,18 @@ export const createProjectValidation = z.object({
   contactPerson: z.string().min(5, {
     message: "Please input title more than 5 words",
   }),
-  // valuasiProject: z.string().min(5, {
-  //     message: "Please input title more than 5 words",
-  // }),
-  // numRevisi: z.string().min(5, {
-  //     message: "Please input title more than 5 words",
-  // }),
+  valuasiProject: z
+    .string()
+    .min(5, {
+      message: "Please input title more than 5 words",
+    })
+    .optional(),
+  numRevisi: z
+    .string()
+    .min(5, {
+      message: "Please input title more than 5 words",
+    })
+    .optional(),
 });
 
 export type createProjectValidation = z.infer<typeof createProjectValidation>;

@@ -58,7 +58,6 @@ const CreateProjectBaseData: FC<CreateProjectBaseDataProps> = ({ form }) => {
   async function onSubmit(values: z.infer<typeof createProjectValidation>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
-    alert("Hello WOrld");
     console.log(values);
   }
 
