@@ -24,11 +24,6 @@ export const marketingLink: ISidebarLinks[] = [
     label: "Dashboard",
   },
   {
-    icon: <HiChartBar />,
-    route: "/ondiscuss",
-    label: "OnDiscuss",
-  },
-  {
     icon: <FaRunning />,
     route: "/running",
     label: "Running",
@@ -42,6 +37,11 @@ export const marketingLink: ISidebarLinks[] = [
     icon: <MdOutlineCancel />,
     route: "/cancelled",
     label: "Cancelled",
+  },
+  {
+    icon: <HiChartBar />,
+    route: "/sample",
+    label: "Sample",
   },
 ]
 
@@ -64,11 +64,6 @@ export const samplingLinks: ISidebarLinks[] = [
 ]
 
 export const pplhpLinks: ISidebarLinks[] = [
-  {
-    icon: <AiFillHome />,
-    route: "",
-    label: "Dashboard",
-  },
   {
     icon: <HiChartBar />,
     route: "/lhpdraft",
