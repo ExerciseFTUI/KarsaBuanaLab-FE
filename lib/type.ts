@@ -55,3 +55,11 @@ export type ProjectLHPType = {
   lokasi: string;
   cp: string;
 };
+
+export type LabDataType = {
+  id: string;
+  noPenawaran: string;
+  judul: string;
+  lokasi: string;
+  cp: string;
+};
