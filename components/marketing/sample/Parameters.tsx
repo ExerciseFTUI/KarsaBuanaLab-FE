@@ -15,7 +15,7 @@ interface TableParameterProps {
   regulation: number;
 }
 
-const TableRegulation: React.FC<TableParameterProps> = ({ regulation }) => {
+const Parameter: React.FC<TableParameterProps> = ({ regulation }) => {
   const sampleData = Sampling.samples.find((sample) => sample.regulations.some((reg) => reg.id === regulation));
 
   return (
@@ -46,4 +46,4 @@ const TableRegulation: React.FC<TableParameterProps> = ({ regulation }) => {
   );
 };
 
-export default TableRegulation;
+export default Parameter;
