@@ -12,14 +12,14 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import {
-  ProjectType,
   ReceiveSamplingType,
   ProjectLHPType,
   UserType,
-  SamplingType,
   BaseSampleType,
+  ProjectType,
 } from "@/lib/type"
 import Link from "next/link"
+import { Project } from "@/lib/models/project.model"
 
 // Table Column for Marketing OnDiscuss
 export const columns: ColumnDef<ProjectType>[] = [
@@ -144,7 +144,7 @@ export const columns: ColumnDef<ProjectType>[] = [
 
             <DropdownMenuItem
               onClick={() =>
-                navigator.clipboard.writeText(project.no_penawaran)
+                navigator.clipboard.writeText(project.noPenawaran)
               }
             >
               Copy No Penawaran

@@ -1,22 +1,19 @@
 "use client"
 
 import React from "react"
-import { SamplingType } from "@/lib/type"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import HyperLinkButton from "../HyperlinkButton"
 import { SampleStaffDataTable } from "./SampleStaffDataTable"
 import { userAssistantData } from "@/constants/samplingData"
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table"
-import { groupUserStaffColumns } from "../DataTableColumns"
+import { groupUserStaffColumns } from "../sampleListDataTables/DataTableColumns"
 import { UserDataTable } from "../UserDataTable"
+import { Sampling } from "@/lib/models/sampling.model"
 
-const data = userAssistantData.slice(0, 5)
-
-// prettier-ignore
-export default function TabSampleStaff({ samples }: { samples: SamplingType[] }) {
+export default function TabSampleStaff({ data }: { data: Sampling }) {
 
   const table = useReactTable({
-    data,
+    data: data.assigned_to,
     columns: groupUserStaffColumns,
     getCoreRowModel: getCoreRowModel(),
   })
@@ -40,21 +37,9 @@ export default function TabSampleStaff({ samples }: { samples: SamplingType[] })
 
       <TabsContent className="py-4" value="sampel">
         <div className="flex gap-4 flex-wrap">
-          {samples.map((s, i) => (
-            <HyperLinkButton key={i} title={s.sample_name} href={s.fileId} />
+          {data.param.map((s, i) => (
+            <HyperLinkButton key={i} title={s} href={""} />
           ))}
-        </div>
-
-        <div>
-          <h1 className="text-lg font-semibold mt-5 mb-2">Deadline Sampel</h1>
-
-          <p className="ml-4 text-light_brown text-lg">29 Desember 2024</p>
-        </div>
-
-        <div>
-          <h1 className="text-lg font-semibold my-5">Sampel</h1>
-
-          <SampleStaffDataTable />
         </div>
       </TabsContent>
 

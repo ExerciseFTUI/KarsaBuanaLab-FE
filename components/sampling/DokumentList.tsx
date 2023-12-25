@@ -1,11 +1,11 @@
 "use client"
 
-import { ProjectType } from "@/lib/type"
 import React from "react"
 import HyperLinkButton from "./HyperlinkButton"
+import { Project } from "@/lib/models/project.model"
 
 interface docParams {
-  data: ProjectType
+  data: Project
   className?: string
 }
 

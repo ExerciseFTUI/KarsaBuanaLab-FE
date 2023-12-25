@@ -46,26 +46,27 @@ import {
 } from "@radix-ui/react-icons"
 import { cn, fetcher } from "@/lib/utils"
 import useSWR from "swr"
+import { getSampleByYear } from "@/lib/actions/sampling.actions"
 
 interface DataTableProps {
   status: string[]
   columns: ColumnDef<any>[]
-  endpoint: "sample" | "assignment-letter" | "project"
+  year: string
+  page: string
 }
 
-// prettier-ignore
-export function DataTable({status, columns, endpoint}: DataTableProps) {
+export function DataTable({status, columns, year, page}: DataTableProps) {
   const router = useRouter()
 
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
-  const [columnVisibility, setColumnVisibility] =React.useState<VisibilityState>({})
+  const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({})
   const [statusFilter, setStatusFilter] = React.useState("")
 
-  const { data, isLoading, error } = useSWR("/api/sampling/" + endpoint, fetcher)
+  const { data, isLoading, error } = useSWR([year, page], ([year, page]) => getSampleByYear(year, page))
 
   const table = useReactTable({
-    data,
+    data: data?.result || [],
     columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -94,18 +95,18 @@ export function DataTable({status, columns, endpoint}: DataTableProps) {
           <Input
             placeholder="Filter By Project Title"
             value={
-              (table.getColumn("project_name")?.getFilterValue() as string) ??
+              (table.getColumn("sample_name")?.getFilterValue() as string) ??
               ""
             }
             onChange={(event) =>
               table
-                .getColumn("project_name")
+                .getColumn("sample_name")
                 ?.setFilterValue(event.target.value)
             }
             className="max-w-sm border-pastel_moss_green rounded-full focus-visible:ring-0 bg-pastel_moss_green pl-5 placeholder:text-moss_green"
           />
 
-          {status.map((s, i) => (
+          {status.length >= 2 && status.map((s, i) => (
             <Button
               key={i}
               className={cn(
@@ -183,11 +184,11 @@ export function DataTable({status, columns, endpoint}: DataTableProps) {
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
-                  className={cn("hover:bg-pastel_moss_green ease-in-out duration-500 text-xs hover:cursor-pointer hover:rounded-xl text-center", endpoint == "assignment-letter" && "text-xs h-12")}
+                  className={cn("hover:bg-pastel_moss_green ease-in-out duration-500 hover:cursor-pointer hover:rounded-xl text-center")}
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
-                  onClick={() =>
-                    router.push(endpoint + "/" + row.getValue("no_penawaran"))
+                  onClick={() => //console.log(row)
+                    router.push(page+"/"+row.original._id)
                   }
                 >
                   {row.getVisibleCells().map((cell) => (

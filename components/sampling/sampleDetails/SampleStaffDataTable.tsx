@@ -6,36 +6,24 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import { BaseSampleType } from "@/lib/type"
 import {
   flexRender,
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table"
-import { staffSampleListColumns } from "../DataTableColumns"
+import { staffSampleListColumns } from "../sampleListDataTables/DataTableColumns"
+import useSWR from "swr"
+import { getSampleByAccount } from "@/lib/actions/sampling.actions"
 
 export function SampleStaffDataTable() {
-  const data: BaseSampleType[] = [
-    {
-      sample_name: "Air Lauh",
-      amount: 12,
-    },
-    {
-      sample_name: "Air Lauh",
-      amount: 12,
-    },
-    {
-      sample_name: "Air Lauh",
-      amount: 12,
-    },
-    {
-      sample_name: "Air Lauh",
-      amount: 12,
-    },
-  ]
+  const { data, error, isLoading } = useSWR(["2023", "2"], ([year, accountId]) => getSampleByAccount(year, accountId))
+
+  if (error) return <div>{error.message}</div>
+  if (isLoading) return <div>Loading...</div>
+  if (!data) return <div>Sample not found!</div>
 
   const table = useReactTable({
-    data: data,
+    data: data.result,
     columns: staffSampleListColumns,
     getCoreRowModel: getCoreRowModel(),
   })

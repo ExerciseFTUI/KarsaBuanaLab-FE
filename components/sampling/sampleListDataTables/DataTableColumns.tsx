@@ -1,22 +1,18 @@
 "use client"
 
-import { BaseSampleType, ProjectType, UserType } from "@/lib/type"
 import { ColumnDef } from "@tanstack/react-table"
 import { Button } from "@/components/ui/button"
 import { ArrowUpDown } from "lucide-react"
 import { Checkbox } from "@/components/ui/checkbox"
+import { User } from "@/lib/models/user.model"
+import { Project } from "@/lib/models/project.model"
+import { Sampling } from "@/lib/models/sampling.model"
 
 // Table Column for Sampling Project
-export const samplingProjectPageColumns: ColumnDef<ProjectType>[] = [
-  //No Penawaran
+export const samplingProjectPageColumns: ColumnDef<Sampling>[] = [
+  // Sample Name
   {
-    accessorKey: "no_penawaran",
-    header: "No Penawaran",
-    cell: ({ row }) => <div className="">{row.getValue("no_penawaran")}</div>,
-  },
-  // Project Title
-  {
-    accessorKey: "project_name",
+    accessorKey: "sample_name",
     header: ({ column }) => {
       return (
         <Button
@@ -24,34 +20,42 @@ export const samplingProjectPageColumns: ColumnDef<ProjectType>[] = [
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Project Title
+          Nama Sampel
           <ArrowUpDown strokeWidth={1.5} className="ml-2 h-4 w-4" />
         </Button>
       )
     },
     cell: ({ row }) => (
-      <div className="capitalize pl-4">{row.getValue("project_name")}</div>
+      <div className="capitalize pl-4">{row.getValue("sample_name")}</div>
     ),
+  },
+  {
+    accessorKey: "jadwal",
+    header: ({ column }) => {
+      return (
+        <Button
+          className="font-light hover:bg-transparent italic"
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Jadwal
+          <ArrowUpDown strokeWidth={1.5} className="ml-2 h-4 w-4" />
+        </Button>
+      )
+    },
+    cell: ({ row }) => {
+      const jadwal = new Date(row.getValue("jadwal")).toUTCString()
+
+      return <div className="capitalize pl-4">{jadwal}</div>
+    },
   },
   //Lokasi
   {
-    accessorKey: "alamat_kantor",
+    accessorKey: "location",
     header: "Lokasi",
     cell: ({ row }) => {
       return (
-        <div className="capitalize pl-0.5">{row.getValue("alamat_kantor")}</div>
-      )
-    },
-  },
-  //Contact Person
-  {
-    accessorKey: "contact_person",
-    header: "Contact Person",
-    cell: ({ row }) => {
-      return (
-        <div className="capitalize pl-0.5">
-          {row.getValue("contact_person")}
-        </div>
+        <div className="capitalize pl-0.5">{row.getValue("location")}</div>
       )
     },
   },
@@ -63,16 +67,16 @@ export const samplingProjectPageColumns: ColumnDef<ProjectType>[] = [
       const status: any = row.getValue("status")
 
       const color =
-        status == "Need Schedule" || status == "Get Sample"
+        status == "FINISHED" || status == "Get Sample"
           ? "bg-moss_green"
-          : status == "On Discuss" || status == "Verifying"
+          : status == "ASSIGNED" || status == "Verifying"
           ? "bg-light_brown"
           : "bg-brick_red"
 
       return (
         <div
           className={
-            "px-4 py-1.5 inline-block min-w-[8rem] rounded-full text-ghost_white " +
+            "px-4 py-1.5 inline-block min-w-[8rem] rounded-full text-ghost_white text-xs " +
             color
           }
         >
@@ -83,10 +87,59 @@ export const samplingProjectPageColumns: ColumnDef<ProjectType>[] = [
   },
 ]
 
-export const samplingLetterPageColumns: ColumnDef<ProjectType>[] =
-  samplingProjectPageColumns.slice(0, -1)
+export const samplingLetterPageColumns: ColumnDef<Sampling>[] = [
+  // Sample Name
+  {
+    accessorKey: "sample_name",
+    header: ({ column }) => {
+      return (
+        <Button
+          className="font-light hover:bg-transparent italic text-base"
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Nama Sampel
+          <ArrowUpDown strokeWidth={1.5} className="ml-2 h-4 w-4" />
+        </Button>
+      )
+    },
+    cell: ({ row }) => (
+      <div className="capitalize pl-4 text-base">{row.getValue("sample_name")}</div>
+    ),
+  },
+  {
+    accessorKey: "jadwal",
+    header: ({ column }) => {
+      return (
+        <Button
+          className="font-light hover:bg-transparent italic text-base"
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Jadwal
+          <ArrowUpDown strokeWidth={1.5} className="ml-2 h-4 w-4" />
+        </Button>
+      )
+    },
+    cell: ({ row }) => {
+      const jadwal = new Date(row.getValue("jadwal")).toUTCString()
 
-export const groupUserSelectableColumns: ColumnDef<UserType>[] = [
+      return <div className="capitalize pl-4 text-base">{jadwal}</div>
+    },
+  },
+  //Lokasi
+  {
+    accessorKey: "location",
+    header: () => <p className="text-base">Lokasi</p>,
+    cell: ({ row }) => {
+      return (
+        <div className="capitalize pl-0.5 text-base">{row.getValue("location")}</div>
+      )
+    },
+  },
+]
+
+export const groupUserSelectableColumns: ColumnDef<User>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -130,10 +183,10 @@ export const groupUserSelectableColumns: ColumnDef<UserType>[] = [
   },
 ]
 
-export const groupUserStaffColumns: ColumnDef<UserType>[] =
+export const groupUserStaffColumns: ColumnDef<User>[] =
   groupUserSelectableColumns.slice(1, groupUserSelectableColumns.length)
 
-export const staffGroupListColumns: ColumnDef<UserType>[] = [
+export const staffGroupListColumns: ColumnDef<User>[] = [
   {
     accessorKey: "name",
     header: "Name",
@@ -157,7 +210,7 @@ export const staffGroupListColumns: ColumnDef<UserType>[] = [
   },
 ]
 
-export const staffSampleListColumns: ColumnDef<BaseSampleType>[] = [
+export const staffSampleListColumns: ColumnDef<Sampling>[] = [
   {
     accessorKey: "no",
     header: "No",

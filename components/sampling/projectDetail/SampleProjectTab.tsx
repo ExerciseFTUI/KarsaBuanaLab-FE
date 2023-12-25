@@ -1,7 +1,6 @@
 "use client"
 
 import { Tabs, TabsContent } from "@/components/ui/tabs"
-import { ProjectType } from "@/lib/type"
 import DocumentList from "../DokumentList"
 import { Button } from "@/components/ui/button"
 import {
@@ -21,23 +20,28 @@ import {
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table"
-import { groupUserSelectableColumns } from "../DataTableColumns"
+import { groupUserSelectableColumns } from "../sampleListDataTables/DataTableColumns"
 import { userAssistantData } from "@/constants/samplingData"
 import { GroupAssignedTable } from "./GroupAssignedTable"
+import { User } from "@/lib/models/user.model"
+import { Sampling } from "@/lib/models/sampling.model"
+import { sampleAssignment } from "@/lib/actions/sampling.actions"
 
-const handleSubmit = (e: any) => e.preventDefault()
+interface Params {
+  data: Sampling
+}
 
 const userData = userAssistantData.slice(0, 5)
 
-export default function SampleProjectTab({
-  data,
-  status,
-}: {
-  data: ProjectType
-  status: string
-}) {
+export default function SampleProjectTab({ data }: Params) {
   const [date, setDate] = React.useState<Date>()
   const [rowSelection, setRowSelection] = React.useState<RowSelectionState>({})
+
+  const status = data.status
+
+  React.useEffect(() => {
+    setDate(new Date(data.jadwal))
+  }, [])
 
   const table = useReactTable({
     data: userData,
@@ -48,6 +52,25 @@ export default function SampleProjectTab({
       rowSelection,
     },
   })
+
+  function saveDeadline(e: any) {
+    if (status == "On Discuss" || date == null) {
+      e.preventDefault()
+      return
+    }
+
+    console.log(date)
+  }
+
+  function addAssigned(e: any) {
+    const assigned = table
+      .getFilteredSelectedRowModel()
+      .rows.map((r) => userData[r.index])
+
+    sampleAssignment("2023", data._id, assigned[0]._id)
+      .then(res => res.message)
+      .catch(err => console.error(err))
+  }
 
   return (
     <Tabs defaultValue="dokumen" className="flex-1">
@@ -87,6 +110,7 @@ export default function SampleProjectTab({
                   selected={date}
                   onSelect={setDate}
                   initialFocus
+                  disabled={data.jadwal != null}
                 />
               </PopoverContent>
             </Popover>
@@ -94,7 +118,7 @@ export default function SampleProjectTab({
 
           <Button
             className="w-48 py-4 self-center mt-8 bg-light_brown hover:bg-dark_brown disabled:bg-transparent disabled:text-dark_brown disabled:font-bold disabled:border-2 disabled:border-dark_brown"
-            onClick={(e) => handleSubmit(e)}
+            onClick={(e) => saveDeadline(e)}
             disabled={status == "On Discuss"}
           >
             {status == "Need Schedule" || status == "Revision"
@@ -104,7 +128,22 @@ export default function SampleProjectTab({
         </div>
       </TabsContent>
 
-      <TabsContent className="py-4 w-full" value="grup">
+      <TabsContent className="p-4 w-full" value="grup">
+        <div className="flex items-center justify-end space-x-2 py-4">
+          <div className="flex-1 text-base text-light_brown">
+            Unassigned:{" "}
+            {table.getCoreRowModel().rows.length -
+              table.getFilteredSelectedRowModel().rows.length}{" "}
+          </div>
+
+          <Button
+            className="bg-light_brown hover:bg-dark_brown"
+            onClick={addAssigned}
+          >
+            Add
+          </Button>
+        </div>
+
         <GroupUnassignedTable table={table} />
 
         <GroupAssignedTable table={table} />

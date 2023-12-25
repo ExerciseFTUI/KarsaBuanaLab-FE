@@ -1,4 +1,4 @@
-import { SamplingLetterDataTables } from "@/components/sampling/dataTables"
+import { SamplingLetterDataTables } from "@/components/sampling/sampleListDataTables"
 
 export default function SamplingProject() {
   return (

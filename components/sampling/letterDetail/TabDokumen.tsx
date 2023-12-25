@@ -1,7 +1,6 @@
 "use client"
 
 import React from "react"
-import { ProjectSamplingType, SampleType } from "@/lib/type"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import HyperLinkButton from "../HyperlinkButton"
 import { Button } from "@/components/ui/button"
@@ -27,10 +26,12 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover"
 import DropzoneLetter from "@/components/sampling/letterDetail/DropzoneLetter"
+import { Sampling } from "@/lib/models/sampling.model"
+import { Project } from "@/lib/models/project.model"
 
 interface dokuParams {
-  samples: SampleType[]
-  data: ProjectSamplingType
+  samples: Sampling[]
+  data: Project
 }
 
 const handleSubmit = (e: any) => e.preventDefault()

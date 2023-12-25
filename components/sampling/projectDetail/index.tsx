@@ -2,38 +2,33 @@
 
 import React from "react"
 import useSWR from "swr"
-import { ProjectType } from "@/lib/type"
 import ProjectDetails from "../ProjectDetails"
 import { cn, fetcher } from "@/lib/utils"
 import SampleProjectTab from "./SampleProjectTab"
-
-type fetched = {
-  data: ProjectType
-  error: any
-  isLoading: any
-}
+import { getSampleById } from "@/lib/actions/sampling.actions"
+import { Project } from "@/lib/models/project.model"
+import { usePathname } from "next/navigation"
 
 interface projectParams {
-  params: { np: string }
-  className?: string
+  className: string
 }
 
-export default function Project({ params, className = "" }: projectParams) {
-  const { data, error, isLoading }: fetched = useSWR(
-    "/api/sampling/project/" + params.np,
-    fetcher
-  )
+export default function Project({ className = "" }: projectParams) {
+  const sampleId = usePathname().split("/")[3]
+
+  const { data, error, isLoading } = useSWR(["2023", sampleId], ([year, sampleId]) => getSampleById(year, sampleId))
 
   if (error) return <div>{error.message}</div>
   if (isLoading) return <div>Loading...</div>
+  if (!data?.result) return <div>Sample not found!</div>
 
-  const { status } = data
+  const { result } = data
 
   return (
     <div className={cn("flex", className)}>
-      <ProjectDetails data={data} />
+      <ProjectDetails data={data.result} />
 
-      <SampleProjectTab data={data} status={status} />
+      <SampleProjectTab data={result} />
     </div>
   )
 }

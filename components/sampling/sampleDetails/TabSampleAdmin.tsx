@@ -1,20 +1,14 @@
 "use client"
 
 import React from "react"
-import { SamplingType } from "@/lib/type"
+import { Sampling } from "@/lib/models/sampling.model"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import HyperLinkButton from "../HyperlinkButton"
 import { Button } from "@/components/ui/button"
 
 const simpanDokumen = (e: any) => e.preventDefault()
 
-export default function TabSampleAdmin({
-  samples,
-}: {
-  samples: SamplingType[]
-}) {
-  const sampleStatus = ["Luthfi", "Dio", "Eriqo"]
-
+export default function TabSampleAdmin({ data }: { data: Sampling }) {
   return (
     <Tabs defaultValue="buatDokumen" className="flex-1">
       <TabsList className="grid w-full grid-cols-2 shadow-none bg-transparent">
@@ -34,14 +28,14 @@ export default function TabSampleAdmin({
 
       <TabsContent className="py-4" value="verifikasiSampel">
         <div className="flex flex-wrap gap-8">
-          {sampleStatus.map((n, j) => (
+          {data.assigned_to.map((n, j) => (
             <div key={j} className="">
-              <h1 className="text-xl font-semibold mb-5">{n}</h1>
+              <h1 className="text-xl font-semibold mb-5">{n.username}</h1>
 
               <div className="flex gap-4 flex-wrap">
-                {samples.map((s, i) => (
+                {data.param.map((s, i) => (
                   <div key={i} className="w-full flex items-center gap-4">
-                    <HyperLinkButton title={s.sample_name} href={s.fileId} />
+                    <HyperLinkButton title={s} href={""} />
 
                     <div className="flex gap-2">
                       <Button

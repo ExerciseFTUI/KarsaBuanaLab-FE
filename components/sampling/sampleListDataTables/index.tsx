@@ -3,29 +3,32 @@
 import {
   samplingLetterPageColumns,
   samplingProjectPageColumns,
-} from "../DataTableColumns"
+  // samplingSamplePageColumns,
+} from "./DataTableColumns"
 import { DataTable } from "./DataTable"
 
 function SamplingProjectDataTables() {
-  const status = ["", "Need Schedule", "On Discuss", "Revision"]
+  const status = ["", "NOT ASSIGNED", "FINISHED"]
 
   return (
     <DataTable
       columns={samplingProjectPageColumns}
-      endpoint="project"
+      year="2023"
       status={status}
+      page="project"
     />
   )
 }
 
 function SamplingLetterDataTables() {
-  const status: string[] = []
+  const status: string[] = ["ASSIGNED"]
 
   return (
     <DataTable
       columns={samplingLetterPageColumns}
-      endpoint="assignment-letter"
+      year="2023"
       status={status}
+      page="assignment-letter"
     />
   )
 }
@@ -36,8 +39,9 @@ function SamplingSampleDataTables() {
   return (
     <DataTable
       columns={samplingProjectPageColumns}
-      endpoint="sample"
+      year="2023"
       status={status}
+      page="sample"
     />
   )
 }
