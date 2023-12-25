@@ -1,34 +1,15 @@
-export type ProjectType = {
-  no_penawaran: string
-  no_sampling: string
-  client_name: string
-  project_name: string
-  alamat_kantor: string
-  alamat_sampling: string
-  surel: string
-  contact_person: string
-  status: string
-  folder_id: string
-  password: string
-  jumlah_revisi: number
-  valuasi_proyek: number
-  surat_penawaran: string
-  created_year: string
-  sampling_list: SamplingType[]
-  file: FileType[]
-}
+import { Regulation } from "./models/regulation.model"
+import { User } from "./models/user.model"
 
-export type SamplingType = {
-  sample_name: string
-  harga: string
-  fileId: string
-  base_sample_list: BaseSampleType[]
-  param: string[]
-  regulation: RegulationType
-  location: string
-  assigned_to: UserType[]
-  status: string
-  jadwal: Date
+export type ProjectType = {
+  id: string
+  noPenawaran: string
+  judul: string
+  namaCustomer: string
+  lokasi: string
+  cp: string
+  nilaiPenawaran: number
+  createdAt: string
 }
 
 export type BaseSampleType = {
