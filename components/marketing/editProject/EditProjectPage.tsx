@@ -10,16 +10,13 @@ import {
   useFieldArray,
   useForm,
 } from "react-hook-form";
-import DocumentTab from "./DocumentTab";
 import { createProjectValidation } from "@/lib/validations/CreateProjectValidation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import EditProjectForm from "./EditProjectForm";
 import ProjectForm from "../forms/ProjectForm";
-import { useToast } from "@/components/ui/use-toast";
 
-export default function CreateProjectPage() {
-  const { toast } = useToast();
-
+export default function EditProjectPage() {
   //=============================== Sample Section
   const [openModal, setOpenModal] = useState(false);
 
@@ -43,52 +40,7 @@ export default function CreateProjectPage() {
   // }, [arrayField.fields]);
 
   //All the samples get save in here
-  const { fields: samples, append, remove } = arrayField;
-
-  //Add to the samples array
-  const onSubmitSample: SubmitHandler<FieldValues> = async (data) => {
-    console.log(data.parameters);
-
-    //Handle Missing Data
-    if (
-      data.sampling === "" ||
-      data.regulation === "" ||
-      data.parameters.length === 0 ||
-      data.parameters[0] === ""
-    ) {
-      alert("Please fill the data");
-      return;
-    }
-
-    //Get the parameter only value
-    const parametersValue = data.parameters.map(
-      (parameter: any) => parameter.value
-    );
-
-    //Get the needed data
-    const finalSample = {
-      sampleName: data.sampling,
-      regulation: data.regulation,
-      parameters: parametersValue,
-    };
-
-    //Add to samples array
-    append(finalSample);
-
-    //Reset all the form
-    setValue("parameters", [""], { shouldValidate: true });
-    resetField("sampling");
-    resetField("parameters");
-
-    //Close Modal
-    setOpenModal(false);
-
-    //Display Toast
-    toast({
-      title: "Successfully adding new sample",
-      description: "Good Job",
-    });
-  };
+  const { fields: samples } = arrayField;
 
   //================================= End Sample Section
 
@@ -97,17 +49,17 @@ export default function CreateProjectPage() {
   const form = useForm<z.infer<typeof createProjectValidation>>({
     resolver: zodResolver(createProjectValidation),
     defaultValues: {
-      title: "",
-      custName: "",
-      alamatKantor: "",
-      alamatSampling: "",
-      surel: "",
-      contactPerson: "",
+      title: "Project 1",
+      custName: "Raditya Dito",
+      alamatKantor: "Jl. Jalan",
+      alamatSampling: "Jl. Sampling",
+      surel: "RD@gmail.com",
+      contactPerson: "08909090909009",
     },
   });
 
   // 2. Define a submit handler.
-  async function onSubmitForm(values: z.infer<typeof createProjectValidation>) {
+  async function onSubmit(values: z.infer<typeof createProjectValidation>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     console.log(values);
@@ -123,7 +75,12 @@ export default function CreateProjectPage() {
 
   return (
     <div className="flex gap-6 max-md:flex-col max-md:items-center">
-      <ProjectForm form={form} onSubmit={onSubmitForm} />
+      <ProjectForm
+        form={form}
+        onSubmit={onSubmit}
+        status="Canceled"
+        note="Gakuat bayar jasa kita"
+      />
       <Tabs defaultValue="sampling" className="w-[40rem] max-sm:w-[420px]">
         <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="sampling">Sampling</TabsTrigger>
@@ -132,22 +89,21 @@ export default function CreateProjectPage() {
 
         {/* Sample Section */}
         <TabsContent value="sampling">
-          <SamplingTab
+          {/* <SamplingTab
             form={sampleForm}
             arrayField={arrayField}
             openModal={openModal}
             setOpenModal={setOpenModal}
-            onSubmit={onSubmitSample}
-          />
+          /> */}
         </TabsContent>
         {/* End Sample Section */}
 
         {/* Document Section */}
         <TabsContent value="document">
-          <DocumentTab
+          {/* <DocumentTab
             uploadedFiles={uploadedFiles}
             setUploadedFiles={setUploadedFiles}
-          />
+          /> */}
         </TabsContent>
         {/* End Document Section */}
       </Tabs>

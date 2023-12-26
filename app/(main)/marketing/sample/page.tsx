@@ -1,12 +1,13 @@
-import CreateSamplePage from '@/components/marketing/sample/CreateSamplePage'
-import React from 'react'
+// import CreateSamplePage from '@/components/marketing/sample/CreateSamplePage'
+import React from "react";
+import CreateSamplePage from "@/components/marketing/sample/CreateSamplePage";
 
 const page = () => {
   return (
     <>
-        <CreateSamplePage/>
+      <CreateSamplePage />
     </>
-  )
-}
+  );
+};
 
-export default page
+export default page;
