@@ -6,10 +6,10 @@ import { useSession } from "next-auth/react";
 
 export default function Home() {
   const [resiNumber, setResiNumber] = useState("");
-  const session = useSession();
+  const { data } = useSession();
 
-  if (session) {
-    console.log(session.data?.user);
+  if (data) {
+    console.log(data.user);
   }
   return (
     // Mantap albert
