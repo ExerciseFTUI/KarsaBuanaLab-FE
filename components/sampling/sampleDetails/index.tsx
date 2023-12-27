@@ -36,10 +36,10 @@ export default function Project({ params }: { params: { np: string } }) {
       <div className="flex flex-col flex-1">
         <ProjectDetails data={data} className="flex-none" />
 
-        <DocumentList data={data} className="w-56" />
+        <DocumentList data={data} className="w-full sm:w-56" />
       </div>
 
-      <Separator orientation="vertical" className="bg-light_brown w-0.5" />
+      <div className="w-full h-[1.5px] sm:w-[1.5px] sm:h-full bg-light_brown sm:mb-0" />
 
       {ACCOUNT_ROLE == "STAFF" ? (
         <TabSampleStaff samples={sampling_list} />

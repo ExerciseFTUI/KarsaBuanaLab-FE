@@ -8,13 +8,20 @@ import {
 import { FC, useState } from "react";
 import Dropzone from "@/components/Dropzone";
 
-interface DocumentTabProps {}
+interface DocumentTabProps {
+  uploadedFiles: any;
+  setUploadedFiles: any;
+}
 
-const DocumentTab: FC<DocumentTabProps> = ({}) => {
-  const [uploadedFiles, setUploadedFiles] = useState([]);
+const DocumentTab: FC<DocumentTabProps> = ({
+  uploadedFiles,
+  setUploadedFiles,
+}) => {
+  // const [uploadedFiles, setUploadedFiles] = useState([]);
 
   const handleSubmit = () => {
     // TODO: Implement your logic to submit uploadedFiles to the server
+
     if (uploadedFiles.length > 0) {
       // For demonstration purposes, show a success message using toastify
       alert("Files submitted successfully!");

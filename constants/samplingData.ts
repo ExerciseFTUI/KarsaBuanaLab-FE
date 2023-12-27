@@ -10,7 +10,7 @@ function generateRandomData(length: number = 100): ProjectSamplingType[] {
       no_penawaran: "PNW" + (i < 10 ? "0" + i : i + ""),
       no_sampling: randomUUID().slice(0, 8),
       client_name: "Client " + i,
-      project_name: "Client " + i,
+      project_name: "Project " + i,
       alamat_kantor: "Kantor " + i,
       alamat_sampling: "Alamat Sample " + i,
       surel: "domain" + i + "@mail.com",

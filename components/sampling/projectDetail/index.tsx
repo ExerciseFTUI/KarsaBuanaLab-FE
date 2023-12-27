@@ -39,7 +39,7 @@ export default function Project({ params, className = "" }: projectParams) {
     <div className={cn("flex", className)}>
       <ProjectDetails data={data} />
 
-      <Separator orientation="vertical" className="w-0.5 bg-light_brown" />
+      <div className="w-full h-[1.5px] sm:w-[1.5px] sm:h-full bg-light_brown mb-4 sm:mb-0" />
 
       <div className="px-4 py-2 flex flex-col flex-1">
         <DocumentList data={data} />
