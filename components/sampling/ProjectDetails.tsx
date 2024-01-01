@@ -24,7 +24,6 @@ export default function ProjectDetails({ data, className = "" }: pdType) {
       <div className="">
         {[
           { val: "Nomor Sampling", acc: "_id" },
-          { val: "Harga", acc: "harga" },
           { val: "Lokasi", acc: "location" },
           { val: "Jadwal", acc: "jadwal" },
           { val: "Regulasi", acc: "regulation" },

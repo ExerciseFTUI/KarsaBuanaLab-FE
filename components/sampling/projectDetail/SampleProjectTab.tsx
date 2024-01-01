@@ -41,7 +41,7 @@ export default function SampleProjectTab({ data }: Params) {
 
   React.useEffect(() => {
     setDate(new Date(data.jadwal))
-  }, [])
+  }, [data.jadwal])
 
   const table = useReactTable({
     data: userData,

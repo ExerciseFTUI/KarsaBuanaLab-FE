@@ -3,15 +3,12 @@
 import React from "react"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import HyperLinkButton from "../HyperlinkButton"
-import { SampleStaffDataTable } from "./SampleStaffDataTable"
-import { userAssistantData } from "@/constants/samplingData"
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table"
 import { groupUserStaffColumns } from "../sampleListDataTables/DataTableColumns"
 import { UserDataTable } from "../UserDataTable"
 import { Sampling } from "@/lib/models/sampling.model"
 
 export default function TabSampleStaff({ data }: { data: Sampling }) {
-
   const table = useReactTable({
     data: data.assigned_to,
     columns: groupUserStaffColumns,

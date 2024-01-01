@@ -44,18 +44,17 @@ import {
   DoubleArrowLeftIcon,
   DoubleArrowRightIcon,
 } from "@radix-ui/react-icons"
-import { cn, fetcher } from "@/lib/utils"
-import useSWR from "swr"
-import { getSampleByYear } from "@/lib/actions/sampling.actions"
+import { cn } from "@/lib/utils"
+import { Project } from "@/lib/models/project.model"
 
 interface DataTableProps {
   status: string[]
   columns: ColumnDef<any>[]
-  year: string
+  data: Project[]
   page: string
 }
 
-export function DataTable({status, columns, year, page}: DataTableProps) {
+export function DataTable({status, columns, data, page}: DataTableProps) {
   const router = useRouter()
 
   const [sorting, setSorting] = React.useState<SortingState>([])
@@ -63,10 +62,9 @@ export function DataTable({status, columns, year, page}: DataTableProps) {
   const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({})
   const [statusFilter, setStatusFilter] = React.useState("")
 
-  const { data, isLoading, error } = useSWR([year, page], ([year, page]) => getSampleByYear(year, page))
 
   const table = useReactTable({
-    data: data?.result || [],
+    data: data || [],
     columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -81,10 +79,6 @@ export function DataTable({status, columns, year, page}: DataTableProps) {
       columnVisibility,
     },
   })
-
-  if (error) return <div>{error.message}</div>
-  if (isLoading) return <div>Loading...</div>
-  if (!data) return <div>no data</div>
 
   return (
     <div className="w-full">

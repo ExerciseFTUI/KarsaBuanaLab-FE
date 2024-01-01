@@ -5,7 +5,7 @@ import HyperLinkButton from "./HyperlinkButton"
 import { Project } from "@/lib/models/project.model"
 
 interface docParams {
-  data: Project
+  data: any
   className?: string
 }
 

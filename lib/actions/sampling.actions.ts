@@ -19,12 +19,12 @@ export const getSampleById = async (year: string, sampleId : string) : Promise<B
 
 }
 
-export const getSampleByYear = async (year: string, page: string) : Promise<BaseApiResponse<Sampling[]>> => {
+export const getSampleByYear = async (year: string, page: string) : Promise<BaseApiResponse<Project[]>> => {
   try {
 
     const response = await axios.get(`${apiBaseUrl}/sampling/get/${year}`);
 
-    const result: Sampling[] = response.data.result.filter((s: Sampling) => {
+    const result: Project[] = response.data.result.filter((s: Project) => {
       if (page == "project")
         return s.status == "FINISHED" || s.status == "NOT ASSIGNED"
       else if (page == "assignment-letter")
@@ -33,7 +33,7 @@ export const getSampleByYear = async (year: string, page: string) : Promise<Base
         return s.status == "Get Sample" || s.status == "Verifying" || s.status == "Revision"
     })
 
-    const data: BaseApiResponse<Sampling[]> = {
+    const data: BaseApiResponse<Project[]> = {
       message: "Success",
       result
     }
@@ -47,7 +47,7 @@ export const getSampleByYear = async (year: string, page: string) : Promise<Base
 
 }
 
-export const getSampleByAccount = async (year: string, accountId : string) : Promise<BaseApiResponse<[Sampling]>> => {
+export const getSampleByAccount = async (year: string, accountId : string) : Promise<BaseApiResponse<[Project]>> => {
   try {
 
     const response = await axios.get(`${apiBaseUrl}/sampling/sample/${year}`, {
@@ -56,7 +56,7 @@ export const getSampleByAccount = async (year: string, accountId : string) : Pro
       },
     });
 
-    return response.data as BaseApiResponse<[Sampling]>;
+    return response.data as BaseApiResponse<[Project]>;
 
   } catch (error: any) {
     console.error('Error getting sample', error.message);

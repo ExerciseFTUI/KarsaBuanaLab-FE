@@ -1,34 +1,25 @@
 "use client"
 
 import React from "react"
-import useSWR from "swr"
 import ProjectDetails from "../ProjectDetails"
-import { cn, fetcher } from "@/lib/utils"
+import { cn } from "@/lib/utils"
 import SampleProjectTab from "./SampleProjectTab"
-import { getSampleById } from "@/lib/actions/sampling.actions"
 import { Project } from "@/lib/models/project.model"
-import { usePathname } from "next/navigation"
+import { Sampling } from "@/lib/models/sampling.model"
 
 interface projectParams {
-  className: string
+  className: string,
+  sampleData: Sampling
 }
 
-export default function Project({ className = "" }: projectParams) {
-  const sampleId = usePathname().split("/")[3]
-
-  const { data, error, isLoading } = useSWR(["2023", sampleId], ([year, sampleId]) => getSampleById(year, sampleId))
-
-  if (error) return <div>{error.message}</div>
-  if (isLoading) return <div>Loading...</div>
-  if (!data?.result) return <div>Sample not found!</div>
-
-  const { result } = data
+export default function Project({ className = "", sampleData }: projectParams) {
+  if (sampleData == null) return <div>Sample not found!</div>
 
   return (
     <div className={cn("flex", className)}>
-      <ProjectDetails data={data.result} />
+      <ProjectDetails data={sampleData} />
 
-      <SampleProjectTab data={result} />
+      <SampleProjectTab data={sampleData} />
     </div>
   )
 }
