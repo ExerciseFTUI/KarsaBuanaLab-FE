@@ -1,9 +1,16 @@
 import { DataTable } from "@/components/DataTable";
+import { columns } from "@/components/columns";
+import RunningTable from "@/components/marketing/Tables/RunningTable";
 
-export default function Home() {
+import { getbyStatus } from "@/lib/actions/marketing.actions";
+import { Project } from "@/lib/models/project.model";
+
+export default async function Home() {
+  const projects = await getbyStatus("running");
+
   return (
     <div className="flex justify-between w-full h-screen">
-      <DataTable />
+      <RunningTable projects={projects.result} />
     </div>
   );
 }
