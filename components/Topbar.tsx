@@ -29,16 +29,28 @@ function extractPageName(pathname: string) {
 const Topbar: FC<TopbarProps> = ({ }) => {
   const pathname = extractPageName(usePathname())
 
+  const formattedPathname =
+    pathname.split("-").length > 1
+      ? pathname.split("-")[0] +
+        " " +
+        pathname.split("-")[1][0].toUpperCase() +
+        pathname.split("-")[1].slice(1, pathname.split("-")[1].length)
+      : pathname.split("-")[0]
+  const extractedSecondPath = pathname.split(" / ")[1].split("-")
+  const secondPath =
+    extractedSecondPath.length > 1
+      ? extractedSecondPath[0] + " " + extractedSecondPath[1]
+      : extractedSecondPath[0]
+
   return (
     <nav className="flex w-full items-center justify-between px-2 py-6 ">
       <div className="flex flex-col items-start gap-1">
         {/* <Image src={"assets/logo.svg"} alt="logo" width={28} height={28} /> */}
         <p className="capilatize text-sm font-light text-moss_green">
-          {pathname}
+          {formattedPathname}
         </p>
-        <p className="text-2xl font-bold text-dark_green">
-          {pathname.split(" / ")[1] +
-            (pathname.split(" / ")[2] ? " Details" : "")}
+        <p className="text-2xl font-bold text-dark_green capitalize">
+          {secondPath + (pathname.split(" / ")[2] ? " Details" : "")}
         </p>
       </div>
       <div className="flex items-center gap-1">
