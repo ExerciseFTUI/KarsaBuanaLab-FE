@@ -164,9 +164,10 @@ const data = [
 ];
 
 export default function Home() {
+  // Get all samples data
   return (
     <div className="flex justify-between w-full h-screen">
-      <PPLHPDataTable data={data}/>
+      <PPLHPDataTable data={data} />
     </div>
   );
 }
