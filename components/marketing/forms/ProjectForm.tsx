@@ -26,19 +26,23 @@ import {
 
 import { UseFormReturn, useForm } from "react-hook-form";
 import { createProjectValidation } from "@/lib/validations/CreateProjectValidation";
-import { Input } from "../ui/input";
 import { signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useToast } from "../ui/use-toast";
+import { useToast } from "@/components/ui/use-toast";
+import { Input } from "@/components/ui/input";
 
-interface CreateProjectBaseDataProps {
+interface ProjectFormProps {
   form: UseFormReturn<z.infer<typeof createProjectValidation>>;
   onSubmit(values: z.infer<typeof createProjectValidation>): Promise<void>;
+  status?: string;
+  note?: string;
 }
 
-const CreateProjectBaseData: FC<CreateProjectBaseDataProps> = ({
+const ProjectForm: FC<ProjectFormProps> = ({
   form,
   onSubmit,
+  status,
+  note,
 }) => {
   const router = useRouter();
   const query = useSearchParams();
@@ -57,9 +61,9 @@ const CreateProjectBaseData: FC<CreateProjectBaseDataProps> = ({
   //   },
   // });
 
-  // async function onSubmit(values: z.infer<typeof createProjectValidation>) {
-  //   console.log(values);
-  // }
+  //   async function onSubmit(values: z.infer<typeof createProjectValidation>) {
+  //     console.log(values);
+  //   }
 
   return (
     <Card className="w-[450px] max-sm:w-[400px] max-h-screen overflow-auto custom-scrollbar ">
@@ -67,6 +71,15 @@ const CreateProjectBaseData: FC<CreateProjectBaseDataProps> = ({
         <CardTitle className="text-base font-bold ">
           Project Information
         </CardTitle>
+        {status && (
+          <div className="text-sm">
+            <h1>
+              Status :{" "}
+              <span className="text-red-600 font-semibold">Canceled</span>
+            </h1>
+            <p>Gakuat bayar jasa kita</p>
+          </div>
+        )}
       </CardHeader>
       <CardContent>
         <Form {...form}>
@@ -78,7 +91,12 @@ const CreateProjectBaseData: FC<CreateProjectBaseDataProps> = ({
                 <FormItem>
                   <FormLabel>Title</FormLabel>
                   <FormControl>
-                    <Input className="" placeholder="" {...field} />
+                    <Input
+                      //   disabled={true}
+                      className=""
+                      placeholder=""
+                      {...field}
+                    />
                   </FormControl>
 
                   <FormMessage />
@@ -93,6 +111,7 @@ const CreateProjectBaseData: FC<CreateProjectBaseDataProps> = ({
                   <FormLabel>Nama Customer</FormLabel>
                   <FormControl>
                     <Input
+                      //   disabled={true}
                       type="string"
                       className=""
                       placeholder=""
@@ -116,6 +135,7 @@ const CreateProjectBaseData: FC<CreateProjectBaseDataProps> = ({
                       type="string"
                       className=""
                       placeholder=""
+                      //   disabled={true}
                       {...field}
                     />
                   </FormControl>
@@ -133,6 +153,7 @@ const CreateProjectBaseData: FC<CreateProjectBaseDataProps> = ({
                   <FormControl>
                     <Input
                       type="string"
+                      //   disabled={true}
                       className=""
                       placeholder=""
                       {...field}
@@ -151,6 +172,7 @@ const CreateProjectBaseData: FC<CreateProjectBaseDataProps> = ({
                   <FormLabel>Surel</FormLabel>
                   <FormControl>
                     <Input
+                      //   disabled={true}
                       type="string"
                       className=""
                       placeholder=""
@@ -170,6 +192,7 @@ const CreateProjectBaseData: FC<CreateProjectBaseDataProps> = ({
                   <FormLabel>Contact Person</FormLabel>
                   <FormControl>
                     <Input
+                      //   disabled={true}
                       type="string"
                       className=""
                       placeholder=""
@@ -189,4 +212,4 @@ const CreateProjectBaseData: FC<CreateProjectBaseDataProps> = ({
   );
 };
 
-export default CreateProjectBaseData;
+export default ProjectForm;

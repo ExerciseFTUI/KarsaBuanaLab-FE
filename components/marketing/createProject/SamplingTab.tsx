@@ -27,6 +27,7 @@ interface SamplingTabProps {
   setOpenModal: (boolean: boolean) => void;
   form: UseFormReturn<FieldValues, any, undefined>;
   arrayField: UseFieldArrayReturn<FieldValues, any, "id">;
+  onSubmit: SubmitHandler<FieldValues>;
 }
 
 const SamplingTab: FC<SamplingTabProps> = ({
@@ -34,6 +35,7 @@ const SamplingTab: FC<SamplingTabProps> = ({
   arrayField,
   openModal,
   setOpenModal,
+  onSubmit,
 }) => {
   const { toast } = useToast();
 
@@ -42,36 +44,49 @@ const SamplingTab: FC<SamplingTabProps> = ({
   const { fields: samples, append, remove, update } = arrayField;
 
   //Add to the samples array
-  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
-    //Get the parameter only value
-    const parametersValue = data.parameters.map(
-      (parameter: any) => parameter.value
-    );
+  // const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+  //   console.log(data.parameters);
 
-    //Get the needed data
-    const finalSample = {
-      sampleName: data.sampling,
-      regulation: data.regulation,
-      parameters: parametersValue,
-    };
+  //   //Handle Missing Data
+  //   if (
+  //     data.sampling === "" ||
+  //     data.regulation === "" ||
+  //     data.parameters.length === 0 ||
+  //     data.parameters[0] === ""
+  //   ) {
+  //     alert("Please fill the data");
+  //     return;
+  //   }
 
-    //Add to samples array
-    append(finalSample);
+  //   //Get the parameter only value
+  //   const parametersValue = data.parameters.map(
+  //     (parameter: any) => parameter.value
+  //   );
 
-    //Reset all the form
-    setValue("parameters", [""], { shouldValidate: true });
-    resetField("sampling");
-    resetField("parameters");
+  //   //Get the needed data
+  //   const finalSample = {
+  //     sampleName: data.sampling,
+  //     regulation: data.regulation,
+  //     parameters: parametersValue,
+  //   };
 
-    //Close Modal
-    setOpenModal(false);
+  //   //Add to samples array
+  //   append(finalSample);
 
-    //Display Toast
-    toast({
-      title: "Successfully adding new sample",
-      description: "Good Job",
-    });
-  };
+  //   //Reset all the form
+  //   setValue("parameters", [""], { shouldValidate: true });
+  //   resetField("sampling");
+  //   resetField("parameters");
+
+  //   //Close Modal
+  //   setOpenModal(false);
+
+  //   //Display Toast
+  //   toast({
+  //     title: "Successfully adding new sample",
+  //     description: "Good Job",
+  //   });
+  // };
 
   //Remove Sample
   function deleteSample(index: number) {
