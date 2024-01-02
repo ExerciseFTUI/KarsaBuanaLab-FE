@@ -25,13 +25,40 @@ import {
 } from "@/components/ui/card";
 
 import { useForm } from "react-hook-form";
-import { loginValidation } from "@/lib/validations/LoginValidation";
+import {
+  loginValidation,
+  loginValidationType,
+} from "@/lib/validations/LoginValidation";
 import { Input } from "../ui/input";
 import { signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useToast } from "../ui/use-toast";
+import axios from "axios";
+import { access } from "fs";
 
 interface LoginFormProps {}
+
+// async function postLogin(values:loginValidationType) {
+//   try {
+//     let config = {
+//       method: 'post',
+//       maxBodyLength: Infinity,
+//       url: 'http://localhost:3000/auth/login',
+//       headers: {
+//         'authorization': '',
+//         'Content-Type' : 'application/json'
+//       },
+//       data: values
+//     };
+
+//     const response = await axios.request(config);
+//     // console.log(JSON.stringify(response.data));
+//     return (response.data.accessToken, response.data.refreshToken)
+//   } catch (error : any) {
+//     // console.log(error);
+//     return (error)
+//   }
+// }
 
 const LoginForm: FC<LoginFormProps> = ({}) => {
   const router = useRouter();
@@ -42,16 +69,18 @@ const LoginForm: FC<LoginFormProps> = ({}) => {
   const form = useForm<z.infer<typeof loginValidation>>({
     resolver: zodResolver(loginValidation),
     defaultValues: {
-      username: "",
+      email: "",
       password: "",
     },
   });
 
   // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof loginValidation>) {
+  async function onSubmit(values: z.infer<typeof loginValidation>) {
+    // Call API
+
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
-    console.log(values);
+    // console.log(result);
 
     //NextAuth SignIn
     signIn("credentials", {
@@ -72,7 +101,6 @@ const LoginForm: FC<LoginFormProps> = ({}) => {
         router.push(callbackUrl || "/");
       }
     });
-    // .finally(() => setIsLoading(false));
   }
 
   return (
@@ -86,10 +114,10 @@ const LoginForm: FC<LoginFormProps> = ({}) => {
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <FormField
               control={form.control}
-              name="username"
+              name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Username</FormLabel>
+                  <FormLabel>Email</FormLabel>
                   <FormControl>
                     <Input className="" placeholder="" {...field} />
                   </FormControl>

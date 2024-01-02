@@ -157,9 +157,9 @@ export default function ReviewDraftPage() {
   //=============================== End Document Section
 
   return (
-    <div className="flex gap-6 max-md:flex-col max-md:items-center overflow-hidden">
+    <div className="flex gap-6 max-md:flex-col max-md:items-center">
       <Tabs defaultValue="sampling" className="w-[40rem] max-sm:w-[420px]">
-        <TabsList className="grid w-full grid-cols-2 space-x-0 cursor-pointer my-8 text-moss_green">
+        <TabsList className="grid w-full grid-cols-2 space-x-0 cursor-pointer my-8 text-moss_green scale-75 lg:scale-100">
           <TabsTrigger className="text-2xl" value="sampling">
             Sampling
           </TabsTrigger>

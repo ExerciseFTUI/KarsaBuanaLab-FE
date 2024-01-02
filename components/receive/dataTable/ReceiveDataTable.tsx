@@ -1,5 +1,6 @@
 "use client";
 import * as React from "react";
+import useSWR from "swr";
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -49,59 +50,15 @@ import {
 } from "@radix-ui/react-icons";
 import { receiveSamplingColumns } from "@/components/columns";
 import { ReceiveSamplingType } from "@/lib/type";
-import { cn } from "@/lib/utils";
+import { cn, fetcher } from "@/lib/utils";
+import { ProjectSamplingType } from "@/lib/type";
 
-// Create an array of 15 objects with the specified type
-const data: ReceiveSamplingType[] = [
-  {
-    id: "1",
-    noPenawaran: "0123456",
-    judulProject: "Project 1",
-    lokasiSampel: "Jl. Lokasi 1",
-    lokasi: "Location 1",
-    cp: "+62-XXXX-XXXX",
-  },
-  {
-    id: "2",
-    noPenawaran: "0123456",
-    judulProject: "Project 1",
-    lokasiSampel: "Jl. Lokasi 1",
-    lokasi: "Location 1",
-    cp: "+62-XXXX-XXXX",
-  },
-  {
-    id: "3",
-    noPenawaran: "0123456",
-    judulProject: "Project 1",
-    lokasiSampel: "Jl. Lokasi 1",
-    lokasi: "Location 1",
-    cp: "+62-XXXX-XXXX",
-  },
-  {
-    id: "4",
-    noPenawaran: "0123456",
-    judulProject: "Project 1",
-    lokasiSampel: "Jl. Lokasi 1",
-    lokasi: "Location 1",
-    cp: "+62-XXXX-XXXX",
-  },
-  {
-    id: "5",
-    noPenawaran: "0123456",
-    judulProject: "Project 1",
-    lokasiSampel: "Jl. Lokasi 1",
-    lokasi: "Location 1",
-    cp: "+62-XXXX-XXXX",
-  },
-];
-
-export function DataTable() {
+export function DataTable({ data }) {
   const router = useRouter();
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   );
-  const [statusFilter, setStatusFilter] = React.useState("");
 
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
@@ -135,13 +92,11 @@ export function DataTable() {
           <Input
             placeholder="Filter By Project Title"
             value={
-              (table.getColumn("judulProject")?.getFilterValue() as string) ??
+              (table.getColumn("project_name")?.getFilterValue() as string) ??
               ""
             }
             onChange={(event) =>
-              table
-                .getColumn("judulProject")
-                ?.setFilterValue(event.target.value)
+              table.getColumn("project_nam")?.setFilterValue(event.target.value)
             }
             className="max-w-sm border-pastel_moss_green rounded-full focus-visible:ring-0 bg-pastel_moss_green pl-5 placeholder:text-moss_green"
           />
@@ -218,7 +173,10 @@ export function DataTable() {
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
                   onClick={() =>
-                    router.push("receive/" + row.getValue("noPenawaran"))
+                    router.push(
+                      "receive/" +
+                        row.getValue("no_penawaran").replace(/\//g, "_")
+                    )
                   }
                 >
                   {row.getVisibleCells().map((cell) => (

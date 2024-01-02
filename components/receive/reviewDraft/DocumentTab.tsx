@@ -141,7 +141,7 @@ export default function Home() {
   const [value, setValue] = React.useState("");
 
   return (
-    <div className="w-full h-screen px-16 space-y-6">
+    <div className="w-full h-full px-16 space-y-6 ">
       <div className="space-y-4">
         {dropdown.map((field, index) => (
           <div key={index} className="space-y-3">

@@ -145,8 +145,8 @@ export default function Home({ params }: { params: { np: string } }) {
   const [selectedTab, setSelectedTab] = useState("Sampel");
 
   return (
-    <div className="flex justify-between w-full h-screen">
-      <div className="w-1/2 h-screen px-16 space-y-6">
+  <div className="flex flex-col md:flex-row justify-between w-full h-screen gap-36 md:gap-0">
+      <div className="md:w-1/2 h-screen px-16 space-y-6">
         <div className="flex flex-row text-2xl font-medium space-x-0 cursor-pointer">
           <div
             className={`flex flex-col items-end ${
@@ -156,7 +156,7 @@ export default function Home({ params }: { params: { np: string } }) {
           >
             <h1 className="m-4 mx-5">Sampel</h1>
             <div
-              className={`w-4/5 h-1  rounded-l-full ${
+              className={`w-4/5 h-1 rounded-l-full ${
                 selectedTab === "Sampel" ? "bg-dark_brown" : "bg-ghost_brown"
               } w-1/2`}
             />
@@ -169,7 +169,7 @@ export default function Home({ params }: { params: { np: string } }) {
           >
             <h1 className="m-4 mx-5">Dokumen</h1>
             <div
-              className={`w-4/5 h-1  rounded-r-full ${
+              className={`w-4/5 h-1 rounded-r-full ${
                 selectedTab === "Dokumen" ? "bg-dark_brown" : "bg-ghost_brown"
               } w-1/2`}
             />
@@ -177,13 +177,13 @@ export default function Home({ params }: { params: { np: string } }) {
         </div>
 
         {selectedTab === "Sampel" && (
-          <Sampel data={sampelData} title="Final Review Rekaman Lab" textColor="dark_brown" bgColor="white"/>
+          <Sampel data={sampelData} title="Final Review Rekaman Lab" textColor="light_brown" bgColor="white"/>
         )}
         {selectedTab === "Dokumen" && (
           <Document data={documentData} />
         )}
       </div>
-      <div className="w-1/2">
+      <div className="md:w-1/2">
         <LaporanHasilPemeriksaan title="Pengisian LHP" color="dark_brown"/>
       </div>
     </div>

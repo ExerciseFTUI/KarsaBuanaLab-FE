@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-import { PPLHPDataTable } from "@/components/pplhp/PPLHPDraftDataTable";
-=======
 import PPLHPDataTable from "@/components/pplhp/PPLHPDraftDataTable";
 
 const data = [
@@ -165,17 +162,11 @@ const data = [
     lokasiPengambilanSampel: "Jl. Flamboyan",
   }
 ];
->>>>>>> ae1d5be641ce947479fba772b7d35e1b85f6ffbb
 
 export default function Home() {
   return (
     <div className="flex justify-between w-full h-screen">
-<<<<<<< HEAD
-      
-      <PPLHPDataTable />
-=======
       <PPLHPDataTable data={data}/>
->>>>>>> ae1d5be641ce947479fba772b7d35e1b85f6ffbb
     </div>
   );
 }

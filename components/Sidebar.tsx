@@ -1,33 +1,33 @@
-"use client";
+"use client"
 
-import Link from "next/link";
-import React, { FC } from "react";
-import Image from "next/image";
-import { usePathname, useRouter } from "next/navigation";
+import Link from "next/link"
+import React, { FC } from "react"
+import Image from "next/image"
+import { usePathname, useRouter } from "next/navigation"
 // import { marketingLink } from "@/constants";
-import { BiLogOut } from "react-icons/bi";
+import { BiLogOut } from "react-icons/bi"
 import {
   marketingLink,
   samplingLinks,
   labLinks,
   pplhpLinks,
   sampleReceiveLinks,
-} from "@/constants/sidebarlinks";
-import { signOut } from "next-auth/react";
+} from "@/constants/sidebarlinks"
+import { signOut } from "next-auth/react"
 
 function extractFirstPathSegment(path: string) {
   // Remove leading and trailing slashes and split the path by "/"
-  const segments = path.replace(/^\/|\/$/g, "").split("/");
+  const segments = path.replace(/^\/|\/$/g, "").split("/")
   // Return the first segment
-  return segments[0];
+  return segments[0]
 }
 
 interface LeftSidebarProps {}
 
 const Sidebar: FC<LeftSidebarProps> = ({}) => {
-  const router = useRouter();
-  const pathname = usePathname();
-  const routeSection = "/" + extractFirstPathSegment(pathname);
+  const router = useRouter()
+  const pathname = usePathname()
+  const routeSection = "/" + extractFirstPathSegment(pathname)
   //   const { userId } = useAuth();
 
   const links = pathname.includes("marketing")
@@ -38,7 +38,7 @@ const Sidebar: FC<LeftSidebarProps> = ({}) => {
     ? labLinks
     : pathname.includes("receive")
     ? sampleReceiveLinks
-    : pplhpLinks;
+    : pplhpLinks
 
   //Receive
 
@@ -60,7 +60,7 @@ const Sidebar: FC<LeftSidebarProps> = ({}) => {
         {links.map((link) => {
           const isActive =
             (pathname.includes(link.route) && link.route.length > 1) ||
-            pathname === routeSection + link.route;
+            pathname === routeSection + link.route
           //   if (link.route === "/profile") link.route = `/profile/${userId}`;
 
           return (
@@ -69,7 +69,7 @@ const Sidebar: FC<LeftSidebarProps> = ({}) => {
               key={link.label}
               className={`relative hover:bg-light_green ease-in-out duration-300 flex justify-start items-center gap-4 rounded-lg p-4 ${
                 isActive && "bg-light_green"
-              }`}
+              } group`}
             >
               {/* <Image
                 src={link.imgURL}
@@ -80,7 +80,7 @@ const Sidebar: FC<LeftSidebarProps> = ({}) => {
               /> */}
 
               <div
-                className={`text-2xl text-moss_green ${
+                className={`text-2xl text-moss_green group-hover:!text-dark_green ${
                   isActive && "!text-dark_green"
                 }`}
               >
@@ -88,14 +88,14 @@ const Sidebar: FC<LeftSidebarProps> = ({}) => {
               </div>
 
               <p
-                className={`text-sm text-moss_green  ${
+                className={`text-sm text-moss_green group-hover:!text-dark_green ${
                   isActive && "!text-dark_green font-semibold"
                 }`}
               >
                 {link.label}
               </p>
             </Link>
-          );
+          )
         })}
       </div>
       <div className="mt-10 px-2">
@@ -115,7 +115,7 @@ const Sidebar: FC<LeftSidebarProps> = ({}) => {
         </div>
       </div>
     </section>
-  );
-};
+  )
+}
 
-export default Sidebar;
+export default Sidebar

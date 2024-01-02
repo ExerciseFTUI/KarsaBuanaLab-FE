@@ -12,8 +12,11 @@ export const registerValidation = z
       message: "Password must be at least 8 characters long",
     }),
     confirmPassword: z.string(),
-    role: z.string().nonempty({
+    role: z.string().min(1, {
       message: "Role is Required",
+    }),
+    division: z.string().min(1, {
+      message: "Title is required",
     }),
   })
   .refine((data) => data.password === data.confirmPassword, {
