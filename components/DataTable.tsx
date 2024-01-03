@@ -49,16 +49,20 @@ import {
   DoubleArrowRightIcon,
 } from "@radix-ui/react-icons";
 import { dummyTableData } from "@/constants";
+import { ProjectType } from "@/lib/type";
+import { Project } from "@/lib/models/project.model";
+import { columns } from "./columns";
 
-interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[];
-  datas?: TData[];
+// interface DataTableProps<TData, TValue> {
+//   columns: ColumnDef<TData, TValue>[];
+//   datas?: TData[];
+// }
+
+interface DataTableProps {
+  datas: ProjectType[];
 }
 
-export function DataTable<TData, TValue>({
-  columns,
-  datas,
-}: DataTableProps<TData, TValue>) {
+export function DataTable({ datas }: DataTableProps) {
   const router = useRouter();
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -81,7 +85,7 @@ export function DataTable<TData, TValue>({
 
   const table = useReactTable({
     data,
-    columns,
+    columns: columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),

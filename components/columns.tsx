@@ -22,7 +22,7 @@ import Link from "next/link";
 import { Project } from "@/lib/models/project.model";
 
 // Table Column for Marketing OnDiscuss
-export const columns: ColumnDef<Project, any>[] = [
+export const columns: ColumnDef<ProjectType>[] = [
   //No Penawaran
   {
     accessorKey: "no_penawaran",
@@ -68,7 +68,7 @@ export const columns: ColumnDef<Project, any>[] = [
               status ? "bg-yellow-700" : "bg-red-400"
             }`}
           >
-            {row.original.status}
+            {row.getValue("status")}
           </div>
         </div>
       );
@@ -128,7 +128,7 @@ export const columns: ColumnDef<Project, any>[] = [
     id: "actions",
     enableHiding: false,
     cell: ({ row }) => {
-      const project = row.original._id;
+      const project = row.getValue("_id");
 
       return (
         <DropdownMenu>
