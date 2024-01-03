@@ -79,7 +79,7 @@ export function DataTable({ datas }: DataTableProps) {
     if (datas && datas.length > 0) {
       setData(datas);
     } else {
-      setData(dummyTableData);
+      setData([]);
     }
   }, []);
 

@@ -6,16 +6,12 @@ import { Project } from "@/lib/models/project.model";
 import { redirect } from "next/navigation";
 
 export default async function Home() {
-  const projects = await getbyStatus("running");
-
-  if (!projects.result) {
-    redirect("/marketing");
-  }
+  const response = await getbyStatus("running");
 
   return (
     <div className="flex justify-between w-full h-screen">
       {/* <RunningTable projects={projects.result} /> */}
-      <DataTable datas={projects.result} />
+      <DataTable datas={response ? response.result : []} />
     </div>
   );
 }
