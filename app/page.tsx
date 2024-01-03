@@ -19,7 +19,7 @@ export default function Home() {
         {resiNumber !== "" ? (
           <ClientForm resiNumber={resiNumber} />
         ) : (
-          <div className="w-full md:w-2/3 h-[90vh] flex flex-col m-6 mx-10 bg-ghost_white rounded-xl" />
+          <div className="md:w-2/3 md:h-[90vh] md:flex md:flex-col md:m-6 md:mx-10 md:bg-ghost_white md:rounded-xl" />
         )}
       </div>
     </>

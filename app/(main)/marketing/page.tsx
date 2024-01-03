@@ -8,7 +8,7 @@ import { AiFillProject, AiFillFolderAdd } from "react-icons/ai";
 
 export default function Home() {
   return (
-    <div className="w-full h-screen ">
+    <div className="w-full h-fit ">
       {/* Section for Overview of Dashboard */}
       <div className="flex items-center w-full">
         {/* Approved Offers */}

@@ -76,7 +76,7 @@ const LoginForm: FC<LoginFormProps> = ({}) => {
   }
 
   return (
-    <Card className="w-[450px]">
+    <Card className="w-[80%] md:w-[30%]">
       <CardHeader>
         <CardTitle className="text-xl">Log In</CardTitle>
         <CardDescription>To continue to Lab Karsa Buana</CardDescription>
