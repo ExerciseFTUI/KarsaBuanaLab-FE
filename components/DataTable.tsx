@@ -1,5 +1,5 @@
 "use client"
-import * as React from "react"
+import { useState, FC, useEffect} from "react"
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -13,7 +13,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table"
 import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react"
-import { useRouter } from "next/navigation"
+import { useRouter, usePathname } from "next/navigation"
 
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
@@ -51,169 +51,27 @@ import {
 import { columns } from "@/components/columns"
 import { ProjectType } from "@/lib/type"
 
-// Create an array of 15 objects with the specified type
-const data: ProjectType[] = [
-  {
-    id: "1",
-    noPenawaran: "PNW1",
-    judul: "Project 1 daaaa",
-    namaCustomer: "Customer A",
-    lokasi: "Location 1 dad",
-    cp: "Contact Person 1",
-    nilaiPenawaran: 10000,
-    createdAt: "2023-10-14",
-  },
-  {
-    id: "2",
-    noPenawaran: "PNW2",
-    judul: "Project 2",
-    namaCustomer: "Customer B",
-    lokasi: "Location 2",
-    cp: "Contact Person 2",
-    nilaiPenawaran: 15000,
-    createdAt: "2023-10-14",
-  },
-  {
-    id: "3",
-    noPenawaran: "PNW3",
-    judul: "Project 3",
-    namaCustomer: "Customer C",
-    lokasi: "Location 3",
-    cp: "Contact Person 3",
-    nilaiPenawaran: 20000,
-    createdAt: "2023-10-14",
-  },
-  {
-    id: "4",
-    noPenawaran: "PNW4",
-    judul: "Project 4",
-    namaCustomer: "Customer D",
-    lokasi: "Location 4",
-    cp: "Contact Person 4",
-    nilaiPenawaran: 25000,
-    createdAt: "2023-10-14",
-  },
-  {
-    id: "5",
-    noPenawaran: "PNW5",
-    judul: "Project 5",
-    namaCustomer: "Customer E",
-    lokasi: "Location 5",
-    cp: "Contact Person 5",
-    nilaiPenawaran: 30000,
-    createdAt: "2023-10-14",
-  },
-  {
-    id: "6",
-    noPenawaran: "PNW6",
-    judul: "Project 6",
-    namaCustomer: "Customer F",
-    lokasi: "Location 6",
-    cp: "Contact Person 6",
-    nilaiPenawaran: 35000,
-    createdAt: "2023-10-14",
-  },
-  {
-    id: "7",
-    noPenawaran: "PNW7",
-    judul: "Project 7",
-    namaCustomer: "Customer G",
-    lokasi: "Location 7",
-    cp: "Contact Person 7",
-    nilaiPenawaran: 40000,
-    createdAt: "2023-10-14",
-  },
-  {
-    id: "8",
-    noPenawaran: "PNW8",
-    judul: "Project 8",
-    namaCustomer: "Customer H",
-    lokasi: "Location 8",
-    cp: "Contact Person 8",
-    nilaiPenawaran: 45000,
-    createdAt: "2023-10-14",
-  },
-  {
-    id: "9",
-    noPenawaran: "PNW9",
-    judul: "Project 9",
-    namaCustomer: "Customer I",
-    lokasi: "Location 9",
-    cp: "Contact Person 9",
-    nilaiPenawaran: 50000,
-    createdAt: "2023-10-14",
-  },
-  {
-    id: "10",
-    noPenawaran: "PNW10",
-    judul: "Project 10",
-    namaCustomer: "Customer J",
-    lokasi: "Location 10",
-    cp: "Contact Person 10",
-    nilaiPenawaran: 55000,
-    createdAt: "2023-10-14",
-  },
-  {
-    id: "11",
-    noPenawaran: "PNW11",
-    judul: "Project 11",
-    namaCustomer: "Customer K",
-    lokasi: "Location 11",
-    cp: "Contact Person 11",
-    nilaiPenawaran: 60000,
-    createdAt: "2023-10-14",
-  },
-  {
-    id: "12",
-    noPenawaran: "PNW12",
-    judul: "Project 12",
-    namaCustomer: "Customer L",
-    lokasi: "Location 12",
-    cp: "Contact Person 12",
-    nilaiPenawaran: 65000,
-    createdAt: "2023-10-14",
-  },
-  {
-    id: "13",
-    noPenawaran: "PNW13",
-    judul: "Project 13",
-    namaCustomer: "Customer M",
-    lokasi: "Location 13",
-    cp: "Contact Person 13",
-    nilaiPenawaran: 70000,
-    createdAt: "2024-10-14",
-  },
-  {
-    id: "14",
-    noPenawaran: "PNW14",
-    judul: "Project 14",
-    namaCustomer: "Customer N",
-    lokasi: "Location 14",
-    cp: "Contact Person 14",
-    nilaiPenawaran: 75000,
-    createdAt: "2023-10-14",
-  },
-  {
-    id: "15",
-    noPenawaran: "PNW15",
-    judul: "Project 15",
-    namaCustomer: "Customer O",
-    lokasi: "Location 15",
-    cp: "Contact Person 15",
-    nilaiPenawaran: 80000,
-    createdAt: "2023-10-14",
-  },
-]
+interface ProjectRunningProps {
+  data : ProjectType[]; 
+}
 
-export function DataTable() {
+const DataTable : FC<ProjectRunningProps> = ({data}) =>  {
   const router = useRouter()
-  const [sorting, setSorting] = React.useState<SortingState>([])
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
+  const pathname = usePathname()
+  const [sorting, setSorting] = useState<SortingState>([])
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(
     []
   )
   const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({})
-  const [rowSelection, setRowSelection] = React.useState({})
+    useState<VisibilityState>({})
+  const [rowSelection, setRowSelection] = useState({})
+
+  const path = useEffect(() => {
+    // pathname.replace()
+    console.log("pathname" + pathname);
+    
+  }, [])
+  
 
   const table = useReactTable({
     data,
@@ -307,9 +165,12 @@ export function DataTable() {
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
-                  className="hover:bg-pastel_moss_green ease-in-out duration-500 text-xs hover:cursor-pointer hover:rounded-xl "
+                  className="hover:bg-pastel_moss_green rounded-xl ease-in-out duration-500 text-xs hover:cursor-pointer hover:rounded-xl "
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
+                  onClick={()=>
+                    router.push(pathname + "/" + row.getValue("noPenawaran"))
+                  }
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
@@ -412,5 +273,7 @@ export function DataTable() {
         </div>
       </div>
     </div>
-  )
+  );
 }
+
+export default DataTable;

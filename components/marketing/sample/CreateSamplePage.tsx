@@ -55,7 +55,7 @@ const CreateSamplePage = () => {
                 {/* End Information for sampling and regulation */}
 
                 {/* Information for Edit */}
-                <div className='border border-dark_green rounded-lg p-5 h-full'>
+                <div className=' border-dark_brown border-4 border-dashed rounded-lg p-5 h-full'>
                     <h1 className='text-xl font-bold text-dark_green mb-10'>Edit Sample</h1>
                     <EditSample sample={sample} regulation={regulation} />
                 </div>

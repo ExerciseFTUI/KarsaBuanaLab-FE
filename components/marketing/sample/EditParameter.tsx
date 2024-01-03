@@ -16,16 +16,17 @@ import { Input } from "@/components/ui/input"
 
 interface TableParameterProps {
   regulation: number;
+  selectedRegulationName: string | null;
 }
 
-const EditParameter: React.FC<TableParameterProps> = ({ regulation }) => {
+const EditParameter: React.FC<TableParameterProps> = ({ regulation, selectedRegulationName }) => {
   const sampleData = Sampling.samples.find((sample) => sample.regulations.some((reg) => reg.id === regulation));
   const [addParam, setAddParam] = useState(false)
 
   return (
     <div className="w-fit border-2 border-dark_green rounded-xl p-5 items-center justify-center">
       <Table className="">
-        <TableCaption>Lists parameters of regulation {regulation} </TableCaption>
+        <TableCaption>Lists parameters of regulation {selectedRegulationName} </TableCaption>
         <TableHeader>
           <TableRow>
             <TableHead className="w-[100px] text-dark_green font-bold">Id</TableHead>
@@ -39,7 +40,9 @@ const EditParameter: React.FC<TableParameterProps> = ({ regulation }) => {
               .find((reg) => reg.id === regulation)
               ?.parameters.map((param) => (
                 <TableRow className=" " key={param.id}>
-                  <TableCell className="font-medium rounded-l-lg">{param.id}</TableCell>
+                  <TableCell className=" rounded-l-lg">
+                    <Input placeholder={param.id.toString()}/>
+                  </TableCell>
                   <TableCell>
                     <Input placeholder={param.name}/>
                   </TableCell>

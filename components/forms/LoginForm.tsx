@@ -38,28 +38,6 @@ import { access } from "fs";
 
 interface LoginFormProps {}
 
-// async function postLogin(values:loginValidationType) {
-//   try {
-//     let config = {
-//       method: 'post',
-//       maxBodyLength: Infinity,
-//       url: 'http://localhost:3000/auth/login',
-//       headers: {
-//         'authorization': '',
-//         'Content-Type' : 'application/json'
-//       },
-//       data: values
-//     };
-
-//     const response = await axios.request(config);
-//     // console.log(JSON.stringify(response.data));
-//     return (response.data.accessToken, response.data.refreshToken)
-//   } catch (error : any) {
-//     // console.log(error);
-//     return (error)
-//   }
-// }
-
 const LoginForm: FC<LoginFormProps> = ({}) => {
   const router = useRouter();
   const query = useSearchParams();
@@ -76,12 +54,6 @@ const LoginForm: FC<LoginFormProps> = ({}) => {
 
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof loginValidation>) {
-    // Call API
-
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    // console.log(result);
-
     //NextAuth SignIn
     signIn("credentials", {
       ...values,
@@ -121,7 +93,6 @@ const LoginForm: FC<LoginFormProps> = ({}) => {
                   <FormControl>
                     <Input className="" placeholder="" {...field} />
                   </FormControl>
-
                   <FormMessage />
                 </FormItem>
               )}

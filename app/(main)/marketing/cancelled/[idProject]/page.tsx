@@ -15,7 +15,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
-export default function Home() {
+export default function Home( { params } : {params: {idProject : string}}) {
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [isCancelled, setIsCancelled] = useState(false);
   const [reason, setReason] = useState('');
