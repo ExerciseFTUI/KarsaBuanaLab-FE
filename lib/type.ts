@@ -1,4 +1,16 @@
 export type ProjectType = {
+  //Lama
+  id: string;
+  noPenawaran: string;
+  judul: string;
+  namaCustomer: string;
+  lokasi: string;
+  cp: string;
+  nilaiPenawaran: number;
+  createdAt: string;
+};
+
+export type ProjectMarketingType = {
   _id: string;
   no_penawaran: string;
   project_name: string;

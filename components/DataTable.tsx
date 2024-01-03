@@ -49,7 +49,7 @@ import {
   DoubleArrowRightIcon,
 } from "@radix-ui/react-icons";
 import { dummyTableData } from "@/constants";
-import { ProjectType } from "@/lib/type";
+import { ProjectMarketingType, ProjectType } from "@/lib/type";
 import { Project } from "@/lib/models/project.model";
 import { columns } from "./columns";
 
@@ -59,7 +59,7 @@ import { columns } from "./columns";
 // }
 
 interface DataTableProps {
-  datas: ProjectType[];
+  datas: ProjectMarketingType[];
 }
 
 export function DataTable({ datas }: DataTableProps) {

@@ -2,7 +2,7 @@ import axios from "axios";
 import { Project } from "../models/project.model";
 import { BaseApiResponse } from "../models/baseApiResponse.model";
 import { BaseSample } from "../models/baseSample.model";
-import { ProjectType } from "../type";
+import { ProjectMarketingType, ProjectType } from "../type";
 
 const apiBaseUrl = process.env.API_BASE_URL || "";
 
@@ -107,13 +107,13 @@ export const getProject = async (
 //Berhasil
 export const getbyStatus = async (
   status: string
-): Promise<BaseApiResponse<[ProjectType]>> => {
+): Promise<BaseApiResponse<[ProjectMarketingType]>> => {
   try {
     const response = await axios.get(`${apiBaseUrl}/marketing/${status}`);
-    return response.data as BaseApiResponse<[ProjectType]>;
+    return response.data as BaseApiResponse<[ProjectMarketingType]>;
   } catch (error: any) {
     console.error(`Error getting project  ${status}:`, error.message);
     // throw new Error(`Failed to get project  ${status}`);
-    return null as unknown as BaseApiResponse<[ProjectType]>;
+    return null as unknown as BaseApiResponse<[ProjectMarketingType]>;
   }
 };
