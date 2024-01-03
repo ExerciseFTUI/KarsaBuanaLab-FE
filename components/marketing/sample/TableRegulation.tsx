@@ -34,10 +34,16 @@ const TableRegulation: React.FC<TableRegulationProps> = ({ sample, regulation, s
         </TableHeader>
         <TableBody>
           {regulations.map((regulationData) => (
-            <TableRow onClick={() => setRegulation(regulationData.id)} className="hover:bg-light_green hover:cursor-pointer" key={regulationData.id}>
-              <TableCell className="font-medium rounded-l-lg">{regulationData.id}</TableCell>
-              <TableCell className="rounded-r-lg">{regulationData.name}</TableCell>
-            </TableRow>
+            <TableRow
+            onClick={() => setRegulation(regulationData.id)}
+            className={`hover:bg-light_green hover:cursor-pointer ${
+              regulationData.id === regulation ? 'bg-light_green' : 'bg-transparent'
+            }`}
+            key={regulationData.id}
+          >
+            <TableCell className="font-medium rounded-l-lg">{regulationData.id}</TableCell>
+            <TableCell className="rounded-r-lg">{regulationData.name}</TableCell>
+          </TableRow>
           ))}
         </TableBody>
       </Table>
