@@ -370,12 +370,12 @@ export const samplingLetterPageColumns: ColumnDef<ProjectSamplingType>[] =
 export const LHPDraftPageColumns: ColumnDef<ProjectLHPType>[] = [
   //No Penawaran
   {
-    accessorKey: "noPenawaran",
+    accessorKey: "no_penawaran",
     header: "No Penawaran",
-    cell: ({ row }) => <div className="">{row.getValue("noPenawaran")}</div>,
+    cell: ({ row }) => <div className="">{row.getValue("no_penawaran")}</div>,
   },
   {
-    accessorKey: "judul",
+    accessorKey: "project_name",
     header: ({ column }) => {
       return (
         <Button
@@ -389,34 +389,34 @@ export const LHPDraftPageColumns: ColumnDef<ProjectLHPType>[] = [
       );
     },
     cell: ({ row }) => (
-      <div className="capitalize pl-4">{row.getValue("judul")}</div>
+      <div className="capitalize pl-4">{row.getValue("project_name")}</div>
     ),
   },
   //Status
   {
-    accessorKey: "lokasiPengambilanSampel",
+    accessorKey: "alamat_sampling",
     header: "Lokasi Pengambilan Sampel",
     cell: ({ row }) => {
       return (
         <div className="capitalize pl-0.5">
-          {row.getValue("lokasiPengambilanSampel")}
+          {row.getValue("alamat_sampling")}
         </div>
       );
     },
   },
   //Lokasi
   {
-    accessorKey: "lokasi",
+    accessorKey: "alamat_kantor",
     header: "Lokasi",
     cell: ({ row }) => {
-      return <div className="capitalize pl-0.5">{row.getValue("lokasi")}</div>;
+      return <div className="capitalize pl-0.5">{row.getValue("alamat_kantor")}</div>;
     },
   },
   {
-    accessorKey: "cp",
+    accessorKey: "contact_person",
     header: "Contact Person",
     cell: ({ row }) => {
-      return <div className="capitalize pl-0.5">{row.getValue("cp")}</div>;
+      return <div className="capitalize pl-0.5">{row.getValue("contact_person")}</div>;
     },
   },
 ];
