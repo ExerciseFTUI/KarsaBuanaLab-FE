@@ -16,6 +16,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import ProjectForm from "../forms/ProjectForm";
 import { useToast } from "@/components/ui/use-toast";
+import { createProject } from "@/lib/actions/marketing.actions";
 
 export default function CreateProjectPage() {
   const { toast } = useToast();
@@ -83,6 +84,10 @@ export default function CreateProjectPage() {
     //Close Modal
     setOpenModal(false);
 
+    //Call API Test
+    // createProject(null, )
+    //End of Call API Test
+
     //Display Toast
     toast({
       title: "Successfully adding new sample",
@@ -106,10 +111,7 @@ export default function CreateProjectPage() {
     },
   });
 
-  // 2. Define a submit handler.
   async function onSubmitForm(values: z.infer<typeof createProjectValidation>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
     console.log(values);
   }
 
