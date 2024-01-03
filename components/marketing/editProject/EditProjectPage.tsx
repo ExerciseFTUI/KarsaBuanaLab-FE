@@ -47,13 +47,17 @@ export default function EditProjectPage({ project }: EditProjectPageProps) {
   //All the samples get save in here
   const { fields: samples, append, remove } = arrayField;
 
+  console.log(project);
+
   //Append all the samples from API to the samples array
   if (project.sampling_list && project.sampling_list.length > samples.length) {
     const newSamples = project.sampling_list.map((sample) => {
       return {
-        sampleName: sample.sample_name,
-        regulation: sample.regulation.regulation_name,
-        parameters: sample.regulation.param,
+        sampleName: sample.sample_name ? sample.sample_name : "Empty",
+        regulation: sample.regulation?.regulation_name
+          ? sample.regulation.regulation_name
+          : "Empty",
+        parameters: sample.regulation?.param ? sample.regulation.param : [""],
       };
     });
 

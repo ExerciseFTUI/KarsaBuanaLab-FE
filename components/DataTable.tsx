@@ -98,21 +98,6 @@ export function DataTable<TData, TValue>({
     },
   });
 
-  // const [data2, setData2] = React.useState<Project[]>([]);
-
-  // const getProject = async () => {
-  //   console.log(`http://localhost:5000/marketing/running`);
-  //   const response = await axios.get(`http://localhost:5000/marketing/running`);
-  //   console.log(response.data);
-  // };
-
-  // React.useEffect(() => {
-  //   console.log("Helos");
-  //   getProject();
-  // }, []);
-
-  // console.log(data2);
-
   return (
     <div className="w-full">
       {/* Top Search Title */}

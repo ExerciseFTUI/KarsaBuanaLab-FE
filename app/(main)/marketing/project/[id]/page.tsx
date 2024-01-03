@@ -6,7 +6,7 @@ import { redirect } from "next/navigation";
 const SingleProject = async ({ params }: { params: { id: string } }) => {
   const project = await getProject(params.id);
 
-  if (!project) {
+  if (!project.result) {
     redirect("/marketing");
   }
 
