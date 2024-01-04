@@ -37,7 +37,7 @@ const documentData = [
     {
         judul: "Tahap 1",
         placeholder: "Tahap 1",
-        link : [
+        link: [
             {
                 value: "link1",
                 label: "link1",
@@ -63,7 +63,7 @@ const documentData = [
     {
         judul: "Tahap 2",
         placeholder: "Tahap 2",
-        link : [
+        link: [
             {
                 value: "link1",
                 label: "link1",
@@ -89,7 +89,7 @@ const documentData = [
     {
         judul: "Tahap 3",
         placeholder: "Tahap 3",
-        link : [
+        link: [
             {
                 value: "link1",
                 label: "link1",
@@ -115,7 +115,7 @@ const documentData = [
     {
         judul: "Tahap 4",
         placeholder: "Tahap 4",
-        link : [
+        link: [
             {
                 value: "link1",
                 label: "link1",
@@ -140,52 +140,54 @@ const documentData = [
     },
 ];
 
+const LaporanHasilPemeriksaanData = {
+    value: "link1.",
+    label: "link 1",
+}
 
 export default function Home({ params }: { params: { np: string } }) {
-  const [selectedTab, setSelectedTab] = useState("Sampel");
+    const [selectedTab, setSelectedTab] = useState("Sampel");
+    // Get sampel data
+    // Get Document data
+    // Get Laporan Hasil Pemeriksaan data
+    return (
+        <div className="flex flex-col md:flex-row justify-between w-full h-screen gap-36 md:gap-0">
+            <div className="md:w-1/2 h-screen px-16 space-y-6">
+                <div className="flex flex-row text-2xl font-medium space-x-0 cursor-pointer">
+                    <div
+                        className={`flex flex-col items-end ${selectedTab === "Sampel" ? "text-dark_brown" : "text-ghost_brown"
+                            } w-1/2`}
+                        onClick={() => setSelectedTab("Sampel")}
+                    >
+                        <h1 className="m-4 mx-5">Sampel</h1>
+                        <div
+                            className={`w-4/5 h-1 rounded-l-full ${selectedTab === "Sampel" ? "bg-dark_brown" : "bg-ghost_brown"
+                                } w-1/2`}
+                        />
+                    </div>
+                    <div
+                        className={`w-1/2 cursor-pointer ${selectedTab === "Dokumen" ? "text-dark_brown" : "text-ghost_brown"
+                            }`}
+                        onClick={() => setSelectedTab("Dokumen")}
+                    >
+                        <h1 className="m-4 mx-5">Dokumen</h1>
+                        <div
+                            className={`w-4/5 h-1 rounded-r-full ${selectedTab === "Dokumen" ? "bg-dark_brown" : "bg-ghost_brown"
+                                } w-1/2`}
+                        />
+                    </div>
+                </div>
 
-  return (
-  <div className="flex flex-col md:flex-row justify-between w-full h-screen gap-36 md:gap-0">
-      <div className="md:w-1/2 h-screen px-16 space-y-6">
-        <div className="flex flex-row text-2xl font-medium space-x-0 cursor-pointer">
-          <div
-            className={`flex flex-col items-end ${
-              selectedTab === "Sampel" ? "text-dark_brown" : "text-ghost_brown"
-            } w-1/2`}
-            onClick={() => setSelectedTab("Sampel")}
-          >
-            <h1 className="m-4 mx-5">Sampel</h1>
-            <div
-              className={`w-4/5 h-1 rounded-l-full ${
-                selectedTab === "Sampel" ? "bg-dark_brown" : "bg-ghost_brown"
-              } w-1/2`}
-            />
-          </div>
-          <div
-            className={`w-1/2 cursor-pointer ${
-              selectedTab === "Dokumen" ? "text-dark_brown" : "text-ghost_brown"
-            }`}
-            onClick={() => setSelectedTab("Dokumen")}
-          >
-            <h1 className="m-4 mx-5">Dokumen</h1>
-            <div
-              className={`w-4/5 h-1 rounded-r-full ${
-                selectedTab === "Dokumen" ? "bg-dark_brown" : "bg-ghost_brown"
-              } w-1/2`}
-            />
-          </div>
+                {selectedTab === "Sampel" && (
+                    <Sampel data={sampelData} title="Final Review Rekaman Lab" textColor="light_brown" bgColor="white" />
+                )}
+                {selectedTab === "Dokumen" && (
+                    <Document data={documentData} />
+                )}
+            </div>
+            <div className="md:w-1/2">
+                <LaporanHasilPemeriksaan title="Pengisian LHP" color="dark_brown" link={LaporanHasilPemeriksaanData} />
+            </div>
         </div>
-
-        {selectedTab === "Sampel" && (
-          <Sampel data={sampelData} title="Final Review Rekaman Lab" textColor="light_brown" bgColor="white"/>
-        )}
-        {selectedTab === "Dokumen" && (
-          <Document data={documentData} />
-        )}
-      </div>
-      <div className="md:w-1/2">
-        <LaporanHasilPemeriksaan title="Pengisian LHP" color="dark_brown"/>
-      </div>
-    </div>
-  );
+    );
 }

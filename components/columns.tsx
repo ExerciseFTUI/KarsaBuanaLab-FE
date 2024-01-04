@@ -17,6 +17,7 @@ import {
   ProjectType,
   ReceiveSamplingType,
   ProjectLHPType,
+  LabDataType
 } from "@/lib/type";
 import Link from "next/link";
 import { Project } from "@/lib/models/project.model";
@@ -64,9 +65,8 @@ export const columns: ColumnDef<ProjectType>[] = [
       return (
         <div className="">
           <div
-            className={`font-light text-white w-fit px-6 py-0.5 rounded-full ${
-              status ? "bg-yellow-700" : "bg-red-400"
-            }`}
+            className={`font-light text-white w-fit px-6 py-0.5 rounded-full ${status ? "bg-yellow-700" : "bg-red-400"
+              }`}
           >
             {row.getValue("status")}
           </div>
@@ -356,8 +356,8 @@ export const receiveProjectPageColumns: ColumnDef<ProjectSamplingType>[] = [
         stat == "Need Schedule" || stat == "Get Sample"
           ? "bg-moss_green"
           : stat == "On Discuss" || stat == "Verifying"
-          ? "bg-light_brown"
-          : "bg-brick_red";
+            ? "bg-light_brown"
+            : "bg-brick_red";
 
       return (
         <div
@@ -433,8 +433,8 @@ export const samplingProjectPageColumns: ColumnDef<ProjectSamplingType>[] = [
         status == "Need Schedule" || status == "Get Sample"
           ? "bg-moss_green"
           : status == "On Discuss" || status == "Verifying"
-          ? "bg-light_brown"
-          : "bg-brick_red";
+            ? "bg-light_brown"
+            : "bg-brick_red";
 
       return (
         <div
@@ -511,6 +511,60 @@ export const samplingLetterPageColumns: ColumnDef<ProjectSamplingType>[] =
 export const LHPDraftPageColumns: ColumnDef<ProjectLHPType>[] = [
   //No Penawaran
   {
+    accessorKey: "no_penawaran",
+    header: "No Penawaran",
+    cell: ({ row }) => <div className="">{row.getValue("no_penawaran")}</div>,
+  },
+  {
+    accessorKey: "project_name",
+    header: ({ column }) => {
+      return (
+        <Button
+          className="italic text-moss_green"
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Judul Project
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => (
+      <div className="capitalize pl-4">{row.getValue("project_name")}</div>
+    ),
+  },
+  //Status
+  {
+    accessorKey: "alamat_sampling",
+    header: "Lokasi Pengambilan Sampel",
+    cell: ({ row }) => {
+      return (
+        <div className="capitalize pl-0.5">
+          {row.getValue("alamat_sampling")}
+        </div>
+      );
+    },
+  },
+  //Lokasi
+  {
+    accessorKey: "alamat_kantor",
+    header: "Lokasi",
+    cell: ({ row }) => {
+      return <div className="capitalize pl-0.5">{row.getValue("alamat_kantor")}</div>;
+    },
+  },
+  {
+    accessorKey: "contact_person",
+    header: "Contact Person",
+    cell: ({ row }) => {
+      return <div className="capitalize pl-0.5">{row.getValue("contact_person")}</div>;
+    },
+  },
+];
+
+export const PPLHPFinalReviewPageColumns: ColumnDef<ProjectLHPType>[] = [
+  //No Penawaran
+  {
     accessorKey: "noPenawaran",
     header: "No Penawaran",
     cell: ({ row }) => <div className="">{row.getValue("noPenawaran")}</div>,
@@ -520,7 +574,7 @@ export const LHPDraftPageColumns: ColumnDef<ProjectLHPType>[] = [
     header: ({ column }) => {
       return (
         <Button
-          className="italic text-moss_green"
+          className="italic text-[#b49a82]"
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
@@ -562,8 +616,8 @@ export const LHPDraftPageColumns: ColumnDef<ProjectLHPType>[] = [
   },
 ];
 
-export const PPLHPFinalReviewPageColumns: ColumnDef<ProjectLHPType>[] = [
-  //No Penawaran
+export const LabDashboardPageColumns: ColumnDef<LabDataType>[] = [
+  // No Penawaran
   {
     accessorKey: "noPenawaran",
     header: "No Penawaran",
@@ -574,7 +628,7 @@ export const PPLHPFinalReviewPageColumns: ColumnDef<ProjectLHPType>[] = [
     header: ({ column }) => {
       return (
         <Button
-          className="italic text-[#b49a82]"
+          className="italic text-moss_green"
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
@@ -586,18 +640,6 @@ export const PPLHPFinalReviewPageColumns: ColumnDef<ProjectLHPType>[] = [
     cell: ({ row }) => (
       <div className="capitalize pl-4">{row.getValue("judul")}</div>
     ),
-  },
-  //Status
-  {
-    accessorKey: "lokasiPengambilanSampel",
-    header: "Lokasi Pengambilan Sampel",
-    cell: ({ row }) => {
-      return (
-        <div className="capitalize pl-0.5">
-          {row.getValue("lokasiPengambilanSampel")}
-        </div>
-      );
-    },
   },
   //Lokasi
   {
