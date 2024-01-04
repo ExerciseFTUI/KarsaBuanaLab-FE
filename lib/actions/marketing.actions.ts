@@ -1,10 +1,10 @@
-import axios from 'axios';
-import { Project } from '../models/project.model';
-import {BaseApiResponse} from '../models/baseApiResponse.model'
-import { BaseSample } from '../models/baseSample.model';
+import axios from "axios";
+import { Project } from "../models/project.model";
+import { BaseApiResponse } from "../models/baseApiResponse.model";
+import { BaseSample } from "../models/baseSample.model";
+import { ProjectMarketingType, ProjectType } from "../type";
 
-
-const apiBaseUrl = process.env.API_BASE_URL || '';
+const apiBaseUrl = process.env.API_BASE_URL || "";
 
 interface APIProject {
   client_name: string;
@@ -53,8 +53,10 @@ export const createProject = async (
       throw new Error("Please provide all required fields");
     }
 
-    const response = await axios.post(`${apiBaseUrl}/project/createProject`, { files, body });
-
+    const response = await axios.post(`${apiBaseUrl}/project/createProject`, {
+      files,
+      body,
+    });
 
     return response.data as BaseApiResponse<ProjectResult>;
   } catch (error: any) {
@@ -65,7 +67,6 @@ export const createProject = async (
 
 export const getSample = async (): Promise<BaseApiResponse<[BaseSample]>> => {
   try {
-
     const response = await axios.get(`${apiBaseUrl}/marketing/getSample`);
 
     return response.data as BaseApiResponse<[BaseSample]>;
@@ -79,13 +80,11 @@ export const getDashboard = async (): Promise<
   BaseApiResponse<DashboardResult>
 > => {
   try {
-
     const response = await axios.get(`${apiBaseUrl}/marketing/dashboard`);
 
     return response.data as BaseApiResponse<DashboardResult>;
-
   } catch (error: any) {
-    console.error('Error getting Dashboard:', error.message);
-    throw new Error('Failed to get dashboard');
+    console.error("Error getting Dashboard:", error.message);
+    throw new Error("Failed to get dashboard");
   }
 };

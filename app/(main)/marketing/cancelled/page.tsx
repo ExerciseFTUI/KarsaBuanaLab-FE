@@ -1,7 +1,15 @@
-export default function Home() {
+// import CancelledTable from "@/components/marketing/Tables/CancelledTable";
+import { DataTable } from "@/components/DataTable";
+import { getbyStatus } from "@/lib/actions/marketing.actions";
+import { redirect } from "next/navigation";
+
+export default async function Home() {
+  const response = await getbyStatus("cancelled");
+
   return (
     <div className="flex justify-between w-full h-screen">
-      <h1>Hello From /cancelled</h1>
+      {/* <CancelledTable projects={projects.result} /> */}
+      <DataTable datas={response ? response.result : []} />
     </div>
   );
 }
