@@ -1,3 +1,6 @@
+import { Regulation } from "./models/regulation.model"
+import { User } from "./models/user.model"
+
 export type ProjectType = {
   //Lama
   id: string;
@@ -22,58 +25,48 @@ export type ProjectMarketingType = {
   valuasi_proyek: number;
 };
 
-export type SampleType = {
-  sample_name: string;
-  harga: string;
-  fileId: string;
-  regulation: string;
-  location: string;
-};
+export type BaseSampleType = {
+  sample_name: string
+  amount: number
+}
 
-export type ProjectSamplingType = {
-  no_penawaran: string;
-  no_sampling: string;
-  client_name: string;
-  project_name: string;
-  alamat_kantor: string;
-  alamat_sampling: string;
-  surel: string;
-  contact_person: string;
-  status: string;
-  folder_id: string;
-  password: string;
-  jumlah_revisi: number;
-  valuasi_proyek: number;
-  surat_penawaran: string;
-  created_year: string;
-  sampling_list: SampleType[];
+export type FileType = {
+  file_name: string
+  file_id: string
+}
 
-  file: { file_nama: string; file_id: string };
-};
+export type UserType = {
+  username: string
+  email: string
+  password: string
+  phone: string
+  role: string
+  division: string
+}
+
+export type RegulationType = {
+  regulation_name: string
+  file: FileType[]
+  param: string[]
+}
 
 export type ReceiveSamplingType = {
-  no_penawaran: string;
-  project_name: string;
-  alamat_sampling: string;
-  alamat_kantor: string;
-  contact_person: string;
-};
+  id: string
+  noPenawaran: string
+  judulProject: string
+  lokasiSampel: string
+  lokasi: string
+  cp: string
+}
 
 export type ProjectLHPType = {
-  no_penawaran: string;
-  project_name: string;
-  alamat_sampling: string;
-  alamat_kantor: string;
-  contact_person: string;
-};
-
-export type LabDataType = {
-  id: string;
-  noPenawaran: string;
-  judul: string;
-  lokasi: string;
-  cp: string;
-};
+  id: string
+  noPenawaran: string
+  judul: string
+  lokasiPengambilanSampel: string
+  lokasi: string
+  cp: string
+}
 
 export const Sampling = {
   samples: [
@@ -152,4 +145,4 @@ export const Sampling = {
       ],
     },
   ],
-};
+}
