@@ -16,7 +16,7 @@ const CreateSamplePage = () => {
         <>
             <div className='grid grid-cols-2 justify-between gap-6 max-md:flex-col max-md:items-center'>
                 {/* Information for sampling and regulation */}
-                <div className='border border-dark_green rounded-lg p-3 h-[90%] overflow-y-scroll overflow-y-scroll'>
+                <div className='border border-dark_green rounded-lg p-3 h-[90%] overflow-y-scroll'>
                     {/* Add sampling Button */}
                     <button className='p-3 flex hover:opacity-70 justify-center font-bold text-xl border-light_green border-2 rounded-lg w-full bg-dark_green text-white'>
                         Create New Sample
