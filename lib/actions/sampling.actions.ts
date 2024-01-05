@@ -42,7 +42,7 @@ export const getSampleByYear = async (year: string, page: string) : Promise<Base
 
   } catch (error: any) {
     console.error('Error getting sample list', error.message);
-    throw new Error('Failed to get sample list');
+    return null as unknown as Promise<BaseApiResponse<Project[]>>;
   }
 
 }
