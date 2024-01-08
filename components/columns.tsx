@@ -109,11 +109,11 @@ export const columns: ColumnDef<ProjectType>[] = [
   //   header: () => (
   //     <div className={`pl-2 font-medium text-[#666D4B]`}>Last Update</div>
   //   ),
-
   cell: ({ row }) => {
       return <div className={`pl-4 font-medium`}>Today</div>;
     },
   },
+
   //Action
   {
     id: "actions",
