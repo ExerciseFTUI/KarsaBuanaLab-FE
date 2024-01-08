@@ -45,6 +45,34 @@ export type ReceiveSamplingType = {
   contact_person: string;
 };
 
+export type ProjectSamplingType = {
+  no_penawaran: string
+  no_sampling: string
+  client_name: string
+  project_name: string
+  alamat_kantor: string
+  alamat_sampling: string
+  surel: string
+  contact_person: string
+  status: string
+  folder_id: string
+  password: string
+  jumlah_revisi: number
+  valuasi_proyek: number
+  surat_penawaran: string
+  created_year: string
+  sampling_list: SampleType[]
+  file: { file_nama: string; file_id: string }
+}
+
+export type SampleType = {
+  sample_name: string
+  harga: string
+  fileId: string
+  regulation: string
+  location: string
+}
+
 export type ProjectLHPType = {
   no_penawaran: string;
   project_name: string;
