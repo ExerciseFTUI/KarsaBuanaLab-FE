@@ -38,22 +38,28 @@ export type RegulationType = {
 }
 
 export type ReceiveSamplingType = {
-  id: string
-  noPenawaran: string
-  judulProject: string
-  lokasiSampel: string
-  lokasi: string
-  cp: string
-}
+  no_penawaran: string;
+  project_name: string;
+  alamat_sampling: string;
+  alamat_kantor: string;
+  contact_person: string;
+};
 
 export type ProjectLHPType = {
-  id: string
-  noPenawaran: string
-  judul: string
-  lokasiPengambilanSampel: string
-  lokasi: string
-  cp: string
-}
+  no_penawaran: string;
+  project_name: string;
+  alamat_sampling: string;
+  alamat_kantor: string;
+  contact_person: string;
+};
+
+export type LabDataType = {
+  id: string;
+  noPenawaran: string;
+  judul: string;
+  lokasi: string;
+  cp: string;
+};
 
 export const Sampling = {
   samples: [

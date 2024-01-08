@@ -1,5 +1,5 @@
 "use client";
-import { useState, FC, useEffect } from "react";
+import { useState, FC } from "react";
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -14,7 +14,7 @@ import {
 } from "@tanstack/react-table";
 import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { BiFilterAlt } from "react-icons/bi";
+import { CiSearch } from "react-icons/ci";
 
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -49,14 +49,15 @@ import {
   DoubleArrowLeftIcon,
   DoubleArrowRightIcon,
 } from "@radix-ui/react-icons";
-import { LHPDraftPageColumns, columns } from "@/components/columns";
-import { ProjectLHPType } from "@/lib/type";
+import { LabDashboardPageColumns, columns } from "@/components/columns";
+import { LabDataType } from "@/lib/type";
 
-interface PPLHPDataTableProps {
-  data: ProjectLHPType[];
+interface LabDataTableProps {
+    data: LabDataType[];
+    link: string;
 }
 
-const PPLHPDataTable: FC<PPLHPDataTableProps> = ({ data }) => {
+const LabDataTable: FC<LabDataTableProps> = ({ data, link }) => {
   const router = useRouter();
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(
@@ -68,7 +69,7 @@ const PPLHPDataTable: FC<PPLHPDataTableProps> = ({ data }) => {
 
   const table = useReactTable({
     data,
-    columns: LHPDraftPageColumns,
+    columns: LabDashboardPageColumns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
@@ -88,12 +89,12 @@ const PPLHPDataTable: FC<PPLHPDataTableProps> = ({ data }) => {
   return (
     <div className="w-full">
       <div className="flex items-center py-4">
-        <BiFilterAlt className="text-xl translate-x-8" />
+        <CiSearch  className="text-xl translate-x-8"/>
         <Input
-          placeholder="Filter Projects On LHP Draft"
-          value={(table.getColumn("project_name")?.getFilterValue() as string) ?? ""}
+          placeholder="Search Project Title"
+          value={(table.getColumn("judul")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
-            table.getColumn("project_name")?.setFilterValue(event.target.value)
+            table.getColumn("judul")?.setFilterValue(event.target.value)
           }
           className="max-w-sm pl-10"
         />
@@ -135,9 +136,9 @@ const PPLHPDataTable: FC<PPLHPDataTableProps> = ({ data }) => {
                       {header.isPlaceholder
                         ? null
                         : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
                     </TableHead>
                   );
                 })}
@@ -152,7 +153,7 @@ const PPLHPDataTable: FC<PPLHPDataTableProps> = ({ data }) => {
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
                   onClick={() =>
-                    router.push("lhpdraft/" + row.getValue("noPenawaran"))
+                    router.push(link + row.getValue("noPenawaran"))
                   }
                 >
                   {row.getVisibleCells().map((cell) => (
@@ -251,4 +252,4 @@ const PPLHPDataTable: FC<PPLHPDataTableProps> = ({ data }) => {
   );
 }
 
-export default PPLHPDataTable;
+export default LabDataTable;
