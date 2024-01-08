@@ -152,7 +152,7 @@ const PPLHPDataTable: FC<PPLHPDataTableProps> = ({ data }) => {
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
                   onClick={() =>
-                    router.push("lhpdraft/" + row.getValue("noPenawaran"))
+                    router.push("lhpdraft/" + row.getValue("nopenawaran"))
                   }
                 >
                   {row.getVisibleCells().map((cell) => (

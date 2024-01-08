@@ -1,4 +1,6 @@
 import LabDataTable from "@/components/lab/LabDataTable";
+import { getProject } from "@/lib/actions/pplhp.actions";
+import { Project } from "@/lib/models/project.model";
 
 const data = [
   {
@@ -163,10 +165,12 @@ const data = [
   }
 ];
 
-export default function Home() {
+export default async function Home() {
+  const projects = await getProject("running");
+  console.log(projects)
   return (
     <div className="flex justify-between w-full h-screen">
-      <LabDataTable data={data} link="finalreview/"/>
+      <LabDataTable data={projects} link="finalreview/" />
     </div>
   );
 }

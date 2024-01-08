@@ -47,6 +47,7 @@ export type ReceiveSamplingType = {
 };
 
 export type ProjectLHPType = {
+  _id: string
   no_penawaran: string;
   project_name: string;
   alamat_sampling: string;
@@ -55,11 +56,12 @@ export type ProjectLHPType = {
 };
 
 export type LabDataType = {
-  id: string;
-  noPenawaran: string;
-  judul: string;
-  lokasi: string;
-  cp: string;
+  _id: string
+  no_penawaran: string;
+  project_name: string;
+  alamat_sampling: string;
+  alamat_kantor: string;
+  contact_person: string;
 };
 
 export const Sampling = {
