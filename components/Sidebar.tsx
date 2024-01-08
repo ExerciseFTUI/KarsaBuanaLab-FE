@@ -22,9 +22,9 @@ function extractFirstPathSegment(path: string) {
   return segments[0]
 }
 
-interface LeftSidebarProps {}
+interface LeftSidebarProps { }
 
-const Sidebar: FC<LeftSidebarProps> = ({}) => {
+const Sidebar: FC<LeftSidebarProps> = ({ }) => {
   const router = useRouter()
   const pathname = usePathname()
   const routeSection = "/" + extractFirstPathSegment(pathname)
@@ -33,12 +33,10 @@ const Sidebar: FC<LeftSidebarProps> = ({}) => {
   const links = pathname.includes("marketing")
     ? marketingLink
     : pathname.includes("sampling")
-    ? samplingLinks
-    : pathname.includes("lab")
-    ? labLinks
-    : pathname.includes("receive")
-    ? sampleReceiveLinks
-    : pplhpLinks
+      ? samplingLinks
+      : pathname.includes("lab")
+        ? labLinks
+        : pplhpLinks
 
   //Receive
 
@@ -67,9 +65,8 @@ const Sidebar: FC<LeftSidebarProps> = ({}) => {
             <Link
               href={routeSection + link.route}
               key={link.label}
-              className={`relative hover:bg-light_green ease-in-out duration-300 flex justify-start items-center gap-4 rounded-lg p-4 ${
-                isActive && "bg-light_green"
-              } group`}
+              className={`relative hover:bg-light_green ease-in-out duration-300 flex justify-start items-center gap-4 rounded-lg p-4 ${isActive && "bg-light_green"
+                } group`}
             >
               {/* <Image
                 src={link.imgURL}
@@ -80,17 +77,15 @@ const Sidebar: FC<LeftSidebarProps> = ({}) => {
               /> */}
 
               <div
-                className={`text-2xl text-moss_green group-hover:!text-dark_green ${
-                  isActive && "!text-dark_green"
-                }`}
+                className={`text-2xl text-moss_green group-hover:!text-dark_green ${isActive && "!text-dark_green"
+                  }`}
               >
                 {link.icon}
               </div>
 
               <p
-                className={`text-sm text-moss_green group-hover:!text-dark_green ${
-                  isActive && "!text-dark_green font-semibold"
-                }`}
+                className={`text-sm text-moss_green group-hover:!text-dark_green ${isActive && "!text-dark_green font-semibold"
+                  }`}
               >
                 {link.label}
               </p>
