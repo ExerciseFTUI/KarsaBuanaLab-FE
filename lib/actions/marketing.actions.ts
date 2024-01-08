@@ -2,7 +2,8 @@ import axios from "axios";
 import { Project } from "../models/project.model";
 import { BaseApiResponse } from "../models/baseApiResponse.model";
 import { BaseSample } from "../models/baseSample.model";
-import { revalidatePath } from "next/cache";
+
+const apiBaseUrl = process.env.API_BASE_URL || "";
 
 interface APIProject {
   client_name: string;
@@ -51,7 +52,10 @@ export const createProject = async (
       throw new Error("Please provide all required fields");
     }
 
-    const response = await axios.post("/api/createProject", { files, body });
+    const response = await axios.post(`${apiBaseUrl}/project/createProject`, {
+      files,
+      body,
+    });
 
     return response.data as BaseApiResponse<ProjectResult>;
   } catch (error: any) {
@@ -62,7 +66,7 @@ export const createProject = async (
 
 export const getSample = async (): Promise<BaseApiResponse<[BaseSample]>> => {
   try {
-    const response = await axios.get(`/api/getSample`);
+    const response = await axios.get(`${apiBaseUrl}/marketing/getSample`);
 
     return response.data as BaseApiResponse<[BaseSample]>;
   } catch (error: any) {
@@ -75,11 +79,37 @@ export const getDashboard = async (): Promise<
   BaseApiResponse<DashboardResult>
 > => {
   try {
-    const response = await axios.get(`/api/Dashboard`);
+    const response = await axios.get(`${apiBaseUrl}/marketing/dashboard`);
 
     return response.data as BaseApiResponse<DashboardResult>;
   } catch (error: any) {
     console.error("Error getting Dashboard:", error.message);
     throw new Error("Failed to get dashboard");
+  }
+};
+
+export const getProject = async (
+  projectId: string
+): Promise<BaseApiResponse<Project>> => {
+  try {
+    const response = await axios.get(
+      `${apiBaseUrl}/marketing/project/${projectId}`
+    );
+    return response.data as BaseApiResponse<Project>;
+  } catch (error: any) {
+    console.error(`Error getting project with ID ${projectId}:`, error.message);
+    throw new Error(`Failed to get project with ID ${projectId}`);
+  }
+};
+
+export const getbyStatus = async (
+  status: string
+): Promise<BaseApiResponse<[Project]>> => {
+  try {
+    const response = await axios.get(`${apiBaseUrl}/marketing/${status}`);
+    return response.data as BaseApiResponse<[Project]>;
+  } catch (error: any) {
+    console.error(`Error getting project  ${status}:`, error.message);
+    throw new Error(`Failed to get project  ${status}`);
   }
 };

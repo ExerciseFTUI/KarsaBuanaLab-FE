@@ -32,9 +32,9 @@ const Topbar: FC<TopbarProps> = ({ }) => {
   const formattedPathname =
     pathname.split("-").length > 1
       ? pathname.split("-")[0] +
-        " " +
-        pathname.split("-")[1][0].toUpperCase() +
-        pathname.split("-")[1].slice(1, pathname.split("-")[1].length)
+      " " +
+      pathname.split("-")[1][0].toUpperCase() +
+      pathname.split("-")[1].slice(1, pathname.split("-")[1].length)
       : pathname.split("-")[0]
   const extractedSecondPath = pathname.split(" / ")[1].split("-")
   const secondPath =
@@ -48,21 +48,28 @@ const Topbar: FC<TopbarProps> = ({ }) => {
         {/* <Image src={"assets/logo.svg"} alt="logo" width={28} height={28} /> */}
         <p className="capilatize text-sm font-light text-moss_green">
           {formattedPathname}
-        </p>
-        <p className="text-2xl font-bold text-dark_green capitalize">
-          {secondPath + (pathname.split(" / ")[2] ? " Details" : "")}
-        </p>
-      </div>
-      <div className="flex items-center gap-1">
-        <div className="">
-          <Avatar>
-            <AvatarImage src="/assets/avatar2.png" />
-            <AvatarFallback>RD</AvatarFallback>
-          </Avatar>
-        </div>
-      </div>
-    </nav>
-  )
+          <p className="capilatize text-sm font-light text-moss_green">
+            {formattedPathname}
+          </p>
+          <p className="text-2xl font-bold text-dark_green capitalize">
+            {secondPath + (pathname.split(" / ")[2] ? " Details" : "")}
+            <p className="text-2xl font-bold text-dark_green capitalize">
+              {secondPath + (pathname.split(" / ")[2] ? " Details" : "")}
+            </p>
+          </div>
+          <div className="flex items-center gap-1">
+            <div className="">
+              <Avatar>
+                <AvatarImage src="/assets/avatar2.png" />
+                <AvatarFallback>RD</AvatarFallback>
+              </Avatar>
+            </div>
+          </div>
+        </nav>
+        )
+}
+        )
 }
 
-export default Topbar
+        export default Topbar
+        export default Topbar

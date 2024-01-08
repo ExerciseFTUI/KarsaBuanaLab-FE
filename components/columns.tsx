@@ -140,6 +140,9 @@ export const columns: ColumnDef<ProjectType>[] = [
               <Link href={`/marketing/project/${row.id}`}>
                 View project details
               </Link>
+              <Link href={`/marketing/project/${row.id}`}>
+                View project details
+              </Link>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
 
@@ -309,17 +312,17 @@ export const samplingProjectPageColumns: ColumnDef<ProjectSamplingType>[] = [
   },
 ];
 
-// Table Column for Sampling Project
+// Table Column for Receive Project
 export const receiveSamplingColumns: ColumnDef<ReceiveSamplingType>[] = [
   //No Penawaran
   {
-    accessorKey: "noPenawaran",
+    accessorKey: "no_penawaran",
     header: "No. Penawaran",
-    cell: ({ row }) => <div className="">{row.getValue("noPenawaran")}</div>,
+    cell: ({ row }) => <div className="">{row.getValue("no_penawaran")}</div>,
   },
   // Project Title
   {
-    accessorKey: "judulProject",
+    accessorKey: "project_name",
     header: ({ column }) => {
       return (
         <Button
@@ -333,33 +336,41 @@ export const receiveSamplingColumns: ColumnDef<ReceiveSamplingType>[] = [
       );
     },
     cell: ({ row }) => (
-      <div className="capitalize pl-4">{row.getValue("judulProject")}</div>
+      <div className="capitalize pl-4">{row.getValue("project_name")}</div>
     ),
   },
   //Lokasi Pengambilan Sampel
   {
-    accessorKey: "lokasiSampel",
+    accessorKey: "alamat_sampling",
     header: "Lokasi Pengambilan Sampel",
     cell: ({ row }) => {
       return (
-        <div className="capitalize pl-0.5">{row.getValue("lokasiSampel")}</div>
+        <div className="capitalize pl-0.5">
+          {row.getValue("alamat_sampling")}
+        </div>
       );
     },
   },
   //Lokasi
   {
-    accessorKey: "lokasi",
+    accessorKey: "alamat_kantor",
     header: "Lokasi",
     cell: ({ row }) => {
-      return <div className="capitalize pl-0.5">{row.getValue("lokasi")}</div>;
+      return (
+        <div className="capitalize pl-0.5">{row.getValue("alamat_kantor")}</div>
+      );
     },
   },
   //Contact Person
   {
-    accessorKey: "cp",
+    accessorKey: "contact_person",
     header: "Contact Person",
     cell: ({ row }) => {
-      return <div className="capitalize pl-0.5">{row.getValue("cp")}</div>;
+      return (
+        <div className="capitalize pl-0.5">
+          {row.getValue("contact_person")}
+        </div>
+      );
     },
   },
 ];
@@ -499,6 +510,18 @@ export const LabDashboardPageColumns: ColumnDef<LabDataType>[] = [
     cell: ({ row }) => (
       <div className="capitalize pl-4">{row.getValue("judul")}</div>
     ),
+  },
+  //Status
+  {
+    accessorKey: "lokasiPengambilanSampel",
+    header: "Lokasi Pengambilan Sampel",
+    cell: ({ row }) => {
+      return (
+        <div className="capitalize pl-0.5">
+          {row.getValue("lokasiPengambilanSampel")}
+        </div>
+      );
+    },
   },
   //Lokasi
   {
