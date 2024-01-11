@@ -45,12 +45,12 @@ import {
   DoubleArrowRightIcon,
 } from "@radix-ui/react-icons"
 import { cn } from "@/lib/utils"
-import { Project } from "@/lib/models/project.model"
+import { Sampling } from "@/lib/models/sampling.model"
 
 interface DataTableProps {
   status: string[]
   columns: ColumnDef<any>[]
-  data: Project[]
+  data: Sampling[]
   page: string
 }
 
@@ -64,7 +64,7 @@ export function DataTable({status, columns, data, page}: DataTableProps) {
 
 
   const table = useReactTable({
-    data: data || [],
+    data: data,
     columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,

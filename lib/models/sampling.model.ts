@@ -6,10 +6,11 @@ export interface Sampling {
   harga: string
   fileId: string
   param: string[]
-  regulation: Regulation
+  regulation: Regulation[]
   location: string
   assigned_to: User[]
-  status: string // "ASSIGNED" | "NOT ASSIGNED" | "VERIFYING" | "REVISION" | "ACCEPT"
+  status: string // "ASSIGNED" | "NOT ASSIGNED" | "VERIFYING" | "FINISHED"
   jadwal: Date
   _id: string
+  __v: number
 }

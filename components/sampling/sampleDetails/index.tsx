@@ -8,6 +8,8 @@ import TabSampleAdmin from "./TabSampleAdmin"
 import { Sampling } from "@/lib/models/sampling.model"
 
 export default function Project({data, role}: {data: Sampling, role: string}) {
+
+  if (data == null) return <div className="w-full h-full flex justify-center items-center font-bold">Sample not found!</div>
   return (
     <div className="flex gap-6 max-md:flex-col max-md:items-center">
       <div className="flex flex-col flex-1 sm:border-r-light_brown sm:border-r-2 border-b-2 border-b-light_brown sm:border-b-0">

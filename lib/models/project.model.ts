@@ -11,15 +11,17 @@ export interface Project {
   surel: string
   contact_person: string
   status: string
+  current_division: string
   folder_id: string
   password: string
   jumlah_revisi: number
-  surat_penawaran: string
   valuasi_proyek: number
-  created_year: string // Tahun
+  surat_penawaran: string
+  surat_fpp: string
+  created_year: string
   sampling_list: Sampling[]
   file: File[]
-  created_at: string // Tahun
+  created_at: string
   _id: string
   __v: number
 }
