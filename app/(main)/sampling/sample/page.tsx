@@ -1,16 +1,20 @@
 import { SamplingSampleDataTables } from "@/components/sampling/sampleListDataTables"
-import { getSampleByAccount, getSampleByYear } from "@/lib/actions/sampling.actions"
+import { getProjectByDivision, getSampleByAccount } from "@/lib/actions/sampling.actions"
+import { Sampling } from "@/lib/models/sampling.model"
 
 export default async function SamplingProject() {
   let role = "ADMIN"
-  let res
+  let res = null
   
   if (role == "STAFF")
     res = await getSampleByAccount("2023", "2")
   else
-    res = await getSampleByYear("2023", "sample")
+    res = await getProjectByDivision("sampling")
   
-  const data = res && res.result ? res.result : [];
+  let data: Sampling[] = []
+
+  if (res.result)
+    data = res.result.flatMap((p) => p.sampling_list.map(s => s)).filter(s => s.status == "VERIFYING" || s.status == "FINISHED")
 
   return (
     <div className="flex flex-col w-full ">
