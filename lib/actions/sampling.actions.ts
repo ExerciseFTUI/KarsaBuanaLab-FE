@@ -24,6 +24,8 @@ export const getSampleByYear = async (year: string, page: string) : Promise<Base
 
     const response = await axios.get(`${apiBaseUrl}/sampling/get/${year}`);
 
+        console.log("here akadsfsdf sddf rgjnakg akjbdg ka lorem");
+        console.log(response);
     const result: Project[] = response.data.result.filter((s: Project) => {
       if (page == "project")
         return s.status == "FINISHED" || s.status == "NOT ASSIGNED"
@@ -33,16 +35,21 @@ export const getSampleByYear = async (year: string, page: string) : Promise<Base
         return s.status == "Get Sample" || s.status == "Verifying" || s.status == "Revision"
     })
 
+        console.log("here akrgjnakg akjbdg ka lorem");
+        console.log(result);
+        
+
     const data: BaseApiResponse<Project[]> = {
       message: "Success",
       result
     }
 
+    
     return data;
 
   } catch (error: any) {
     console.error('Error getting sample list', error.message);
-    throw new Error('Failed to get sample list');
+    return null as unknown as BaseApiResponse<Project[]>;
   }
 
 }

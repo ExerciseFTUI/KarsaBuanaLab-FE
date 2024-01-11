@@ -88,12 +88,12 @@ const FinalReviewDataTable: FC<FinalReviewDataTableProps> = ({ data }) => {
   return (
     <div className="w-full">
       <div className="flex items-center py-4">
-        <BiFilterAlt className="text-xl translate-x-8"/>
+        <BiFilterAlt className="text-xl translate-x-8" />
         <Input
           placeholder="Filter Projects On LHP Draft"
-          value={(table.getColumn("judul")?.getFilterValue() as string) ?? ""}
+          value={(table.getColumn("project_name")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
-            table.getColumn("judul")?.setFilterValue(event.target.value)
+            table.getColumn("project_name")?.setFilterValue(event.target.value)
           }
           className="max-w-sm pl-10"
         />
@@ -135,9 +135,9 @@ const FinalReviewDataTable: FC<FinalReviewDataTableProps> = ({ data }) => {
                       {header.isPlaceholder
                         ? null
                         : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
                     </TableHead>
                   );
                 })}
@@ -152,7 +152,7 @@ const FinalReviewDataTable: FC<FinalReviewDataTableProps> = ({ data }) => {
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
                   onClick={() =>
-                    router.push("finalreview/" + row.getValue("noPenawaran"))
+                    router.push("finalreview/" + row.getValue("_id"))
                   }
                 >
                   {row.getVisibleCells().map((cell) => (

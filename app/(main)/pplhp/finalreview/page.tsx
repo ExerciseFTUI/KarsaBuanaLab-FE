@@ -1,4 +1,6 @@
 import FinalReviewDataTable from "@/components/pplhp/FinalReviewDataTable";
+import { getProject } from "@/lib/actions/pplhp.actions";
+import { Project } from "@/lib/models/project.model";
 
 const data = [
   {
@@ -163,11 +165,11 @@ const data = [
   }
 ];
 
-export default function Home() {
-  // Get all samples data
+export default async function Home() {
+  const projects = await getProject("running");
   return (
     <div className="flex justify-between w-full h-screen">
-      <FinalReviewDataTable data={data} />
+      <FinalReviewDataTable data={projects ? projects : []} />
     </div>
   );
 }
