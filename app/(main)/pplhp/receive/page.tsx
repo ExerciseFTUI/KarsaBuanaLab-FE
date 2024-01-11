@@ -5,8 +5,6 @@ import { Project } from "@/lib/models/project.model";
 
 export default async function Home() {
   const projects = await getProject("running");
-  console.log(projects);
-
   return (
     <div className="flex flex-col w-full ">
       <DataTable data={projects} />

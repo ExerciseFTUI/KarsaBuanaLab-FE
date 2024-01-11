@@ -167,7 +167,6 @@ const data = [
 
 export default async function Home() {
   const projects = await getProject("running");
-  console.log(projects)
   return (
     <div className="flex justify-between w-full h-screen">
       <FinalReviewDataTable data={projects} />

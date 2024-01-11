@@ -152,7 +152,7 @@ export default function Home({ params }: { params: { np: string } }) {
   // Get Laporan Hasil Pemeriksaan data
   return (
     <div className="flex flex-col md:flex-row justify-between w-full h-screen gap-36 md:gap-0">
-      <div className="md:w-1/2 h-screen px-16 space-y-6">
+      <div className="md:w-3/5 h-fit px-16 space-y-6">
         <div className="flex flex-row text-2xl font-medium space-x-0 cursor-pointer">
           <div
             className={`flex flex-col items-end ${selectedTab === "Sampel" ? "text-moss_green" : "text-ghost_green"
@@ -182,10 +182,10 @@ export default function Home({ params }: { params: { np: string } }) {
           <Sampel data={sampelData} title="Rekaman Sampling" textColor="moss_green" bgColor="[#e1e2d7]" />
         )}
         {selectedTab === "Dokumen" && (
-          <Document data={documentData} />
+          <Document data={documentData} color="moss_green" />
         )}
       </div>
-      <div className="md:w-1/2">
+      <div className="md:w-2/5">
         <LaporanHasilPemeriksaan title="Pembuatan Draft LHP" color="moss_green" link={LaporanHasilPemeriksaanData} />
       </div>
     </div>

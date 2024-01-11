@@ -1,0 +1,154 @@
+[
+    {
+      "username": "Andi Susanto",
+      "email": "andi@example.com",
+      "password": "P@ssw0rd1",
+      "phone": "081234567890",
+      "role": "Admin",
+      "division": "Marketing"
+    },
+    {
+      "username": "Budi Prasetyo",
+      "email": "budi@example.com",
+      "password": "P@ssw0rd2",
+      "phone": "082345678901",
+      "role": "User",
+      "division": "Assistant"
+    },
+    {
+      "username": "Citra Rahayu",
+      "email": "citra@example.com",
+      "password": "P@ssw0rd3",
+      "phone": "083456789012",
+      "role": "Admin",
+      "division": "Marketing"
+    },
+    {
+      "username": "Dian Purnama",
+      "email": "dian@example.com",
+      "password": "P@ssw0rd4",
+      "phone": "084567890123",
+      "role": "User",
+      "division": "Assistant"
+    },
+    {
+      "username": "Eko Wijaya",
+      "email": "eko@example.com",
+      "password": "P@ssw0rd5",
+      "phone": "085678901234",
+      "role": "Admin",
+      "division": "Marketing"
+    },
+    {
+      "username": "Fara Ramadhani",
+      "email": "fara@example.com",
+      "password": "P@ssw0rd6",
+      "phone": "086789012345",
+      "role": "User",
+      "division": "Assistant"
+    },
+    {
+      "username": "Gita Pratiwi",
+      "email": "gita@example.com",
+      "password": "P@ssw0rd7",
+      "phone": "087890123456",
+      "role": "Admin",
+      "division": "Marketing"
+    },
+    {
+      "username": "Hendra Sutanto",
+      "email": "hendra@example.com",
+      "password": "P@ssw0rd8",
+      "phone": "088901234567",
+      "role": "User",
+      "division": "Assistant"
+    },
+    {
+      "username": "Indra Kurniawan",
+      "email": "indra@example.com",
+      "password": "P@ssw0rd9",
+      "phone": "089012345678",
+      "role": "Admin",
+      "division": "Marketing"
+    },
+    {
+      "username": "Jasmine Wijaya",
+      "email": "jasmine@example.com",
+      "password": "P@ssw0rd10",
+      "phone": "090123456789",
+      "role": "User",
+      "division": "Assistant"
+    },
+    {
+      "username": "Kevin Putra",
+      "email": "kevin@example.com",
+      "password": "P@ssw0rd11",
+      "phone": "091234567890",
+      "role": "Admin",
+      "division": "Marketing"
+    },
+    {
+      "username": "Lina Anggraini",
+      "email": "lina@example.com",
+      "password": "P@ssw0rd12",
+      "phone": "092345678901",
+      "role": "User",
+      "division": "Assistant"
+    },
+    {
+      "username": "Mira Septiani",
+      "email": "mira@example.com",
+      "password": "P@ssw0rd13",
+      "phone": "093456789012",
+      "role": "Admin",
+      "division": "Marketing"
+    },
+    {
+      "username": "Nanda Puspita",
+      "email": "nanda@example.com",
+      "password": "P@ssw0rd14",
+      "phone": "094567890123",
+      "role": "User",
+      "division": "Assistant"
+    },
+    {
+      "username": "Oscar Kusuma",
+      "email": "oscar@example.com",
+      "password": "P@ssw0rd15",
+      "phone": "095678901234",
+      "role": "Admin",
+      "division": "Marketing"
+    },
+    {
+      "username": "Putri Handayani",
+      "email": "putri@example.com",
+      "password": "P@ssw0rd16",
+      "phone": "096789012345",
+      "role": "User",
+      "division": "Assistant"
+    },
+    {
+      "username": "Qori Hidayat",
+      "email": "qori@example.com",
+      "password": "P@ssw0rd17",
+      "phone": "097890123456",
+      "role": "Admin",
+      "division": "Marketing"
+    },
+    {
+      "username": "Rifki Santoso",
+      "email": "rifki@example.com",
+      "password": "P@ssw0rd18",
+      "phone": "098901234567",
+      "role": "User",
+      "division": "Assistant"
+    },
+    {
+      "username": "Siska Ramadhan",
+      "email": "siska@example.com",
+      "password": "P@ssw0rd19",
+      "phone": "099012345678",
+      "role": "Admin",
+      "division": "Marketing"
+    }
+  ]
