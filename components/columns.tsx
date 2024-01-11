@@ -18,17 +18,18 @@ import {
   ProjectType,
 } from "@/lib/type";
 import Link from "next/link";
+import { Project } from "@/lib/models/project.model";
 
 // Table Column for Marketing OnDiscuss
 export const columns: ColumnDef<ProjectType>[] = [
   //No Penawaran
   {
-    accessorKey: "noPenawaran",
+    accessorKey: "no_penawaran",
     header: "No Penawaran",
-    cell: ({ row }) => <div className="">{row.getValue("noPenawaran")}</div>,
+    cell: ({ row }) => <div className="">{row.getValue("no_penawaran")}</div>,
   },
   {
-    accessorKey: "judul",
+    accessorKey: "project_name",
     header: ({ column }) => {
       return (
         <Button
@@ -36,13 +37,13 @@ export const columns: ColumnDef<ProjectType>[] = [
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Project Title
+          Project Name
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
     cell: ({ row }) => (
-      <div className="capitalize pl-4">{row.getValue("judul")}</div>
+      <div className="capitalize pl-4">{row.getValue("project_name")}</div>
     ),
   },
   //Status
@@ -58,14 +59,13 @@ export const columns: ColumnDef<ProjectType>[] = [
 
     cell: ({ row }) => {
       const status = true;
-      // console.log(row.original);
       return (
         <div className="">
           <div
             className={`font-light text-white w-fit px-6 py-0.5 rounded-full ${status ? "bg-yellow-700" : "bg-red-400"
               }`}
           >
-            Available
+            {row.getValue("status")}
           </div>
         </div>
       );
@@ -73,15 +73,15 @@ export const columns: ColumnDef<ProjectType>[] = [
   },
   //Lokasi
   {
-    accessorKey: "lokasi",
-    header: "Lokasi",
+    accessorKey: "alamat_sampling",
+    header: "Lokasi Sampling",
     cell: ({ row }) => {
       return <div className="capitalize pl-0.5">{row.getValue("lokasi")}</div>;
     },
   },
   //createdAt
   {
-    accessorKey: "createdAt",
+    accessorKey: "created_at",
     header: ({ column }) => {
       return (
         <Button
@@ -96,7 +96,6 @@ export const columns: ColumnDef<ProjectType>[] = [
 
     cell: ({ row }) => {
       const date = new Date(row.getValue("createdAt"));
-
       let month = (date.getMonth() + 1).toString().padStart(2, "0"); // Months are zero-based
       let day = date.getDate().toString().padStart(2, "0");
       let year = date.getFullYear();
@@ -105,24 +104,13 @@ export const columns: ColumnDef<ProjectType>[] = [
       return <div className={`font-medium pl-4`}>{formattedDate}</div>;
     },
   },
-  //Last Update
-  {
-    accessorKey: "lastUpdate",
-    header: () => (
-      <div className={`pl-2 font-medium text-[#666D4B]`}>Last Update</div>
-    ),
 
-    cell: ({ row }) => {
-      return <div className={`pl-4 font-medium`}>Today</div>;
-    },
-  },
   //Action
   {
     id: "actions",
     enableHiding: false,
     cell: ({ row }) => {
       const project = row.original;
-      // console.log(row.original);
 
       return (
         <DropdownMenu>
@@ -154,7 +142,6 @@ export const columns: ColumnDef<ProjectType>[] = [
     },
   },
 ];
-
 //Table Column for Penerima Sampling
 export const receiveProjectPageColumns: ColumnDef<ProjectType>[] = [
   //No Penawaran
@@ -215,8 +202,8 @@ export const receiveProjectPageColumns: ColumnDef<ProjectType>[] = [
         stat == "Need Schedule" || stat == "Get Sample"
           ? "bg-moss_green"
           : stat == "On Discuss" || stat == "Verifying"
-            ? "bg-light_brown"
-            : "bg-brick_red";
+          ? "bg-light_brown"
+          : "bg-brick_red";
 
       return (
         <div
@@ -226,83 +213,6 @@ export const receiveProjectPageColumns: ColumnDef<ProjectType>[] = [
           }
         >
           {row.getValue("status")}
-        </div>
-      );
-    },
-  },
-];
-
-// Table Column for Sampling Project
-export const samplingProjectPageColumns: ColumnDef<ProjectSamplingType>[] = [
-  //No Penawaran
-  {
-    accessorKey: "no_penawaran",
-    header: "No Penawaran",
-    cell: ({ row }) => <div className="">{row.getValue("no_penawaran")}</div>,
-  },
-  // Project Title
-  {
-    accessorKey: "project_name",
-    header: ({ column }) => {
-      return (
-        <Button
-          className="font-light hover:bg-transparent italic"
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Project Title
-          <ArrowUpDown strokeWidth={1.5} className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-    cell: ({ row }) => (
-      <div className="capitalize pl-4">{row.getValue("project_name")}</div>
-    ),
-  },
-  //Lokasi
-  {
-    accessorKey: "alamat_kantor",
-    header: "Lokasi",
-    cell: ({ row }) => {
-      return (
-        <div className="capitalize pl-0.5">{row.getValue("alamat_kantor")}</div>
-      );
-    },
-  },
-  //Contact Person
-  {
-    accessorKey: "contact_person",
-    header: "Contact Person",
-    cell: ({ row }) => {
-      return (
-        <div className="capitalize pl-0.5">
-          {row.getValue("contact_person")}
-        </div>
-      );
-    },
-  },
-  // Status
-  {
-    accessorKey: "status",
-    header: "Status",
-    cell: ({ row }) => {
-      const status: any = row.getValue("status");
-
-      const color =
-        status == "Need Schedule" || status == "Get Sample"
-          ? "bg-moss_green"
-          : status == "On Discuss" || status == "Verifying"
-            ? "bg-light_brown"
-            : "bg-brick_red";
-
-      return (
-        <div
-          className={
-            "px-4 py-1.5 inline-block min-w-[8rem] rounded-full text-ghost_white " +
-            color
-          }
-        >
-          {status}
         </div>
       );
     },
@@ -396,7 +306,7 @@ export const LHPDraftPageColumns: ColumnDef<ProjectLHPType>[] = [
     cell: ({ row }) => {
       return (
         <div className="capitalize pl-0.5">
-          {row.getValue("alamat_sampling")}
+          {row.getValue("lokasiPengambilanSampel")}
         </div>
       )
     },
@@ -455,19 +365,11 @@ export const PPLHPFinalReviewPageColumns: ColumnDef<ProjectLHPType>[] = [
       )
     },
   },
-  //Lokasi
-  {
-    accessorKey: "lokasi",
-    header: "Lokasi",
-    cell: ({ row }) => {
-      return <div className="capitalize pl-0.5">{row.getValue("lokasi")}</div>
-    },
-  },
   {
     accessorKey: "cp",
     header: "Contact Person",
     cell: ({ row }) => {
-      return <div className="capitalize pl-0.5">{row.getValue("cp")}</div>
+      return <div className="capitalize pl-0.5">{row.getValue("cp")}</div>;
     },
   },
 ];
@@ -502,14 +404,14 @@ export const LabDashboardPageColumns: ColumnDef<LabDataType>[] = [
     accessorKey: "lokasi",
     header: "Lokasi",
     cell: ({ row }) => {
-      return <div className="capitalize pl-0.5">{row.getValue("lokasi")}</div>;
+      return <div className="capitalize pl-0.5">{row.getValue("lokasi")}</div>
     },
   },
   {
     accessorKey: "cp",
     header: "Contact Person",
     cell: ({ row }) => {
-      return <div className="capitalize pl-0.5">{row.getValue("cp")}</div>;
+      return <div className="capitalize pl-0.5">{row.getValue("cp")}</div>
     },
   },
 ];

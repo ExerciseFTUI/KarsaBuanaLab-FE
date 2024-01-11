@@ -2,15 +2,28 @@ import { Regulation } from "./models/regulation.model"
 import { User } from "./models/user.model"
 
 export type ProjectType = {
-  id: string
-  noPenawaran: string
-  judul: string
-  namaCustomer: string
-  lokasi: string
-  cp: string
-  nilaiPenawaran: number
-  createdAt: string
-}
+  //Lama
+  id: string;
+  noPenawaran: string;
+  judul: string;
+  namaCustomer: string;
+  lokasi: string;
+  cp: string;
+  nilaiPenawaran: number;
+  createdAt: string;
+};
+
+export type ProjectMarketingType = {
+  _id: string;
+  no_penawaran: string;
+  project_name: string;
+  client_name: string;
+  alamat_sampling: string;
+  contact_person: string;
+  created_at: string;
+  status: string;
+  valuasi_proyek: number;
+};
 
 export type BaseSampleType = {
   sample_name: string
@@ -38,12 +51,12 @@ export type RegulationType = {
 }
 
 export type ReceiveSamplingType = {
-  no_penawaran: string;
-  project_name: string;
-  alamat_sampling: string;
-  alamat_kantor: string;
-  contact_person: string;
-};
+  no_penawaran: string
+  project_name: string
+  alamat_sampling: string
+  alamat_kantor: string
+  contact_person: string
+}
 
 export type ProjectSamplingType = {
   no_penawaran: string
