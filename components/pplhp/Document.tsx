@@ -37,12 +37,12 @@ const Document: FC<DocumentProps> = ({ data, color }) => {
 
   return (
     <div className="space-y-14">
-      {data.map((tahap) => (
-        <div className="space-y-5">
+      {data.map((tahap, i) => (
+        <div key={i} className="space-y-5">
           <h1 className={`text-${color} text-lg font-semibold`}>{tahap.judul}</h1>
           <div className="flex flex-wrap justify-between gap-5">
-            {tahap.link.map((link) => (
-              <a className={`flex flex-row bg-${color} rounded-xl p-4 w-full md:w-[48%] justify-between items-center`} href={link.value} target="_blank">
+            {tahap.link.map((link, i) => (
+              <a key={i} className={`flex flex-row bg-${color} rounded-xl p-4 w-full md:w-[48%] justify-between items-center`} href={link.value} target="_blank">
                 <p className="text-white text-sm">{link.label}</p>
                 <RiShareBoxLine className="text-white text-3xl" />
               </a>
