@@ -13,7 +13,7 @@ interface projectParams {
 }
 
 export default function Project({ className = "", sampleData }: projectParams) {
-  if (sampleData == null) return <div>Sample not found!</div>
+  if (sampleData == null) return <div className="w-full h-full flex justify-center items-center font-bold">Sample not found!</div>
 
   return (
     <div className={cn("flex", className)}>

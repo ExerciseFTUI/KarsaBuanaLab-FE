@@ -21,7 +21,6 @@ import {
   useReactTable,
 } from "@tanstack/react-table"
 import { groupUserSelectableColumns } from "../sampleListDataTables/DataTableColumns"
-import { userAssistantData } from "@/constants/samplingData"
 import { GroupAssignedTable } from "./GroupAssignedTable"
 import { User } from "@/lib/models/user.model"
 import { Sampling } from "@/lib/models/sampling.model"
@@ -30,8 +29,6 @@ import { sampleAssignment } from "@/lib/actions/sampling.actions"
 interface Params {
   data: Sampling
 }
-
-const userData = userAssistantData.slice(0, 5)
 
 export default function SampleProjectTab({ data }: Params) {
   const [date, setDate] = React.useState<Date>()
@@ -44,7 +41,7 @@ export default function SampleProjectTab({ data }: Params) {
   }, [data.jadwal])
 
   const table = useReactTable({
-    data: userData,
+    data: data.assigned_to,
     columns: groupUserSelectableColumns,
     getCoreRowModel: getCoreRowModel(),
     onRowSelectionChange: setRowSelection,
@@ -65,9 +62,9 @@ export default function SampleProjectTab({ data }: Params) {
   function addAssigned(e: any) {
     const assigned = table
       .getFilteredSelectedRowModel()
-      .rows.map((r) => userData[r.index])
+      .rows.map((r) => data.assigned_to[r.index])
 
-    sampleAssignment("2023", data._id, assigned[0]._id)
+    sampleAssignment(data._id, assigned[0]._id)
       .then(res => res.message)
       .catch(err => console.error(err))
   }

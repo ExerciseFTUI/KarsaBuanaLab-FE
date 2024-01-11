@@ -14,6 +14,8 @@ interface projectParams {
 const handleSubmit = (e: any) => e.preventDefault()
 
 export default function Project({ data }: projectParams) {
+
+  if (data == null) return <div className="w-full h-full flex justify-center items-center font-bold">Sample not found!</div>
   return (
     <div className="flex w-full gap-6 max-md:flex-col max-md:items-center">
       <ProjectDetails data={data} className="w-full max-w-[32rem]" />
