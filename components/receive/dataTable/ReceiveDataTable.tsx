@@ -170,19 +170,25 @@ const ReceiveDataTable: FC<ReceiveDataTableProps> = ({ data }) => {
           </TableHeader>
 
           <TableBody>
-            {table.getRowModel().rows && table.getRowModel().rows.length ? (
+            {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
                   className="hover:bg-pastel_moss_green ease-in-out duration-500 text-xs hover:cursor-pointer hover:rounded-xl text-center"
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
                   onClick={() =>
-                    router.push("receive/" + row.getValue("noPenawaran"))
+                    router.push(
+                      "receive/" +
+                      row.getValue("noPenawaran")
+                    )
                   }
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id} className="py-4">
-                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
+                      )}
                     </TableCell>
                   ))}
                 </TableRow>
@@ -198,7 +204,6 @@ const ReceiveDataTable: FC<ReceiveDataTableProps> = ({ data }) => {
               </TableRow>
             )}
           </TableBody>
-
         </Table>
       </div>
 

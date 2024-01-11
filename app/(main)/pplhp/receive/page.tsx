@@ -7,7 +7,7 @@ export default async function Home() {
   const projects = await getProject("running");
   return (
     <div className="flex flex-col w-full ">
-      <ReceiveDataTable data={projects} />
+      <ReceiveDataTable data={projects ? projects : [] } />
     </div>
   );
 }

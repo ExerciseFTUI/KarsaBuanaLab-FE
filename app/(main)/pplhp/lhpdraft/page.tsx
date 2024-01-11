@@ -169,7 +169,7 @@ export default async function Home() {
   const projects = await getProject("running");
   return (
     <div className="flex justify-between w-full h-screen">
-      <PPLHPDataTable data={projects} />
+      <PPLHPDataTable data={projects ? projects : []} />
     </div>
   );
 }
