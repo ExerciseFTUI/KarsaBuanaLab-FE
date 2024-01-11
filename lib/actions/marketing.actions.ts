@@ -2,14 +2,6 @@ import axios from 'axios';
 import { Project } from '../models/project.model';
 import {BaseApiResponse} from '../models/baseApiResponse.model'
 import { BaseSample } from '../models/baseSample.model';
-
-
-const apiBaseUrl = process.env.API_BASE_URL || '';
-import axios from "axios";
-import { Project } from "../models/project.model";
-import { BaseApiResponse } from "../models/baseApiResponse.model";
-import { BaseSample } from "../models/baseSample.model";
-
 const apiBaseUrl = process.env.API_BASE_URL || "";
 
 interface APIProject {
@@ -58,9 +50,7 @@ export const createProject = async (
     ) {
       throw new Error("Please provide all required fields");
     }
-
-    const response = await axios.post(`${apiBaseUrl}/project/createProject`, { files, body });
-
+    
     const response = await axios.post(`${apiBaseUrl}/project/createProject`, {
       files,
       body,

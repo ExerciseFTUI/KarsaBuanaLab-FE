@@ -1,5 +1,5 @@
 "use client";
-import * as React from "react";
+import { useState, FC, useEffect } from "react";
 import useSWR from "swr";
 import {
   ColumnDef,
@@ -53,16 +53,20 @@ import { ReceiveSamplingType } from "@/lib/type";
 import { cn, fetcher } from "@/lib/utils";
 import { ProjectSamplingType } from "@/lib/type";
 
-export function DataTable({ data }) {
+interface ReceiveDataTableProps {
+  data: ReceiveSamplingType[];
+}
+
+const ReceiveDataTable: FC<ReceiveDataTableProps> = ({ data }) => {
   const router = useRouter();
-  const [sorting, setSorting] = React.useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
+  const [sorting, setSorting] = useState<SortingState>([]);
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(
     []
   );
 
   const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({});
-  const [rowSelection, setRowSelection] = React.useState({});
+    useState<VisibilityState>({});
+  const [rowSelection, setRowSelection] = useState({});
 
   const table = useReactTable({
     data,
@@ -166,25 +170,19 @@ export function DataTable({ data }) {
           </TableHeader>
 
           <TableBody>
-            {table.getRowModel().rows?.length ? (
+            {table.getRowModel().rows && table.getRowModel().rows.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
                   className="hover:bg-pastel_moss_green ease-in-out duration-500 text-xs hover:cursor-pointer hover:rounded-xl text-center"
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
                   onClick={() =>
-                    router.push(
-                      "receive/" +
-                      row.getValue("no_penawaran").replace(/\//g, "_")
-                    )
+                    router.push("receive/" + row.getValue("noPenawaran"))
                   }
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id} className="py-4">
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
+                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
                     </TableCell>
                   ))}
                 </TableRow>
@@ -200,6 +198,7 @@ export function DataTable({ data }) {
               </TableRow>
             )}
           </TableBody>
+
         </Table>
       </div>
 
@@ -283,3 +282,5 @@ export function DataTable({ data }) {
     </div>
   );
 }
+
+export default ReceiveDataTable;
