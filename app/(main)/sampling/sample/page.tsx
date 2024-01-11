@@ -10,7 +10,7 @@ export default async function SamplingProject() {
   else
     res = await getSampleByYear("2023", "sample")
   
-  const data : any = res.result || []
+  const data = res && res.result ? res.result : [];
 
   return (
     <div className="flex flex-col w-full ">

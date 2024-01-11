@@ -35,106 +35,42 @@ const sampelData = [
 
 const documentData = [
     {
-        judul: "Tahap 1",
-        placeholder: "Tahap 1",
+        judul: "Preparation Sampling",
+        placeholder: "Preparation Sampling",
         link: [
             {
                 value: "link1",
-                label: "link1",
+                label: "Logbook jadwal sampling",
             },
             {
                 value: "link2",
-                label: "link2",
+                label: "Surat tugas",
             },
             {
                 value: "link3",
-                label: "link3",
+                label: "Surat Penawaran",
             },
             {
                 value: "link4",
-                label: "link4",
-            },
-            {
-                value: "link5",
-                label: "link5",
+                label: "Form Kaji Ulang",
             },
         ]
     },
     {
-        judul: "Tahap 2",
-        placeholder: "Tahap 2",
+        judul: "Result Sampling",
+        placeholder: "Result Sampling",
         link: [
             {
                 value: "link1",
-                label: "link1",
+                label: "List pengambilan sample",
             },
             {
                 value: "link2",
-                label: "link2",
+                label: "Berita Acara",
             },
             {
                 value: "link3",
-                label: "link3",
-            },
-            {
-                value: "link4",
-                label: "link4",
-            },
-            {
-                value: "link5",
-                label: "link5",
-            },
-        ]
-    },
-    {
-        judul: "Tahap 3",
-        placeholder: "Tahap 3",
-        link: [
-            {
-                value: "link1",
-                label: "link1",
-            },
-            {
-                value: "link2",
-                label: "link2",
-            },
-            {
-                value: "link3",
-                label: "link3",
-            },
-            {
-                value: "link4",
-                label: "link4",
-            },
-            {
-                value: "link5",
-                label: "link5",
-            },
-        ]
-    },
-    {
-        judul: "Tahap 4",
-        placeholder: "Tahap 4",
-        link: [
-            {
-                value: "link1",
-                label: "link1",
-            },
-            {
-                value: "link2",
-                label: "link2",
-            },
-            {
-                value: "link3",
-                label: "link3",
-            },
-            {
-                value: "link4",
-                label: "link4",
-            },
-            {
-                value: "link5",
-                label: "link5",
+                label: "Rekaman Sampling",
             },
         ]
     },
@@ -152,7 +88,7 @@ export default function Home({ params }: { params: { np: string } }) {
     // Get Laporan Hasil Pemeriksaan data
     return (
         <div className="flex flex-col md:flex-row justify-between w-full h-screen gap-36 md:gap-0">
-            <div className="md:w-1/2 h-screen px-16 space-y-6">
+            <div className="md:w-3/5 h-fit px-16 space-y-6">
                 <div className="flex flex-row text-2xl font-medium space-x-0 cursor-pointer">
                     <div
                         className={`flex flex-col items-end ${selectedTab === "Sampel" ? "text-dark_brown" : "text-ghost_brown"
@@ -182,10 +118,10 @@ export default function Home({ params }: { params: { np: string } }) {
                     <Sampel data={sampelData} title="Final Review Rekaman Lab" textColor="light_brown" bgColor="white" />
                 )}
                 {selectedTab === "Dokumen" && (
-                    <Document data={documentData} />
+                    <Document data={documentData} color="light_brown" />
                 )}
             </div>
-            <div className="md:w-1/2">
+            <div className="md:w-2/5">
                 <LaporanHasilPemeriksaan title="Pengisian LHP" color="dark_brown" link={LaporanHasilPemeriksaanData} />
             </div>
         </div>
