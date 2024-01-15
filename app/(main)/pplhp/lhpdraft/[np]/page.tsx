@@ -16,7 +16,7 @@ export default async function Home({ params }: { params: { np: string } }) {
   return (
     <>
       <main className="flex flex-col lg:flex-row gap-5 lg:gap-0 justify-between w-full">
-        <div className="w-full  px-2">
+        <div className="w-3/5 px-2">
           <LHPDraftPage linkData={linkData} />
         </div>
         <div className="md:w-2/5">
