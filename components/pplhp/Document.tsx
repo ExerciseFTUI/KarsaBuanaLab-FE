@@ -1,3 +1,5 @@
+"use client";
+
 import { useState, FC } from "react";
 
 import {
@@ -11,13 +13,13 @@ import {
 } from "@/components/ui/select";
 import { RiShareBoxLine } from "react-icons/ri";
 
-interface DocumentLink {
+interface DocumentData {
   url: string;
   name: string;
 }
 
 interface DocumentProps {
-  data: DocumentLink[];
+  data: DocumentData[];
   color: String;
 }
 
@@ -26,7 +28,7 @@ const Document: FC<DocumentProps> = ({ data, color }) => {
 
   return (
     <div className="space-y-14">
-      {data.map((link, index) => (
+      {data.map((link) => (
         <div className="space-y-5">
           <div className="flex flex-wrap justify-between gap-2">
             <a

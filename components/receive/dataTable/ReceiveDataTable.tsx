@@ -61,8 +61,7 @@ const ReceiveDataTable: FC<ReceiveDataTableProps> = ({ data }) => {
   const router = useRouter();
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-
-  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+  const [columnVisibility, setColumnVisibility] = useState({ _id: false });
   const [rowSelection, setRowSelection] = useState({});
 
   const table = useReactTable({

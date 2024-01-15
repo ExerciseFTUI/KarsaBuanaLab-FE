@@ -23,7 +23,7 @@ import {
 import DocumentTab from "./DocumentTab";
 import Document from "@/components/pplhp/Document";
 
-export default function ReviewDraftPage({ linkData }) {
+export default function ReviewDraftPage({ linkData }: { linkData: any }) {
   //=============================== Sample Section
   const [openModal, setOpenModal] = useState(false);
   const sampleForm = useForm<FieldValues>({

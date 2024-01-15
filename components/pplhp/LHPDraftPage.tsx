@@ -3,7 +3,8 @@ import { useState } from "react";
 import Sampel from "@/components/pplhp/Sampel";
 import Document from "@/components/pplhp/Document";
 
-export default function LHPDraftPage({ linkData }) {
+
+export default function LHPDraftPage({ linkData }: { linkData: any }) {
   const [selectedTab, setSelectedTab] = useState("Sampel");
   const sampelData = linkData.sampling_list;
   const documentData = linkData.file;
