@@ -3,6 +3,7 @@ import { Project } from "../models/project.model";
 import { BaseApiResponse } from "../models/baseApiResponse.model";
 import { BaseSample } from "../models/baseSample.model";
 import { ProjectMarketingType, ProjectType } from "../type";
+import { revalidatePath } from "next/cache";
 
 const apiBaseUrl = process.env.API_BASE_URL || "";
 
@@ -89,6 +90,7 @@ export const getDashboard = async (): Promise<
   }
 };
 
+//Berhasil
 export const getProject = async (
   projectId: string
 ): Promise<BaseApiResponse<Project>> => {
@@ -99,18 +101,42 @@ export const getProject = async (
     return response.data as BaseApiResponse<Project>;
   } catch (error: any) {
     console.error(`Error getting project with ID ${projectId}:`, error.message);
-    throw new Error(`Failed to get project with ID ${projectId}`);
+    return null as unknown as BaseApiResponse<Project>;
   }
 };
 
+//Berhasil
 export const getbyStatus = async (
   status: string
-): Promise<BaseApiResponse<[Project]>> => {
+): Promise<BaseApiResponse<[ProjectMarketingType]>> => {
   try {
     const response = await axios.get(`${apiBaseUrl}/marketing/${status}`);
-    return response.data as BaseApiResponse<[Project]>;
+    return response.data as BaseApiResponse<[ProjectMarketingType]>;
   } catch (error: any) {
     console.error(`Error getting project  ${status}:`, error.message);
-    throw new Error(`Failed to get project  ${status}`);
+    // throw new Error(`Failed to get project  ${status}`);
+    return null as unknown as BaseApiResponse<[ProjectMarketingType]>;
+  }
+};
+
+export const testing = async () => {
+  try {
+    const body = {
+      title: "foo",
+      body: "bar",
+      userId: 1,
+    };
+
+    const response = await axios.post(
+      "https://jsonplaceholder.typicode.com/posts",
+      body
+    );
+
+    // revalidatePath("/marketing/running");
+    // getbyStatus("running");
+    console.log(response.data);
+    return body;
+  } catch (error: any) {
+    console.error(`Error getting project`, error.message);
   }
 };
