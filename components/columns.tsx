@@ -1,7 +1,7 @@
-import { ColumnDef } from "@tanstack/react-table"
-import { ArrowUpDown, MoreHorizontal } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Checkbox } from "@/components/ui/checkbox"
+import { ColumnDef } from "@tanstack/react-table";
+import { ArrowUpDown, MoreHorizontal } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -10,7 +10,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+} from "@/components/ui/dropdown-menu";
 import {
   ReceiveSamplingType,
   ProjectLHPType,
@@ -62,8 +62,9 @@ export const columns: ColumnDef<ProjectType>[] = [
       return (
         <div className="">
           <div
-            className={`font-light text-white w-fit px-6 py-0.5 rounded-full ${status ? "bg-yellow-700" : "bg-red-400"
-              }`}
+            className={`font-light text-white w-fit px-6 py-0.5 rounded-full ${
+              status ? "bg-yellow-700" : "bg-red-400"
+            }`}
           >
             {row.getValue("status")}
           </div>
@@ -110,7 +111,7 @@ export const columns: ColumnDef<ProjectType>[] = [
     header: () => (
       <div className={`pl-2 font-medium text-[#666D4B]`}>Last Update</div>
     ),
-  cell: ({ row }) => {
+    cell: ({ row }) => {
       return <div className={`pl-4 font-medium`}>Today</div>;
     },
   },
@@ -143,9 +144,7 @@ export const columns: ColumnDef<ProjectType>[] = [
             <DropdownMenuSeparator />
 
             <DropdownMenuItem
-              onClick={() =>
-                navigator.clipboard.writeText(project.noPenawaran)
-              }
+              onClick={() => navigator.clipboard.writeText(project.noPenawaran)}
             >
               Copy No Penawaran
             </DropdownMenuItem>
@@ -292,8 +291,8 @@ export const samplingProjectPageColumns: ColumnDef<ProjectSamplingType>[] = [
         status == "Need Schedule" || status == "Get Sample"
           ? "bg-moss_green"
           : status == "On Discuss" || status == "Verifying"
-            ? "bg-light_brown"
-            : "bg-brick_red";
+          ? "bg-light_brown"
+          : "bg-brick_red";
 
       return (
         <div
@@ -330,7 +329,7 @@ export const receiveSamplingColumns: ColumnDef<ReceiveSamplingType>[] = [
           Project Title
           <ArrowUpDown strokeWidth={1.5} className="ml-2 h-4 w-4" />
         </Button>
-      )
+      );
     },
     cell: ({ row }) => (
       <div className="capitalize pl-4">{row.getValue("project_name")}</div>
@@ -370,7 +369,11 @@ export const receiveSamplingColumns: ColumnDef<ReceiveSamplingType>[] = [
       );
     },
   },
-]
+  {
+    accessorKey: "_id",
+    hide: true,
+  },
+];
 
 export const LHPDraftPageColumns: ColumnDef<ProjectLHPType>[] = [
   //No Penawaran
@@ -414,14 +417,20 @@ export const LHPDraftPageColumns: ColumnDef<ProjectLHPType>[] = [
     accessorKey: "alamat_kantor",
     header: "Lokasi",
     cell: ({ row }) => {
-      return <div className="capitalize pl-0.5">{row.getValue("alamat_kantor")}</div>;
+      return (
+        <div className="capitalize pl-0.5">{row.getValue("alamat_kantor")}</div>
+      );
     },
   },
   {
     accessorKey: "contact_person",
     header: "Contact Person",
     cell: ({ row }) => {
-      return <div className="capitalize pl-0.5">{row.getValue("contact_person")}</div>;
+      return (
+        <div className="capitalize pl-0.5">
+          {row.getValue("contact_person")}
+        </div>
+      );
     },
   },
 ];
@@ -468,14 +477,20 @@ export const PPLHPFinalReviewPageColumns: ColumnDef<ProjectLHPType>[] = [
     accessorKey: "alamat_kantor",
     header: "Lokasi",
     cell: ({ row }) => {
-      return <div className="capitalize pl-0.5">{row.getValue("alamat_kantor")}</div>;
+      return (
+        <div className="capitalize pl-0.5">{row.getValue("alamat_kantor")}</div>
+      );
     },
   },
   {
     accessorKey: "contact_person",
     header: "Contact Person",
     cell: ({ row }) => {
-      return <div className="capitalize pl-0.5">{row.getValue("contact_person")}</div>;
+      return (
+        <div className="capitalize pl-0.5">
+          {row.getValue("contact_person")}
+        </div>
+      );
     },
   },
 ];
@@ -510,14 +525,14 @@ export const LabDashboardPageColumns: ColumnDef<LabDataType>[] = [
     accessorKey: "lokasi",
     header: "Lokasi",
     cell: ({ row }) => {
-      return <div className="capitalize pl-0.5">{row.getValue("lokasi")}</div>
+      return <div className="capitalize pl-0.5">{row.getValue("lokasi")}</div>;
     },
   },
   {
     accessorKey: "cp",
     header: "Contact Person",
     cell: ({ row }) => {
-      return <div className="capitalize pl-0.5">{row.getValue("cp")}</div>
+      return <div className="capitalize pl-0.5">{row.getValue("cp")}</div>;
     },
   },
-]
+];

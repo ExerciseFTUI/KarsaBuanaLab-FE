@@ -22,114 +22,7 @@ import {
 } from "react-hook-form";
 import DocumentTab from "./DocumentTab";
 
-const documentData = [
-  {
-    judul: "Tahap 1",
-    placeholder: "Tahap 1",
-    link: [
-      {
-        value: "link1",
-        label: "link1",
-      },
-      {
-        value: "link2",
-        label: "link2",
-      },
-      {
-        value: "link3",
-        label: "link3",
-      },
-      {
-        value: "link4",
-        label: "link4",
-      },
-      {
-        value: "link5",
-        label: "link5",
-      },
-    ],
-  },
-  {
-    judul: "Tahap 2",
-    placeholder: "Tahap 2",
-    link: [
-      {
-        value: "link1",
-        label: "link1",
-      },
-      {
-        value: "link2",
-        label: "link2",
-      },
-      {
-        value: "link3",
-        label: "link3",
-      },
-      {
-        value: "link4",
-        label: "link4",
-      },
-      {
-        value: "link5",
-        label: "link5",
-      },
-    ],
-  },
-  {
-    judul: "Tahap 3",
-    placeholder: "Tahap 3",
-    link: [
-      {
-        value: "link1",
-        label: "link1",
-      },
-      {
-        value: "link2",
-        label: "link2",
-      },
-      {
-        value: "link3",
-        label: "link3",
-      },
-      {
-        value: "link4",
-        label: "link4",
-      },
-      {
-        value: "link5",
-        label: "link5",
-      },
-    ],
-  },
-  {
-    judul: "Tahap 4",
-    placeholder: "Tahap 4",
-    link: [
-      {
-        value: "link1",
-        label: "link1",
-      },
-      {
-        value: "link2",
-        label: "link2",
-      },
-      {
-        value: "link3",
-        label: "link3",
-      },
-      {
-        value: "link4",
-        label: "link4",
-      },
-      {
-        value: "link5",
-        label: "link5",
-      },
-    ],
-  },
-];
-
-export default function ReviewDraftPage() {
+export default function ReviewDraftPage({ linkData }) {
   //=============================== Sample Section
   const [openModal, setOpenModal] = useState(false);
   const sampleForm = useForm<FieldValues>({
@@ -170,13 +63,13 @@ export default function ReviewDraftPage() {
 
         {/* Sample Section */}
         <TabsContent value="sampling">
-          <SamplingTab />
+          <SamplingTab data={linkData.sampling_list} />
         </TabsContent>
         {/* End Sample Section */}
 
         {/* Document Section */}
         <TabsContent value="document">
-          <DocumentTab />
+          <DocumentTab data={linkData.file} />
         </TabsContent>
         {/* End Document Section */}
       </Tabs>

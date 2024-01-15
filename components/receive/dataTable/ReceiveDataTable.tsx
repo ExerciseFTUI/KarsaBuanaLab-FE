@@ -60,12 +60,9 @@ interface ReceiveDataTableProps {
 const ReceiveDataTable: FC<ReceiveDataTableProps> = ({ data }) => {
   const router = useRouter();
   const [sorting, setSorting] = useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(
-    []
-  );
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 
-  const [columnVisibility, setColumnVisibility] =
-    useState<VisibilityState>({});
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
 
   const table = useReactTable({
@@ -159,9 +156,9 @@ const ReceiveDataTable: FC<ReceiveDataTableProps> = ({ data }) => {
                       {header.isPlaceholder
                         ? null
                         : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
                     </TableHead>
                   );
                 })}
@@ -176,12 +173,7 @@ const ReceiveDataTable: FC<ReceiveDataTableProps> = ({ data }) => {
                   className="hover:bg-pastel_moss_green ease-in-out duration-500 text-xs hover:cursor-pointer hover:rounded-xl text-center"
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
-                  onClick={() =>
-                    router.push(
-                      "receive/" +
-                      row.getValue("noPenawaran")
-                    )
-                  }
+                  onClick={() => router.push("receive/" + row.getValue("_id"))}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id} className="py-4">
@@ -286,6 +278,6 @@ const ReceiveDataTable: FC<ReceiveDataTableProps> = ({ data }) => {
       </div>
     </div>
   );
-}
+};
 
 export default ReceiveDataTable;

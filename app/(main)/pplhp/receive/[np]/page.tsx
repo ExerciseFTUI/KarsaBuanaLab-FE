@@ -1,14 +1,16 @@
+import { getLinkFiles } from "@/lib/actions/receive.actions";
 import ReviewDraftPage from "@/components/receive/reviewDraft/ReviewDraftPage";
 import { SelectSeparator } from "@/components/ui/select";
 import { AiOutlineFile } from "react-icons/ai";
 import { BsArrowRight } from "react-icons/bs";
 
-export default function Home({ params }: { params: { np: string } }) {
+export default async function Home({ params }: { params: { np: string } }) {
+  const linkData = await getLinkFiles(params.np);
   return (
     <>
       <main className="flex flex-col lg:flex-row gap-5 lg:gap-0 justify-between w-full">
         <div className="w-full lg:w-1/2 px-2">
-          <ReviewDraftPage />
+          <ReviewDraftPage linkData={linkData} />
         </div>
         <div className="w-full lg:w-1/2 px-4 mt-14 lg:mt-0 lg:px-16 space-y-4 lg:space-y-14 ">
           <h1 className="text-center text-2xl font-semibold text-moss_green">
