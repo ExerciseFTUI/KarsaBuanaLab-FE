@@ -1,5 +1,5 @@
 "use client";
-import { useState, FC } from "react";
+import { useState, FC, useEffect } from "react";
 import useSWR from "swr";
 import {
   ColumnDef,
@@ -53,11 +53,11 @@ import { ReceiveSamplingType } from "@/lib/type";
 import { cn, fetcher } from "@/lib/utils";
 import { ProjectSamplingType } from "@/lib/type";
 
-interface DataTableProps {
+interface ReceiveDataTableProps {
   data: ReceiveSamplingType[];
 }
 
-const DataTable: FC<DataTableProps> = ({ data }) => {
+const ReceiveDataTable: FC<ReceiveDataTableProps> = ({ data }) => {
   const router = useRouter();
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(
@@ -178,7 +178,8 @@ const DataTable: FC<DataTableProps> = ({ data }) => {
                   data-state={row.getIsSelected() && "selected"}
                   onClick={() =>
                     router.push(
-                      "receive/" + row.getValue("no_penawaran").replace(/\//g, "_")
+                      "receive/" +
+                      row.getValue("noPenawaran")
                     )
                   }
                 >
@@ -287,4 +288,4 @@ const DataTable: FC<DataTableProps> = ({ data }) => {
   );
 }
 
-export default DataTable;
+export default ReceiveDataTable;

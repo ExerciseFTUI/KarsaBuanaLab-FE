@@ -1,4 +1,3 @@
-"use client"
 import { useState } from "react";
 import Sampel from "@/components/pplhp/Sampel";
 import Document from "@/components/pplhp/Document";

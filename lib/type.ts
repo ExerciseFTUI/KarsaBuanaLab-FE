@@ -12,6 +12,23 @@ export type ProjectType = {
   createdAt: string
 }
 
+export type ProjectMarketingType = {
+  _id: string;
+  no_penawaran: string;
+  project_name: string;
+  client_name: string;
+  alamat_sampling: string;
+  contact_person: string;
+  created_at: string;
+  status: string;
+  valuasi_proyek: number;
+};
+
+export type BaseSampleType = {
+  sample_name: string
+  amount: number
+}
+
 export type SampleType = {
   sample_name: string;
   harga: string;
@@ -19,11 +36,6 @@ export type SampleType = {
   regulation: string;
   location: string;
 };
-
-export type BaseSampleType = {
-  sample_name: string
-  amount: number
-}
 
 export type FileType = {
   file_name: string

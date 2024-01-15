@@ -1,8 +1,15 @@
 import EditProjectPage from "@/components/marketing/editProject/EditProjectPage";
-import React from "react";
+import { getProject } from "@/lib/actions/marketing.actions";
+import { redirect } from "next/navigation";
 
-const SingleProject = ({ params }: { params: { np: string } }) => {
-  return <EditProjectPage />;
+const SingleProject = async ({ params }: { params: { id: string } }) => {
+  const project = await getProject(params.id);
+
+  if (!project.result) {
+    redirect("/marketing");
+  }
+
+  return <EditProjectPage project={project.result} />;
 };
 
 export default SingleProject;
