@@ -1,6 +1,7 @@
 "use client"
 
 import React from "react"
+import { ProjectSamplingType, SampleType } from "@/lib/type"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import HyperLinkButton from "../HyperlinkButton"
 import { Button } from "@/components/ui/button"
@@ -26,12 +27,10 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover"
 import DropzoneLetter from "@/components/sampling/letterDetail/DropzoneLetter"
-import { Sampling } from "@/lib/models/sampling.model"
-import { Project } from "@/lib/models/project.model"
 
 interface dokuParams {
-  samples: Sampling[]
-  data: Project
+  samples: SampleType[]
+  data: ProjectSamplingType
 }
 
 const handleSubmit = (e: any) => e.preventDefault()
@@ -66,7 +65,7 @@ export default function TabDokumen({ samples, data }: dokuParams) {
 
           <h1 className="text-xl font-semibold my-5">Assignment Letter</h1>
 
-          <HyperLinkButton title="Assignment Letter" href="" />
+          <DropzoneLetter setUploadedFiles={setUploadedFiles} />
 
           <Button
             className="w-48 py-4 self-center mt-4 bg-light_brown hover:bg-dark_brown disabled:bg-transparent disabled:text-dark_brown disabled:font-bold disabled:border-2 disabled:border-dark_brown"

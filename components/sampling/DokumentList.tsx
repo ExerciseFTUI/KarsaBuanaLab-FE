@@ -1,11 +1,11 @@
 "use client"
 
+import { ProjectSamplingType } from "@/lib/type"
 import React from "react"
 import HyperLinkButton from "./HyperlinkButton"
-import { Project } from "@/lib/models/project.model"
 
 interface docParams {
-  data: any
+  data: ProjectSamplingType
   className?: string
 }
 
@@ -16,11 +16,11 @@ export default function DocumentList({ data, className = "" }: docParams) {
 
       <div className="flex flex-wrap gap-4">
         {[
-          { title: "Surat Penawaran", href: "" },
-          { title: "Daftar Parameter", href: "" },
-          { title: "Chain of Custody", href: "" },
-          { title: "Sertifikat Akreditasi", href: "" },
-          { title: "Form KUPTK", href: "" },
+          { title: "Surat Penawaran", href: data.file.file_nama },
+          { title: "Daftar Parameter", href: data.file.file_nama },
+          { title: "Chain of Custody", href: data.file.file_nama },
+          { title: "Sertifikat Akreditasi", href: data.file.file_nama },
+          { title: "Form KUPTK", href: data.file.file_nama },
         ].map((o, i) => (
           <HyperLinkButton
             key={i}

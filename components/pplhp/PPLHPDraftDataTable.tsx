@@ -1,5 +1,5 @@
 "use client";
-import { useState, FC, useEffect } from "react";
+import { useState, FC } from "react";
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -88,12 +88,12 @@ const PPLHPDataTable: FC<PPLHPDataTableProps> = ({ data }) => {
   return (
     <div className="w-full">
       <div className="flex items-center py-4">
-        <BiFilterAlt className="text-xl translate-x-8" />
+        <BiFilterAlt className="text-xl translate-x-8"/>
         <Input
           placeholder="Filter Projects On LHP Draft"
-          value={(table.getColumn("project_name")?.getFilterValue() as string) ?? ""}
+          value={(table.getColumn("judul")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
-            table.getColumn("project_name")?.setFilterValue(event.target.value)
+            table.getColumn("judul")?.setFilterValue(event.target.value)
           }
           className="max-w-sm pl-10"
         />
@@ -135,9 +135,9 @@ const PPLHPDataTable: FC<PPLHPDataTableProps> = ({ data }) => {
                       {header.isPlaceholder
                         ? null
                         : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
                     </TableHead>
                   );
                 })}
@@ -152,7 +152,7 @@ const PPLHPDataTable: FC<PPLHPDataTableProps> = ({ data }) => {
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
                   onClick={() =>
-                    router.push("lhpdraft/" + row.getValue("_id"))
+                    router.push("lhpdraft/" + row.getValue("noPenawaran"))
                   }
                 >
                   {row.getVisibleCells().map((cell) => (

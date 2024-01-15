@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation"
 
-export default function pplhp() {
-  redirect("/pplhp/receive")
+export default function Sampling() {
+  redirect("/pplhp/lhpdraft")
 }

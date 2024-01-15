@@ -40,73 +40,7 @@ export default function EditProjectPage() {
   // }, [arrayField.fields]);
 
   //All the samples get save in here
-  const { fields: samples, append, remove } = arrayField;
-
-  console.log(project);
-
-  //Append all the samples from API to the samples array
-  if (project.sampling_list && project.sampling_list.length > samples.length) {
-    const newSamples = project.sampling_list.map((sample) => {
-      return {
-        sampleName: sample.sample_name ? sample.sample_name : "Empty",
-        regulation: sample.regulation?.regulation_name
-          ? sample.regulation.regulation_name
-          : "Empty",
-        parameters: sample.regulation?.param ? sample.regulation.param : [""],
-      };
-    });
-
-    append(newSamples);
-  }
-
-  //Add to the samples array
-  const onSubmitSample: SubmitHandler<FieldValues> = async (data) => {
-    console.log(data.parameters);
-
-    //Handle Missing Data
-    if (
-      data.sampling === "" ||
-      data.regulation === "" ||
-      data.parameters.length === 0 ||
-      data.parameters[0] === ""
-    ) {
-      alert("Please fill the data");
-      return;
-    }
-
-    //Get the parameter only value
-    const parametersValue = data.parameters.map(
-      (parameter: any) => parameter.value
-    );
-
-    //Get the needed data
-    const finalSample = {
-      sampleName: data.sampling, // string
-      regulation: data.regulation, // string
-      parameters: parametersValue, // array
-    };
-
-    //Add to samples array
-    append(finalSample);
-
-    //Reset all the form
-    setValue("parameters", [""], { shouldValidate: true });
-    resetField("sampling");
-    resetField("parameters");
-
-    //Close Modal
-    setOpenModal(false);
-
-    //Call API Test
-    // createProject(null, )
-    //End of Call API Test
-
-    //Display Toast
-    toast({
-      title: "Successfully adding new sample",
-      description: "Good Job",
-    });
-  };
+  const { fields: samples } = arrayField;
 
   //================================= End Sample Section
 

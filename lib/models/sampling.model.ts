@@ -1,15 +1,12 @@
-import { User } from "./user.model"
-import { Regulation } from "./regulation.model"
+import { User } from "./user.model";
+import { Regulation } from "./regulation.model";
 
 export interface Sampling {
-  sample_name: string
-  harga: string
-  fileId: string
-  param: string[]
-  regulation: Regulation
-  location: string
-  assigned_to: User[]
-  status: string // "ASSIGNED" | "NOT ASSIGNED" | "VERIFYING" | "REVISION" | "ACCEPT"
-  jadwal: Date
-  _id: string
+  sample_name: string;
+  fileId: string;
+  param: any[];
+  regulation: Regulation;
+  assigned_to: User;
+  status: string;
+  _id: string;
 }

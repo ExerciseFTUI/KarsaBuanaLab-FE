@@ -1,41 +1,41 @@
 "use client"
 
 import React from "react"
-import { Sampling } from "@/lib/models/sampling.model"
+import { SampleType } from "@/lib/type"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import HyperLinkButton from "../HyperlinkButton"
 import { Button } from "@/components/ui/button"
 
-const simpanDokumen = (e: any) => e.preventDefault()
+export default function TabSampleAdmin({ samples }: { samples: SampleType[] }) {
+  const sampleStatus = ["Luthfi", "Dio", "Eriqo"]
 
-export default function TabSampleAdmin({ data }: { data: Sampling }) {
   return (
-    <Tabs defaultValue="buatDokumen" className="flex-1">
+    <Tabs defaultValue="statusSampel" className="flex-1">
       <TabsList className="grid w-full grid-cols-2 shadow-none bg-transparent">
         <TabsTrigger
           className="rounded-none data-[state=active]:shadow-none border-b-2 data-[state=active]:border-b-light_brown data-[state=active]:bg-transparent data-[state=active]:text-dark_brown data-[state=active]:font-bold text-base data-[state=inactive]:text-moss_green data-[state=inactive]:opacity-50 data-[state=inactive]:border-b-moss_green"
-          value="buatDokumen"
+          value="statusSampel"
         >
-          Buat Dokumen
+          Status Sampel
         </TabsTrigger>
         <TabsTrigger
           className="rounded-none data-[state=active]:shadow-none border-b-2 data-[state=active]:border-b-light_brown data-[state=active]:bg-transparent data-[state=active]:text-dark_brown data-[state=active]:font-bold text-base data-[state=inactive]:text-moss_green data-[state=inactive]:opacity-50 data-[state=inactive]:border-b-moss_green"
-          value="verifikasiSampel"
+          value="rekamanSampel"
         >
-          Verifikasi Sampel
+          Rekaman Sampel
         </TabsTrigger>
       </TabsList>
 
-      <TabsContent className="py-4" value="verifikasiSampel">
+      <TabsContent className="py-4" value="statusSampel">
         <div className="flex flex-wrap gap-8">
-          {data.assigned_to.map((n, j) => (
+          {sampleStatus.map((n, j) => (
             <div key={j} className="">
-              <h1 className="text-xl font-semibold mb-5">{n.username}</h1>
+              <h1 className="text-xl font-semibold mb-5">{n}</h1>
 
               <div className="flex gap-4 flex-wrap">
-                {data.param.map((s, i) => (
+                {samples.map((s, i) => (
                   <div key={i} className="w-full flex items-center gap-4">
-                    <HyperLinkButton title={s} href={""} />
+                    <HyperLinkButton title={s.sample_name} href={s.fileId} />
 
                     <div className="flex gap-2">
                       <Button
@@ -61,11 +61,8 @@ export default function TabSampleAdmin({ data }: { data: Sampling }) {
         </div>
       </TabsContent>
 
-      <TabsContent
-        className="py-4 space-y-8 flex flex-col items-center"
-        value="buatDokumen"
-      >
-        <div className="w-full">
+      <TabsContent className="py-4 space-y-8" value="rekamanSampel">
+        <div>
           <h1 className="text-xl font-semibold mb-5">Logbook Rekaman Sampel</h1>
 
           <HyperLinkButton
@@ -75,19 +72,11 @@ export default function TabSampleAdmin({ data }: { data: Sampling }) {
           />
         </div>
 
-        <div className="w-full">
+        <div>
           <h1 className="text-xl font-semibold mb-5">Berita Acara</h1>
 
           <HyperLinkButton title="Berita Acara" href="" className="" />
         </div>
-
-        <Button
-          title="Simpan"
-          className="bg-light_brown hover:bg-dark_brown"
-          onClick={simpanDokumen}
-        >
-          Simpan
-        </Button>
       </TabsContent>
     </Tabs>
   )

@@ -1,13 +1,10 @@
 import CreateProjectPage from "@/components/marketing/createProject/CreateProjectPage";
-import { getSample } from "@/lib/actions/marketing.actions";
 
-export default async function Page() {
-  const response = await getSample();
-
+export default function Page() {
   return (
     <>
       <div className="w-full px-2">
-        <CreateProjectPage baseSamples={response ? response.result : []} />
+        <CreateProjectPage />
       </div>
     </>
   );

@@ -1,37 +1,44 @@
 "use client"
 
 import React from "react"
+import useSWR from "swr"
+import { ProjectSamplingType } from "@/lib/type"
 import ProjectDetails from "../ProjectDetails"
+import { Separator } from "@/components/ui/separator"
 import DocumentList from "../DokumentList"
 import HyperLinkButton from "../HyperlinkButton"
 import { Button } from "@/components/ui/button"
-import { Sampling } from "@/lib/models/sampling.model"
+import { cn, fetcher } from "@/lib/utils"
+import TabDokumen from "./TabDokumen"
 
-interface projectParams {
-  data: Sampling
+type fetched = {
+  data: ProjectSamplingType
+  error: any
+  isLoading: any
 }
 
-const handleSubmit = (e: any) => e.preventDefault()
+interface projectParams {
+  params: { np: string }
+}
 
-export default function Project({ data }: projectParams) {
+export default function Project({ params }: projectParams) {
+  const { data, error, isLoading }: fetched = useSWR(
+    "/api/sampling/assignment-letter/" + params.np,
+    fetcher
+  )
+
+  if (error) return <div>{error.message}</div>
+  if (isLoading) return <div>Loading...</div>
+
+  const { status, sampling_list } = data
+
   return (
     <div className="flex w-full gap-6 max-md:flex-col max-md:items-center">
       <ProjectDetails data={data} className="w-full max-w-[32rem]" />
 
-      <div className="flex flex-wrap flex-col max-w-xl">
-        <DocumentList data={data} className="" />
+      <div className="hidden sm:block sm:w-[1.5px] sm:h-full bg-light_brown mb-4 sm:mb-0" />
 
-        <h1 className="text-xl font-semibold my-5">Assignment Letter</h1>
-
-        <HyperLinkButton title="Assignment Letter" href="" />
-
-        <Button
-          className="w-48 py-4 self-center mt-4 bg-light_brown hover:bg-dark_brown disabled:bg-transparent disabled:text-dark_brown disabled:font-bold disabled:border-2 disabled:border-dark_brown"
-          onClick={(e) => handleSubmit(e)}
-        >
-          Save
-        </Button>
-      </div>
+      <TabDokumen data={data} samples={sampling_list} />
     </div>
   )
 }
