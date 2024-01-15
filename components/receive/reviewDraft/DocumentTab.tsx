@@ -1,22 +1,31 @@
 "use client";
 
 import * as React from "react";
-import { Check, ChevronsUpDown } from "lucide-react";
+import { useState, FC } from "react";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
-import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-} from "@/components/ui/command";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+interface DocumentLink {
+  value: string;
+  label: string;
+}
+
+interface DocumentData {
+  judul: string;
+  placeholder: string;
+  link: DocumentLink[];
+}
+
+interface DocumentProps {
+  data: DocumentData[];
+}
 
 import { useRouter } from "next/navigation";
 
@@ -129,51 +138,35 @@ const dropdown = [
 
 export default function Home() {
   const router = useRouter();
-  const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState("");
 
   return (
-    <div className="w-full h-screen px-16 space-y-6">
+    <div className="w-full h-full px-16 space-y-6 ">
       <div className="space-y-4">
         {dropdown.map((field, index) => (
           <div key={index} className="space-y-3">
             <h2>{field.judul}</h2>
-            <Popover open={open} onOpenChange={setOpen}>
-              <PopoverTrigger asChild>
-                <Button
-                  variant="outline"
-                  role="combobox"
-                  aria-expanded={open}
-                  className="w-full justify-between border-moss_green rounded-xl p-6"
-                >
-                  {value
-                    ? field.link.find((link) => link.value === value)?.label
-                    : field.placeholder}
-                  <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="min-w-full p-0">
-                <Command>
-                  <CommandGroup>
-                    {field.link.map((link) => (
-                      <CommandItem
-                        key={link.value}
-                        value={link.value}
-                        onSelect={(currentValue) => {
-                          if (currentValue === value) {
-                            return;
-                          }
-                          window.open(currentValue, "_blank");
-                          setOpen(false);
-                        }}
-                      >
-                        {link.label}
-                      </CommandItem>
-                    ))}
-                  </CommandGroup>
-                </Command>
-              </PopoverContent>
-            </Popover>
+            <Select
+              onValueChange={(currentValue) => {
+                if (currentValue === value) {
+                  return;
+                }
+                window.open(currentValue, "_blank");
+              }}
+            >
+              <SelectTrigger className="w-full justify-between border-moss_green rounded-xl p-6">
+                <SelectValue placeholder={field.placeholder} />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  {field.link.map((link) => (
+                    <SelectItem key={link.value} value={link.value}>
+                      {link.label}
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
           </div>
         ))}
       </div>

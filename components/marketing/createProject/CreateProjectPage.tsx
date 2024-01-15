@@ -152,10 +152,6 @@ const CreateProjectPage: FC<CreateProjectProps> = ({ baseSamples }) => {
     //Close Modal
     setOpenModal(false);
 
-    //Call API Test
-    // createProject(null, )
-    //End of Call API Test
-
     //Display Toast
     toast({
       title: "Successfully adding new sample",
@@ -179,6 +175,7 @@ const CreateProjectPage: FC<CreateProjectProps> = ({ baseSamples }) => {
     },
   });
 
+  // 2. Define a submit handler.
   async function onSubmitForm(values: z.infer<typeof createProjectValidation>) {
     //const response = testing();
 
@@ -219,7 +216,10 @@ const CreateProjectPage: FC<CreateProjectProps> = ({ baseSamples }) => {
   return (
     <div className="flex gap-6 max-md:flex-col max-md:items-center">
       <ProjectForm form={form} onSubmit={onSubmitForm} />
-      <Tabs defaultValue="sampling" className="w-[40rem] max-sm:w-[420px]">
+      <Tabs
+        defaultValue="sampling"
+        className="w-[40rem] max-sm:w-[420px] justify-center"
+      >
         <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="sampling">Sampling</TabsTrigger>
           <TabsTrigger value="document">Document</TabsTrigger>
@@ -246,6 +246,10 @@ const CreateProjectPage: FC<CreateProjectProps> = ({ baseSamples }) => {
           />
         </TabsContent>
         {/* End Document Section */}
+
+        <div className="bg-moss_green flex justify-center items-center mt-5 w-2/3 rounded-lg py-4 text-white hover:bg-light_green hover:cursor-pointer">
+          Submit
+        </div>
       </Tabs>
     </div>
   );

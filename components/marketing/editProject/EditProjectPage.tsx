@@ -15,17 +15,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import EditProjectForm from "./EditProjectForm";
 import ProjectForm from "../forms/ProjectForm";
-import { Project } from "@/lib/models/project.model";
-import { useToast } from "@/components/ui/use-toast";
 
-interface EditProjectPageProps {
-  project: Project;
-}
-
-export default function EditProjectPage({ project }: EditProjectPageProps) {
-  //General
-  const { toast } = useToast();
-
+export default function EditProjectPage() {
   //=============================== Sample Section
   const [openModal, setOpenModal] = useState(false);
 
@@ -43,6 +34,10 @@ export default function EditProjectPage({ project }: EditProjectPageProps) {
     control,
     name: "samples",
   });
+
+  // useEffect(() => {
+  //   console.log(arrayField.fields);
+  // }, [arrayField.fields]);
 
   //All the samples get save in here
   const { fields: samples, append, remove } = arrayField;
@@ -120,12 +115,12 @@ export default function EditProjectPage({ project }: EditProjectPageProps) {
   const form = useForm<z.infer<typeof createProjectValidation>>({
     resolver: zodResolver(createProjectValidation),
     defaultValues: {
-      title: project.project_name || "",
-      custName: project.client_name || "",
-      alamatKantor: project.alamat_kantor || "",
-      alamatSampling: project.alamat_sampling || "",
-      surel: project.surel || "",
-      contactPerson: project.contact_person || "",
+      title: "Project 1",
+      custName: "Raditya Dito",
+      alamatKantor: "Jl. Jalan",
+      alamatSampling: "Jl. Sampling",
+      surel: "RD@gmail.com",
+      contactPerson: "08909090909009",
     },
   });
 
@@ -149,7 +144,7 @@ export default function EditProjectPage({ project }: EditProjectPageProps) {
       <ProjectForm
         form={form}
         onSubmit={onSubmit}
-        status={project.status}
+        status="Canceled"
         note="Gakuat bayar jasa kita"
       />
       <Tabs defaultValue="sampling" className="w-[40rem] max-sm:w-[420px]">
@@ -160,13 +155,12 @@ export default function EditProjectPage({ project }: EditProjectPageProps) {
 
         {/* Sample Section */}
         <TabsContent value="sampling">
-          <SamplingTab
+          {/* <SamplingTab
             form={sampleForm}
             arrayField={arrayField}
             openModal={openModal}
             setOpenModal={setOpenModal}
-            onSubmit={onSubmitSample}
-          />
+          /> */}
         </TabsContent>
         {/* End Sample Section */}
 

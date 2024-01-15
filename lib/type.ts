@@ -1,14 +1,16 @@
+import { Regulation } from "./models/regulation.model"
+import { User } from "./models/user.model"
+
 export type ProjectType = {
-  //Lama
-  id: string;
-  noPenawaran: string;
-  judul: string;
-  namaCustomer: string;
-  lokasi: string;
-  cp: string;
-  nilaiPenawaran: number;
-  createdAt: string;
-};
+  id: string
+  noPenawaran: string
+  judul: string
+  namaCustomer: string
+  lokasi: string
+  cp: string
+  nilaiPenawaran: number
+  createdAt: string
+}
 
 export type ProjectMarketingType = {
   _id: string;
@@ -22,12 +24,64 @@ export type ProjectMarketingType = {
   valuasi_proyek: number;
 };
 
+export type BaseSampleType = {
+  sample_name: string
+  amount: number
+}
+
 export type SampleType = {
   sample_name: string;
   harga: string;
   fileId: string;
   regulation: string;
   location: string;
+};
+
+export type FileType = {
+  file_name: string
+  file_id: string
+}
+
+export type UserType = {
+  username: string
+  email: string
+  password: string
+  phone: string
+  role: string
+  division: string
+}
+
+export type RegulationType = {
+  regulation_name: string
+  file: FileType[]
+  param: string[]
+}
+
+export type ReceiveSamplingType = {
+  _id: string
+  no_penawaran: string;
+  project_name: string;
+  alamat_sampling: string;
+  alamat_kantor: string;
+  contact_person: string;
+};
+
+export type ProjectLHPType = {
+  _id: string
+  no_penawaran: string;
+  project_name: string;
+  alamat_sampling: string;
+  alamat_kantor: string;
+  contact_person: string;
+};
+
+export type LabDataType = {
+  _id: string
+  no_penawaran: string;
+  project_name: string;
+  alamat_sampling: string;
+  alamat_kantor: string;
+  contact_person: string;
 };
 
 export type ProjectSamplingType = {
@@ -49,24 +103,6 @@ export type ProjectSamplingType = {
   sampling_list: SampleType[];
 
   file: { file_nama: string; file_id: string };
-};
-
-export type ReceiveSamplingType = {
-  id: string;
-  noPenawaran: string;
-  judulProject: string;
-  lokasiSampel: string;
-  lokasi: string;
-  cp: string;
-};
-
-export type ProjectLHPType = {
-  id: string;
-  noPenawaran: string;
-  judul: string;
-  lokasiPengambilanSampel: string;
-  lokasi: string;
-  cp: string;
 };
 
 export const Sampling = {
@@ -146,4 +182,4 @@ export const Sampling = {
       ],
     },
   ],
-};
+}

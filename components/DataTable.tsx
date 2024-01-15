@@ -84,8 +84,8 @@ export function DataTable({ datas }: DataTableProps) {
   }, []);
 
   const table = useReactTable({
-    data,
-    columns: columns,
+    data: data,
+    columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
