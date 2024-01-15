@@ -59,11 +59,8 @@ interface FinalReviewDataTableProps {
 const FinalReviewDataTable: FC<FinalReviewDataTableProps> = ({ data }) => {
   const router = useRouter();
   const [sorting, setSorting] = useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(
-    []
-  );
-  const [columnVisibility, setColumnVisibility] =
-    useState<VisibilityState>({});
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
 
   const table = useReactTable({
@@ -91,7 +88,9 @@ const FinalReviewDataTable: FC<FinalReviewDataTableProps> = ({ data }) => {
         <BiFilterAlt className="text-xl translate-x-8" />
         <Input
           placeholder="Filter Projects On LHP Draft"
-          value={(table.getColumn("project_name")?.getFilterValue() as string) ?? ""}
+          value={
+            (table.getColumn("project_name")?.getFilterValue() as string) ?? ""
+          }
           onChange={(event) =>
             table.getColumn("project_name")?.setFilterValue(event.target.value)
           }
@@ -135,9 +134,9 @@ const FinalReviewDataTable: FC<FinalReviewDataTableProps> = ({ data }) => {
                       {header.isPlaceholder
                         ? null
                         : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
                     </TableHead>
                   );
                 })}
@@ -249,6 +248,6 @@ const FinalReviewDataTable: FC<FinalReviewDataTableProps> = ({ data }) => {
       </div>
     </div>
   );
-}
+};
 
 export default FinalReviewDataTable;

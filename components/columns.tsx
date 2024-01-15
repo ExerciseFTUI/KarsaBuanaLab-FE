@@ -407,7 +407,7 @@ export const LHPDraftPageColumns: ColumnDef<ProjectLHPType>[] = [
     cell: ({ row }) => {
       return (
         <div className="capitalize pl-0.5">
-          {row.getValue("lokasiPengambilanSampel")}
+          {row.getValue("alamat_sampling")}
         </div>
       );
     },
@@ -432,6 +432,10 @@ export const LHPDraftPageColumns: ColumnDef<ProjectLHPType>[] = [
         </div>
       );
     },
+  },
+  {
+    accessorKey: "_id",
+    hide: true,
   },
 ];
 
@@ -492,6 +496,10 @@ export const PPLHPFinalReviewPageColumns: ColumnDef<ProjectLHPType>[] = [
         </div>
       );
     },
+  },
+  {
+    accessorKey: "_id",
+    hide: true,
   },
 ];
 

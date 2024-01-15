@@ -59,11 +59,8 @@ interface PPLHPDataTableProps {
 const PPLHPDataTable: FC<PPLHPDataTableProps> = ({ data }) => {
   const router = useRouter();
   const [sorting, setSorting] = useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(
-    []
-  );
-  const [columnVisibility, setColumnVisibility] =
-    useState<VisibilityState>({});
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
 
   const table = useReactTable({
@@ -91,7 +88,9 @@ const PPLHPDataTable: FC<PPLHPDataTableProps> = ({ data }) => {
         <BiFilterAlt className="text-xl translate-x-8" />
         <Input
           placeholder="Filter Projects On LHP Draft"
-          value={(table.getColumn("project_name")?.getFilterValue() as string) ?? ""}
+          value={
+            (table.getColumn("project_name")?.getFilterValue() as string) ?? ""
+          }
           onChange={(event) =>
             table.getColumn("project_name")?.setFilterValue(event.target.value)
           }
@@ -135,9 +134,9 @@ const PPLHPDataTable: FC<PPLHPDataTableProps> = ({ data }) => {
                       {header.isPlaceholder
                         ? null
                         : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
                     </TableHead>
                   );
                 })}
@@ -151,9 +150,7 @@ const PPLHPDataTable: FC<PPLHPDataTableProps> = ({ data }) => {
                   className="hover:bg-light_green ease-in-out duration-500 text-xs hover:cursor-pointer hover:rounded-xl"
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
-                  onClick={() =>
-                    router.push("lhpdraft/" + row.getValue("_id"))
-                  }
+                  onClick={() => router.push("lhpdraft/" + row.getValue("_id"))}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id} className="py-4">
@@ -249,6 +246,6 @@ const PPLHPDataTable: FC<PPLHPDataTableProps> = ({ data }) => {
       </div>
     </div>
   );
-}
+};
 
 export default PPLHPDataTable;
