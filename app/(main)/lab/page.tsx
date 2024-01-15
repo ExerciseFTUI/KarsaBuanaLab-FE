@@ -1,5 +1,3 @@
-import { redirect } from "next/navigation"
-
-export default function lab() {
-  redirect("/lab/dashboard")
+export default function Home() {
+  return <div className="">/Lab</div>;
 }

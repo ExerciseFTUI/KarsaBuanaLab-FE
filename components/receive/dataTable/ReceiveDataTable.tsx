@@ -1,6 +1,5 @@
 "use client";
-import { useState, FC, useEffect } from "react";
-import useSWR from "swr";
+import * as React from "react";
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -50,23 +49,63 @@ import {
 } from "@radix-ui/react-icons";
 import { receiveSamplingColumns } from "@/components/columns";
 import { ReceiveSamplingType } from "@/lib/type";
-import { cn, fetcher } from "@/lib/utils";
-import { ProjectSamplingType } from "@/lib/type";
+import { cn } from "@/lib/utils";
 
-interface ReceiveDataTableProps {
-  data: ReceiveSamplingType[];
-}
+// Create an array of 15 objects with the specified type
+const data: ReceiveSamplingType[] = [
+  {
+    id: "1",
+    noPenawaran: "0123456",
+    judulProject: "Project 1",
+    lokasiSampel: "Jl. Lokasi 1",
+    lokasi: "Location 1",
+    cp: "+62-XXXX-XXXX",
+  },
+  {
+    id: "2",
+    noPenawaran: "0123456",
+    judulProject: "Project 1",
+    lokasiSampel: "Jl. Lokasi 1",
+    lokasi: "Location 1",
+    cp: "+62-XXXX-XXXX",
+  },
+  {
+    id: "3",
+    noPenawaran: "0123456",
+    judulProject: "Project 1",
+    lokasiSampel: "Jl. Lokasi 1",
+    lokasi: "Location 1",
+    cp: "+62-XXXX-XXXX",
+  },
+  {
+    id: "4",
+    noPenawaran: "0123456",
+    judulProject: "Project 1",
+    lokasiSampel: "Jl. Lokasi 1",
+    lokasi: "Location 1",
+    cp: "+62-XXXX-XXXX",
+  },
+  {
+    id: "5",
+    noPenawaran: "0123456",
+    judulProject: "Project 1",
+    lokasiSampel: "Jl. Lokasi 1",
+    lokasi: "Location 1",
+    cp: "+62-XXXX-XXXX",
+  },
+];
 
-const ReceiveDataTable: FC<ReceiveDataTableProps> = ({ data }) => {
+export function DataTable() {
   const router = useRouter();
-  const [sorting, setSorting] = useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(
+  const [sorting, setSorting] = React.useState<SortingState>([]);
+  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   );
+  const [statusFilter, setStatusFilter] = React.useState("");
 
   const [columnVisibility, setColumnVisibility] =
-    useState<VisibilityState>({});
-  const [rowSelection, setRowSelection] = useState({});
+    React.useState<VisibilityState>({});
+  const [rowSelection, setRowSelection] = React.useState({});
 
   const table = useReactTable({
     data,
@@ -96,11 +135,13 @@ const ReceiveDataTable: FC<ReceiveDataTableProps> = ({ data }) => {
           <Input
             placeholder="Filter By Project Title"
             value={
-              (table.getColumn("project_name")?.getFilterValue() as string) ??
+              (table.getColumn("judulProject")?.getFilterValue() as string) ??
               ""
             }
             onChange={(event) =>
-              table.getColumn("project_nam")?.setFilterValue(event.target.value)
+              table
+                .getColumn("judulProject")
+                ?.setFilterValue(event.target.value)
             }
             className="max-w-sm border-pastel_moss_green rounded-full focus-visible:ring-0 bg-pastel_moss_green pl-5 placeholder:text-moss_green"
           />
@@ -159,9 +200,9 @@ const ReceiveDataTable: FC<ReceiveDataTableProps> = ({ data }) => {
                       {header.isPlaceholder
                         ? null
                         : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
                     </TableHead>
                   );
                 })}
@@ -176,15 +217,10 @@ const ReceiveDataTable: FC<ReceiveDataTableProps> = ({ data }) => {
                   className="hover:bg-pastel_moss_green ease-in-out duration-500 text-xs hover:cursor-pointer hover:rounded-xl text-center"
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
-                  onClick={() =>
-                    router.push(
-                      "receive/" +
-                      row.getValue("noPenawaran")
-                    )
-                  }
+                  onClick={() => router.push("receive/review")}
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id} className="py-4">
+                    <TableCell key={cell.id}>
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext()
@@ -287,5 +323,3 @@ const ReceiveDataTable: FC<ReceiveDataTableProps> = ({ data }) => {
     </div>
   );
 }
-
-export default ReceiveDataTable;

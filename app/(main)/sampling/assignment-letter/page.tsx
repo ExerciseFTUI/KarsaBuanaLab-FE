@@ -1,13 +1,9 @@
-import { SamplingLetterDataTables } from "@/components/sampling/sampleListDataTables"
-import { getSampleByYear } from "@/lib/actions/sampling.actions"
+import { DataTable } from "@/components/sampling/dataTables/AssignmentDataTable"
 
-export default async function SamplingProject() {
-  const res = await getSampleByYear("2023", "assignment-letter")
-  const data = res && res.result ? res.result : [];
-
+export default function SamplingProject() {
   return (
     <div className="flex flex-col w-full ">
-      <SamplingLetterDataTables data={data} />
+      <DataTable />
     </div>
   )
 }

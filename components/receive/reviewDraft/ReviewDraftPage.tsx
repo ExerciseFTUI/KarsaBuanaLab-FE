@@ -22,114 +22,7 @@ import {
 } from "react-hook-form";
 import DocumentTab from "./DocumentTab";
 
-const documentData = [
-  {
-    judul: "Tahap 1",
-    placeholder: "Tahap 1",
-    link: [
-      {
-        value: "link1",
-        label: "link1",
-      },
-      {
-        value: "link2",
-        label: "link2",
-      },
-      {
-        value: "link3",
-        label: "link3",
-      },
-      {
-        value: "link4",
-        label: "link4",
-      },
-      {
-        value: "link5",
-        label: "link5",
-      },
-    ],
-  },
-  {
-    judul: "Tahap 2",
-    placeholder: "Tahap 2",
-    link: [
-      {
-        value: "link1",
-        label: "link1",
-      },
-      {
-        value: "link2",
-        label: "link2",
-      },
-      {
-        value: "link3",
-        label: "link3",
-      },
-      {
-        value: "link4",
-        label: "link4",
-      },
-      {
-        value: "link5",
-        label: "link5",
-      },
-    ],
-  },
-  {
-    judul: "Tahap 3",
-    placeholder: "Tahap 3",
-    link: [
-      {
-        value: "link1",
-        label: "link1",
-      },
-      {
-        value: "link2",
-        label: "link2",
-      },
-      {
-        value: "link3",
-        label: "link3",
-      },
-      {
-        value: "link4",
-        label: "link4",
-      },
-      {
-        value: "link5",
-        label: "link5",
-      },
-    ],
-  },
-  {
-    judul: "Tahap 4",
-    placeholder: "Tahap 4",
-    link: [
-      {
-        value: "link1",
-        label: "link1",
-      },
-      {
-        value: "link2",
-        label: "link2",
-      },
-      {
-        value: "link3",
-        label: "link3",
-      },
-      {
-        value: "link4",
-        label: "link4",
-      },
-      {
-        value: "link5",
-        label: "link5",
-      },
-    ],
-  },
-];
-
-export default function ReviewDraftPage() {
+export default function CreateProjectPage() {
   //=============================== Sample Section
   const [openModal, setOpenModal] = useState(false);
   const sampleForm = useForm<FieldValues>({
@@ -159,7 +52,7 @@ export default function ReviewDraftPage() {
   return (
     <div className="flex gap-6 max-md:flex-col max-md:items-center">
       <Tabs defaultValue="sampling" className="w-[40rem] max-sm:w-[420px]">
-        <TabsList className="grid w-full grid-cols-2 space-x-0 cursor-pointer my-8 text-moss_green scale-75 lg:scale-100">
+        <TabsList className="grid w-full grid-cols-2 space-x-0 cursor-pointer my-8 text-moss_green">
           <TabsTrigger className="text-2xl" value="sampling">
             Sampling
           </TabsTrigger>

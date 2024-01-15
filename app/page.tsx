@@ -8,6 +8,9 @@ export default function Home() {
   const [resiNumber, setResiNumber] = useState("");
   const { data } = useSession();
 
+  if (data) {
+    console.log(data.user);
+  }
   return (
     // Mantap albert
     <>

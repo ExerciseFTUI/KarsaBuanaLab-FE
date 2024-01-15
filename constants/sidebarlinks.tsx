@@ -10,7 +10,6 @@ import { Archive, Mail } from "lucide-react"
 import { BsFileText } from "react-icons/bs"
 import { BiSolidBox } from "react-icons/bi"
 import { FiFileText } from "react-icons/fi"
-import { FiArchive } from "react-icons/fi";
 
 export interface ISidebarLinks {
   route: string
@@ -66,11 +65,6 @@ export const samplingLinks: ISidebarLinks[] = [
 
 export const pplhpLinks: ISidebarLinks[] = [
   {
-    icon: <AiFillHome />,
-    route: "/receive",
-    label: "Receive",
-  },
-  {
     icon: <HiChartBar />,
     route: "/lhpdraft",
     label: "Pembuatan Draft LHP",
@@ -89,14 +83,14 @@ export const labLinks: ISidebarLinks[] = [
     label: "Dashboard",
   },
   {
-    icon: <FiFileText />,
-    route: "/verifikasidata",
-    label: "Verifikasi Data",
+    icon: <HiChartBar />,
+    route: "/ondiscuss",
+    label: "Data Pengujian",
   },
   {
-    icon: <FiArchive />,
-    route: "/finalreview",
-    label: "Final Review",
+    icon: <FaRunning />,
+    route: "/running",
+    label: "Verified Data",
   },
 ]
 

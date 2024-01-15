@@ -33,7 +33,7 @@ const data = [
 export default function Home() {
   const router = useRouter();
   return (
-    <div className="px-16">
+    <div className="h-screen px-16 space-y-6">
       <div className="text-moss_green space-y-6">
         <h2 className="text-xl">Rekaman Sampling</h2>
         <div className="space-y-2">
@@ -44,7 +44,7 @@ export default function Home() {
               href={item.link}
               target="_blank"
             >
-              <div className="flex items-center justify-center bg-moss_green rounded-full h-10 w-10 mr-2">
+              <div className="flex items-center justify-center bg-moss_green rounded-full h-10 w-10">
                 <AiOutlineFile className="text-2xl text-ghost_white" />
               </div>
               <p className="col-start-2 col-span-6">{item.judul}</p>
