@@ -1,44 +1,37 @@
 "use client"
 
 import React from "react"
-import useSWR from "swr"
-import { ProjectSamplingType } from "@/lib/type"
 import ProjectDetails from "../ProjectDetails"
-import { Separator } from "@/components/ui/separator"
 import DocumentList from "../DokumentList"
 import HyperLinkButton from "../HyperlinkButton"
 import { Button } from "@/components/ui/button"
-import { cn, fetcher } from "@/lib/utils"
-import TabDokumen from "./TabDokumen"
-
-type fetched = {
-  data: ProjectSamplingType
-  error: any
-  isLoading: any
-}
+import { Sampling } from "@/lib/models/sampling.model"
 
 interface projectParams {
-  params: { np: string }
+  data: Sampling
 }
 
-export default function Project({ params }: projectParams) {
-  const { data, error, isLoading }: fetched = useSWR(
-    "/api/sampling/assignment-letter/" + params.np,
-    fetcher
-  )
+const handleSubmit = (e: any) => e.preventDefault()
 
-  if (error) return <div>{error.message}</div>
-  if (isLoading) return <div>Loading...</div>
-
-  const { status, sampling_list } = data
-
+export default function Project({ data }: projectParams) {
   return (
     <div className="flex w-full gap-6 max-md:flex-col max-md:items-center">
       <ProjectDetails data={data} className="w-full max-w-[32rem]" />
 
-      <div className="hidden sm:block sm:w-[1.5px] sm:h-full bg-light_brown mb-4 sm:mb-0" />
+      <div className="flex flex-wrap flex-col max-w-xl">
+        <DocumentList data={data} className="" />
 
-      <TabDokumen data={data} samples={sampling_list} />
+        <h1 className="text-xl font-semibold my-5">Assignment Letter</h1>
+
+        <HyperLinkButton title="Assignment Letter" href="" />
+
+        <Button
+          className="w-48 py-4 self-center mt-4 bg-light_brown hover:bg-dark_brown disabled:bg-transparent disabled:text-dark_brown disabled:font-bold disabled:border-2 disabled:border-dark_brown"
+          onClick={(e) => handleSubmit(e)}
+        >
+          Save
+        </Button>
+      </div>
     </div>
   )
 }

@@ -6,7 +6,7 @@ import Image from "next/image"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { usePathname } from "next/navigation"
 
-interface TopbarProps {}
+interface TopbarProps { }
 
 function extractPageName(pathname: string) {
   const parts = pathname.split("/").filter((part) => part !== "")
@@ -26,15 +26,15 @@ function extractPageName(pathname: string) {
   return final
 }
 
-const Topbar: FC<TopbarProps> = ({}) => {
+const Topbar: FC<TopbarProps> = ({ }) => {
   const pathname = extractPageName(usePathname())
 
   const formattedPathname =
     pathname.split("-").length > 1
       ? pathname.split("-")[0] +
-        " " +
-        pathname.split("-")[1][0].toUpperCase() +
-        pathname.split("-")[1].slice(1, pathname.split("-")[1].length)
+      " " +
+      pathname.split("-")[1][0].toUpperCase() +
+      pathname.split("-")[1].slice(1, pathname.split("-")[1].length)
       : pathname.split("-")[0]
   const extractedSecondPath = pathname.split(" / ")[1].split("-")
   const secondPath =
