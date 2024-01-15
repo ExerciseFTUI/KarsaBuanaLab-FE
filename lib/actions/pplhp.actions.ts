@@ -8,7 +8,6 @@ const apiBaseUrl = process.env.API_BASE_URL || "";
 export const getProject = async (projectId: string): Promise<Project[]> => {
   try {
     const response = await axios.get(`${apiBaseUrl}/marketing/running`);
-    console.log(response.data.result)
     return response.data.result; // Access 'result' field
   } catch (error: any) {
     console.error(`Error getting project with ID ${projectId}:`, error.message);
