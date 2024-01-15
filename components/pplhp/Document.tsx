@@ -1,3 +1,5 @@
+"use client";
+
 import { useState, FC } from "react";
 
 import {
@@ -16,8 +18,13 @@ interface DocumentLink {
   label: string;
 }
 
+interface DocumentData {
+  name: string;
+  url: DocumentLink[];
+}
+
 interface DocumentProps {
-  data: DocumentLink[];
+  data: DocumentData[];
   color: String;
 }
 
@@ -26,15 +33,13 @@ const Document: FC<DocumentProps> = ({ data, color }) => {
 
   return (
     <div className="space-y-14">
-      {data.map((link, index) => (
+      {data.map((link) => (
         <div className="space-y-5">
-          <h1 className={`text-${color} text-lg font-semibold`}>{`Tahap ${
-            index + 1
-          }`}</h1>
+          <h1 className={`text-${color} text-lg font-semibold`}>{link.name}</h1>
           <div className="flex flex-wrap justify-between gap-5">
             <a
-              className={`flex flex-row bg-${color} rounded-xl p-4 w-full md:w-[48\%] justify-between items-center`}
-              href={link.value}
+              className={`flex flex-row bg-${color} rounded-xl p-4 w-full md:w-[48%] justify-between items-center`}
+              href={link.url}
               target="_blank"
             >
               <p className="text-white text-sm">{link.name}</p>
