@@ -124,7 +124,7 @@ export default function CreateProjectPage() {
   return (
     <div className="flex gap-6 max-md:flex-col max-md:items-center">
       <ProjectForm form={form} onSubmit={onSubmitForm} />
-      <Tabs defaultValue="sampling" className="w-[40rem] max-sm:w-[420px]">
+      <Tabs defaultValue="sampling" className="w-[40rem] max-sm:w-[420px] justify-center">
         <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="sampling">Sampling</TabsTrigger>
           <TabsTrigger value="document">Document</TabsTrigger>
@@ -150,7 +150,11 @@ export default function CreateProjectPage() {
           />
         </TabsContent>
         {/* End Document Section */}
-      </Tabs>
+
+        <div className="bg-moss_green flex justify-center items-center mt-5 w-2/3 rounded-lg py-4 text-white hover:bg-light_green hover:cursor-pointer">    
+          Submit
+        </div>
+</Tabs>
     </div>
   );
 }
