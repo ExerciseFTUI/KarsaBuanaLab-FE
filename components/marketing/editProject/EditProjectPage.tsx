@@ -86,9 +86,9 @@ export default function EditProjectPage({ project }: EditProjectPageProps) {
 
     //Get the needed data
     const finalSample = {
-      sampleName: data.sampling,
-      regulation: data.regulation,
-      parameters: parametersValue,
+      sampleName: data.sampling, // string
+      regulation: data.regulation, // string
+      parameters: parametersValue, // array
     };
 
     //Add to samples array

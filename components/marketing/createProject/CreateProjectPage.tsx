@@ -3,7 +3,7 @@
 import CreateProjectBaseData from "@/components/forms/CreateProjectBaseData";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import SamplingTab from "@/components/marketing/createProject/SamplingTab";
-import { useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import {
   FieldValues,
   SubmitHandler,
@@ -16,10 +16,78 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import ProjectForm from "../forms/ProjectForm";
 import { useToast } from "@/components/ui/use-toast";
-import { createProject } from "@/lib/actions/marketing.actions";
+import { useSession } from "next-auth/react";
+import axios from "axios";
+import { BaseApiResponse } from "@/lib/models/baseApiResponse.model";
+import { BaseSample } from "@/lib/models/baseSample.model";
 
-export default function CreateProjectPage() {
+const createProject = async (
+  body: any,
+  files?: any // Assuming files is a File or an array of File objects
+) => {
+  try {
+    if (
+      !body.client_name ||
+      !body.project_name ||
+      !body.alamat_kantor ||
+      !body.alamat_sampling ||
+      !body.surel ||
+      !body.contact_person ||
+      !body.regulation ||
+      !body.sampling_list
+      //      || !body.assigned_to
+    ) {
+      throw new Error("Please provide all required fields");
+    }
+
+    var bodyFormData = new FormData();
+
+    // Append all fields from the body object to bodyFormData
+    Object.keys(body).forEach((key) => {
+      bodyFormData.append(key, body[key]);
+    });
+
+    // Append files to bodyFormData
+    if (files || files.length > 0) {
+      if (Array.isArray(files)) {
+        files.forEach((file, index) => {
+          bodyFormData.append(`files${index}`, file);
+        });
+      } else {
+        bodyFormData.append("files", files);
+      }
+    }
+
+    console.log("Masuk sini");
+
+    console.log(`http://localhost:5000/projects/create`);
+
+    const response = await axios.post(
+      `http://localhost:5000/projects/create`,
+      bodyFormData,
+      {
+        headers: { "Content-Type": "multipart/form-data" },
+      }
+    );
+
+    console.log("Success");
+
+    // return response.data as BaseApiResponse<ProjectResult>;
+    return "Success";
+  } catch (error: any) {
+    console.error("Error creating project:", error.message);
+    return null as unknown as BaseApiResponse<PromiseRejectedResult>;
+  }
+};
+
+interface CreateProjectProps {
+  baseSamples: BaseSample[];
+}
+
+const CreateProjectPage: FC<CreateProjectProps> = ({ baseSamples }) => {
   const { toast } = useToast();
+
+  const { data } = useSession();
 
   //=============================== Sample Section
   const [openModal, setOpenModal] = useState(false);
@@ -112,7 +180,28 @@ export default function CreateProjectPage() {
   });
 
   async function onSubmitForm(values: z.infer<typeof createProjectValidation>) {
-    console.log(values);
+    //const response = testing();
+
+    if (samples.length > 0) {
+      //@ts-ignore
+      const sampling_list = samples.map((sample) => sample.sampleName);
+    }
+
+    const body = {
+      client_name: values.custName,
+      project_name: values.title,
+      alamat_kantor: values.alamatKantor,
+      alamat_sampling: values.alamatSampling,
+      surel: values.surel,
+      contact_person: values.contactPerson,
+      regulation: "Pemerintah Pusat",
+      sampling_list: ["Air_Limbah"],
+    };
+
+    //Create Project Function
+    const response = await createProject(body, uploadedFiles);
+    console.log("Finished");
+    // console.log(samples[0].sampleName);
   }
 
   //================================= End Project Information Section
@@ -120,6 +209,10 @@ export default function CreateProjectPage() {
   //=============================== Document Section
 
   const [uploadedFiles, setUploadedFiles] = useState([]);
+
+  useEffect(() => {
+    console.log(uploadedFiles);
+  }, [uploadedFiles]);
 
   //=============================== End Document Section
 
@@ -140,6 +233,7 @@ export default function CreateProjectPage() {
             openModal={openModal}
             setOpenModal={setOpenModal}
             onSubmit={onSubmitSample}
+            baseSamples={baseSamples}
           />
         </TabsContent>
         {/* End Sample Section */}
@@ -155,4 +249,6 @@ export default function CreateProjectPage() {
       </Tabs>
     </div>
   );
-}
+};
+
+export default CreateProjectPage;

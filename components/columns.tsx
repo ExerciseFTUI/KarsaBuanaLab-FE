@@ -17,12 +17,13 @@ import {
   ProjectType,
   ReceiveSamplingType,
   ProjectLHPType,
+  ProjectMarketingType,
 } from "@/lib/type";
 import Link from "next/link";
 import { Project } from "@/lib/models/project.model";
 
 // Table Column for Marketing OnDiscuss
-export const columns: ColumnDef<ProjectType>[] = [
+export const columns: ColumnDef<ProjectMarketingType>[] = [
   //No Penawaran
   {
     accessorKey: "no_penawaran",
@@ -128,7 +129,7 @@ export const columns: ColumnDef<ProjectType>[] = [
     id: "actions",
     enableHiding: false,
     cell: ({ row }) => {
-      const project = row.getValue("_id");
+      const project = row.original._id;
 
       return (
         <DropdownMenu>
