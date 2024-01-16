@@ -20,65 +20,66 @@ import { useSession } from "next-auth/react";
 import axios from "axios";
 import { BaseApiResponse } from "@/lib/models/baseApiResponse.model";
 import { BaseSample } from "@/lib/models/baseSample.model";
+import { createProject } from "@/lib/actions/marketing.actions";
 
-const createProject = async (
-  body: any,
-  files?: any // Assuming files is a File or an array of File objects
-) => {
-  try {
-    if (
-      !body.client_name ||
-      !body.project_name ||
-      !body.alamat_kantor ||
-      !body.alamat_sampling ||
-      !body.surel ||
-      !body.contact_person ||
-      !body.regulation ||
-      !body.sampling_list
-      //      || !body.assigned_to
-    ) {
-      throw new Error("Please provide all required fields");
-    }
+// const createProject = async (
+//   body: any,
+//   files?: any // Assuming files is a File or an array of File objects
+// ) => {
+//   try {
+//     if (
+//       !body.client_name ||
+//       !body.project_name ||
+//       !body.alamat_kantor ||
+//       !body.alamat_sampling ||
+//       !body.surel ||
+//       !body.contact_person ||
+//       !body.regulation ||
+//       !body.sampling_list
+//       //      || !body.assigned_to
+//     ) {
+//       throw new Error("Please provide all required fields");
+//     }
 
-    var bodyFormData = new FormData();
+//     var bodyFormData = new FormData();
 
-    // Append all fields from the body object to bodyFormData
-    Object.keys(body).forEach((key) => {
-      bodyFormData.append(key, body[key]);
-    });
+//     // Append all fields from the body object to bodyFormData
+//     Object.keys(body).forEach((key) => {
+//       bodyFormData.append(key, body[key]);
+//     });
 
-    // Append files to bodyFormData
-    if (files || files.length > 0) {
-      if (Array.isArray(files)) {
-        files.forEach((file, index) => {
-          bodyFormData.append(`files${index}`, file);
-        });
-      } else {
-        bodyFormData.append("files", files);
-      }
-    }
+//     // Append files to bodyFormData
+//     if (files || files.length > 0) {
+//       if (Array.isArray(files)) {
+//         files.forEach((file, index) => {
+//           bodyFormData.append(`files${index}`, file);
+//         });
+//       } else {
+//         bodyFormData.append("files", files);
+//       }
+//     }
 
-    console.log("Masuk sini");
+//     console.log("Masuk sini");
 
-    console.log(`http://localhost:5000/projects/create`);
+//     console.log(`http://localhost:5000/projects/create`);
 
-    const response = await axios.post(
-      `http://localhost:5000/projects/create`,
-      bodyFormData,
-      {
-        headers: { "Content-Type": "multipart/form-data" },
-      }
-    );
+//     const response = await axios.post(
+//       `http://localhost:5000/projects/create`,
+//       bodyFormData,
+//       {
+//         headers: { "Content-Type": "multipart/form-data" },
+//       }
+//     );
 
-    console.log("Success");
+//     console.log("Success");
 
-    // return response.data as BaseApiResponse<ProjectResult>;
-    return "Success";
-  } catch (error: any) {
-    console.error("Error creating project:", error.message);
-    return null as unknown as BaseApiResponse<PromiseRejectedResult>;
-  }
-};
+//     // return response.data as BaseApiResponse<ProjectResult>;
+//     return "Success";
+//   } catch (error: any) {
+//     console.error("Error creating project:", error.message);
+//     return null as unknown as BaseApiResponse<PromiseRejectedResult>;
+//   }
+// };
 
 interface CreateProjectProps {
   baseSamples: BaseSample[];

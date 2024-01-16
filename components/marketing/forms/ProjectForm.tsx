@@ -71,7 +71,7 @@ const ProjectForm: FC<ProjectFormProps> = ({
         <CardTitle className="text-base font-bold ">
           Project Information
         </CardTitle>
-        {status && (
+        {status?.toLowerCase() === "cancelled" && (
           <div className="text-sm">
             <h1>
               Status :{" "}
