@@ -1,9 +1,10 @@
+"use server"
+
 import axios from 'axios';
 import {BaseApiResponse} from '../models/baseApiResponse.model'
 import { Sampling } from '../models/sampling.model';
 import { Project } from '../models/project.model';
 import { revalidatePath } from 'next/cache';
-import { useRouter } from 'next/router';
 
 const apiBaseUrl = process.env.API_BASE_URL || 'http://localhost:3000/api';
 
@@ -46,19 +47,32 @@ export const getSampleByAccount = async (year: string, accountId : string) : Pro
 }
 
 export const sampleAssignment = async (sampleId: string, accountId: string) : Promise<BaseApiResponse<Project>> => {
-  const route = useRouter()
-  
   try {
     const response = await axios.post(`${apiBaseUrl}/sampling/assign/${sampleId}`, {
       accountId: accountId,
     });
 
-    revalidatePath(route.asPath)
+    revalidatePath(`/sampling/project/${sampleId}`) // path sekarang
     
     return response.data as BaseApiResponse<Project>;
   } catch (error: any) {
-    revalidatePath(route.asPath)
+    console.error('Error getting sample', error.message);
+    return null as unknown as BaseApiResponse<Project>
+  }
+}
+
+export const verifySample = async (projectId: string, sampleName: string, status: string, sampleId: string) : Promise<BaseApiResponse<Project>> => {
+  try {
+    const response = await axios.post(`${apiBaseUrl}/sampling/change`, {
+      projectId,
+      sampleName,
+      status
+    });
+
+    revalidatePath(`/sampling/sample/${sampleId}`) // path sekarang
     
+    return response.data as BaseApiResponse<Project>;
+  } catch (error: any) {
     console.error('Error getting sample', error.message);
     return null as unknown as BaseApiResponse<Project>
   }

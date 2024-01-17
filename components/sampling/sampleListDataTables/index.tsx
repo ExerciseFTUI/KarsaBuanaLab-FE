@@ -9,7 +9,7 @@ import { DataTable } from "./DataTable"
 import { Sampling } from "@/lib/models/sampling.model"
 
 function SamplingProjectDataTables({data}: {data: Sampling[]}) {
-  const status = ["", "NOT ASSIGNED", "FINISHED"]
+  const status = ["NOT ASSIGNED"]
 
   return (
     <DataTable
@@ -35,7 +35,7 @@ function SamplingLetterDataTables({data}: {data: Sampling[]}) {
 }
 
 function SamplingSampleDataTables({data, role}: {data: Sampling[], role: string}) {
-  const status = ["", "Get Sample", "Verifying", "Revision"]
+  const status = ["", "VERIFYING", "FINISHED"]
 
   return (
     <DataTable

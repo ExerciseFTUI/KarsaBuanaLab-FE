@@ -6,8 +6,12 @@ import DocumentList from "../DokumentList"
 import TabSampleStaff from "./TabSampleStaff"
 import TabSampleAdmin from "./TabSampleAdmin"
 import { Sampling } from "@/lib/models/sampling.model"
+import { useSession } from "next-auth/react"
 
-export default function Project({data, role}: {data: Sampling, role: string}) {
+export default function Project({data}: {data: Sampling}) {
+  const currentUser = useSession().data?.user
+  
+  const role = /* currentUser?.name || */ "staff"
 
   if (data == null) return <div className="w-full h-full flex justify-center items-center font-bold">Sample not found!</div>
   return (
@@ -18,7 +22,7 @@ export default function Project({data, role}: {data: Sampling, role: string}) {
         <DocumentList data={data} className="w-full sm:w-56" />
       </div>
 
-      {role == "STAFF" ? (
+      {role == "staff" ? (
         <TabSampleStaff data={data} />
       ) : (
         <TabSampleAdmin data={data} />
