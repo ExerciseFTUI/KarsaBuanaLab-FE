@@ -151,6 +151,7 @@ export default function CreateProjectPage() {
         </TabsContent>
         {/* End Document Section */}
 
+        
         <div className="bg-moss_green flex justify-center items-center mt-5 w-2/3 rounded-lg py-4 text-white hover:bg-light_green hover:cursor-pointer">    
           Submit
         </div>
