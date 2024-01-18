@@ -21,6 +21,7 @@ import {
   useForm,
 } from "react-hook-form";
 import { useToast } from "@/components/ui/use-toast";
+import { BaseSample } from "@/lib/models/baseSample.model";
 
 interface SamplingTabProps {
   openModal: boolean;
@@ -28,6 +29,7 @@ interface SamplingTabProps {
   form: UseFormReturn<FieldValues, any, undefined>;
   arrayField: UseFieldArrayReturn<FieldValues, any, "id">;
   onSubmit: SubmitHandler<FieldValues>;
+  baseSamples?: BaseSample[];
 }
 
 const SamplingTab: FC<SamplingTabProps> = ({
@@ -36,6 +38,7 @@ const SamplingTab: FC<SamplingTabProps> = ({
   openModal,
   setOpenModal,
   onSubmit,
+  baseSamples,
 }) => {
   const { toast } = useToast();
 
@@ -142,6 +145,7 @@ const SamplingTab: FC<SamplingTabProps> = ({
         }}
         form={form}
         onSubmit={onSubmit}
+        baseSamples={baseSamples}
       />
     </>
   );
