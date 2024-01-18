@@ -3,6 +3,17 @@ import { useState } from "react";
 import Sampel from "@/components/pplhp/Sampel";
 import Document from "@/components/pplhp/Document";
 
+const dataTemplate = [
+  { url: 'link_logbook_jadwal_sampling', name: 'Logbook Jadwal Sampling', type: 'Preparation Sampling' },
+  { url: 'link_surat_tugas', name: 'Surat Tugas', type: 'Preparation Sampling' },
+  { url: 'link_surat_penawaran', name: 'Surat Penawaran', type: 'Preparation Sampling' },
+  { url: 'link_form_kaji_ulang', name: 'Form Kaji Ulang', type: 'Preparation Sampling' },
+  { url: 'link_dp_chain_of_custody', name: 'DP Chain of Custody', type: 'Preparation Sampling' },
+  { url: 'link_list_pengambilan_sample', name: 'List Pengambilan Sample', type: 'Result Sampling' },
+  { url: 'link_berita_acara', name: 'Berita Acara', type: 'Result Sampling' },
+  { url: 'link_rekaman_sampling', name: 'Rekaman Sampling', type: 'Result Sampling' },
+];
+
 
 export default function LHPDraftPage({ linkData }: { linkData: any }) {
   const [selectedTab, setSelectedTab] = useState("Sampel");
@@ -48,7 +59,7 @@ export default function LHPDraftPage({ linkData }: { linkData: any }) {
           />
         )}
         {selectedTab === "Dokumen" && (
-          <Document data={documentData} color="moss_green" />
+          <Document data={dataTemplate} color="moss_green" />
         )}
       </div>
     </div>
