@@ -20,65 +20,68 @@ import { useSession } from "next-auth/react";
 import axios from "axios";
 import { BaseApiResponse } from "@/lib/models/baseApiResponse.model";
 import { BaseSample } from "@/lib/models/baseSample.model";
+import { createProject } from "@/lib/actions/marketing.actions";
 
-const createProject = async (
-  body: any,
-  files?: any // Assuming files is a File or an array of File objects
-) => {
-  try {
-    if (
-      !body.client_name ||
-      !body.project_name ||
-      !body.alamat_kantor ||
-      !body.alamat_sampling ||
-      !body.surel ||
-      !body.contact_person ||
-      !body.regulation ||
-      !body.sampling_list
-      //      || !body.assigned_to
-    ) {
-      throw new Error("Please provide all required fields");
-    }
+import { useRouter } from "next/navigation";
 
-    var bodyFormData = new FormData();
+// const createProject = async (
+//   body: any,
+//   files?: any // Assuming files is a File or an array of File objects
+// ) => {
+//   try {
+//     if (
+//       !body.client_name ||
+//       !body.project_name ||
+//       !body.alamat_kantor ||
+//       !body.alamat_sampling ||
+//       !body.surel ||
+//       !body.contact_person ||
+//       !body.regulation ||
+//       !body.sampling_list
+//       //      || !body.assigned_to
+//     ) {
+//       throw new Error("Please provide all required fields");
+//     }
 
-    // Append all fields from the body object to bodyFormData
-    Object.keys(body).forEach((key) => {
-      bodyFormData.append(key, body[key]);
-    });
+//     var bodyFormData = new FormData();
 
-    // Append files to bodyFormData
-    if (files || files.length > 0) {
-      if (Array.isArray(files)) {
-        files.forEach((file, index) => {
-          bodyFormData.append(`files${index}`, file);
-        });
-      } else {
-        bodyFormData.append("files", files);
-      }
-    }
+//     // Append all fields from the body object to bodyFormData
+//     Object.keys(body).forEach((key) => {
+//       bodyFormData.append(key, body[key]);
+//     });
 
-    console.log("Masuk sini");
+//     // Append files to bodyFormData
+//     if (files || files.length > 0) {
+//       if (Array.isArray(files)) {
+//         files.forEach((file, index) => {
+//           bodyFormData.append(`files${index}`, file);
+//         });
+//       } else {
+//         bodyFormData.append("files", files);
+//       }
+//     }
 
-    console.log(`http://localhost:5000/projects/create`);
+//     console.log("Masuk sini");
 
-    const response = await axios.post(
-      `http://localhost:5000/projects/create`,
-      bodyFormData,
-      {
-        headers: { "Content-Type": "multipart/form-data" },
-      }
-    );
+//     console.log(`http://localhost:5000/projects/create`);
 
-    console.log("Success");
+//     const response = await axios.post(
+//       `http://localhost:5000/projects/create`,
+//       bodyFormData,
+//       {
+//         headers: { "Content-Type": "multipart/form-data" },
+//       }
+//     );
 
-    // return response.data as BaseApiResponse<ProjectResult>;
-    return "Success";
-  } catch (error: any) {
-    console.error("Error creating project:", error.message);
-    return null as unknown as BaseApiResponse<PromiseRejectedResult>;
-  }
-};
+//     console.log("Success");
+
+//     // return response.data as BaseApiResponse<ProjectResult>;
+//     return "Success";
+//   } catch (error: any) {
+//     console.error("Error creating project:", error.message);
+//     return null as unknown as BaseApiResponse<PromiseRejectedResult>;
+//   }
+// };
 
 interface CreateProjectProps {
   baseSamples: BaseSample[];
@@ -88,6 +91,8 @@ const CreateProjectPage: FC<CreateProjectProps> = ({ baseSamples }) => {
   const { toast } = useToast();
 
   const { data } = useSession();
+
+  const router = useRouter();
 
   //=============================== Sample Section
   const [openModal, setOpenModal] = useState(false);
@@ -182,23 +187,28 @@ const CreateProjectPage: FC<CreateProjectProps> = ({ baseSamples }) => {
     if (samples.length > 0) {
       //@ts-ignore
       const sampling_list = samples.map((sample) => sample.sampleName);
+      //@ts-ignore
+      const regulation_list = samples.map((sample) => sample.regulation);
+
+      console.log("Sampling List: ", sampling_list);
+      console.log("Regulation List: ", regulation_list);
+
+      const body = {
+        client_name: values.custName,
+        project_name: values.title,
+        alamat_kantor: values.alamatKantor,
+        alamat_sampling: values.alamatSampling,
+        surel: values.surel,
+        contact_person: values.contactPerson,
+        regulation_list: regulation_list,
+        sampling_list: sampling_list,
+      };
+
+      //Create Project Function
+      const response = await createProject(body, uploadedFiles);
+      alert("Success");
+      router.push("/marketing/running");
     }
-
-    const body = {
-      client_name: values.custName,
-      project_name: values.title,
-      alamat_kantor: values.alamatKantor,
-      alamat_sampling: values.alamatSampling,
-      surel: values.surel,
-      contact_person: values.contactPerson,
-      regulation: "Pemerintah Pusat",
-      sampling_list: ["Air_Limbah"],
-    };
-
-    //Create Project Function
-    const response = await createProject(body, uploadedFiles);
-    console.log("Finished");
-    // console.log(samples[0].sampleName);
   }
 
   //================================= End Project Information Section
