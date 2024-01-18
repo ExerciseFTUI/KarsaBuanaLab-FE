@@ -22,6 +22,8 @@ import { BaseApiResponse } from "@/lib/models/baseApiResponse.model";
 import { BaseSample } from "@/lib/models/baseSample.model";
 import { createProject } from "@/lib/actions/marketing.actions";
 
+import { useRouter } from "next/navigation";
+
 // const createProject = async (
 //   body: any,
 //   files?: any // Assuming files is a File or an array of File objects
@@ -89,6 +91,8 @@ const CreateProjectPage: FC<CreateProjectProps> = ({ baseSamples }) => {
   const { toast } = useToast();
 
   const { data } = useSession();
+
+  const router = useRouter();
 
   //=============================== Sample Section
   const [openModal, setOpenModal] = useState(false);
@@ -183,23 +187,28 @@ const CreateProjectPage: FC<CreateProjectProps> = ({ baseSamples }) => {
     if (samples.length > 0) {
       //@ts-ignore
       const sampling_list = samples.map((sample) => sample.sampleName);
+      //@ts-ignore
+      const regulation_list = samples.map((sample) => sample.regulation);
+
+      console.log("Sampling List: ", sampling_list);
+      console.log("Regulation List: ", regulation_list);
+
+      const body = {
+        client_name: values.custName,
+        project_name: values.title,
+        alamat_kantor: values.alamatKantor,
+        alamat_sampling: values.alamatSampling,
+        surel: values.surel,
+        contact_person: values.contactPerson,
+        regulation_list: regulation_list,
+        sampling_list: sampling_list,
+      };
+
+      //Create Project Function
+      const response = await createProject(body, uploadedFiles);
+      alert("Success");
+      router.push("/marketing/running");
     }
-
-    const body = {
-      client_name: values.custName,
-      project_name: values.title,
-      alamat_kantor: values.alamatKantor,
-      alamat_sampling: values.alamatSampling,
-      surel: values.surel,
-      contact_person: values.contactPerson,
-      regulation: "Pemerintah Pusat",
-      sampling_list: ["Air_Limbah"],
-    };
-
-    //Create Project Function
-    const response = await createProject(body, uploadedFiles);
-    console.log("Finished");
-    // console.log(samples[0].sampleName);
   }
 
   //================================= End Project Information Section

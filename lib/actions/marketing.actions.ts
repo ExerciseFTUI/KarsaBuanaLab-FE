@@ -49,7 +49,7 @@ export const createProject = async (
       !body.alamat_sampling ||
       !body.surel ||
       !body.contact_person ||
-      !body.regulation ||
+      !body.regulation_list ||
       !body.sampling_list
       //      || !body.assigned_to
     ) {
@@ -60,11 +60,20 @@ export const createProject = async (
 
     // Append all fields from the body object to bodyFormData
     Object.keys(body).forEach((key) => {
-      bodyFormData.append(key, body[key]);
+      // Check if the current key is an array
+      if (Array.isArray(body[key])) {
+        // If array, iterate and append each item to bodyFormData
+        body[key].forEach((item: any, index: any) => {
+          bodyFormData.append(`${key}[${index}]`, item);
+        });
+      } else {
+        // If not an array, append as usual
+        bodyFormData.append(key, body[key]);
+      }
     });
 
     // Append files to bodyFormData
-    if (files || files.length > 0) {
+    if (files && files.length > 0) {
       if (Array.isArray(files)) {
         files.forEach((file, index) => {
           bodyFormData.append(`file${index}`, file);
@@ -74,7 +83,7 @@ export const createProject = async (
       }
     }
 
-    console.log("Masuk sini");
+    console.log(bodyFormData);
 
     const response = await axios.post(
       `${apiBaseUrl}/projects/create`,
@@ -83,6 +92,8 @@ export const createProject = async (
         headers: { "Content-Type": "multipart/form-data" },
       }
     );
+
+    revalidatePath("/marketing/running");
 
     // return response.data as BaseApiResponse<ProjectResult>;
     return "Success";
@@ -138,6 +149,8 @@ export const updateProject = async (
         headers: { "Content-Type": "multipart/form-data" },
       }
     );
+
+    revalidatePath("/marketing/running");
 
     // return response.data as BaseApiResponse<ProjectResult>;
     return "Success";

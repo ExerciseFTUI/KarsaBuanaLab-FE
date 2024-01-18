@@ -151,7 +151,8 @@ const Sampling: FC<SamplingProps> = ({
           )}
           <Separator />
           <footer className="h-[40px] px-4 p-[2px] text-xs text-neutral-500 flex items-center justify-between">
-            <p>Total {parameters.length} Parameters</p>
+            {/* <p>Total {parameters.length} Parameters</p> */}
+            {regulation}
             {isLoading && <div>Deleting...</div>}
             {!isLoading && (
               <div>

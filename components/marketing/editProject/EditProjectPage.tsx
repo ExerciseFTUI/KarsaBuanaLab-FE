@@ -18,6 +18,7 @@ import ProjectForm from "../forms/ProjectForm";
 import { Project } from "@/lib/models/project.model";
 import { useToast } from "@/components/ui/use-toast";
 import { updateProject } from "@/lib/actions/marketing.actions";
+import { useRouter } from "next/navigation";
 
 interface EditProjectPageProps {
   project: Project;
@@ -26,6 +27,8 @@ interface EditProjectPageProps {
 export default function EditProjectPage({ project }: EditProjectPageProps) {
   //General
   const { toast } = useToast();
+
+  const router = useRouter();
 
   //=============================== Sample Section
   const [openModal, setOpenModal] = useState(false);
@@ -136,8 +139,6 @@ export default function EditProjectPage({ project }: EditProjectPageProps) {
   });
 
   async function onSubmit(values: z.infer<typeof createProjectValidation>) {
-    console.log(values);
-
     const body = {
       _id: project._id,
       client_name: values.custName,
@@ -153,6 +154,7 @@ export default function EditProjectPage({ project }: EditProjectPageProps) {
     //Edit Project Function
     const response = await updateProject(body, uploadedFiles);
     alert("Project Updated");
+    router.push("/marketing/running");
   }
 
   //================================= End Project Information Section
