@@ -167,9 +167,10 @@ const data = [
 
 export default async function Home() {
   const projects = await getProject("running");
+
   return (
     <div className="flex justify-between w-full h-screen">
-      <LabDataTable data={projects} link="finalreview/" />
+      <LabDataTable data={projects ? projects : []} link="finalreview/" />
     </div>
   );
 }
