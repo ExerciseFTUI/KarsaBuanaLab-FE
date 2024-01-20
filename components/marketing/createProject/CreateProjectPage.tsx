@@ -23,6 +23,8 @@ import { BaseSample } from "@/lib/models/baseSample.model";
 import { createProject } from "@/lib/actions/marketing.actions";
 
 import { useRouter } from "next/navigation";
+import { set } from "date-fns";
+import LoadingScreen from "@/components/LoadingComp";
 
 // const createProject = async (
 //   body: any,
@@ -93,6 +95,8 @@ const CreateProjectPage: FC<CreateProjectProps> = ({ baseSamples }) => {
   const { data } = useSession();
 
   const router = useRouter();
+
+  const [isLoading, setIsLoading] = useState(false);
 
   //=============================== Sample Section
   const [openModal, setOpenModal] = useState(false);
@@ -205,9 +209,18 @@ const CreateProjectPage: FC<CreateProjectProps> = ({ baseSamples }) => {
       };
 
       //Create Project Function
+      setIsLoading(true);
       const response = await createProject(body, uploadedFiles);
-      alert("Success");
-      router.push("/marketing/running");
+
+      if (!response) {
+        alert("Failed to create project");
+        return;
+      } else {
+        alert("Success");
+        router.push("/marketing/running");
+      }
+
+      setIsLoading(false);
     }
   }
 
@@ -225,6 +238,7 @@ const CreateProjectPage: FC<CreateProjectProps> = ({ baseSamples }) => {
 
   return (
     <div className="flex gap-6 max-md:flex-col max-md:items-center">
+      {isLoading && <LoadingScreen />}
       <ProjectForm form={form} onSubmit={onSubmitForm} />
       <Tabs
         defaultValue="sampling"
@@ -257,8 +271,7 @@ const CreateProjectPage: FC<CreateProjectProps> = ({ baseSamples }) => {
         </TabsContent>
         {/* End Document Section */}
 
-        
-        <div className="bg-moss_green flex justify-center items-center mt-5 w-2/3 rounded-lg py-4 text-white hover:bg-light_green hover:cursor-pointer">    
+        <div className="bg-moss_green flex justify-center items-center mt-5 w-2/3 rounded-lg py-4 text-white hover:bg-light_green hover:cursor-pointer">
           Submit
         </div>
       </Tabs>
