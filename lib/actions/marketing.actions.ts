@@ -49,12 +49,78 @@ export const createProject = async (
       !body.alamat_sampling ||
       !body.surel ||
       !body.contact_person ||
-      !body.regulation ||
+      !body.regulation_list ||
       !body.sampling_list
       //      || !body.assigned_to
     ) {
       throw new Error("Please provide all required fields");
     }
+
+    var bodyFormData = new FormData();
+
+    // Append all fields from the body object to bodyFormData
+    Object.keys(body).forEach((key) => {
+      // Check if the current key is an array
+      if (Array.isArray(body[key])) {
+        // If array, iterate and append each item to bodyFormData
+        body[key].forEach((item: any, index: any) => {
+          bodyFormData.append(`${key}[${index}]`, item);
+        });
+      } else {
+        // If not an array, append as usual
+        bodyFormData.append(key, body[key]);
+      }
+    });
+
+    // Append files to bodyFormData
+    if (files && files.length > 0) {
+      if (Array.isArray(files)) {
+        files.forEach((file, index) => {
+          bodyFormData.append(`file${index}`, file);
+        });
+      } else {
+        bodyFormData.append("file", files);
+      }
+    }
+
+    console.log(bodyFormData);
+
+    const response = await axios.post(
+      `${apiBaseUrl}/projects/create`,
+      bodyFormData,
+      {
+        headers: { "Content-Type": "multipart/form-data" },
+      }
+    );
+
+    revalidatePath("/marketing/running");
+
+    // return response.data as BaseApiResponse<ProjectResult>;
+    return "Success";
+  } catch (error: any) {
+    console.error("Error creating project:", error.message);
+    return null as unknown as BaseApiResponse<ProjectResult>;
+  }
+};
+
+export const updateProject = async (
+  body: any,
+  files?: any // Assuming files is a File or an array of File objects
+) => {
+  try {
+    // if (
+    //   !body.client_name ||
+    //   !body.project_name ||
+    //   !body.alamat_kantor ||
+    //   !body.alamat_sampling ||
+    //   !body.surel ||
+    //   !body.contact_person ||
+    //   !body.regulation ||
+    //   !body.sampling_list
+    //   //      || !body.assigned_to
+    // ) {
+    //   throw new Error("Please provide all required fields");
+    // }
 
     var bodyFormData = new FormData();
 
@@ -76,18 +142,20 @@ export const createProject = async (
 
     console.log("Masuk sini");
 
-    const response = await axios.post(
-      `${apiBaseUrl}/projects/create`,
+    const response = await axios.put(
+      `${apiBaseUrl}/projects/edit`,
       bodyFormData,
       {
         headers: { "Content-Type": "multipart/form-data" },
       }
     );
 
+    revalidatePath("/marketing/running");
+
     // return response.data as BaseApiResponse<ProjectResult>;
     return "Success";
   } catch (error: any) {
-    console.error("Error creating project:", error.message);
+    console.error("Error updating project:", error.message);
     return null as unknown as BaseApiResponse<ProjectResult>;
   }
 };

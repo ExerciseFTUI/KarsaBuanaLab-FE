@@ -15,8 +15,21 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import EditProjectForm from "./EditProjectForm";
 import ProjectForm from "../forms/ProjectForm";
+import { Project } from "@/lib/models/project.model";
+import { useToast } from "@/components/ui/use-toast";
+import { updateProject } from "@/lib/actions/marketing.actions";
+import { useRouter } from "next/navigation";
 
-export default function EditProjectPage() {
+interface EditProjectPageProps {
+  project: Project;
+}
+
+export default function EditProjectPage({ project }: EditProjectPageProps) {
+  //General
+  const { toast } = useToast();
+
+  const router = useRouter();
+
   //=============================== Sample Section
   const [openModal, setOpenModal] = useState(false);
 
@@ -35,28 +48,29 @@ export default function EditProjectPage() {
     name: "samples",
   });
 
-  // useEffect(() => {
-  //   console.log(arrayField.fields);
-  // }, [arrayField.fields]);
-
   //All the samples get save in here
   const { fields: samples, append, remove } = arrayField;
-
-  console.log(project);
 
   //Append all the samples from API to the samples array
   if (project.sampling_list && project.sampling_list.length > samples.length) {
     const newSamples = project.sampling_list.map((sample) => {
+      console.log(sample);
       return {
         sampleName: sample.sample_name ? sample.sample_name : "Empty",
-        regulation: sample.regulation?.regulation_name
-          ? sample.regulation.regulation_name
+        regulation: sample.regulation_name[0]?.regulation_name
+          ? sample.regulation_name[0].regulation_name
           : "Empty",
-        parameters: sample.regulation?.param ? sample.regulation.param : [""],
+        parameters: sample.regulation_name[0]?.regulation_name
+          ? sample.regulation_name[0].default_param
+          : [""],
+        // parameters: sample.regulation_name[0]?.param
+        //   ? sample.regulation_name[0].param
+        //   : [""],
       };
     });
 
     append(newSamples);
+    console.log(newSamples);
   }
 
   //Add to the samples array
@@ -115,20 +129,32 @@ export default function EditProjectPage() {
   const form = useForm<z.infer<typeof createProjectValidation>>({
     resolver: zodResolver(createProjectValidation),
     defaultValues: {
-      title: "Project 1",
-      custName: "Raditya Dito",
-      alamatKantor: "Jl. Jalan",
-      alamatSampling: "Jl. Sampling",
-      surel: "RD@gmail.com",
-      contactPerson: "08909090909009",
+      title: project.project_name || "",
+      custName: project.client_name || "",
+      alamatKantor: project.alamat_kantor || "",
+      alamatSampling: project.alamat_sampling || "",
+      surel: project.surel || "",
+      contactPerson: project.contact_person || "",
     },
   });
 
-  // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof createProjectValidation>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
+    const body = {
+      _id: project._id,
+      client_name: values.custName,
+      project_name: values.title,
+      alamat_kantor: values.alamatKantor,
+      alamat_sampling: values.alamatSampling,
+      surel: values.surel,
+      contact_person: values.contactPerson,
+      // regulation: "Pemerintah Pusat",
+      // sampling_list: ["Air_Limbah"],
+    };
+
+    //Edit Project Function
+    const response = await updateProject(body, uploadedFiles);
+    alert("Project Updated");
+    router.push("/marketing/running");
   }
 
   //================================= End Project Information Section
@@ -144,7 +170,7 @@ export default function EditProjectPage() {
       <ProjectForm
         form={form}
         onSubmit={onSubmit}
-        status="Canceled"
+        status={project.status}
         note="Gakuat bayar jasa kita"
       />
       <Tabs defaultValue="sampling" className="w-[40rem] max-sm:w-[420px]">
@@ -155,12 +181,13 @@ export default function EditProjectPage() {
 
         {/* Sample Section */}
         <TabsContent value="sampling">
-          {/* <SamplingTab
+          <SamplingTab
             form={sampleForm}
             arrayField={arrayField}
             openModal={openModal}
             setOpenModal={setOpenModal}
-          /> */}
+            onSubmit={onSubmitSample}
+          />
         </TabsContent>
         {/* End Sample Section */}
 

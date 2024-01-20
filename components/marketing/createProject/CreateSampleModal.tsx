@@ -137,11 +137,19 @@ const CreateSampleModal: FC<CreateSampleModalProps> = ({
                             <SelectContent>
                               <SelectGroup>
                                 <SelectLabel>Select the regulation</SelectLabel>
-                                <SelectItem value="regulation 1">
-                                  regulation 1
+                                {/* {baseSamples?.map((sample) => (
+                                  <SelectItem
+                                    key={`${sample._id}-${sample.regulation}`}
+                                    value={sample.regulation}
+                                  >
+                                    {sample.regulation}
+                                  </SelectItem>
+                                ))} */}
+                                <SelectItem value="Pemerintah Pusat">
+                                  Pemerintah Pusat
                                 </SelectItem>
-                                <SelectItem value="regulation 2">
-                                  regulation 2
+                                <SelectItem value="Pemerintah Bogor">
+                                  Pemerintah Bogor
                                 </SelectItem>
                               </SelectGroup>
                             </SelectContent>
