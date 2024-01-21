@@ -64,7 +64,7 @@ export default function EditProjectPage({ project }: EditProjectPageProps) {
   //Append all the samples from API to the samples array
   if (project.sampling_list && project.sampling_list.length > samples.length) {
     const newSamples = project.sampling_list.map((sample) => {
-      console.log(sample);
+      // console.log(sample);
       return {
         sampleName: sample.sample_name ? sample.sample_name : "Empty",
         regulation: sample.regulation_name[0]?.regulation_name

@@ -162,7 +162,7 @@ export const getSample = async (): Promise<BaseApiResponse<[BaseSample]>> => {
     return response.data as BaseApiResponse<[BaseSample]>;
   } catch (error: any) {
     console.error("Error getting sample:", error.message);
-    throw new Error("Failed to get sample");
+    return null as unknown as BaseApiResponse<[BaseSample]>;
   }
 };
 
@@ -229,7 +229,7 @@ export const testing = async () => {
       body
     );
 
-    console.log(response.data);
+    // console.log(response.data);
     revalidatePath("/marketing/running");
     return body;
   } catch (error: any) {
