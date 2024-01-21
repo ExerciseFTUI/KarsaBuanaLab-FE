@@ -6,6 +6,7 @@ import { BaseApiResponse } from "../models/baseApiResponse.model";
 import { BaseSample } from "../models/baseSample.model";
 import { ProjectMarketingType, ProjectType } from "../type";
 import { revalidatePath } from "next/cache";
+import { string } from "zod";
 
 const apiBaseUrl = process.env.API_BASE_URL || "http://localhost:5000";
 
@@ -108,21 +109,15 @@ export const updateProject = async (
   files?: any // Assuming files is a File or an array of File objects
 ) => {
   try {
-    // if (
-    //   !body.client_name ||
-    //   !body.project_name ||
-    //   !body.alamat_kantor ||
-    //   !body.alamat_sampling ||
-    //   !body.surel ||
-    //   !body.contact_person ||
-    //   !body.regulation ||
-    //   !body.sampling_list
-    //   //      || !body.assigned_to
-    // ) {
-    //   throw new Error("Please provide all required fields");
-    // }
-
     var bodyFormData = new FormData();
+
+     // Convert valuasi_proyek to integer
+    if (body.valuasi_proyek !== undefined) {
+      body.valuasi_proyek = parseInt(body.valuasi_proyek, 10);
+    }
+
+    // Auto increment while update the project
+    body.jumlah_revisi += 1;
 
     // Append all fields from the body object to bodyFormData
     Object.keys(body).forEach((key) => {
@@ -192,6 +187,14 @@ export const getProject = async (
     const response = await axios.get(
       `${apiBaseUrl}/marketing/project/${projectId}`
     );
+
+    // Convert valuasi proyek to string
+    if (response.data && response.data.valuasi_proyek !== undefined) {
+      // Convert to string explicitly
+      const valuasiProyekAsString = String(response.data.valuasi_proyek);
+      response.data.valuasi_proyek = valuasiProyekAsString;
+    }
+
     return response.data as BaseApiResponse<Project>;
   } catch (error: any) {
     console.error(`Error getting project with ID ${projectId}:`, error.message);

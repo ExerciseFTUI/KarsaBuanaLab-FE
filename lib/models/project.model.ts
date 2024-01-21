@@ -15,7 +15,7 @@ export interface Project {
   password: string
   jumlah_revisi: number
   surat_penawaran: string
-  valuasi_proyek: number
+  valuasi_proyek: string 
   created_year: string // Tahun
   sampling_list: Sampling[]
   file: File[]
