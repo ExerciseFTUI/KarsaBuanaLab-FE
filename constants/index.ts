@@ -36,7 +36,7 @@ export const dummyTableData: Project[] = [
     client_name: "Customer A",
     alamat_sampling: "Location 1 dad",
     contact_person: "Contact Person 1",
-    valuasi_proyek: 10000,
+    valuasi_proyek: "10000",
     created_at: "2023-10-14",
     no_sampling: "S1",
     alamat_kantor: "Office 1",

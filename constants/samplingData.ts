@@ -73,7 +73,7 @@ export function generateRandomData(length: number = 100): void {
       password: "password" + i,
       jumlah_revisi: i,
       surat_penawaran: "Surat Penawaran " + i,
-      valuasi_proyek: randomInt(500000),
+      valuasi_proyek: randomInt(500000).toString(),
       created_year: "" + new Date().getFullYear(),
       sampling_list: samplingList,
       file: [],
