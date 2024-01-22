@@ -87,7 +87,7 @@ const FinalReviewDataTable: FC<FinalReviewDataTableProps> = ({ data }) => {
       <div className="flex items-center py-4">
         <BiFilterAlt className="text-xl translate-x-8" />
         <Input
-          placeholder="Filter Projects On LHP Draft"
+          placeholder="Filter Projects On Final Review"
           value={
             (table.getColumn("project_name")?.getFilterValue() as string) ?? ""
           }
@@ -125,18 +125,26 @@ const FinalReviewDataTable: FC<FinalReviewDataTableProps> = ({ data }) => {
       </div>
       <div className=" text-light_brown">
         <Table className="italic font-dm-sans">
-          <TableHeader>
+          <TableHeader >
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow className="italic" key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
+                {headerGroup.headers.map((header, index) => {
+                  let className =
+                    "text-center text-ghost_white italic bg-light_brown p-2";
+                  if (index === 0) {
+                    className += " rounded-l-full"; // Add rounded corners to the left side
+                  }
+                  if (index === headerGroup.headers.length - 1) {
+                    className += " rounded-r-full"; // Add rounded corners to the right side
+                  }
                   return (
-                    <TableHead key={header.id} className="text-[#b49a82]">
+                    <TableHead key={header.id} className={className}>
                       {header.isPlaceholder
                         ? null
                         : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
                     </TableHead>
                   );
                 })}
@@ -147,7 +155,7 @@ const FinalReviewDataTable: FC<FinalReviewDataTableProps> = ({ data }) => {
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
-                  className="hover:bg-light_green ease-in-out duration-500 text-xs hover:cursor-pointer hover:rounded-xl"
+                  className="hover:bg-pastel_moss_green ease-in-out duration-500 text-xs hover:cursor-pointer hover:rounded-xl text-center"
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
                   onClick={() =>

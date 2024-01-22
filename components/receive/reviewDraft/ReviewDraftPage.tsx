@@ -21,8 +21,9 @@ import {
   useForm,
 } from "react-hook-form";
 import DocumentTab from "./DocumentTab";
+import Document from "@/components/pplhp/Document";
 
-export default function ReviewDraftPage({ linkData }) {
+export default function ReviewDraftPage({ linkData }: { linkData: any }) {
   //=============================== Sample Section
   const [openModal, setOpenModal] = useState(false);
   const sampleForm = useForm<FieldValues>({
@@ -69,7 +70,7 @@ export default function ReviewDraftPage({ linkData }) {
 
         {/* Document Section */}
         <TabsContent value="document">
-          <DocumentTab data={linkData.file} />
+          <Document data={linkData.file} color="moss_green" />
         </TabsContent>
         {/* End Document Section */}
       </Tabs>

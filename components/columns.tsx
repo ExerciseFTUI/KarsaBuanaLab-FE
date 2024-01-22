@@ -62,9 +62,8 @@ export const columns: ColumnDef<ProjectType>[] = [
       return (
         <div className="">
           <div
-            className={`font-light text-white w-fit px-6 py-0.5 rounded-full ${
-              status ? "bg-yellow-700" : "bg-red-400"
-            }`}
+            className={`font-light text-white w-fit px-6 py-0.5 rounded-full ${status ? "bg-yellow-700" : "bg-red-400"
+              }`}
           >
             {row.getValue("status")}
           </div>
@@ -214,8 +213,8 @@ export const receiveProjectPageColumns: ColumnDef<ProjectType>[] = [
         stat == "Need Schedule" || stat == "Get Sample"
           ? "bg-moss_green"
           : stat == "On Discuss" || stat == "Verifying"
-          ? "bg-light_brown"
-          : "bg-brick_red";
+            ? "bg-light_brown"
+            : "bg-brick_red";
 
       return (
         <div
@@ -291,8 +290,8 @@ export const samplingProjectPageColumns: ColumnDef<ProjectSamplingType>[] = [
         status == "Need Schedule" || status == "Get Sample"
           ? "bg-moss_green"
           : status == "On Discuss" || status == "Verifying"
-          ? "bg-light_brown"
-          : "bg-brick_red";
+            ? "bg-light_brown"
+            : "bg-brick_red";
 
       return (
         <div
@@ -322,7 +321,7 @@ export const receiveSamplingColumns: ColumnDef<ReceiveSamplingType>[] = [
     header: ({ column }) => {
       return (
         <Button
-          className="font-light hover:bg-transparent italic"
+          className="italic hover:bg-transparent hover:text-pastel_moss_green"
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
@@ -387,7 +386,7 @@ export const LHPDraftPageColumns: ColumnDef<ProjectLHPType>[] = [
     header: ({ column }) => {
       return (
         <Button
-          className="italic text-moss_green"
+          className="italic hover:bg-transparent hover:text-pastel_moss_green"
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
@@ -451,7 +450,7 @@ export const PPLHPFinalReviewPageColumns: ColumnDef<ProjectLHPType>[] = [
     header: ({ column }) => {
       return (
         <Button
-          className="italic text-[#b49a82]"
+          className="italic"
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >

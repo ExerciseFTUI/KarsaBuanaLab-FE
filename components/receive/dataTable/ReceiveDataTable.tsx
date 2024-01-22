@@ -15,6 +15,8 @@ import {
 } from "@tanstack/react-table";
 import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { BiFilterAlt } from "react-icons/bi";
+
 
 import { Button } from "@/components/ui/button";
 import {
@@ -87,20 +89,17 @@ const ReceiveDataTable: FC<ReceiveDataTableProps> = ({ data }) => {
     <div className="w-full">
       {/* Top Search Title */}
       <div className="flex items-center py-4">
-        <div className="flex gap-2">
-          {/* Seach Input */}
-          <Input
-            placeholder="Filter By Project Title"
-            value={
-              (table.getColumn("project_name")?.getFilterValue() as string) ??
-              ""
-            }
-            onChange={(event) =>
-              table.getColumn("project_nam")?.setFilterValue(event.target.value)
-            }
-            className="max-w-sm border-pastel_moss_green rounded-full focus-visible:ring-0 bg-pastel_moss_green pl-5 placeholder:text-moss_green"
-          />
-        </div>
+        <BiFilterAlt className="text-xl translate-x-8" />
+        <Input
+          placeholder="Filter By Project Title"
+          value={
+            (table.getColumn("project_name")?.getFilterValue() as string) ?? ""
+          }
+          onChange={(event) =>
+            table.getColumn("project_name")?.setFilterValue(event.target.value)
+          }
+          className="max-w-sm bg-pastel_moss_green pl-10"
+        />
 
         {/* Column Visibility */}
         <DropdownMenu>
@@ -143,7 +142,7 @@ const ReceiveDataTable: FC<ReceiveDataTableProps> = ({ data }) => {
               <TableRow className="hover:bg-transparent" key={headerGroup.id}>
                 {headerGroup.headers.map((header, index) => {
                   let className =
-                    "text-center text-ghost_white font-light italic bg-moss_green p-2 text-xs";
+                    "text-center text-ghost_white italic bg-moss_green p-2";
                   if (index === 0) {
                     className += " rounded-l-full"; // Add rounded corners to the left side
                   }
@@ -155,9 +154,9 @@ const ReceiveDataTable: FC<ReceiveDataTableProps> = ({ data }) => {
                       {header.isPlaceholder
                         ? null
                         : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
                     </TableHead>
                   );
                 })}
