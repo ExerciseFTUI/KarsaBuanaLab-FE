@@ -25,24 +25,25 @@ interface DocumentProps {
 }
 
 const Document: FC<DocumentProps> = ({ data, color }) => {
-  const groupDataByType = (data: DocumentData[]) => {
-    return data.reduce((acc, current) => {
-      if (!acc[current.type]) {
-        acc[current.type] = [current];
-      } else {
-        acc[current.type].push(current);
+  const groupDataByType = (data: DocumentData[], typesToGroup: string[]) => {
+    return typesToGroup.reduce((acc, type) => {
+      const filteredData = data.filter(item => item.type === type);
+      if (filteredData.length > 0) {
+        acc[type] = filteredData;
       }
       return acc;
     }, {} as Record<string, DocumentData[]>);
   };
 
-  const groupedData = groupDataByType(data);
+  const typesToGroup = ['Result', 'Preparation'];
+  const groupedData = groupDataByType(data, typesToGroup);
+  console.log(groupedData)
 
   return (
     <div className="space-y-14">
       {Object.entries(groupedData).map(([type, names]) => (
         <div key={type} className="space-y-5">
-          <h1 className={`text-${color} text-xl font-semibold`}>{type}</h1>
+          <h1 className={`text-${color} text-xl`}>{type}</h1>
           <div className="flex flex-wrap justify-between gap-2">
             {names.map((link) => (
               <a

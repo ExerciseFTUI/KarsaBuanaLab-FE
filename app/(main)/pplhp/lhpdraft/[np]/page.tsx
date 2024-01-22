@@ -16,10 +16,10 @@ export default async function Home({ params }: { params: { np: string } }) {
   return (
     <>
       <main className="flex flex-col lg:flex-row gap-5 lg:gap-0 justify-between w-full">
-        <div className="w-3/5 px-2">
+        <div className="w-full lg:w-3/5 px-2">
           <LHPDraftPage linkData={linkData} />
         </div>
-        <div className="md:w-2/5">
+        <div className="lg:w-2/5 py-24 lg:py-0">
           <LaporanHasilPemeriksaan
             title="Pembuatan Draft LHP"
             color="moss_green"

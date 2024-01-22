@@ -99,7 +99,7 @@ export default function FNPrintPage({ linkData }: { linkData: any }) {
             <h1 className="m-4 mx-5">Sampel</h1>
             <div
               className={`w-4/5 h-1 rounded-l-full ${selectedTab === "Sampel" ? "bg-dark_brown" : "bg-ghost_brown"
-                } w-1/2`}
+                }`}
             />
           </div>
           <div
@@ -110,7 +110,7 @@ export default function FNPrintPage({ linkData }: { linkData: any }) {
             <h1 className="m-4 mx-5">Dokumen</h1>
             <div
               className={`w-4/5 h-1 rounded-r-full ${selectedTab === "Dokumen" ? "bg-dark_brown" : "bg-ghost_brown"
-                } w-1/2`}
+                }`}
             />
           </div>
         </div>

@@ -24,8 +24,8 @@ export default function LHPDraftPage({ linkData }: { linkData: any }) {
   // Get Laporan Hasil Pemeriksaan data
   return (
     <div className="flex flex-col md:flex-row justify-between w-full h-screen gap-36 md:gap-0">
-      <div className="md:w-full h-fit px-16 space-y-6">
-        <div className="flex flex-row text-2xl font-medium space-x-0 cursor-pointer">
+      <div className="w-full h-fit md:px-16 space-y-6">
+        <div className="w-full flex flex-row text-2xl font-medium space-x-0 cursor-pointer">
           <div
             className={`flex flex-col items-end ${selectedTab === "Sampel" ? "text-moss_green" : "text-ghost_green"
               } w-1/2`}
@@ -34,7 +34,7 @@ export default function LHPDraftPage({ linkData }: { linkData: any }) {
             <h1 className="m-4 mx-5">Sampel</h1>
             <div
               className={`w-4/5 h-1 rounded-l-full ${selectedTab === "Sampel" ? "bg-moss_green" : "bg-ghost_green"
-                } w-1/2`}
+                }`}
             />
           </div>
           <div
@@ -45,7 +45,7 @@ export default function LHPDraftPage({ linkData }: { linkData: any }) {
             <h1 className="m-4 mx-5">Dokumen</h1>
             <div
               className={`w-4/5 h-1  rounded-r-full ${selectedTab === "Dokumen" ? "bg-moss_green" : "bg-ghost_green"
-                } w-1/2`}
+                }`}
             />
           </div>
         </div>
@@ -59,7 +59,7 @@ export default function LHPDraftPage({ linkData }: { linkData: any }) {
           />
         )}
         {selectedTab === "Dokumen" && (
-          <Document data={dataTemplate} color="moss_green" />
+          <Document data={documentData} color="moss_green" />
         )}
       </div>
     </div>

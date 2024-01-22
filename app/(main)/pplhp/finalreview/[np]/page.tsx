@@ -147,6 +147,8 @@ import { BsArrowRight } from "react-icons/bs";
 import LHPDraftPage from "@/components/pplhp/LHPDraftPage";
 import LaporanHasilPemeriksaan from "@/components/pplhp/LaporanHasilPemeriksaan";
 import FNPrintPage from "@/components/pplhp/FNPrintPage";
+import axios from "axios";
+import { useEffect, useState } from 'react';
 
 const LaporanHasilPemeriksaanData = {
   value: "link1.",
@@ -155,14 +157,40 @@ const LaporanHasilPemeriksaanData = {
 
 export default async function Home({ params }: { params: { np: string } }) {
   const linkData = await getLinkFiles(params.np);
+  // const [data, setData] = useState(null);
+  // const [error, setError] = useState(null);
+
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const response = await axios.get(`https://karsalab.netlabdte.com/projects/get-link-files/${params.np}`);
+  //       setData(response.data); // Assuming the API returns JSON data
+  //     } catch (error) {
+  //       setError(error);
+  //       console.error('Error fetching data:', error);
+  //     }
+  //   };
+
+  //   fetchData();
+  // }, [apiBaseUrl, projectId]);
+
+  // if (error) {
+  //   return <div>Error: {error.message}</div>;
+  // }
+
+  // if (!data) {
+  //   return <div>Loading...</div>;
+  // }
+  console.log(linkData)
   return (
     <>
       <main className="flex flex-col lg:flex-row gap-5 lg:gap-0 justify-between w-full">
-        <div className="w-3/5 px-2">
+
+        <div className="lg:w-3/5">
           <FNPrintPage linkData={linkData} />
         </div>
 
-        <div className="md:w-2/5">
+        <div className="lg:w-2/5 py-24 lg:py-0">
           <LaporanHasilPemeriksaan
             title="Pengisian LHP"
             color="dark_brown"
