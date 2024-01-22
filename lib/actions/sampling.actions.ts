@@ -1,0 +1,87 @@
+import axios from 'axios';
+import {BaseApiResponse} from '../models/baseApiResponse.model'
+import { Sampling } from '../models/sampling.model';
+import { Project } from '../models/project.model';
+
+const apiBaseUrl = process.env.API_BASE_URL || 'http://localhost:3000/api';
+
+export const getSampleById = async (year: string, sampleId : string) : Promise<BaseApiResponse<Sampling>> => {
+  try {
+
+    const response = await axios.get(`${apiBaseUrl}/sampling/get/${year}/${sampleId}`);
+
+    return response.data as BaseApiResponse<Sampling>;
+
+  } catch (error: any) {
+    console.error('Error getting sample', error.message);
+    throw new Error('Failed to get sample');
+  }
+
+}
+
+export const getSampleByYear = async (year: string, page: string) : Promise<BaseApiResponse<Project[]>> => {
+  try {
+
+    const response = await axios.get(`${apiBaseUrl}/sampling/get/${year}`);
+
+        console.log("here akadsfsdf sddf rgjnakg akjbdg ka lorem");
+        console.log(response);
+    const result: Project[] = response.data.result.filter((s: Project) => {
+      if (page == "project")
+        return s.status == "FINISHED" || s.status == "NOT ASSIGNED"
+      else if (page == "assignment-letter")
+        return s.status == "ASSIGNED"
+      else
+        return s.status == "Get Sample" || s.status == "Verifying" || s.status == "Revision"
+    })
+
+        console.log("here akrgjnakg akjbdg ka lorem");
+        console.log(result);
+        
+
+    const data: BaseApiResponse<Project[]> = {
+      message: "Success",
+      result
+    }
+
+    
+    return data;
+
+  } catch (error: any) {
+    console.error('Error getting sample list', error.message);
+    return null as unknown as BaseApiResponse<Project[]>;
+  }
+
+}
+
+export const getSampleByAccount = async (year: string, accountId : string) : Promise<BaseApiResponse<[Project]>> => {
+  try {
+
+    const response = await axios.get(`${apiBaseUrl}/sampling/sample/${year}`, {
+      data: {
+        accountId: accountId,
+      },
+    });
+
+    return response.data as BaseApiResponse<[Project]>;
+
+  } catch (error: any) {
+    console.error('Error getting sample', error.message);
+    throw new Error('Failed to get sample');
+  }
+
+}
+
+export const sampleAssignment = async (year: string, sampleNumber: string, accountId: string) : Promise<BaseApiResponse<any>> => {
+  try {
+    const response = await axios.post(`${apiBaseUrl}/sampling/assign/${year}/${sampleNumber}`, {
+      accountId: accountId,
+    });
+
+    return response.data as BaseApiResponse<any>;
+  } catch (error: any) {
+    console.error('Error assigning sample:', error.message);
+    throw new Error('Failed to assign sample');
+  }
+
+}

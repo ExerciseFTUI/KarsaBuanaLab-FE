@@ -59,11 +59,8 @@ interface FinalReviewDataTableProps {
 const FinalReviewDataTable: FC<FinalReviewDataTableProps> = ({ data }) => {
   const router = useRouter();
   const [sorting, setSorting] = useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(
-    []
-  );
-  const [columnVisibility, setColumnVisibility] =
-    useState<VisibilityState>({});
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [columnVisibility, setColumnVisibility] = useState({ _id: false });
   const [rowSelection, setRowSelection] = useState({});
 
   const table = useReactTable({
@@ -88,12 +85,14 @@ const FinalReviewDataTable: FC<FinalReviewDataTableProps> = ({ data }) => {
   return (
     <div className="w-full">
       <div className="flex items-center py-4">
-        <BiFilterAlt className="text-xl translate-x-8"/>
+        <BiFilterAlt className="text-xl translate-x-8" />
         <Input
-          placeholder="Filter Projects On LHP Draft"
-          value={(table.getColumn("judul")?.getFilterValue() as string) ?? ""}
+          placeholder="Filter Projects On Final Review"
+          value={
+            (table.getColumn("project_name")?.getFilterValue() as string) ?? ""
+          }
           onChange={(event) =>
-            table.getColumn("judul")?.setFilterValue(event.target.value)
+            table.getColumn("project_name")?.setFilterValue(event.target.value)
           }
           className="max-w-sm pl-10"
         />
@@ -125,19 +124,27 @@ const FinalReviewDataTable: FC<FinalReviewDataTableProps> = ({ data }) => {
         </DropdownMenu>
       </div>
       <div className=" text-light_brown">
-        <Table className="italic font-dm-sans">
-          <TableHeader>
+        <Table className="font-dm-sans">
+          <TableHeader >
             {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow className="italic" key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
+              <TableRow className="" key={headerGroup.id}>
+                {headerGroup.headers.map((header, index) => {
+                  let className =
+                    "text-center text-ghost_white italic bg-light_brown p-2";
+                  if (index === 0) {
+                    className += " rounded-l-full"; // Add rounded corners to the left side
+                  }
+                  if (index === headerGroup.headers.length - 1) {
+                    className += " rounded-r-full"; // Add rounded corners to the right side
+                  }
                   return (
-                    <TableHead key={header.id} className="text-[#b49a82]">
+                    <TableHead key={header.id} className={className}>
                       {header.isPlaceholder
                         ? null
                         : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
                     </TableHead>
                   );
                 })}
@@ -148,11 +155,11 @@ const FinalReviewDataTable: FC<FinalReviewDataTableProps> = ({ data }) => {
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
-                  className="hover:bg-light_green ease-in-out duration-500 text-xs hover:cursor-pointer hover:rounded-xl"
+                  className="hover:bg-pastel_moss_green ease-in-out duration-500 text-xs hover:cursor-pointer hover:rounded-xl text-center"
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
                   onClick={() =>
-                    router.push("finalreview/" + row.getValue("noPenawaran"))
+                    router.push("finalreview/" + row.getValue("_id"))
                   }
                 >
                   {row.getVisibleCells().map((cell) => (
@@ -249,6 +256,6 @@ const FinalReviewDataTable: FC<FinalReviewDataTableProps> = ({ data }) => {
       </div>
     </div>
   );
-}
+};
 
 export default FinalReviewDataTable;

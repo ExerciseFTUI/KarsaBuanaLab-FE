@@ -21,8 +21,9 @@ import {
   useForm,
 } from "react-hook-form";
 import DocumentTab from "./DocumentTab";
+import Document from "@/components/pplhp/Document";
 
-export default function CreateProjectPage() {
+export default function ReviewDraftPage({ linkData }: { linkData: any }) {
   //=============================== Sample Section
   const [openModal, setOpenModal] = useState(false);
   const sampleForm = useForm<FieldValues>({
@@ -52,7 +53,7 @@ export default function CreateProjectPage() {
   return (
     <div className="flex gap-6 max-md:flex-col max-md:items-center">
       <Tabs defaultValue="sampling" className="w-[40rem] max-sm:w-[420px]">
-        <TabsList className="grid w-full grid-cols-2 space-x-0 cursor-pointer my-8 text-moss_green">
+        <TabsList className="grid w-full grid-cols-2 space-x-0 cursor-pointer my-8 text-moss_green scale-75 lg:scale-100">
           <TabsTrigger className="text-2xl" value="sampling">
             Sampling
           </TabsTrigger>
@@ -63,13 +64,13 @@ export default function CreateProjectPage() {
 
         {/* Sample Section */}
         <TabsContent value="sampling">
-          <SamplingTab />
+          <SamplingTab data={linkData.sampling_list} />
         </TabsContent>
         {/* End Sample Section */}
 
         {/* Document Section */}
         <TabsContent value="document">
-          <DocumentTab />
+          <Document data={linkData.file} color="moss_green" />
         </TabsContent>
         {/* End Document Section */}
       </Tabs>

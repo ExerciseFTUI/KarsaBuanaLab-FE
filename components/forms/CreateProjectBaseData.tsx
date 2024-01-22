@@ -24,39 +24,42 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
-import { useForm } from "react-hook-form";
+import { UseFormReturn, useForm } from "react-hook-form";
 import { createProjectValidation } from "@/lib/validations/CreateProjectValidation";
 import { Input } from "../ui/input";
 import { signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useToast } from "../ui/use-toast";
 
-interface CreateProjectBaseDataProps {}
+interface CreateProjectBaseDataProps {
+  form: UseFormReturn<z.infer<typeof createProjectValidation>>;
+  onSubmit(values: z.infer<typeof createProjectValidation>): Promise<void>;
+}
 
-const CreateProjectBaseData: FC<CreateProjectBaseDataProps> = ({}) => {
+const CreateProjectBaseData: FC<CreateProjectBaseDataProps> = ({
+  form,
+  onSubmit,
+}) => {
   const router = useRouter();
   const query = useSearchParams();
   const { toast } = useToast();
 
   // 1. Define your form.
-  const form = useForm<z.infer<typeof createProjectValidation>>({
-    resolver: zodResolver(createProjectValidation),
-    defaultValues: {
-      title: "",
-      custName: "",
-      alamatKantor: "",
-      alamatSampling: "",
-      surel: "",
-      contactPerson: "",
-    },
-  });
+  // const form = useForm<z.infer<typeof createProjectValidation>>({
+  //   resolver: zodResolver(createProjectValidation),
+  //   defaultValues: {
+  //     title: "",
+  //     custName: "",
+  //     alamatKantor: "",
+  //     alamatSampling: "",
+  //     surel: "",
+  //     contactPerson: "",
+  //   },
+  // });
 
-  // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof createProjectValidation>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
-  }
+  // async function onSubmit(values: z.infer<typeof createProjectValidation>) {
+  //   console.log(values);
+  // }
 
   return (
     <Card className="w-[450px] max-sm:w-[400px] max-h-screen overflow-auto custom-scrollbar ">
@@ -178,6 +181,7 @@ const CreateProjectBaseData: FC<CreateProjectBaseDataProps> = ({}) => {
                 </FormItem>
               )}
             />
+            <Button type="submit">Submit</Button>
           </form>
         </Form>
       </CardContent>

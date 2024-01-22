@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { useState, FC } from "react";
 
@@ -10,59 +10,57 @@ import {
   SelectLabel,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"
-
-
-interface DocumentLink {
-  value: string;
-  label: string;
-}
+} from "@/components/ui/select";
+import { RiShareBoxLine } from "react-icons/ri";
 
 interface DocumentData {
-  judul: string;
-  placeholder: string;
-  link: DocumentLink[];
+  url: string;
+  name: string;
+  type: string;
 }
-
 
 interface DocumentProps {
   data: DocumentData[];
+  color: String;
 }
 
+const Document: FC<DocumentProps> = ({ data, color }) => {
+  const groupDataByType = (data: DocumentData[], typesToGroup: string[]) => {
+    return typesToGroup.reduce((acc, type) => {
+      const filteredData = data.filter(item => item.type === type);
+      if (filteredData.length > 0) {
+        acc[type] = filteredData;
+      }
+      return acc;
+    }, {} as Record<string, DocumentData[]>);
+  };
 
-const Document: FC<DocumentProps> = ({ data }) => {
-    const [value, setValue] = useState("")
+  const typesToGroup = ['Result', 'Preparation'];
+  const groupedData = groupDataByType(data, typesToGroup);
+  console.log(groupedData)
 
-    return (
-        <div className="w-full">
-            <div className="space-y-4 w-full">
-                {data.map((tahap) => (
-                  <Select key={tahap.judul} onValueChange={(currentValue) => {
-                    if (currentValue === value) {
-                      return;
-                    }
-                    window.open(currentValue, '_blank')
-                  }}>
-                    <h2>{tahap.judul}</h2>
-                    <SelectTrigger className="w-full p-6 rounded-2xl">
-                        <SelectValue placeholder={tahap.judul} />
-                    </SelectTrigger>
-                    <SelectContent>
-                        <SelectGroup>
-                            <SelectLabel>{tahap.judul}</SelectLabel>
-                            {tahap.link.map((link) => (
-                            <SelectItem key={link.value} value={link.value} >
-                                {link.label}
-                            </SelectItem>
-                            ))}
-                        </SelectGroup>
-                        
-                    </SelectContent>
-                    
-                </Select>
-                ))}
-            </div>
+  return (
+    <div className="space-y-14">
+      {Object.entries(groupedData).map(([type, names]) => (
+        <div key={type} className="space-y-5">
+          <h1 className={`text-${color} text-xl`}>{type}</h1>
+          <div className="flex flex-wrap justify-between gap-2">
+            {names.map((link) => (
+              <a
+                key={link.name}
+                className={`flex flex-row bg-${color} rounded-xl p-4 w-full md:w-[48%] justify-between items-center`}
+                href={link.url}
+                target="_blank"
+              >
+                <p className="text-white text-sm">{link.name}</p>
+                <RiShareBoxLine className="text-white text-3xl" />
+              </a>
+            ))}
+          </div>
         </div>
-    );
-}
+      ))}
+    </div>
+  );
+};
+
 export default Document;

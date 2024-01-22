@@ -1,5 +1,5 @@
 "use client";
-import { useState, FC } from "react";
+import { useState, FC, useEffect } from "react";
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -59,11 +59,8 @@ interface PPLHPDataTableProps {
 const PPLHPDataTable: FC<PPLHPDataTableProps> = ({ data }) => {
   const router = useRouter();
   const [sorting, setSorting] = useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(
-    []
-  );
-  const [columnVisibility, setColumnVisibility] =
-    useState<VisibilityState>({});
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [columnVisibility, setColumnVisibility] = useState({ _id: false });
   const [rowSelection, setRowSelection] = useState({});
 
   const table = useReactTable({
@@ -88,14 +85,16 @@ const PPLHPDataTable: FC<PPLHPDataTableProps> = ({ data }) => {
   return (
     <div className="w-full">
       <div className="flex items-center py-4">
-        <BiFilterAlt className="text-xl translate-x-8"/>
+        <BiFilterAlt className="text-xl translate-x-8" />
         <Input
           placeholder="Filter Projects On LHP Draft"
-          value={(table.getColumn("judul")?.getFilterValue() as string) ?? ""}
-          onChange={(event) =>
-            table.getColumn("judul")?.setFilterValue(event.target.value)
+          value={
+            (table.getColumn("project_name")?.getFilterValue() as string) ?? ""
           }
-          className="max-w-sm pl-10"
+          onChange={(event) =>
+            table.getColumn("project_name")?.setFilterValue(event.target.value)
+          }
+          className="max-w-sm bg-pastel_moss_green pl-10"
         />
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -125,19 +124,27 @@ const PPLHPDataTable: FC<PPLHPDataTableProps> = ({ data }) => {
         </DropdownMenu>
       </div>
       <div className=" text-moss_green">
-        <Table className="italic font-dm-sans">
+        <Table className="font-dm-sans">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow className="italic" key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
+                {headerGroup.headers.map((header, index) => {
+                  let className =
+                    "text-center text-ghost_white italic bg-moss_green p-2";
+                  if (index === 0) {
+                    className += " rounded-l-full"; // Add rounded corners to the left side
+                  }
+                  if (index === headerGroup.headers.length - 1) {
+                    className += " rounded-r-full"; // Add rounded corners to the right side
+                  }
                   return (
-                    <TableHead key={header.id} className="text-[#c2c5aa]">
+                    <TableHead key={header.id} className={className}>
                       {header.isPlaceholder
                         ? null
                         : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
                     </TableHead>
                   );
                 })}
@@ -148,12 +155,10 @@ const PPLHPDataTable: FC<PPLHPDataTableProps> = ({ data }) => {
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
-                  className="hover:bg-light_green ease-in-out duration-500 text-xs hover:cursor-pointer hover:rounded-xl"
+                  className="hover:bg-pastel_moss_green ease-in-out duration-500 text-xs hover:cursor-pointer hover:rounded-xl text-center"
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
-                  onClick={() =>
-                    router.push("lhpdraft/" + row.getValue("noPenawaran"))
-                  }
+                  onClick={() => router.push("lhpdraft/" + row.getValue("_id"))}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id} className="py-4">
@@ -249,6 +254,6 @@ const PPLHPDataTable: FC<PPLHPDataTableProps> = ({ data }) => {
       </div>
     </div>
   );
-}
+};
 
 export default PPLHPDataTable;

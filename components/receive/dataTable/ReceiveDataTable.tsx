@@ -1,5 +1,6 @@
 "use client";
-import * as React from "react";
+import { useState, FC, useEffect } from "react";
+import useSWR from "swr";
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -14,6 +15,8 @@ import {
 } from "@tanstack/react-table";
 import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { BiFilterAlt } from "react-icons/bi";
+
 
 import { Button } from "@/components/ui/button";
 import {
@@ -49,63 +52,19 @@ import {
 } from "@radix-ui/react-icons";
 import { receiveSamplingColumns } from "@/components/columns";
 import { ReceiveSamplingType } from "@/lib/type";
-import { cn } from "@/lib/utils";
+import { cn, fetcher } from "@/lib/utils";
+import { ProjectSamplingType } from "@/lib/type";
 
-// Create an array of 15 objects with the specified type
-const data: ReceiveSamplingType[] = [
-  {
-    id: "1",
-    noPenawaran: "0123456",
-    judulProject: "Project 1",
-    lokasiSampel: "Jl. Lokasi 1",
-    lokasi: "Location 1",
-    cp: "+62-XXXX-XXXX",
-  },
-  {
-    id: "2",
-    noPenawaran: "0123456",
-    judulProject: "Project 1",
-    lokasiSampel: "Jl. Lokasi 1",
-    lokasi: "Location 1",
-    cp: "+62-XXXX-XXXX",
-  },
-  {
-    id: "3",
-    noPenawaran: "0123456",
-    judulProject: "Project 1",
-    lokasiSampel: "Jl. Lokasi 1",
-    lokasi: "Location 1",
-    cp: "+62-XXXX-XXXX",
-  },
-  {
-    id: "4",
-    noPenawaran: "0123456",
-    judulProject: "Project 1",
-    lokasiSampel: "Jl. Lokasi 1",
-    lokasi: "Location 1",
-    cp: "+62-XXXX-XXXX",
-  },
-  {
-    id: "5",
-    noPenawaran: "0123456",
-    judulProject: "Project 1",
-    lokasiSampel: "Jl. Lokasi 1",
-    lokasi: "Location 1",
-    cp: "+62-XXXX-XXXX",
-  },
-];
+interface ReceiveDataTableProps {
+  data: ReceiveSamplingType[];
+}
 
-export function DataTable() {
+const ReceiveDataTable: FC<ReceiveDataTableProps> = ({ data }) => {
   const router = useRouter();
-  const [sorting, setSorting] = React.useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    []
-  );
-  const [statusFilter, setStatusFilter] = React.useState("");
-
-  const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({});
-  const [rowSelection, setRowSelection] = React.useState({});
+  const [sorting, setSorting] = useState<SortingState>([]);
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [columnVisibility, setColumnVisibility] = useState({ _id: false });
+  const [rowSelection, setRowSelection] = useState({});
 
   const table = useReactTable({
     data,
@@ -130,22 +89,17 @@ export function DataTable() {
     <div className="w-full">
       {/* Top Search Title */}
       <div className="flex items-center py-4">
-        <div className="flex gap-2">
-          {/* Seach Input */}
-          <Input
-            placeholder="Filter By Project Title"
-            value={
-              (table.getColumn("judulProject")?.getFilterValue() as string) ??
-              ""
-            }
-            onChange={(event) =>
-              table
-                .getColumn("judulProject")
-                ?.setFilterValue(event.target.value)
-            }
-            className="max-w-sm border-pastel_moss_green rounded-full focus-visible:ring-0 bg-pastel_moss_green pl-5 placeholder:text-moss_green"
-          />
-        </div>
+        <BiFilterAlt className="text-xl translate-x-8" />
+        <Input
+          placeholder="Filter By Project Title"
+          value={
+            (table.getColumn("project_name")?.getFilterValue() as string) ?? ""
+          }
+          onChange={(event) =>
+            table.getColumn("project_name")?.setFilterValue(event.target.value)
+          }
+          className="max-w-sm bg-pastel_moss_green pl-10"
+        />
 
         {/* Column Visibility */}
         <DropdownMenu>
@@ -188,7 +142,7 @@ export function DataTable() {
               <TableRow className="hover:bg-transparent" key={headerGroup.id}>
                 {headerGroup.headers.map((header, index) => {
                   let className =
-                    "text-center text-ghost_white font-light italic bg-moss_green p-2 text-xs";
+                    "text-center text-ghost_white italic bg-moss_green p-2";
                   if (index === 0) {
                     className += " rounded-l-full"; // Add rounded corners to the left side
                   }
@@ -200,9 +154,9 @@ export function DataTable() {
                       {header.isPlaceholder
                         ? null
                         : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
                     </TableHead>
                   );
                 })}
@@ -217,10 +171,10 @@ export function DataTable() {
                   className="hover:bg-pastel_moss_green ease-in-out duration-500 text-xs hover:cursor-pointer hover:rounded-xl text-center"
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
-                  onClick={() => router.push("receive/review")}
+                  onClick={() => router.push("receive/" + row.getValue("_id"))}
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
+                    <TableCell key={cell.id} className="py-4">
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext()
@@ -322,4 +276,6 @@ export function DataTable() {
       </div>
     </div>
   );
-}
+};
+
+export default ReceiveDataTable;
