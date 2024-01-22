@@ -124,7 +124,7 @@ const PPLHPDataTable: FC<PPLHPDataTableProps> = ({ data }) => {
         </DropdownMenu>
       </div>
       <div className=" text-moss_green">
-        <Table className="italic font-dm-sans">
+        <Table className="font-dm-sans">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow className="italic" key={headerGroup.id}>

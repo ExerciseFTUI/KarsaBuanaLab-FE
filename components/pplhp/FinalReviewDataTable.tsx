@@ -124,10 +124,10 @@ const FinalReviewDataTable: FC<FinalReviewDataTableProps> = ({ data }) => {
         </DropdownMenu>
       </div>
       <div className=" text-light_brown">
-        <Table className="italic font-dm-sans">
+        <Table className="font-dm-sans">
           <TableHeader >
             {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow className="italic" key={headerGroup.id}>
+              <TableRow className="" key={headerGroup.id}>
                 {headerGroup.headers.map((header, index) => {
                   let className =
                     "text-center text-ghost_white italic bg-light_brown p-2";

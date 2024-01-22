@@ -194,7 +194,7 @@ export default async function Home({ params }: { params: { np: string } }) {
           <LaporanHasilPemeriksaan
             title="Pengisian LHP"
             color="dark_brown"
-            link={LaporanHasilPemeriksaanData}
+            link={linkData.lhp}
           />
         </div>
       </main>
