@@ -179,6 +179,19 @@ export const getSample = async (): Promise<BaseApiResponse<[BaseSample]>> => {
 //   }
 // };
 
+export const getDashboard = async () : Promise<BaseApiResponse<DashboardResult>> => {
+  try {
+    const response = await axios.get(
+      `${apiBaseUrl}/marketing/dashboard`
+    );
+
+    return response.data as BaseApiResponse<DashboardResult>;
+  } catch (error:any) {
+    console.error('Error getting api because : ', error.message);
+    return null as unknown as BaseApiResponse<DashboardResult>
+  }
+}
+
 //Berhasil
 export const getProject = async (
   projectId: string

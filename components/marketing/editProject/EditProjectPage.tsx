@@ -160,7 +160,7 @@ export default function EditProjectPage({ project }: EditProjectPageProps) {
       jumlah_revisi: values.numRevisi,
       valuasi_proyek: values.valuasiProject
     };
-
+    
     //Edit Project Function
     const response = await updateProject(body, uploadedFiles);
     alert("Project Updated");

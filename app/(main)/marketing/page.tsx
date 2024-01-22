@@ -5,8 +5,71 @@ import { BarChart } from "@/components/chart/barChart";
 // import { PieChart } from "@/components/chart/pieChart"
 import { BsGraphUp, BsPersonCircle } from "react-icons/bs";
 import { AiFillProject, AiFillFolderAdd } from "react-icons/ai";
+import { getDashboard } from "@/lib/actions/marketing.actions";
 
-export default function Home() {
+export default async function Home() {
+  const response = await getDashboard();
+  
+  const detailGraph = [
+    {
+      title: "Project Running",
+      backgroundColor: "#03fcf0",
+      borderColor: "#035efc",
+      salesData : [
+        { month: "Jan", sales: 23 },
+        { month: "Feb", sales: 15 },
+        { month: "Mar", sales: 20 },
+        { month: "Apr", sales: 12 },
+        { month: "Mei", sales: 18 },
+        { month: "Jun", sales: 25 },
+        { month: "Jul", sales: 12 },
+        { month: "Aug", sales: 20 },
+        { month: "Sep", sales: 20 },
+        { month: "Oct", sales: 20 },
+        { month: "Nov", sales: 15 },
+        { month: "Dec", sales: 25 },
+      ],
+    },
+    {
+      title: "Project Cancelled",
+      backgroundColor: "#FF8383",
+      borderColor: "#FF0000",
+      salesData : [
+        { month: "Jan", sales: 15 },
+        { month: "Feb", sales: 10 },
+        { month: "Mar", sales: 12 },
+        { month: "Apr", sales: 8 },
+        { month: "May", sales: 14 },
+        { month: "Jun", sales: 10 },
+        { month: "Jul", sales: 10 },
+        { month: "Aug", sales: 14 },
+        { month: "Sep", sales: 14 },
+        { month: "Oct", sales: 14 },
+        { month: "Nov", sales: 10 },
+        { month: "Dec", sales: 15 },
+      ],
+    },
+    {
+      title: "Project Finished",
+      backgroundColor: "#c2fc03",
+      borderColor: "#35fc03",
+      salesData : [
+        { month: "Jan", sales: 30 },
+        { month: "Feb", sales: 18 },
+        { month: "Mar", sales: 25 },
+        { month: "Apr", sales: 15 },
+        { month: "May", sales: 22 },
+        { month: "Jun", sales: 28 },
+        { month: "Jul", sales: 18 },
+        { month: "Aug", sales: 25 },
+        { month: "Sep", sales: 22 },
+        { month: "Oct", sales: 24 },
+        { month: "Nov", sales: 18 },
+        { month: "Dec", sales: 30 },
+      ],
+    },
+  ]
+
   return (
     <div className="w-full h-screen ">
       {/* Section for Overview of Dashboard */}
@@ -25,7 +88,7 @@ export default function Home() {
           <AiFillProject className="text-4xl bg-light_green p-1 rounded-lg"></AiFillProject>
           <div className=" text-left text-xs md:text-sm ml-1">
             <div>Total Projects</div>
-            <div className=" font-semibold">189</div>
+            <div className=" font-semibold">{response.result.totalProject}</div>
           </div>
         </div>
 
@@ -34,7 +97,7 @@ export default function Home() {
           <BsPersonCircle className="text-4xl bg-light_green p-1 rounded-lg"></BsPersonCircle>
           <div className=" text-left text-xs md:text-sm ml-1">
             <div>Total Clients</div>
-            <div className=" font-semibold">82</div>
+            <div className=" font-semibold">{response.result.totalClient}</div>
           </div>
         </div>
 
@@ -57,12 +120,12 @@ export default function Home() {
       </Button>
 
       {/* Section for chart */}
-      <div className=" items-center pb-24 ">
+      <div className=" items-center flex flex-col justify-center pb-24 sm:pb-0 ">
         {/* <h1 className="text-dark_green mt-6 text-xl font-bold">Projects</h1> */}
-        <div className=" md:flex w-full h-auto ">
-          <LineChart />
-          <LineChart />
-          <LineChart />
+        <div className=" md:flex w-full h-full md:flex-row justify-center">
+          {detailGraph.map((graph, index) => (
+            <LineChart key={index} detailGraph={graph} />
+          ))}
         </div>
 
         {/* Bar Chart and Pie Chart  */}
