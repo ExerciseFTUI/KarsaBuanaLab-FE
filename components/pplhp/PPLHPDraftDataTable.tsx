@@ -94,7 +94,7 @@ const PPLHPDataTable: FC<PPLHPDataTableProps> = ({ data }) => {
           onChange={(event) =>
             table.getColumn("project_name")?.setFilterValue(event.target.value)
           }
-          className="max-w-sm pl-10"
+          className="max-w-sm bg-pastel_moss_green pl-10"
         />
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -128,15 +128,23 @@ const PPLHPDataTable: FC<PPLHPDataTableProps> = ({ data }) => {
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow className="italic" key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
+                {headerGroup.headers.map((header, index) => {
+                  let className =
+                    "text-center text-ghost_white italic bg-moss_green p-2";
+                  if (index === 0) {
+                    className += " rounded-l-full"; // Add rounded corners to the left side
+                  }
+                  if (index === headerGroup.headers.length - 1) {
+                    className += " rounded-r-full"; // Add rounded corners to the right side
+                  }
                   return (
-                    <TableHead key={header.id} className="text-moss_green">
+                    <TableHead key={header.id} className={className}>
                       {header.isPlaceholder
                         ? null
                         : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
                     </TableHead>
                   );
                 })}
@@ -147,7 +155,7 @@ const PPLHPDataTable: FC<PPLHPDataTableProps> = ({ data }) => {
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
-                  className="hover:bg-light_green ease-in-out duration-500 text-xs hover:cursor-pointer hover:rounded-xl"
+                  className="hover:bg-pastel_moss_green ease-in-out duration-500 text-xs hover:cursor-pointer hover:rounded-xl text-center"
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
                   onClick={() => router.push("lhpdraft/" + row.getValue("_id"))}
