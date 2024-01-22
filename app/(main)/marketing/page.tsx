@@ -88,7 +88,7 @@ export default async function Home() {
           <AiFillProject className="text-4xl bg-light_green p-1 rounded-lg"></AiFillProject>
           <div className=" text-left text-xs md:text-sm ml-1">
             <div>Total Projects</div>
-            <div className=" font-semibold">{response.result.totalProject}</div>
+            <div className=" font-semibold">{response? response.result.totalProject : "Please refresh the page"}</div>
           </div>
         </div>
 
@@ -97,7 +97,7 @@ export default async function Home() {
           <BsPersonCircle className="text-4xl bg-light_green p-1 rounded-lg"></BsPersonCircle>
           <div className=" text-left text-xs md:text-sm ml-1">
             <div>Total Clients</div>
-            <div className=" font-semibold">{response.result.totalClient}</div>
+            <div className=" font-semibold">{response? response.result.totalClient : "Please refresh the page"}</div>
           </div>
         </div>
 
@@ -129,9 +129,10 @@ export default async function Home() {
         </div>
 
         {/* Bar Chart and Pie Chart  */}
-        <div className=" md:flex w-full h-auto justify-around ">
+        <div className=" md:flex md:flex-row w-full h-full justify-center ">
           <BarChart />
           <BarChart />
+          {/* <PieChart /> */}
         </div>
       </div>
     </div>
