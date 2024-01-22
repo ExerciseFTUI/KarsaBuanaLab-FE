@@ -13,6 +13,11 @@ import {
 } from "@/components/ui/select";
 import { RiShareBoxLine } from "react-icons/ri";
 
+interface DocumentLink {
+  value: string;
+  label: string;
+}
+
 interface DocumentData {
   url: string;
   name: string;
@@ -62,5 +67,4 @@ const Document: FC<DocumentProps> = ({ data, color }) => {
     </div>
   );
 };
-
 export default Document;

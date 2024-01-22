@@ -34,6 +34,7 @@ import Modal from "@/components/Modal";
 import MultipleSelect from "@/components/MultipleSelect";
 import { Button } from "@/components/ui/button";
 import { array } from "zod";
+import { BaseSample } from "@/lib/models/baseSample.model";
 //Shadcn
 
 interface CreateSampleModalProps {
@@ -42,6 +43,7 @@ interface CreateSampleModalProps {
   form: UseFormReturn<FieldValues, any, undefined>;
   onSubmit: SubmitHandler<FieldValues>;
   title?: string;
+  baseSamples?: BaseSample[];
 }
 
 const CreateSampleModal: FC<CreateSampleModalProps> = ({
@@ -50,6 +52,7 @@ const CreateSampleModal: FC<CreateSampleModalProps> = ({
   form,
   onSubmit,
   title,
+  baseSamples,
 }) => {
   const { watch, setValue } = form;
 
@@ -92,6 +95,14 @@ const CreateSampleModal: FC<CreateSampleModalProps> = ({
                             <SelectContent>
                               <SelectGroup>
                                 <SelectLabel>Select the sample</SelectLabel>
+                                {baseSamples?.map((sample) => (
+                                  <SelectItem
+                                    key={sample._id}
+                                    value={sample.sample_name}
+                                  >
+                                    {sample.sample_name}
+                                  </SelectItem>
+                                ))}
                                 <SelectItem value="Sample 1">
                                   Sample 1
                                 </SelectItem>
@@ -126,11 +137,19 @@ const CreateSampleModal: FC<CreateSampleModalProps> = ({
                             <SelectContent>
                               <SelectGroup>
                                 <SelectLabel>Select the regulation</SelectLabel>
-                                <SelectItem value="regulation 1">
-                                  regulation 1
+                                {/* {baseSamples?.map((sample) => (
+                                  <SelectItem
+                                    key={`${sample._id}-${sample.regulation}`}
+                                    value={sample.regulation}
+                                  >
+                                    {sample.regulation}
+                                  </SelectItem>
+                                ))} */}
+                                <SelectItem value="Pemerintah Pusat">
+                                  Pemerintah Pusat
                                 </SelectItem>
-                                <SelectItem value="regulation 2">
-                                  regulation 2
+                                <SelectItem value="Pemerintah Bogor">
+                                  Pemerintah Bogor
                                 </SelectItem>
                               </SelectGroup>
                             </SelectContent>

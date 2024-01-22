@@ -162,15 +162,15 @@ const data = [
     cp: "Contact Person 20",
     lokasi: "Location 20",
     lokasiPengambilanSampel: "Jl. Flamboyan",
-  }
+  },
 ];
 
 export default async function Home() {
   const projects = await getProject("running");
-  console.log(projects)
+
   return (
     <div className="flex justify-between w-full h-screen">
-      <LabDataTable data={projects} link="finalreview/" />
+      <LabDataTable data={projects ? projects : []} link="finalreview/" />
     </div>
   );
 }

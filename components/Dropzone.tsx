@@ -62,7 +62,7 @@ const Dropzone = ({ setUploadedFiles }) => {
         }`}
         {...getRootProps()}
       >
-        <input {...getInputProps()} />
+        <input name="files" type="" {...getInputProps()} />
         <p>Drag &apos;n&apos; drop some files here, or click to select files</p>
       </div>
 
