@@ -100,7 +100,7 @@ function BarChart() {
 
     // h-60 w-full sm:w-60 mr-10 mt-6
     return (
-        <div className="h-full w-full mt-6 ">
+        <div className="h-fit w-1/2 mt-6 ">
             <h4 className="text-xs bg-light_green w-fit px-2 rounded-md font-medium text-start">
                 Offers
             </h4>
