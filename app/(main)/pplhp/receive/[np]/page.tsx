@@ -29,7 +29,7 @@ export default function Home({ params }: { params: { np: string } }) {
                 </div>
                 <div className="flex items-center justify-between text-ghost_white italic">
                   <p>28.2-FPP.LOG PENERIMAAN DAN PENDISTRIBUSIAN SAMPEL</p>
-                  <a href="" target="_blank">
+                  <a href="/" target="_blank">
                     <BsArrowRight className="text-4xl" />
                   </a>
                 </div>
@@ -46,7 +46,7 @@ export default function Home({ params }: { params: { np: string } }) {
                 </div>
                 <div className="flex items-center justify-between text-ghost_white italic">
                   <p>28.3-FPP.LOG RANGKAIAN PENGAMAN SAMPEL</p>
-                  <a href="" target="_blank">
+                  <a href="/" target="_blank">
                     <BsArrowRight className="text-4xl" />
                   </a>
                 </div>
