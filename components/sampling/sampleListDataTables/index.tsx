@@ -6,9 +6,10 @@ import {
   // samplingSamplePageColumns,
 } from "./DataTableColumns"
 import { DataTable } from "./DataTable"
-import { Sampling } from "@/lib/models/sampling.model"
+import { Project } from "@/lib/models/project.model"
+import React from "react"
 
-function SamplingProjectDataTables({data}: {data: Sampling[]}) {
+function SamplingProjectDataTables({ data }: { data: Project[] }) {
   const status = ["NOT ASSIGNED"]
 
   return (
@@ -21,7 +22,7 @@ function SamplingProjectDataTables({data}: {data: Sampling[]}) {
   )
 }
 
-function SamplingLetterDataTables({data}: {data: Sampling[]}) {
+function SamplingLetterDataTables({ data }: { data: Project[] }) {
   const status: string[] = ["ASSIGNED"]
 
   return (
@@ -34,8 +35,14 @@ function SamplingLetterDataTables({data}: {data: Sampling[]}) {
   )
 }
 
-function SamplingSampleDataTables({data, role}: {data: Sampling[], role: string}) {
-  const status = ["", "VERIFYING", "FINISHED"]
+function SamplingSampleDataTables({
+  data,
+  role,
+}: {
+  data: Project[]
+  role: string
+}) {
+  const status = [""]
 
   return (
     <DataTable

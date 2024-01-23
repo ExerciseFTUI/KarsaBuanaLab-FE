@@ -5,10 +5,11 @@ import ProjectDetails from "../ProjectDetails"
 import DocumentList from "../DokumentList"
 import TabSampleStaff from "./TabSampleStaff"
 import TabSampleAdmin from "./TabSampleAdmin"
-import { Sampling } from "@/lib/models/sampling.model"
 import { useSession } from "next-auth/react"
+import { Project } from "@/lib/models/project.model"
+import LoadingScreen from "@/components/LoadingScreen"
 
-export default function Project({data}: {data: Sampling}) {
+export default function Project({data}: {data: Project}) {
   const currentUser = useSession().data?.user
   
   const role = /* currentUser?.name || */ "staff"
