@@ -356,8 +356,8 @@ export const receiveProjectPageColumns: ColumnDef<ProjectType>[] = [
         stat == "Need Schedule" || stat == "Get Sample"
           ? "bg-moss_green"
           : stat == "On Discuss" || stat == "Verifying"
-          ? "bg-light_brown"
-          : "bg-brick_red";
+            ? "bg-light_brown"
+            : "bg-brick_red";
 
       return (
         <div
@@ -433,8 +433,8 @@ export const samplingProjectPageColumns: ColumnDef<ProjectSamplingType>[] = [
         status == "Need Schedule" || status == "Get Sample"
           ? "bg-moss_green"
           : status == "On Discuss" || status == "Verifying"
-          ? "bg-light_brown"
-          : "bg-brick_red";
+            ? "bg-light_brown"
+            : "bg-brick_red";
 
       return (
         <div
@@ -464,7 +464,7 @@ export const receiveSamplingColumns: ColumnDef<ReceiveSamplingType>[] = [
     header: ({ column }) => {
       return (
         <Button
-          className="font-light hover:bg-transparent italic"
+          className="italic hover:bg-transparent hover:text-pastel_moss_green"
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
@@ -511,6 +511,10 @@ export const receiveSamplingColumns: ColumnDef<ReceiveSamplingType>[] = [
       );
     },
   },
+  // {
+  //   accessorKey: "_id",
+  //   hide: true,
+  // },
 ];
 
 export const LHPDraftPageColumns: ColumnDef<ProjectLHPType>[] = [
@@ -525,67 +529,7 @@ export const LHPDraftPageColumns: ColumnDef<ProjectLHPType>[] = [
     header: ({ column }) => {
       return (
         <Button
-          className="italic text-moss_green"
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Judul Project
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-    cell: ({ row }) => (
-      <div className="capitalize pl-4">{row.getValue("project_name")}</div>
-    ),
-  },
-  //Status
-  {
-    accessorKey: "alamat_sampling",
-    header: "Lokasi Pengambilan Sampel",
-    cell: ({ row }) => {
-      return (
-        <div className="capitalize pl-0.5">
-          {row.getValue("lokasiPengambilanSampel")}
-        </div>
-      );
-    },
-  },
-  //Lokasi
-  {
-    accessorKey: "alamat_kantor",
-    header: "Lokasi",
-    cell: ({ row }) => {
-      return (
-        <div className="capitalize pl-0.5">{row.getValue("alamat_kantor")}</div>
-      );
-    },
-  },
-  {
-    accessorKey: "contact_person",
-    header: "Contact Person",
-    cell: ({ row }) => {
-      return (
-        <div className="capitalize pl-0.5">
-          {row.getValue("contact_person")}
-        </div>
-      );
-    },
-  },
-];
-
-export const PPLHPFinalReviewPageColumns: ColumnDef<ProjectLHPType>[] = [
-  //No Penawaran
-  {
-    accessorKey: "no_penawaran",
-    header: "No Penawaran",
-    cell: ({ row }) => <div className="">{row.getValue("no_penawaran")}</div>,
-  },
-  {
-    accessorKey: "project_name",
-    header: ({ column }) => {
-      return (
-        <Button
-          className="italic text-[#b49a82]"
+          className="italic hover:bg-transparent hover:text-pastel_moss_green"
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
@@ -631,6 +575,74 @@ export const PPLHPFinalReviewPageColumns: ColumnDef<ProjectLHPType>[] = [
       );
     },
   },
+  // {
+  //   accessorKey: "_id",
+  //   hide: true,
+  // },
+];
+
+export const PPLHPFinalReviewPageColumns: ColumnDef<ProjectLHPType>[] = [
+  //No Penawaran
+  {
+    accessorKey: "no_penawaran",
+    header: "No Penawaran",
+    cell: ({ row }) => <div className="">{row.getValue("no_penawaran")}</div>,
+  },
+  {
+    accessorKey: "project_name",
+    header: ({ column }) => {
+      return (
+        <Button
+          className="italic"
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Judul Project
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => (
+      <div className="capitalize pl-4">{row.getValue("project_name")}</div>
+    ),
+  },
+  //Status
+  {
+    accessorKey: "alamat_sampling",
+    header: "Lokasi Pengambilan Sampel",
+    cell: ({ row }) => {
+      return (
+        <div className="capitalize pl-0.5">
+          {row.getValue("alamat_sampling")}
+        </div>
+      );
+    },
+  },
+  //Lokasi
+  {
+    accessorKey: "alamat_kantor",
+    header: "Lokasi",
+    cell: ({ row }) => {
+      return (
+        <div className="capitalize pl-0.5">{row.getValue("alamat_kantor")}</div>
+      );
+    },
+  },
+  {
+    accessorKey: "contact_person",
+    header: "Contact Person",
+    cell: ({ row }) => {
+      return (
+        <div className="capitalize pl-0.5">
+          {row.getValue("contact_person")}
+        </div>
+      );
+    },
+  },
+  // {
+  //   accessorKey: "_id",
+  //   hide: true,
+  // },
 ];
 
 export const LabDashboardPageColumns: ColumnDef<LabDataType>[] = [

@@ -2,52 +2,24 @@
 import { AiOutlineFile, AiOutlineArrowRight } from "react-icons/ai";
 import { useRouter } from "next/navigation";
 
-const data = [
-  {
-    id: "1",
-    judul: "Doc Sampel 1-name",
-    link: "/link1",
-  },
-  {
-    id: "2",
-    judul: "Doc Sampel 2-name",
-    link: "/link2",
-  },
-  {
-    id: "3",
-    judul: "Doc Sampel 3-name",
-    link: "/link3",
-  },
-  {
-    id: "4",
-    judul: "Doc Sampel 4-name",
-    link: "/link4",
-  },
-  {
-    id: "5",
-    judul: "Doc Sampel 5-name",
-    link: "/link5",
-  },
-];
-
-export default function Home() {
+export default function SamplingTab({ data }:any) {
   const router = useRouter();
   return (
     <div className="px-16">
       <div className="text-moss_green space-y-6">
         <h2 className="text-xl">Rekaman Sampling</h2>
         <div className="space-y-2">
-          {data.map((item) => (
+          {data.map((item:any) => (
             <a
-              key={item.id}
+              key={item.name}
               className="grid grid-rows-12 items-center bg-[#e1e2d7] px-5 p-2 rounded-xl"
-              href={item.link}
+              href={item.url}
               target="_blank"
             >
               <div className="flex items-center justify-center bg-moss_green rounded-full h-10 w-10 mr-2">
                 <AiOutlineFile className="text-2xl text-ghost_white" />
               </div>
-              <p className="col-start-2 col-span-6">{item.judul}</p>
+              <p className="col-start-2 col-span-6">{item.name}</p>
               <div className="col-start-8">
                 <AiOutlineArrowRight className="text-4xl" />
               </div>
