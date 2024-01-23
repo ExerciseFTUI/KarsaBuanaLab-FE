@@ -47,8 +47,10 @@ const ProjectForm: FC<ProjectFormProps> = ({
   const router = useRouter();
   const query = useSearchParams();
   const { toast } = useToast();
+  
+
   return (
-    <Card className="w-[450px] max-sm:w-[400px] max-h-screen overflow-auto custom-scrollbar ">
+    <Card className="w-[450px] max-sm:w-[400px] max-h-screen md:max-h-[520px] overflow-auto custom-scrollbar ">
       <CardHeader>
         <CardTitle className="text-base font-bold ">
           Project Information
@@ -105,65 +107,69 @@ const ProjectForm: FC<ProjectFormProps> = ({
                 </FormItem>
               )}
             />
-            <FormField
+            {status?.toLocaleLowerCase() === "edit" && (
+              <div>
+                <FormField
                 control={form.control}
                 name="numPenawaran"
                 render={({ field }) => (
-                    <FormItem>
-                    <FormLabel>Nomor Penawaran</FormLabel>
-                    <FormControl>
-                        <Input
-                        disabled={true}
-                        type="string"
-                        className=""
-                        placeholder=""
-                        {...field}
-                        />
-                    </FormControl>
-
-                    <FormMessage />
-                    </FormItem>
-                )}
-                />
-            <FormField
-                control={form.control}
-                name="numRevisi"
-                render={({ field }) => (
-                    <FormItem>
-                    <FormLabel>Nomor Revisi</FormLabel>
-                    <FormControl>
-                        <Input
-                        disabled={true}
-                        type="number"
-                        className=""
-                        placeholder=""
-                        {...field}
-                        />
-                    </FormControl>
-
-                    <FormMessage />
-                    </FormItem>
-                )}
-                />
-            <FormField
-                control={form.control}
-                name="valuasiProject"
-                render={({ field }) => (
-                    <FormItem>
-                    <FormLabel>Valuasi Project</FormLabel>
-                    <FormControl>
-                        <Input
-                        type="text"
-                        className=""
-                        placeholder=""
-                        {...field}
-                        />
-                    </FormControl>
-
-                    <FormMessage />
-                    </FormItem>
-                )}
-                />
+                  <FormItem>
+                        <FormLabel>Nomor Penawaran</FormLabel>
+                        <FormControl>
+                            <Input
+                            disabled={true}
+                            type="string"
+                            className=""
+                            placeholder=""
+                            {...field}
+                            />
+                        </FormControl>
+    
+                        <FormMessage />
+                        </FormItem>
+                    )}
+                    />
+                    <FormField
+                    control={form.control}
+                    name="numRevisi"
+                    render={({ field }) => (
+                        <FormItem>
+                        <FormLabel>Nomor Revisi</FormLabel>
+                        <FormControl>
+                            <Input
+                            disabled={true}
+                            type="number"
+                            className=""
+                            placeholder=""
+                            {...field}
+                            />
+                        </FormControl>
+    
+                        <FormMessage />
+                        </FormItem>
+                    )}
+                    />
+                <FormField
+                    control={form.control}
+                    name="valuasiProject"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Valuasi Project</FormLabel>
+                        <FormControl>
+                            <Input
+                            type="text"
+                            className=""
+                            placeholder=""
+                            {...field}
+                            />
+                        </FormControl>
+    
+                        <FormMessage />
+                        </FormItem>
+                    )}
+                    />
+                  </div>
+                  )}
             <FormField
               control={form.control}
               name="alamatKantor"

@@ -239,7 +239,7 @@ const CreateProjectPage: FC<CreateProjectProps> = ({ baseSamples }) => {
   return (
     <div className="flex gap-6 max-md:flex-col max-md:items-center">
       {isLoading && <LoadingScreen />}
-      <ProjectForm form={form} onSubmit={onSubmitForm} />
+      <ProjectForm form={form} onSubmit={onSubmitForm} status="CREATE" />
       <Tabs
         defaultValue="sampling"
         className="w-[40rem] max-sm:w-[420px] justify-center"
@@ -271,8 +271,8 @@ const CreateProjectPage: FC<CreateProjectProps> = ({ baseSamples }) => {
         </TabsContent>
         {/* End Document Section */}
 
-        <div className="bg-moss_green flex justify-center items-center mt-5 w-2/3 rounded-lg py-4 text-white hover:bg-light_green hover:cursor-pointer">
-          Submit
+        <div className="flex flex-row justify-center items-center mt-5 w-full">
+          <button onClick={form.handleSubmit(onSubmitForm)} className=" text-white w-1/3 rounded-lg py-4 hover:bg-dark_green text-base font-medium hover:cursor-pointer bg-moss_green">Submit</button>
         </div>
       </Tabs>
     </div>
