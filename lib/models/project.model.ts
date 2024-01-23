@@ -1,5 +1,6 @@
 import { Sampling } from "./sampling.model"
 import { File } from "./file.model"
+import { User } from "./user.model"
 
 export interface Project {
   no_penawaran: string
@@ -22,6 +23,8 @@ export interface Project {
   sampling_list: Sampling[]
   file: File[]
   created_at: string
+  jadwal_sampling: string
+  project_assigned_to: User[]
   _id: string
   __v: number
 }
