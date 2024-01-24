@@ -107,7 +107,7 @@ const ProjectForm: FC<ProjectFormProps> = ({
                 </FormItem>
               )}
             />
-            {status?.toLocaleLowerCase() === "edit" && (
+            {status?.toLocaleLowerCase() !== "create" && (
               <div>
                 <FormField
                 control={form.control}

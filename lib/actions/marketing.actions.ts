@@ -243,13 +243,24 @@ export const getbyStatus = async (
 ): Promise<BaseApiResponse<[ProjectMarketingType]>> => {
   try {
     const response = await axios.get(`${apiBaseUrl}/marketing/${status}`);
-    return response.data as BaseApiResponse<[ProjectMarketingType]>;
+    
+    // Sort the data by the newest createdAt
+    const sortedData = response.data.result.sort((a : ProjectMarketingType, b:ProjectMarketingType) => {
+      return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
+    });
+
+    console.log(sortedData);
+    
+    return {
+      ...response.data,
+      result: sortedData,
+    } as BaseApiResponse<[ProjectMarketingType]>;
   } catch (error: any) {
-    console.error(`Error getting project  ${status}:`, error.message);
-    // throw new Error(`Failed to get project  ${status}`);
+    console.error(`Error getting project ${status}:`, error.message);
     return null as unknown as BaseApiResponse<[ProjectMarketingType]>;
   }
 };
+
 
 export const testing = async () => {
   try {

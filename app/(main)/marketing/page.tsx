@@ -41,7 +41,7 @@ export default async function Home() {
           <BsGraphUp className="text-4xl bg-light_green p-1 rounded-lg"></BsGraphUp>
           <div className=" text-left text-xs md:text-sm ml-1">
             <div>Approved Offers</div>
-            <div className=" font-semibold">{ response ? `Rp ${response.result.offerPerMonth.totalValuation}` : "Please refresh the page"}</div>
+            <div className=" font-semibold">{ response ? `Rp${new Intl.NumberFormat('id-ID').format(response.result.offerPerMonth.totalValuation)}` : "Please refresh the page"}</div>
           </div>
         </div>
 

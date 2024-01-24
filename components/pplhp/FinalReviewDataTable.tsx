@@ -73,7 +73,7 @@ const FinalReviewDataTable: FC<FinalReviewDataTableProps> = ({ data }) => {
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     // HERE
-    // onColumnVisibilityChange: setColumnVisibility,
+    onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: setRowSelection,
     state: {
       sorting,

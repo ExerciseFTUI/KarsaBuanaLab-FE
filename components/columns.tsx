@@ -511,10 +511,10 @@ export const receiveSamplingColumns: ColumnDef<ReceiveSamplingType>[] = [
       );
     },
   },
-  // {
-  //   accessorKey: "_id",
-  //   hide: true,
-  // },
+  {
+    accessorKey: "_id",
+    hide: true,
+  },
 ];
 
 export const LHPDraftPageColumns: ColumnDef<ProjectLHPType>[] = [
@@ -575,10 +575,10 @@ export const LHPDraftPageColumns: ColumnDef<ProjectLHPType>[] = [
       );
     },
   },
-  // {
-  //   accessorKey: "_id",
-  //   hide: true,
-  // },
+  {
+    accessorKey: "_id",
+    hide: true,
+  },
 ];
 
 export const PPLHPFinalReviewPageColumns: ColumnDef<ProjectLHPType>[] = [
@@ -639,10 +639,10 @@ export const PPLHPFinalReviewPageColumns: ColumnDef<ProjectLHPType>[] = [
       );
     },
   },
-  // {
-  //   accessorKey: "_id",
-  //   hide: true,
-  // },
+  {
+    accessorKey: "_id",
+    hide: true,
+  },
 ];
 
 export const LabDashboardPageColumns: ColumnDef<LabDataType>[] = [

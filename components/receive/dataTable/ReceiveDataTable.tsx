@@ -76,7 +76,7 @@ const ReceiveDataTable: FC<ReceiveDataTableProps> = ({ data }) => {
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     // HERE
-    // onColumnVisibilityChange: setColumnVisibility,
+    onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: setRowSelection,
     state: {
       sorting,
