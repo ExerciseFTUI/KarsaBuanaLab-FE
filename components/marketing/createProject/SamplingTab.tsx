@@ -128,6 +128,7 @@ const SamplingTab: FC<SamplingTabProps> = ({
                   index={index}
                   deleteSample={() => deleteSample(index)}
                   update={update}
+                  baseSamples={baseSamples}
                 />
               ))}
             </>

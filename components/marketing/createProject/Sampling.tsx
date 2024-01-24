@@ -34,6 +34,7 @@ import {
 } from "react-hook-form";
 import CreateSampleModal from "./CreateSampleModal";
 import { toast, useToast } from "@/components/ui/use-toast";
+import { BaseSample } from "@/lib/models/baseSample.model";
 
 interface SamplingProps {
   sampleName: string;
@@ -42,6 +43,7 @@ interface SamplingProps {
   deleteSample: () => void;
   index: number;
   update: UseFieldArrayUpdate<FieldValues, "samples">;
+  baseSamples?: BaseSample[];
 }
 
 const Sampling: FC<SamplingProps> = ({
@@ -51,6 +53,7 @@ const Sampling: FC<SamplingProps> = ({
   deleteSample,
   index,
   update,
+  baseSamples,
 }) => {
   const [openModal, setOpenModal] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -103,13 +106,16 @@ const Sampling: FC<SamplingProps> = ({
         onClose={() => {
           setOpenModal(false);
           //Reset Parameter value
-          setValue("parameters", [""], { shouldValidate: true });
+          // setValue("parameters", [""], { shouldValidate: true });
+
+          //===============BUG?
           resetField("sampling");
           resetField("parameters");
           // form.reset();
         }}
         form={form}
         onSubmit={onSubmit}
+        baseSamples={baseSamples}
       />
       <Collapsible open={isOpen} onOpenChange={setIsOpen}>
         <CollapsibleTrigger asChild>
