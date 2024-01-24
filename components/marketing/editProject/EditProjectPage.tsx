@@ -27,14 +27,24 @@ import EditProjectForm from "./EditProjectForm";
 import ProjectForm from "../forms/ProjectForm";
 import { Project } from "@/lib/models/project.model";
 import { useToast } from "@/components/ui/use-toast";
-import { updateProject } from "@/lib/actions/marketing.actions";
+import {
+  updateProject,
+  updateProjectInfo,
+  updateProjectSample,
+} from "@/lib/actions/marketing.actions";
 import { useRouter } from "next/navigation";
+import { set } from "date-fns";
+import { BaseSample } from "@/lib/models/baseSample.model";
 
 interface EditProjectPageProps {
   project: Project;
+  baseSamples: BaseSample[];
 }
 
-export default function EditProjectPage({ project }: EditProjectPageProps) {
+export default function EditProjectPage({
+  project,
+  baseSamples,
+}: EditProjectPageProps) {
   //General
   const { toast } = useToast();
 
@@ -61,6 +71,9 @@ export default function EditProjectPage({ project }: EditProjectPageProps) {
   //All the samples get save in here
   const { fields: samples, append, remove } = arrayField;
 
+  //Checker
+  const [change, setChange] = useState(false);
+
   //Append all the samples from API to the samples array
   if (project.sampling_list && project.sampling_list.length > samples.length) {
     const newSamples = project.sampling_list.map((sample) => {
@@ -79,14 +92,13 @@ export default function EditProjectPage({ project }: EditProjectPageProps) {
       };
     });
 
-    append(newSamples);
-    console.log(newSamples);
+    if (!change) {
+      append(newSamples);
+    }
   }
 
   //Add to the samples array
   const onSubmitSample: SubmitHandler<FieldValues> = async (data) => {
-    console.log(data.parameters);
-
     //Handle Missing Data
     if (
       data.sampling === "" ||
@@ -126,6 +138,9 @@ export default function EditProjectPage({ project }: EditProjectPageProps) {
       title: "Successfully adding new sample",
       description: "Good Job",
     });
+
+    //Checker
+    setChange(true);
   };
 
   //================================= End Sample Section
@@ -158,12 +173,45 @@ export default function EditProjectPage({ project }: EditProjectPageProps) {
       contact_person: values.contactPerson,
       no_penawaran: values.numPenawaran,
       jumlah_revisi: values.numRevisi,
-      valuasi_proyek: values.valuasiProject
+      valuasi_proyek: values.valuasiProject,
     };
-    
+
     //Edit Project Function
-    const response = await updateProject(body, uploadedFiles);
-    alert("Project Updated");
+    const responseInfo = await updateProjectInfo(body);
+    if (!responseInfo) {
+      alert("Failed Updating Project Info");
+      return;
+    }
+    if (samples.length > 0) {
+      //@ts-ignore
+      const sampling_list = samples.map((sample) => sample.sampleName);
+      //@ts-ignore
+      const regulation_list = samples.map((sample) => sample.regulation);
+
+      console.log("Sampling List: ", sampling_list);
+      console.log("Regulation List: ", regulation_list);
+
+      const bodySampling = {
+        _id: project._id,
+        regulation_list: ["Pemerintah Bogor"],
+        sampling_list: ["Air_Limbah"],
+      };
+
+      const responseSampling = await updateProjectSample(bodySampling);
+
+      if (!responseSampling) {
+        alert("Failed Updating Project Samples");
+        router.refresh();
+        return;
+      }
+    }
+
+    if (uploadedFiles.length > 0) {
+      alert("Updating File");
+    }
+
+    alert("Success Updating Project");
+
     router.push("/marketing/running");
   }
 
@@ -173,7 +221,7 @@ export default function EditProjectPage({ project }: EditProjectPageProps) {
 
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [isCancelled, setIsCancelled] = useState(false);
-  const [reason, setReason] = useState('');
+  const [reason, setReason] = useState("");
 
   const handleSubmitDocs = () => {
     // Log the uploaded files to the console
@@ -202,7 +250,7 @@ export default function EditProjectPage({ project }: EditProjectPageProps) {
 
   return (
     <>
-    {isCancelled && (
+      {isCancelled && (
         <div className="modal-overlay fixed top-0 left-0 w-full h-full flex justify-center items-center bg-gray-800 bg-opacity-50 z-50">
           <div className="modal-content bg-white rounded-lg border-2 p-8">
             <p className="text-center text-xl font-bold mb-4">
@@ -248,7 +296,7 @@ export default function EditProjectPage({ project }: EditProjectPageProps) {
           onSubmit={onSubmit}
           status="EDIT"
           note="Gakuat bayar jasa kita"
-          />
+        />
         <Tabs defaultValue="sampling" className="w-[40rem] max-sm:w-[420px]">
           <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger value="sampling">Sampling</TabsTrigger>
@@ -263,13 +311,15 @@ export default function EditProjectPage({ project }: EditProjectPageProps) {
               openModal={openModal}
               setOpenModal={setOpenModal}
               onSubmit={onSubmitSample}
-              />
+              baseSamples={baseSamples}
+            />
           </TabsContent>
           {/* End Sample Section */}
 
           {/* Document Section */}
           <TabsContent value="document">
             {/* Right Card for Dropzone */}
+
             <Card
               className={`overflow-y-auto md:max-h-[25rem] max-h-[90vh] custom-scrollbar`}
               >
@@ -287,19 +337,19 @@ export default function EditProjectPage({ project }: EditProjectPageProps) {
                     <a
                       href="#"
                       className="bg-light_green items-center justify-between rounded-lg px-5 py-3 hover:bg-dark_green hover:text-white font-medium flex"
-                      >
+                    >
                       Formulir Permohonan Pengajuan <MdOpenInNew />
                     </a>
                     <a
                       href="#"
                       className="bg-light_green items-center justify-between rounded-lg px-5 py-3 hover:bg-dark_green hover:text-white font-medium flex"
-                      >
+                    >
                       KUPTK <MdOpenInNew />
                     </a>
                     <a
                       href="#"
                       className="bg-light_green items-center justify-between rounded-lg px-5 py-3 hover:bg-dark_green hover:text-white font-medium flex"
-                      >
+                    >
                       Surat Penawaran <MdOpenInNew />
                     </a>
                   </div>
@@ -346,29 +396,31 @@ export default function EditProjectPage({ project }: EditProjectPageProps) {
                 <Dropzone setUploadedFiles={setUploadedFiles} />
                 {/* End of Drag and drop files area */}
               </div>
-
             </Card>
-          {/* End of Right Card for Dropzone */}
+            {/* End of Right Card for Dropzone */}
             {/* <DocumentTab
               uploadedFiles={uploadedFiles}
               setUploadedFiles={setUploadedFiles}
             /> */}
           </TabsContent>
-              {/* Button for submit */}
-              <div className="m-5 flex justify-evenly items-center  ">
-                <button
-                  onClick={form.handleSubmit(onSubmit)}
-                  className=" bg-light_green rounded-lg px-5 py-3 hover:bg-dark_green hover:text-white font-medium">
-                  Submit
-                </button>
-                {/* Cancelled Project */}
-                <button onClick={() => setIsCancelled(true)} 
-                  className=" bg-red-400 px-5 hover:bg-red-500 font-medium text-black hover:text-white rounded-lg py-3">
-                  Cancel Project
-                </button>
-                {/* End of Cancelled Project */}
-              </div>
-              {/* End Button for submit */}
+          {/* Button for submit */}
+          <div className="m-5 flex justify-evenly items-center  ">
+            <button
+              onClick={form.handleSubmit(onSubmit)}
+              className=" bg-light_green rounded-lg px-5 py-3 hover:bg-dark_green hover:text-white font-medium"
+            >
+              Submit
+            </button>
+            {/* Cancelled Project */}
+            <button
+              onClick={() => setIsCancelled(true)}
+              className=" bg-red-400 px-5 hover:bg-red-500 font-medium text-black hover:text-white rounded-lg py-3"
+            >
+              Cancel Project
+            </button>
+            {/* End of Cancelled Project */}
+          </div>
+          {/* End Button for submit */}
 
           {/* End Document Section */}
         </Tabs>

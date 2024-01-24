@@ -52,11 +52,11 @@ export const samplingLinks: ISidebarLinks[] = [
     route: "/project",
     label: "Project",
   },
-  {
-    icon: <FiFileText />,
-    route: "/assignment-letter",
-    label: "Assignment Letter",
-  },
+  // {
+  //   icon: <FiFileText />,
+  //   route: "/assignment-letter",
+  //   label: "Assignment Letter",
+  // },
   {
     icon: <Archive />,
     route: "/sample",

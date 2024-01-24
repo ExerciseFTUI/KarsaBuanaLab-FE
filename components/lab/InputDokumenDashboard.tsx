@@ -26,7 +26,7 @@ const InputDokumenDashboard: FC<InputDokumenDashboardProps> = ({ title, fileName
                     </div>
                     <div className="flex items-center justify-between text-ghost_white italic">
                         <p>{fileName}</p>
-                        <a href="" target="_blank">
+                        <a href="/" target="_blank">
                             <BsArrowRight className="text-4xl" />
                         </a>
                     </div>

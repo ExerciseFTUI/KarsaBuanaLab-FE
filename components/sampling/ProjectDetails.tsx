@@ -2,12 +2,12 @@
 
 import React from "react"
 import { object } from "zod"
-import { cn, rupiah } from "@/lib/utils"
-import { Sampling } from "@/lib/models/sampling.model"
-import { Regulation } from "@/lib/models/regulation.model"
+import { cn } from "@/lib/utils"
+import { Project } from "@/lib/models/project.model"
+import LoadingScreen from "../LoadingScreen"
 
 interface pdType {
-  data: Sampling
+  data: Project
   className?: string
 }
 
@@ -19,14 +19,15 @@ export default function ProjectDetails({ data, className = "" }: pdType) {
         className
       )}
     >
-      <h1 className="text-2xl font-semibold mb-5">{data.sample_name}</h1>
+      <h1 className="text-2xl font-semibold mb-5">{data.project_name}</h1>
 
       <div className="">
         {[
-          { val: "Nomor Sampling", acc: "_id" },
-          { val: "Lokasi", acc: "location" },
+          { val: "No Penawaran", acc: "no_penawaran" },
+          { val: "Nama Project", acc: "project_name" },
+          { val: "Nomor Sampling", acc: "no_sampling" },
+          { val: "Alamat Sampling", acc: "alamat_sampling" },
           { val: "Jadwal", acc: "jadwal" },
-          { val: "Regulasi", acc: "regulation" },
         ].map((d, i) => {
           const key = d.acc as keyof typeof object
 
@@ -36,9 +37,7 @@ export default function ProjectDetails({ data, className = "" }: pdType) {
 
               <p className="ml-4 text-light_brown">
                 {
-                  d.acc == "valuasi_proyek" ? rupiah(data[key]) : 
-                  d.acc == "jadwal" ? new Date(data[key]).toUTCString() : 
-                  d.acc == "regulation" ? (data[key] as Regulation).regulation_name : data[key]
+                  (d.acc == "jadwal") ? data[key] != null ? new Date(data[key]).toUTCString() : "Jadwal belum ada." : data[key]
                 }
               </p>
             </div>

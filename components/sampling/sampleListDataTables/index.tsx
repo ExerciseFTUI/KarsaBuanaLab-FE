@@ -7,9 +7,10 @@ import {
 } from "./DataTableColumns"
 import { DataTable } from "./DataTable"
 import { Project } from "@/lib/models/project.model"
+import React from "react"
 
-function SamplingProjectDataTables({data}: {data: Project[]}) {
-  const status = ["", "NOT ASSIGNED", "FINISHED"]
+function SamplingProjectDataTables({ data }: { data: Project[] }) {
+  const status = ["NOT ASSIGNED"]
 
   return (
     <DataTable
@@ -21,7 +22,7 @@ function SamplingProjectDataTables({data}: {data: Project[]}) {
   )
 }
 
-function SamplingLetterDataTables({data}: {data: Project[]}) {
+function SamplingLetterDataTables({ data }: { data: Project[] }) {
   const status: string[] = ["ASSIGNED"]
 
   return (
@@ -34,8 +35,14 @@ function SamplingLetterDataTables({data}: {data: Project[]}) {
   )
 }
 
-function SamplingSampleDataTables({data, role}: {data: Project[], role: string}) {
-  const status = ["", "Get Sample", "Verifying", "Revision"]
+function SamplingSampleDataTables({
+  data,
+  role,
+}: {
+  data: Project[]
+  role: string
+}) {
+  const status = [""]
 
   return (
     <DataTable

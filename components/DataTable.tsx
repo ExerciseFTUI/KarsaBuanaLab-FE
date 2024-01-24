@@ -48,7 +48,6 @@ import {
   DoubleArrowLeftIcon,
   DoubleArrowRightIcon,
 } from "@radix-ui/react-icons";
-import { dummyTableData } from "@/constants";
 import { ProjectMarketingType, ProjectType } from "@/lib/type";
 import { Project } from "@/lib/models/project.model";
 import { columns } from "./columns";

@@ -3,10 +3,12 @@ import * as React from "react"
 import {
   ColumnDef,
   ColumnFiltersState,
+  ExpandedState,
   SortingState,
   VisibilityState,
   flexRender,
   getCoreRowModel,
+  getExpandedRowModel,
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
@@ -62,9 +64,8 @@ export function DataTable({status, columns, data, page}: DataTableProps) {
   const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({})
   const [statusFilter, setStatusFilter] = React.useState("")
 
-
   const table = useReactTable({
-    data: data || [],
+    data: data ? data : [],
     columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -89,12 +90,12 @@ export function DataTable({status, columns, data, page}: DataTableProps) {
           <Input
             placeholder="Filter By Project Title"
             value={
-              (table.getColumn("sample_name")?.getFilterValue() as string) ??
+              (table.getColumn("project_name")?.getFilterValue() as string) ??
               ""
             }
             onChange={(event) =>
               table
-                .getColumn("sample_name")
+                .getColumn("project_name")
                 ?.setFilterValue(event.target.value)
             }
             className="max-w-sm border-pastel_moss_green rounded-full focus-visible:ring-0 bg-pastel_moss_green pl-5 placeholder:text-moss_green"
@@ -181,17 +182,17 @@ export function DataTable({status, columns, data, page}: DataTableProps) {
                   className={cn("hover:bg-pastel_moss_green ease-in-out duration-500 hover:cursor-pointer hover:rounded-xl text-center")}
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
-                  onClick={() => //console.log(row)
+                  onClick={() => 
                     router.push(page+"/"+row.original._id)
                   }
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </TableCell>
+                      <TableCell key={cell.id}>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </TableCell>
                   ))}
                 </TableRow>
               ))
@@ -201,7 +202,7 @@ export function DataTable({status, columns, data, page}: DataTableProps) {
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  No results.
+                  Project Tidak Ada.
                 </TableCell>
               </TableRow>
             )}
