@@ -60,7 +60,7 @@ const FinalReviewDataTable: FC<FinalReviewDataTableProps> = ({ data }) => {
   const router = useRouter();
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-  const [columnVisibility, setColumnVisibility] = useState({ _id: false });
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({ _id: false });
   const [rowSelection, setRowSelection] = useState({});
 
   const table = useReactTable({
@@ -109,16 +109,18 @@ const FinalReviewDataTable: FC<FinalReviewDataTableProps> = ({ data }) => {
               .filter((column) => column.getCanHide())
               .map((column) => {
                 return (
-                  <DropdownMenuCheckboxItem
-                    key={column.id}
-                    className="capitalize"
-                    checked={column.getIsVisible()}
-                    onCheckedChange={(value) =>
-                      column.toggleVisibility(!!value)
-                    }
-                  >
-                    {column.id}
-                  </DropdownMenuCheckboxItem>
+                  (column.id !== "_id" &&
+                    <DropdownMenuCheckboxItem
+                      key={column.id}
+                      className="capitalize"
+                      checked={column.getIsVisible()}
+                      onCheckedChange={(value) =>
+                        column.toggleVisibility(!!value)
+                      }
+                    >
+                      {column.id}
+                    </DropdownMenuCheckboxItem>
+                  )
                 );
               })}
           </DropdownMenuContent>

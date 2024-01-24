@@ -64,9 +64,8 @@ export const columns: ColumnDef<ProjectMarketingType>[] = [
       return (
         <div className="">
           <div
-            className={`font-light text-white w-fit px-6 py-0.5 rounded-full ${
-              status ? "bg-yellow-700" : "bg-red-400"
-            }`}
+            className={`font-light text-white w-fit px-6 py-0.5 rounded-full ${status ? "bg-yellow-700" : "bg-red-400"
+              }`}
           >
             {row.getValue("status")}
           </div>
@@ -513,7 +512,6 @@ export const receiveSamplingColumns: ColumnDef<ReceiveSamplingType>[] = [
   },
   {
     accessorKey: "_id",
-    hide: true,
   },
 ];
 
@@ -577,7 +575,6 @@ export const LHPDraftPageColumns: ColumnDef<ProjectLHPType>[] = [
   },
   {
     accessorKey: "_id",
-    hide: true,
   },
 ];
 
@@ -641,7 +638,6 @@ export const PPLHPFinalReviewPageColumns: ColumnDef<ProjectLHPType>[] = [
   },
   {
     accessorKey: "_id",
-    hide: true,
   },
 ];
 
