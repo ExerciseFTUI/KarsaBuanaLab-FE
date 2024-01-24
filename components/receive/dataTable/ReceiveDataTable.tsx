@@ -15,6 +15,8 @@ import {
 } from "@tanstack/react-table";
 import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { BiFilterAlt } from "react-icons/bi";
+
 
 import { Button } from "@/components/ui/button";
 import {
@@ -60,12 +62,8 @@ interface ReceiveDataTableProps {
 const ReceiveDataTable: FC<ReceiveDataTableProps> = ({ data }) => {
   const router = useRouter();
   const [sorting, setSorting] = useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(
-    []
-  );
-
-  const [columnVisibility, setColumnVisibility] =
-    useState<VisibilityState>({});
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({ _id: false });
   const [rowSelection, setRowSelection] = useState({});
 
   const table = useReactTable({
@@ -77,6 +75,7 @@ const ReceiveDataTable: FC<ReceiveDataTableProps> = ({ data }) => {
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
+    // HERE
     onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: setRowSelection,
     state: {
@@ -91,20 +90,17 @@ const ReceiveDataTable: FC<ReceiveDataTableProps> = ({ data }) => {
     <div className="w-full">
       {/* Top Search Title */}
       <div className="flex items-center py-4">
-        <div className="flex gap-2">
-          {/* Seach Input */}
-          <Input
-            placeholder="Filter By Project Title"
-            value={
-              (table.getColumn("project_name")?.getFilterValue() as string) ??
-              ""
-            }
-            onChange={(event) =>
-              table.getColumn("project_nam")?.setFilterValue(event.target.value)
-            }
-            className="max-w-sm border-pastel_moss_green rounded-full focus-visible:ring-0 bg-pastel_moss_green pl-5 placeholder:text-moss_green"
-          />
-        </div>
+        <BiFilterAlt className="text-xl translate-x-8" />
+        <Input
+          placeholder="Filter By Project Title"
+          value={
+            (table.getColumn("project_name")?.getFilterValue() as string) ?? ""
+          }
+          onChange={(event) =>
+            table.getColumn("project_name")?.setFilterValue(event.target.value)
+          }
+          className="max-w-sm bg-pastel_moss_green pl-10"
+        />
 
         {/* Column Visibility */}
         <DropdownMenu>
@@ -123,16 +119,18 @@ const ReceiveDataTable: FC<ReceiveDataTableProps> = ({ data }) => {
               .filter((column) => column.getCanHide())
               .map((column) => {
                 return (
-                  <DropdownMenuCheckboxItem
-                    key={column.id}
-                    className="capitalize focus:bg-pastel_moss_green focus:text-moss_green"
-                    checked={column.getIsVisible()}
-                    onCheckedChange={(value) =>
-                      column.toggleVisibility(!!value)
-                    }
-                  >
-                    {column.id}
-                  </DropdownMenuCheckboxItem>
+                  (column.id !== "_id" &&
+                    <DropdownMenuCheckboxItem
+                      key={column.id}
+                      className="capitalize"
+                      checked={column.getIsVisible()}
+                      onCheckedChange={(value) =>
+                        column.toggleVisibility(!!value)
+                      }
+                    >
+                      {column.id}
+                    </DropdownMenuCheckboxItem>
+                  )
                 );
               })}
           </DropdownMenuContent>
@@ -147,7 +145,7 @@ const ReceiveDataTable: FC<ReceiveDataTableProps> = ({ data }) => {
               <TableRow className="hover:bg-transparent" key={headerGroup.id}>
                 {headerGroup.headers.map((header, index) => {
                   let className =
-                    "text-center text-ghost_white font-light italic bg-moss_green p-2 text-xs";
+                    "text-center text-ghost_white italic bg-moss_green p-2";
                   if (index === 0) {
                     className += " rounded-l-full"; // Add rounded corners to the left side
                   }
@@ -176,12 +174,7 @@ const ReceiveDataTable: FC<ReceiveDataTableProps> = ({ data }) => {
                   className="hover:bg-pastel_moss_green ease-in-out duration-500 text-xs hover:cursor-pointer hover:rounded-xl text-center"
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
-                  onClick={() =>
-                    router.push(
-                      "receive/" +
-                      row.getValue("noPenawaran")
-                    )
-                  }
+                  onClick={() => router.push("receive/" + row.getValue("_id"))}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id} className="py-4">
@@ -286,6 +279,6 @@ const ReceiveDataTable: FC<ReceiveDataTableProps> = ({ data }) => {
       </div>
     </div>
   );
-}
+};
 
 export default ReceiveDataTable;
