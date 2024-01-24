@@ -22,20 +22,17 @@ export const createProjectValidation = z.object({
   surel: z.string().min(5, {
     message: "Please input title more than 5 words",
   }),
-  contactPerson: z.string().min(5, {
+  contactPerson: z.string().min(2, {
     message: "Please input title more than 5 words",
   }),
   valuasiProject: z
-    .string()
-    .min(5, {
-      message: "Please input title more than 5 words",
+    .any()
+    .refine((value) => typeof value === 'string' || typeof value === 'number', {
+      message: "Valuasi Project must be a string or number",
     })
     .optional(),
   numRevisi: z
-    .string()
-    .min(5, {
-      message: "Please input title more than 5 words",
-    })
+    .number()
     .optional(),
 });
 

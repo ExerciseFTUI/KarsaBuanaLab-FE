@@ -59,11 +59,8 @@ interface FinalReviewDataTableProps {
 const FinalReviewDataTable: FC<FinalReviewDataTableProps> = ({ data }) => {
   const router = useRouter();
   const [sorting, setSorting] = useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(
-    []
-  );
-  const [columnVisibility, setColumnVisibility] =
-    useState<VisibilityState>({});
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({ _id: false });
   const [rowSelection, setRowSelection] = useState({});
 
   const table = useReactTable({
@@ -75,6 +72,7 @@ const FinalReviewDataTable: FC<FinalReviewDataTableProps> = ({ data }) => {
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
+    // HERE
     onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: setRowSelection,
     state: {
@@ -90,8 +88,10 @@ const FinalReviewDataTable: FC<FinalReviewDataTableProps> = ({ data }) => {
       <div className="flex items-center py-4">
         <BiFilterAlt className="text-xl translate-x-8" />
         <Input
-          placeholder="Filter Projects On LHP Draft"
-          value={(table.getColumn("project_name")?.getFilterValue() as string) ?? ""}
+          placeholder="Filter Projects On Final Review"
+          value={
+            (table.getColumn("project_name")?.getFilterValue() as string) ?? ""
+          }
           onChange={(event) =>
             table.getColumn("project_name")?.setFilterValue(event.target.value)
           }
@@ -109,29 +109,39 @@ const FinalReviewDataTable: FC<FinalReviewDataTableProps> = ({ data }) => {
               .filter((column) => column.getCanHide())
               .map((column) => {
                 return (
-                  <DropdownMenuCheckboxItem
-                    key={column.id}
-                    className="capitalize"
-                    checked={column.getIsVisible()}
-                    onCheckedChange={(value) =>
-                      column.toggleVisibility(!!value)
-                    }
-                  >
-                    {column.id}
-                  </DropdownMenuCheckboxItem>
+                  (column.id !== "_id" &&
+                    <DropdownMenuCheckboxItem
+                      key={column.id}
+                      className="capitalize"
+                      checked={column.getIsVisible()}
+                      onCheckedChange={(value) =>
+                        column.toggleVisibility(!!value)
+                      }
+                    >
+                      {column.id}
+                    </DropdownMenuCheckboxItem>
+                  )
                 );
               })}
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
       <div className=" text-light_brown">
-        <Table className="italic font-dm-sans">
-          <TableHeader>
+        <Table className="font-dm-sans">
+          <TableHeader >
             {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow className="italic" key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
+              <TableRow className="" key={headerGroup.id}>
+                {headerGroup.headers.map((header, index) => {
+                  let className =
+                    "text-center text-ghost_white italic bg-light_brown p-2";
+                  if (index === 0) {
+                    className += " rounded-l-full"; // Add rounded corners to the left side
+                  }
+                  if (index === headerGroup.headers.length - 1) {
+                    className += " rounded-r-full"; // Add rounded corners to the right side
+                  }
                   return (
-                    <TableHead key={header.id} className="text-[#b49a82]">
+                    <TableHead key={header.id} className={className}>
                       {header.isPlaceholder
                         ? null
                         : flexRender(
@@ -148,7 +158,7 @@ const FinalReviewDataTable: FC<FinalReviewDataTableProps> = ({ data }) => {
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
-                  className="hover:bg-light_green ease-in-out duration-500 text-xs hover:cursor-pointer hover:rounded-xl"
+                  className="hover:bg-pastel_moss_green ease-in-out duration-500 text-xs hover:cursor-pointer hover:rounded-xl text-center"
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
                   onClick={() =>
@@ -249,6 +259,6 @@ const FinalReviewDataTable: FC<FinalReviewDataTableProps> = ({ data }) => {
       </div>
     </div>
   );
-}
+};
 
 export default FinalReviewDataTable;

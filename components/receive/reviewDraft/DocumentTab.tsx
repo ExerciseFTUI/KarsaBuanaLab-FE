@@ -29,123 +29,16 @@ interface DocumentProps {
 
 import { useRouter } from "next/navigation";
 
-const dropdown = [
-  {
-    judul: "Tahap 1",
-    placeholder: "Tahap 1",
-    link: [
-      {
-        value: "link1",
-        label: "link1",
-      },
-      {
-        value: "link2",
-        label: "link2",
-      },
-      {
-        value: "link3",
-        label: "link3",
-      },
-      {
-        value: "link4",
-        label: "link4",
-      },
-      {
-        value: "link5",
-        label: "link5",
-      },
-    ],
-  },
-  {
-    judul: "Tahap 2",
-    placeholder: "Tahap 2",
-    link: [
-      {
-        value: "link1",
-        label: "link1",
-      },
-      {
-        value: "link2",
-        label: "link2",
-      },
-      {
-        value: "link3",
-        label: "link3",
-      },
-      {
-        value: "link4",
-        label: "link4",
-      },
-      {
-        value: "link5",
-        label: "link5",
-      },
-    ],
-  },
-  {
-    judul: "Tahap 3",
-    placeholder: "Tahap 3",
-    link: [
-      {
-        value: "link1",
-        label: "link1",
-      },
-      {
-        value: "link2",
-        label: "link2",
-      },
-      {
-        value: "link3",
-        label: "link3",
-      },
-      {
-        value: "link4",
-        label: "link4",
-      },
-      {
-        value: "link5",
-        label: "link5",
-      },
-    ],
-  },
-  {
-    judul: "Tahap 4",
-    placeholder: "Tahap 4",
-    link: [
-      {
-        value: "link1",
-        label: "link1",
-      },
-      {
-        value: "link2",
-        label: "link2",
-      },
-      {
-        value: "link3",
-        label: "link3",
-      },
-      {
-        value: "link4",
-        label: "link4",
-      },
-      {
-        value: "link5",
-        label: "link5",
-      },
-    ],
-  },
-];
-
-export default function Home() {
+export default function DocumentTab({ data }:any) {
   const router = useRouter();
   const [value, setValue] = React.useState("");
 
   return (
     <div className="w-full h-full px-16 space-y-6 ">
       <div className="space-y-4">
-        {dropdown.map((field, index) => (
+        {data.map((field:any, index:any) => (
           <div key={index} className="space-y-3">
-            <h2>{field.judul}</h2>
+            <h2>{`Tahap ${index + 1}`}</h2>
             <Select
               onValueChange={(currentValue) => {
                 if (currentValue === value) {
@@ -155,15 +48,13 @@ export default function Home() {
               }}
             >
               <SelectTrigger className="w-full justify-between border-moss_green rounded-xl p-6">
-                <SelectValue placeholder={field.placeholder} />
+                <SelectValue placeholder={field.name} />
               </SelectTrigger>
               <SelectContent>
                 <SelectGroup>
-                  {field.link.map((link) => (
-                    <SelectItem key={link.value} value={link.value}>
-                      {link.label}
-                    </SelectItem>
-                  ))}
+                  <SelectItem key={field.url} value={field.url}>
+                    {field.name}
+                  </SelectItem>
                 </SelectGroup>
               </SelectContent>
             </Select>

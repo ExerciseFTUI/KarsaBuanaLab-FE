@@ -5,9 +5,12 @@ import { redirect } from "next/navigation";
 const SingleProject = async ({ params }: { params: { id: string } }) => {
   const project = await getProject(params.id);
 
-  if (!project.result) {
+  if (!project || !project.result) {
     redirect("/marketing");
   }
+
+  console.log(project.result.sampling_list);
+  
 
   return <EditProjectPage project={project.result} />;
 };
