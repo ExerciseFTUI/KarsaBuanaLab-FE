@@ -111,7 +111,7 @@ export const updateProject = async (
   try {
     var bodyFormData = new FormData();
 
-     // Convert valuasi_proyek to integer
+    // Convert valuasi_proyek to integer
     if (body.valuasi_proyek !== undefined) {
       body.valuasi_proyek = parseInt(body.valuasi_proyek, 10);
     }
@@ -179,18 +179,18 @@ export const getSample = async (): Promise<BaseApiResponse<[BaseSample]>> => {
 //   }
 // };
 
-export const getDashboard = async () : Promise<BaseApiResponse<DashboardResult>> => {
+export const getDashboard = async (): Promise<
+  BaseApiResponse<DashboardResult>
+> => {
   try {
-    const response = await axios.get(
-      `${apiBaseUrl}/marketing/dashboard`
-    );
+    const response = await axios.get(`${apiBaseUrl}/marketing/dashboard`);
 
     return response.data as BaseApiResponse<DashboardResult>;
-  } catch (error:any) {
-    console.error('Error getting api because : ', error.message);
-    return null as unknown as BaseApiResponse<DashboardResult>
+  } catch (error: any) {
+    console.error("Error getting api because : ", error.message);
+    return null as unknown as BaseApiResponse<DashboardResult>;
   }
-}
+};
 
 //Berhasil
 export const getProject = async (
@@ -229,23 +229,96 @@ export const getbyStatus = async (
   }
 };
 
-export const testing = async () => {
+//Update Project Info
+export const updateProjectInfo = async (body: any) => {
   try {
-    const body = {
-      title: "foo",
-      body: "bar",
-      userId: 1,
-    };
-
-    const response = await axios.post(
-      "https://jsonplaceholder.typicode.com/posts",
-      body
-    );
-
-    // console.log(response.data);
-    revalidatePath("/marketing/running");
-    return body;
+    //Call API
+    const response = await axios.put(`${apiBaseUrl}/projects/edit`, body);
+    if (response.data.result) {
+      //Refetch
+      revalidatePath("/marketing/running");
+      return true;
+    } else {
+      return false;
+    }
   } catch (error: any) {
-    console.error(`Error getting project`, error.message);
+    console.error(`Error update projectInfo :`, error.message);
+    return false;
   }
 };
+
+//Update Project Sample
+export const updateProjectSample = async (body: any) => {
+  try {
+    //Call API
+    const response = await axios.put(
+      `${apiBaseUrl}/projects/editSamples`,
+      body
+    );
+    if (response.data.result) {
+      //Refetch
+      revalidatePath("/marketing/running");
+      return true;
+    } else {
+      return false;
+    }
+  } catch (error: any) {
+    console.error(`Error update projectSample :`, error.message);
+    return false;
+  }
+};
+
+//Update Project file
+export const updateProjectFile = async (id: string, files: any) => {
+  var bodyFormData = new FormData();
+  bodyFormData.append("_id", id);
+
+  // Append each file to the FormData object
+  for (let i = 0; i < files.length; i++) {
+    bodyFormData.append("files", files[i]);
+  }
+
+  console.log(bodyFormData);
+
+  try {
+    //Call API
+    const response = await axios.put(
+      `${apiBaseUrl}/projects/editFiles`,
+      bodyFormData,
+      {
+        headers: { "Content-Type": "multipart/form-data" },
+      }
+    );
+    if (response.data.result) {
+      //Refetch
+      revalidatePath("/marketing/running");
+      return true;
+    } else {
+      return false;
+    }
+  } catch (error: any) {
+    console.error(`Error update projectFile :`, error.message);
+    return false;
+  }
+};
+
+// export const testing = async () => {
+//   try {
+//     const body = {
+//       title: "foo",
+//       body: "bar",
+//       userId: 1,
+//     };
+
+//     const response = await axios.post(
+//       "https://jsonplaceholder.typicode.com/posts",
+//       body
+//     );
+
+//     // console.log(response.data);
+//     revalidatePath("/marketing/running");
+//     return body;
+//   } catch (error: any) {
+//     console.error(`Error getting project`, error.message);
+//   }
+// };

@@ -20,7 +20,10 @@ import { useSession } from "next-auth/react";
 import axios from "axios";
 import { BaseApiResponse } from "@/lib/models/baseApiResponse.model";
 import { BaseSample } from "@/lib/models/baseSample.model";
-import { createProject } from "@/lib/actions/marketing.actions";
+import {
+  createProject,
+  updateProjectFile,
+} from "@/lib/actions/marketing.actions";
 
 import { useRouter } from "next/navigation";
 import { set } from "date-fns";
@@ -186,8 +189,6 @@ const CreateProjectPage: FC<CreateProjectProps> = ({ baseSamples }) => {
 
   // 2. Define a submit handler.
   async function onSubmitForm(values: z.infer<typeof createProjectValidation>) {
-    //const response = testing();
-
     if (samples.length > 0) {
       //@ts-ignore
       const sampling_list = samples.map((sample) => sample.sampleName);
@@ -210,17 +211,34 @@ const CreateProjectPage: FC<CreateProjectProps> = ({ baseSamples }) => {
 
       //Create Project Function
       setIsLoading(true);
-      const response = await createProject(body, uploadedFiles);
+      // const response = null;
 
-      if (!response) {
-        alert("Failed to create project");
-        return;
-      } else {
-        alert("Success");
-        router.push("/marketing/running");
+      // const response = await createProject(body, uploadedFiles);
+
+      // if (!response) {
+      //   alert("Failed to create project");
+      //   setIsLoading(false);
+      //   return
+      // }
+
+      if (uploadedFiles) {
+        const fileResponse = await updateProjectFile(
+          "65afbd8c987cf82566e265d0",
+          uploadedFiles
+        );
+
+        if (!fileResponse) {
+          alert("Failed to upload file, You can add file in update page");
+          setIsLoading(false);
+          return;
+        }
       }
 
       setIsLoading(false);
+      alert("Success creating project");
+      router.push("/marketing/running");
+    } else {
+      alert("Please add at least one sample");
     }
   }
 
@@ -271,7 +289,10 @@ const CreateProjectPage: FC<CreateProjectProps> = ({ baseSamples }) => {
         </TabsContent>
         {/* End Document Section */}
 
-        <div className="bg-moss_green flex justify-center items-center mt-5 w-2/3 rounded-lg py-4 text-white hover:bg-light_green hover:cursor-pointer">
+        <div
+          className="bg-moss_green flex justify-center items-center mt-5 w-2/3 rounded-lg py-4 text-white hover:bg-light_green hover:cursor-pointer"
+          onClick={form.handleSubmit(onSubmitForm)}
+        >
           Submit
         </div>
       </Tabs>
