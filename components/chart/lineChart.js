@@ -99,7 +99,7 @@ function LineChart( {detailGraph} ) {
     }
 
     return (
-        <div className="h-full w-full sm:w-full mt-6 ">
+        <div className="h-full w-full mt-6 ">
             <h4 className={`text-xs w-fit px-2 rounded-md font-medium text-start`} style={{ backgroundColor: bgColor }}>
                 {detailGraph.title}
             </h4>

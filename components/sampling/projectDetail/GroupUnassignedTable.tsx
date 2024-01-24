@@ -25,6 +25,14 @@ export function GroupUnassignedTable({ table }: props) {
 
   return (
     <div id="unassigned-table" className="px-6">
+      <div className="flex items-center justify-end space-x-2 py-4">
+        <div className="flex-1 text-base text-light_brown">
+          Unassigned:{" "}
+          {table.getCoreRowModel().rows.length -
+            table.getFilteredSelectedRowModel().rows.length}{" "}
+        </div>
+      </div>
+
       <Table className="text-base text-light_brown">
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (

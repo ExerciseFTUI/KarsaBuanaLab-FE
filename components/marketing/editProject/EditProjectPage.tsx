@@ -294,7 +294,7 @@ export default function EditProjectPage({
         <ProjectForm
           form={form}
           onSubmit={onSubmit}
-          status={project.status}
+          status="EDIT"
           note="Gakuat bayar jasa kita"
         />
         <Tabs defaultValue="sampling" className="w-[40rem] max-sm:w-[420px]">
@@ -319,7 +319,10 @@ export default function EditProjectPage({
           {/* Document Section */}
           <TabsContent value="document">
             {/* Right Card for Dropzone */}
-            <Card className={`overflow-y-auto max-h-[90vh] custom-scrollbar`}>
+
+            <Card
+              className={`overflow-y-auto md:max-h-[25rem] max-h-[90vh] custom-scrollbar`}
+              >
               <div>
                 <CardHeader>
                   <CardTitle className="text-base font-bold">

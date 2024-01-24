@@ -16,11 +16,11 @@ export default function DocumentList({ data, className = "" }: docParams) {
 
       <div className="flex flex-wrap gap-4">
         {[
-          { title: "Surat Penawaran", href: "" },
-          { title: "Daftar Parameter", href: "" },
-          { title: "Chain of Custody", href: "" },
-          { title: "Sertifikat Akreditasi", href: "" },
-          { title: "Form KUPTK", href: "" },
+          { title: "Surat Penawaran", href: "/" },
+          { title: "Daftar Parameter", href: "/" },
+          { title: "Chain of Custody", href: "/" },
+          { title: "Sertifikat Akreditasi", href: "/" },
+          { title: "Form KUPTK", href: "/" },
         ].map((o, i) => (
           <HyperLinkButton
             key={i}

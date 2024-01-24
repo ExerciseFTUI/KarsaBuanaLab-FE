@@ -35,7 +35,16 @@ interface DashboardResult {
   projectCancelled: number;
   projectRunning: number;
   projectFinished: number;
-  offerPerMonth: number;
+  offerPerMonth: {
+    offerPerMonth: Array<{ month: string; sales: number }[]>;
+    totalValuation: number;
+  };
+  forPie: {
+    totalForRunning: number;
+    totalForCancelled: number;
+    totalForFinished: number;
+    totalProjectReal: number;
+  }
 }
 
 export const createProject = async (
@@ -166,29 +175,42 @@ export const getSample = async (): Promise<BaseApiResponse<[BaseSample]>> => {
   }
 };
 
-// export const getDashboard = async (): Promise<
-//   BaseApiResponse<DashboardResult>
-// > => {
-//   try {
-//     const response = await axios.get(`${apiBaseUrl}/marketing/dashboard`);
 
-//     return response.data as BaseApiResponse<DashboardResult>;
-//   } catch (error: any) {
-//     console.error("Error getting Dashboard:", error.message);
-//     throw new Error("Failed to get dashboard");
-//   }
-// };
-
-export const getDashboard = async (): Promise<
-  BaseApiResponse<DashboardResult>
-> => {
+export const getDashboard = async () : Promise<BaseApiResponse<DashboardResult>> => {
   try {
     const response = await axios.get(`${apiBaseUrl}/marketing/dashboard`);
 
-    return response.data as BaseApiResponse<DashboardResult>;
-  } catch (error: any) {
-    console.error("Error getting api because : ", error.message);
-    return null as unknown as BaseApiResponse<DashboardResult>;
+
+    // Calculate total sales for projectRunning
+    const totalForRunning = response.data.result.projectRunning.reduce((totalMonth: any, monthData: any) => totalMonth + monthData.sales, 0);
+
+    // Calculate total sales for projectFinished
+    const totalForFinished = response.data.result.projectFinished.reduce((totalMonth: any, monthData: any) => totalMonth + monthData.sales, 0);
+
+    // Calculate total sales for projectCancelled
+    const totalForCancelled = response.data.result.projectCancelled.reduce((totalMonth: any, monthData: any) => totalMonth + monthData.sales, 0);
+
+    // Calculate total project real
+    const totalProjectReal = totalForCancelled + totalForFinished + totalForRunning;
+
+    // Add the calculated totals to the response
+    const updatedResponse = {
+      ...response.data,
+      result: {
+        ...response.data.result,
+        forPie : {
+          totalForRunning,
+          totalForFinished,
+          totalForCancelled,
+          totalProjectReal
+        }
+      },
+    };
+    
+    return updatedResponse as BaseApiResponse<DashboardResult>;
+  } catch (error:any) {
+    console.error('Error getting api because : ', error.message);
+    return null as unknown as BaseApiResponse<DashboardResult>
   }
 };
 

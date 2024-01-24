@@ -58,7 +58,7 @@ export function UserDataTable({ table }: params) {
         ) : (
           <TableRow>
             <TableCell
-              colSpan={table.getAllColumns.length}
+              colSpan={3}
               className="h-24 text-center"
             >
               No results.
