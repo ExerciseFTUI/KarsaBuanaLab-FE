@@ -52,8 +52,17 @@ export default function TabSampleStaff({ data }: { data: Project }) {
               <Button
                 className="w-24 py-4 self-center bg-light_brown hover:bg-dark_brown disabled:bg-transparent disabled:text-dark_brown disabled:font-bold disabled:border-2 disabled:border-dark_brown"
                 onClick={(e) => submitSample(e, s.sample_name)}
+                disabled={s.status == "WAITING" || s.status == "ACCEPTED"}
               >
-                Save
+                {s.status == "SUBMIT"
+                  ? "Save"
+                  : s.status == "WAITING"
+                  ? "Verifying"
+                  : s.status == "ACCEPTED"
+                  ? "Verified"
+                  : s.status == "REVISION"
+                  ? "Revision"
+                  : "Save"}
               </Button>
             </div>
           ))}
