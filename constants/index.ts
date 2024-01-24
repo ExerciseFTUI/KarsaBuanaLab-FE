@@ -1,4 +1,4 @@
-import { Project } from "@/lib/models/project.model";
+import { Project } from "@/lib/models/project.model"
 
 export const sidebarLinks = [
   {
@@ -26,7 +26,7 @@ export const sidebarLinks = [
     route: "/cancelled",
     label: "Cancelled",
   },
-];
+]
 
 // export const dummyTableData: Project[] = [
 //   {

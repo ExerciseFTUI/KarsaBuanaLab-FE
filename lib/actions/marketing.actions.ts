@@ -6,6 +6,7 @@ import { BaseApiResponse } from "../models/baseApiResponse.model";
 import { BaseSample } from "../models/baseSample.model";
 import { ProjectMarketingType, ProjectType } from "../type";
 import { revalidatePath } from "next/cache";
+import { string } from "zod";
 
 const apiBaseUrl = process.env.API_BASE_URL || "http://localhost:5000";
 
@@ -34,7 +35,16 @@ interface DashboardResult {
   projectCancelled: number;
   projectRunning: number;
   projectFinished: number;
-  offerPerMonth: number;
+  offerPerMonth: {
+    offerPerMonth: Array<{ month: string; sales: number }[]>;
+    totalValuation: number;
+  };
+  forPie: {
+    totalForRunning: number;
+    totalForCancelled: number;
+    totalForFinished: number;
+    totalProjectReal: number;
+  }
 }
 
 export const createProject = async (
@@ -108,21 +118,15 @@ export const updateProject = async (
   files?: any // Assuming files is a File or an array of File objects
 ) => {
   try {
-    // if (
-    //   !body.client_name ||
-    //   !body.project_name ||
-    //   !body.alamat_kantor ||
-    //   !body.alamat_sampling ||
-    //   !body.surel ||
-    //   !body.contact_person ||
-    //   !body.regulation ||
-    //   !body.sampling_list
-    //   //      || !body.assigned_to
-    // ) {
-    //   throw new Error("Please provide all required fields");
-    // }
-
     var bodyFormData = new FormData();
+
+     // Convert valuasi_proyek to integer
+    if (body.valuasi_proyek !== undefined) {
+      body.valuasi_proyek = parseInt(body.valuasi_proyek, 10);
+    }
+
+    // Auto increment while update the project
+    body.jumlah_revisi += 1;
 
     // Append all fields from the body object to bodyFormData
     Object.keys(body).forEach((key) => {
@@ -171,18 +175,44 @@ export const getSample = async (): Promise<BaseApiResponse<[BaseSample]>> => {
   }
 };
 
-// export const getDashboard = async (): Promise<
-//   BaseApiResponse<DashboardResult>
-// > => {
-//   try {
-//     const response = await axios.get(`${apiBaseUrl}/marketing/dashboard`);
+export const getDashboard = async () : Promise<BaseApiResponse<DashboardResult>> => {
+  try {
+    const response = await axios.get(
+      `${apiBaseUrl}/marketing/dashboard`
+    );
 
-//     return response.data as BaseApiResponse<DashboardResult>;
-//   } catch (error: any) {
-//     console.error("Error getting Dashboard:", error.message);
-//     throw new Error("Failed to get dashboard");
-//   }
-// };
+    // Calculate total sales for projectRunning
+    const totalForRunning = response.data.result.projectRunning.reduce((totalMonth: any, monthData: any) => totalMonth + monthData.sales, 0);
+
+    // Calculate total sales for projectFinished
+    const totalForFinished = response.data.result.projectFinished.reduce((totalMonth: any, monthData: any) => totalMonth + monthData.sales, 0);
+
+    // Calculate total sales for projectCancelled
+    const totalForCancelled = response.data.result.projectCancelled.reduce((totalMonth: any, monthData: any) => totalMonth + monthData.sales, 0);
+
+    // Calculate total project real
+    const totalProjectReal = totalForCancelled + totalForFinished + totalForRunning;
+
+    // Add the calculated totals to the response
+    const updatedResponse = {
+      ...response.data,
+      result: {
+        ...response.data.result,
+        forPie : {
+          totalForRunning,
+          totalForFinished,
+          totalForCancelled,
+          totalProjectReal
+        }
+      },
+    };
+    
+    return updatedResponse as BaseApiResponse<DashboardResult>;
+  } catch (error:any) {
+    console.error('Error getting api because : ', error.message);
+    return null as unknown as BaseApiResponse<DashboardResult>
+  }
+}
 
 //Berhasil
 export const getProject = async (
@@ -192,6 +222,14 @@ export const getProject = async (
     const response = await axios.get(
       `${apiBaseUrl}/marketing/project/${projectId}`
     );
+
+    // Convert valuasi proyek to string
+    if (response.data && response.data.valuasi_proyek !== undefined) {
+      // Convert to string explicitly
+      const valuasiProyekAsString = String(response.data.valuasi_proyek);
+      response.data.valuasi_proyek = valuasiProyekAsString;
+    }
+
     return response.data as BaseApiResponse<Project>;
   } catch (error: any) {
     console.error(`Error getting project with ID ${projectId}:`, error.message);

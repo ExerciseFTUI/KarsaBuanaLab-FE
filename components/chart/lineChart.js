@@ -22,29 +22,21 @@ ChartJS.register(
     Filler
 );
 
-const salesData = [
-    { month: "Jan", sales: 23 },
-    { month: "Feb", sales: 15 },
-    { month: "Mar", sales: 20 },
-    { month: "Apr", sales: 12 },
-    { month: "Mei", sales: 18 },
-    { month: "Jun", sales: 25 },
-];
+function LineChart( {detailGraph} ) {
 
-function LineChart() {
     const data = {
-        labels: salesData.map((data) => data.month),
+        labels: detailGraph.salesData.map((data) => data.month),
         datasets: [
         {
-            label: "Jumlah",
-            data: salesData.map((data) => data.sales),
-            borderColor: "#FF0000",
+            label: detailGraph.title,
+            data: detailGraph.salesData.map((data) => data.sales),
+            borderColor: detailGraph.borderColor,
             borderWidth: 3,
-            pointBorderColor: "#FF0000",
+            pointBorderColor: detailGraph.borderColor,
             pointBorderWidth: 3,
             tension: 0.5,
             fill: true,
-            backgroundColor: "#FF8383"
+            backgroundColor: detailGraph.backgroundColor,
         },
         ],
     };
@@ -72,7 +64,8 @@ function LineChart() {
                     weight: "Bold"
                 },
                 },
-                min: 10
+                min: 0,
+                max: 40
             },
 
             x: {
@@ -98,12 +91,19 @@ function LineChart() {
         },
     };
 
+    var bgColor = "#03FCF0";
+    if (detailGraph.title === "Project Cancelled") {
+        bgColor = "#FF8383";
+    } else if (detailGraph.title === "Project Finished") {
+        bgColor = "#C2FC03";
+    }
+
     return (
-        <div className="h-60 w-full sm:w-60 mr-10 mt-6 ">
-            <h4 className="text-xs bg-light_green w-fit px-2 rounded-md font-medium text-start">
-                Project Cancelled
+        <div className="h-full w-full mt-6 ">
+            <h4 className={`text-xs w-fit px-2 rounded-md font-medium text-start`} style={{ backgroundColor: bgColor }}>
+                {detailGraph.title}
             </h4>
-            <div className="cursor-pointer ">
+            <div className="cursor-pointer flex flex-row justify-center ">
                 <Line data={data} options={options}></Line>
             </div>
         </div>

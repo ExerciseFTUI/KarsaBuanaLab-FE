@@ -9,6 +9,9 @@ const SingleProject = async ({ params }: { params: { id: string } }) => {
     redirect("/marketing");
   }
 
+  console.log(project.result.sampling_list);
+  
+
   return <EditProjectPage project={project.result} />;
 };
 

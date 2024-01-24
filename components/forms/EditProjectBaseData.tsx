@@ -45,13 +45,13 @@ const CreateProjectBaseData: FC<CreateProjectBaseDataProps> = ({}) => {
         defaultValues: {
         title: "Analisis PT Aqua",
         numPenawaran: "VII/23/Aqua/12/2/2023",
-        numRevisi: "1",
+        numRevisi: 0,
         custName: "Sulaiman Firdaus",
         alamatKantor: "Bandung, Jawa Barat",
         alamatSampling: "Air terjun Cisawuk",
         surel: "",
         contactPerson: "Adelia",
-        valuasiProject: "Rp 3.000.000"
+        valuasiProject: "3000000"
         },
     });
 
