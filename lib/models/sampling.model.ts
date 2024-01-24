@@ -9,7 +9,7 @@ export interface Sampling {
   regulation_name: Regulation[];
   location: string;
   assigned_to: User[];
-  status: string; // "ASSIGNED" | "NOT ASSIGNED" | "VERIFYING" | "REVISION" | "ACCEPT"
+  status: string; // "SUBMIT" | "WAITING" | "ACCEPTED" | "REVISION"
   jadwal: Date;
   _id: string;
 }
