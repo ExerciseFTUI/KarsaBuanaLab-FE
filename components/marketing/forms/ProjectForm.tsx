@@ -1,5 +1,5 @@
 "use client";
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -47,6 +47,7 @@ const ProjectForm: FC<ProjectFormProps> = ({
   const router = useRouter();
   const query = useSearchParams();
   const { toast } = useToast();
+  const [paidStatus, setPaidStatus] = useState(form.watch('isPaid'))
   
 
   return (
@@ -66,9 +67,16 @@ const ProjectForm: FC<ProjectFormProps> = ({
         )}
         {status?.toLocaleLowerCase() === "running" && (
           <div>
-            <h1 className=" text-sm mb-3">Status Pembayaran : TEST</h1>
+            <h1 className="text-sm mb-3">
+              Status Pembayaran:{" "}
+              <span className="font-bold">{paidStatus ? "Lunas" : "Belum lunas"}</span>
+            </h1>
             <div className=" flex flex-row w-full h-fit justify-center">
-              <button className=" bg-moss_green h-2/3 text-white py-2 px-5 rounded-lg hover:bg-dark_green">Verifikasi Pelunasan</button>
+              <button 
+              onClick={()=>{setPaidStatus(!paidStatus)}}
+              className={` ${paidStatus ? "bg-red-400 hover:bg-red-700" : "bg-moss_green hover:bg-dark_green"} h-2/3 text-white py-2 px-5 rounded-lg `}>
+                {paidStatus ? "Batalkan Pelunasan" : "Verifikasi Pelunasan"}
+              </button>
             </div>
           </div>
         )}
@@ -165,6 +173,7 @@ const ProjectForm: FC<ProjectFormProps> = ({
                         <FormLabel>Valuasi Project</FormLabel>
                         <FormControl>
                             <Input
+                            disabled={status?.toLocaleLowerCase() === "finished" ? true : false}
                             type="text"
                             className=""
                             placeholder=""

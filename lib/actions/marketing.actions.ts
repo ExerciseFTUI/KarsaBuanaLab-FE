@@ -93,7 +93,6 @@ export const createProject = async (
       }
     }
 
-    console.log(bodyFormData);
 
     const response = await axios.post(
       `${apiBaseUrl}/projects/create`,
@@ -103,7 +102,6 @@ export const createProject = async (
       }
     );
 
-    console.log(response);
     
 
     revalidatePath("/marketing/running");
@@ -146,8 +144,6 @@ export const updateProject = async (
         bodyFormData.append("file", files);
       }
     }
-
-    console.log("Masuk sini");
 
     const response = await axios.put(
       `${apiBaseUrl}/projects/edit`,
@@ -251,8 +247,6 @@ export const getbyStatus = async (
     const sortedData = response.data.result.sort((a : ProjectMarketingType, b:ProjectMarketingType) => {
       return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
     });
-
-    console.log(sortedData);
     
     return {
       ...response.data,
@@ -313,8 +307,6 @@ export const updateProjectFile = async (id: string, files: any) => {
   for (let i = 0; i < files.length; i++) {
     bodyFormData.append("files", files[i]);
   }
-
-  console.log(bodyFormData);
 
   try {
     //Call API

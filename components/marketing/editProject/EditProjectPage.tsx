@@ -161,6 +161,7 @@ export default function EditProjectPage({
       numPenawaran: project.no_penawaran || "",
       numRevisi: project.jumlah_revisi || 0,
       valuasiProject: project.valuasi_proyek || "0",
+      isPaid: project.isPaid || false
     },
   });
 
@@ -176,7 +177,17 @@ export default function EditProjectPage({
       no_penawaran: values.numPenawaran,
       jumlah_revisi: values.numRevisi,
       valuasi_proyek: values.valuasiProject,
+      isPaid: values.isPaid
     };
+
+    // // Check if all properties same exclude the isPaid will increase jumlahRevisi
+    // const propertiesMatch = Object.keys(body).every(
+    //   (key) => key === 'isPaid' || body[key] as any  === project[key] 
+    // );
+
+    // if (propertiesMatch) {
+    //   body.jumlah_revisi? body.jumlah_revisi -= 1 : body.jumlah_revisi
+    // }
 
     //Edit Project Function
     const responseInfo = await updateProjectInfo(body);
@@ -247,9 +258,6 @@ export default function EditProjectPage({
 
   // TODO: Change this arrays use the uploaded files from API
   const buttonNames = ["Surat Pemerintah", "Super Semar 212"];
-
-  console.log(status);
-  
 
   //=============================== End Document Section
 
@@ -417,12 +425,14 @@ export default function EditProjectPage({
               Submit
             </button>
             {/* Cancelled Project */}
-            <button
-              onClick={() => setIsCancelled(true)}
-              className=" bg-red-400 px-5 hover:bg-red-500 font-medium text-black hover:text-white rounded-lg py-3"
-            >
-              Cancel Project
-            </button>
+            {status?.toLocaleLowerCase() !== ("finished" || "cancelled") && (
+              <button
+                onClick={() => setIsCancelled(true)}
+                className=" bg-red-400 px-5 hover:bg-red-500 font-medium text-black hover:text-white rounded-lg py-3"
+              >
+                Cancel Project
+              </button>
+            )}
             {/* End of Cancelled Project */}
           </div>
           {/* End Button for submit */}

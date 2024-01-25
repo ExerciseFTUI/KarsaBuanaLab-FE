@@ -34,6 +34,7 @@ export const createProjectValidation = z.object({
   numRevisi: z
     .number()
     .optional(),
+  isPaid: z.boolean().optional(),
 });
 
 export type createProjectValidation = z.infer<typeof createProjectValidation>;
