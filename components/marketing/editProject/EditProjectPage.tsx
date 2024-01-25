@@ -35,6 +35,7 @@ import {
 import { useRouter } from "next/navigation";
 import { set } from "date-fns";
 import { BaseSample } from "@/lib/models/baseSample.model";
+import { Textarea } from "@/components/ui/textarea";
 
 interface EditProjectPageProps {
   project: Project;
@@ -161,7 +162,8 @@ export default function EditProjectPage({
       numPenawaran: project.no_penawaran || "",
       numRevisi: project.jumlah_revisi || 0,
       valuasiProject: project.valuasi_proyek || "0",
-      isPaid: project.isPaid || false
+      isPaid: project.isPaid || false,
+      descFailed: project.descFailed || ""
     },
   });
 
@@ -177,7 +179,8 @@ export default function EditProjectPage({
       no_penawaran: values.numPenawaran,
       jumlah_revisi: values.numRevisi,
       valuasi_proyek: values.valuasiProject,
-      isPaid: values.isPaid
+      isPaid: values.isPaid,
+      descFailed: values.descFailed,
     };
 
     // // Check if all properties same exclude the isPaid will increase jumlahRevisi
@@ -192,7 +195,11 @@ export default function EditProjectPage({
     //Edit Project Function
     const responseInfo = await updateProjectInfo(body);
     if (!responseInfo) {
-      alert("Failed Updating Project Info");
+      toast({
+        title: "Oops, Failed!",
+        description: "Failed Updating Project Info",
+      });
+      
       return;
     }
     if (samples.length > 0) {
@@ -213,17 +220,28 @@ export default function EditProjectPage({
       const responseSampling = await updateProjectSample(bodySampling);
 
       if (!responseSampling) {
-        alert("Failed Updating Project Samples");
+        toast({
+          title: "Ooops, Failed!",
+          description: "Failed Updating Project Samples",
+        });
+
         router.refresh();
         return;
       }
     }
 
     if (uploadedFiles.length > 0) {
-      alert("Updating File");
+      toast({
+        title: "Updated!",
+        description: "Don't forget to click submit button",
+      });
+
     }
 
-    alert("Success Updating Project");
+    toast({
+      title: "Success Update!",
+      description: "Success Updating Project",
+    });
 
     router.push("/marketing/running");
   }
@@ -235,6 +253,17 @@ export default function EditProjectPage({
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [isCancelled, setIsCancelled] = useState(false);
   const [reason, setReason] = useState("");
+
+  const handleCancelledProject = () => {
+    console.log(reason);
+
+    toast({
+        title: "Project success cancelled!",
+        description: "The project has been cancelled",
+      });
+
+    router.push("/marketing/cancelled");    
+  }
 
   const handleSubmitDocs = () => {
     // Log the uploaded files to the console
@@ -273,13 +302,12 @@ export default function EditProjectPage({
               <label htmlFor="reason" className="block mb-2">
                 Reason:
               </label>
-              <input
-                type="text"
+              <Textarea
                 id="reason"
                 name="reason"
                 value={reason}
                 onChange={(e) => setReason(e.target.value)}
-                className="w-full p-2 border border-gray-300 rounded-md mb-4"
+                className="border-2 border-[#bbbabf] rounded-lg h-24 mb-2"
                 required
               />
               <div className="flex justify-center space-x-4">
@@ -292,7 +320,7 @@ export default function EditProjectPage({
                 </button>
                 <button
                   type="button"
-                  //onClick={handleSubmitDocs}  // You can replace this with your actual cancel logic
+                  onClick={handleCancelledProject}  // You can replace this with your actual cancel logic
                   className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600"
                 >
                   Confirm
@@ -425,7 +453,7 @@ export default function EditProjectPage({
               Submit
             </button>
             {/* Cancelled Project */}
-            {status?.toLocaleLowerCase() !== ("finished" || "cancelled") && (
+            {status?.toLocaleLowerCase() === "running" && (
               <button
                 onClick={() => setIsCancelled(true)}
                 className=" bg-red-400 px-5 hover:bg-red-500 font-medium text-black hover:text-white rounded-lg py-3"

@@ -30,6 +30,7 @@ import { signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useToast } from "@/components/ui/use-toast";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 
 interface ProjectFormProps {
   form: UseFormReturn<z.infer<typeof createProjectValidation>>;
@@ -59,10 +60,9 @@ const ProjectForm: FC<ProjectFormProps> = ({
         {status?.toLowerCase() === "cancelled" && (
           <div className="text-sm">
             <h1>
-              Status :{" "}
-              <span className="text-red-600 font-semibold">Canceled</span>
-            </h1>
-            <p>Gakuat bayar jasa kita</p>
+              Status  :{" "}
+              <span className="text-red-600 font-semibold">Cancelled</span>
+            </h1> 
           </div>
         )}
         {status?.toLocaleLowerCase() === "running" && (
@@ -103,6 +103,33 @@ const ProjectForm: FC<ProjectFormProps> = ({
                 </FormItem>
               )}
             />
+            {status?.toLocaleLowerCase() === "cancelled" && (
+              <FormField
+                control={form.control}
+                name="descFailed"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Reason Project Failed</FormLabel>
+                    <FormControl>
+                      {field.value === "" ? (
+                        <Input
+                          className=""
+                          placeholder="Not yet set reason"
+                          {...field}
+                        />
+                      ) : (
+                        <Textarea
+                          className=" h-24 border-2 border-[#bbbabf]"
+                          placeholder=""
+                          {...field}
+                        />
+                      )}
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            )}
             <FormField
               control={form.control}
               name="custName"
