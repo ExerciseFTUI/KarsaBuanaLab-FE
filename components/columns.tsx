@@ -21,25 +21,6 @@ import {
 } from "@/lib/type";
 import Link from "next/link";
 import { ProjectSamplingType } from "@/lib/type";
-import { usePathname } from "next/navigation"
-
-function extractPageName(pathname: string) {
-  const parts = pathname.split("/").filter((part) => part !== "")
-  let final = ""
-
-  if (!parts[1]) {
-    return parts[0].charAt(0).toUpperCase() + parts[0].slice(1) + " / Dashboard"
-  }
-
-  for (let i = 0; i < parts.length; i++) {
-    final +=
-      parts[i].charAt(0).toUpperCase() +
-      parts[i].slice(1) +
-      (i == parts.length - 1 ? "" : " / ")
-  }
-
-  return final
-}
 
 // Table Column for Marketing OnDiscuss
 export const columns: ColumnDef<ProjectMarketingType>[] = [
@@ -148,8 +129,7 @@ export const columns: ColumnDef<ProjectMarketingType>[] = [
     enableHiding: false,
     cell: ({ row }) => {
       const project = row.original._id;
-      const pathname = extractPageName(usePathname());
-
+      
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -161,7 +141,7 @@ export const columns: ColumnDef<ProjectMarketingType>[] = [
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem>
-              <Link href={`/marketing/project/${pathname.split(" / ")[1]}/${project}`}>
+              <Link href={`/marketing/project/${row.original.status}/${project}`}>
                 View project details
               </Link>
             </DropdownMenuItem>
@@ -180,141 +160,6 @@ export const columns: ColumnDef<ProjectMarketingType>[] = [
   }
 ];
 
-// Table Column for Marketing OnDiscuss
-// export const columns: ColumnDef<ProjectType>[] = [
-//   //No Penawaran
-//   {
-//     accessorKey: "no_penawaran",
-//     header: "No Penawaran",
-//     cell: ({ row }) => <div className="">{row.getValue("no_penawaran")}</div>,
-//   },
-//   {
-//     accessorKey: "project_name",
-//     header: ({ column }) => {
-//       return (
-//         <Button
-//           className=""
-//           variant="ghost"
-//           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-//         >
-//           Project Name
-//           <ArrowUpDown className="ml-2 h-4 w-4" />
-//         </Button>
-//       );
-//     },
-//     cell: ({ row }) => (
-//       <div className="capitalize pl-4">{row.getValue("project_name")}</div>
-//     ),
-//   },
-//   //Status
-//   {
-//     accessorKey: "status",
-//     header: ({ column }) => {
-//       return (
-//         <Button className="pl-6" variant="ghost">
-//           Status
-//         </Button>
-//       );
-//     },
-
-//     cell: ({ row }) => {
-//       const status = true;
-//       return (
-//         <div className="">
-//           <div
-//             className={`font-light text-white w-fit px-6 py-0.5 rounded-full ${status ? "bg-yellow-700" : "bg-red-400"
-//               }`}
-//           >
-//             {row.getValue("status")}
-//           </div>
-//         </div>
-//       );
-//     },
-//   },
-//   //Lokasi
-//   {
-//     accessorKey: "alamat_sampling",
-//     header: "Lokasi Sampling",
-//     cell: ({ row }) => {
-//       return <div className="capitalize pl-0.5">{row.getValue("lokasi")}</div>;
-//     },
-//   },
-//   //createdAt
-//   {
-//     accessorKey: "created_at",
-//     header: ({ column }) => {
-//       return (
-//         <Button
-//           variant="ghost"
-//           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-//         >
-//           Created At
-//           <ArrowUpDown className="ml-2 h-4 w-4" />
-//         </Button>
-//       );
-//     },
-
-//     cell: ({ row }) => {
-//       const date = new Date(row.getValue("createdAt"));
-//       let month = (date.getMonth() + 1).toString().padStart(2, "0"); // Months are zero-based
-//       let day = date.getDate().toString().padStart(2, "0");
-//       let year = date.getFullYear();
-
-//       let formattedDate = month + "/" + day + "/" + year;
-//       return <div className={`font-medium pl-4`}>{formattedDate}</div>;
-//     },
-//   },
-//   //Last Update
-//   {
-//     accessorKey: "lastUpdate",
-//     header: () => (
-//       <div className={`pl-2 font-medium text-[#666D4B]`}>Last Update</div>
-//     ),
-//   cell: ({ row }) => {
-//       return <div className={`pl-4 font-medium`}>Today</div>;
-//     },
-//   },
-
-//   //Action
-//   {
-//     id: "actions",
-//     enableHiding: false,
-//     cell: ({ row }) => {
-//       const project = row.original;
-
-//       return (
-//         <DropdownMenu>
-//           <DropdownMenuTrigger asChild>
-//             <Button variant="ghost" className="h-8 w-8 p-0">
-//               <span className="sr-only">Open menu</span>
-//               <MoreHorizontal className="h-4 w-4" />
-//             </Button>
-//           </DropdownMenuTrigger>
-//           <DropdownMenuContent align="end">
-//             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-//             <DropdownMenuItem>
-//               <Link href={`/marketing/project/${row.id}`}>
-//                 View project details
-//               </Link>
-//               <Link href={`/marketing/project/${row.id}`}>
-//                 View project details
-//               </Link>
-//             </DropdownMenuItem>
-//             <DropdownMenuSeparator />
-
-//             <DropdownMenuItem
-//               onClick={() =>
-//                 navigator.clipboard.writeText(project.noPenawaran)
-//               }
-//             >
-//               Copy No Penawaran
-//             </DropdownMenuItem>
-//           </DropdownMenuContent>
-//         </DropdownMenu>
-//       );
-//     },
-//   },
-// ];
 //Table Column for Penerima Sampling
 export const receiveProjectPageColumns: ColumnDef<ProjectType>[] = [
   //No Penawaran
