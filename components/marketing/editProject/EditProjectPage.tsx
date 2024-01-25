@@ -39,11 +39,13 @@ import { BaseSample } from "@/lib/models/baseSample.model";
 interface EditProjectPageProps {
   project: Project;
   baseSamples: BaseSample[];
+  status?: string;
 }
 
 export default function EditProjectPage({
   project,
   baseSamples,
+  status
 }: EditProjectPageProps) {
   //General
   const { toast } = useToast();
@@ -246,6 +248,9 @@ export default function EditProjectPage({
   // TODO: Change this arrays use the uploaded files from API
   const buttonNames = ["Surat Pemerintah", "Super Semar 212"];
 
+  console.log(status);
+  
+
   //=============================== End Document Section
 
   return (
@@ -294,7 +299,7 @@ export default function EditProjectPage({
         <ProjectForm
           form={form}
           onSubmit={onSubmit}
-          status="EDIT"
+          status={status}
           note="Gakuat bayar jasa kita"
         />
         <Tabs defaultValue="sampling" className="w-[40rem] max-sm:w-[420px]">

@@ -103,6 +103,9 @@ export const createProject = async (
       }
     );
 
+    console.log(response);
+    
+
     revalidatePath("/marketing/running");
 
     // return response.data as BaseApiResponse<ProjectResult>;

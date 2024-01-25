@@ -64,6 +64,14 @@ const ProjectForm: FC<ProjectFormProps> = ({
             <p>Gakuat bayar jasa kita</p>
           </div>
         )}
+        {status?.toLocaleLowerCase() === "running" && (
+          <div>
+            <h1 className=" text-sm mb-3">Status Pembayaran : TEST</h1>
+            <div className=" flex flex-row w-full h-fit justify-center">
+              <button className=" bg-moss_green h-2/3 text-white py-2 px-5 rounded-lg hover:bg-dark_green">Verifikasi Pelunasan</button>
+            </div>
+          </div>
+        )}
       </CardHeader>
       <CardContent>
         <Form {...form}>

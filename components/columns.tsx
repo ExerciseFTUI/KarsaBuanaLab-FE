@@ -1,3 +1,4 @@
+"use client"
 import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -20,6 +21,25 @@ import {
 } from "@/lib/type";
 import Link from "next/link";
 import { ProjectSamplingType } from "@/lib/type";
+import { usePathname } from "next/navigation"
+
+function extractPageName(pathname: string) {
+  const parts = pathname.split("/").filter((part) => part !== "")
+  let final = ""
+
+  if (!parts[1]) {
+    return parts[0].charAt(0).toUpperCase() + parts[0].slice(1) + " / Dashboard"
+  }
+
+  for (let i = 0; i < parts.length; i++) {
+    final +=
+      parts[i].charAt(0).toUpperCase() +
+      parts[i].slice(1) +
+      (i == parts.length - 1 ? "" : " / ")
+  }
+
+  return final
+}
 
 // Table Column for Marketing OnDiscuss
 export const columns: ColumnDef<ProjectMarketingType>[] = [
@@ -128,6 +148,7 @@ export const columns: ColumnDef<ProjectMarketingType>[] = [
     enableHiding: false,
     cell: ({ row }) => {
       const project = row.original._id;
+      const pathname = extractPageName(usePathname());
 
       return (
         <DropdownMenu>
@@ -140,12 +161,11 @@ export const columns: ColumnDef<ProjectMarketingType>[] = [
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem>
-              <Link href={`/marketing/project/${project}`}>
+              <Link href={`/marketing/project/${pathname.split(" / ")[1]}/${project}`}>
                 View project details
               </Link>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-
             <DropdownMenuItem
               onClick={() =>
                 navigator.clipboard.writeText(row.getValue("no_penawaran"))
@@ -157,7 +177,7 @@ export const columns: ColumnDef<ProjectMarketingType>[] = [
         </DropdownMenu>
       );
     },
-  },
+  }
 ];
 
 // Table Column for Marketing OnDiscuss

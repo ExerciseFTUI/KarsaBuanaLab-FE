@@ -213,15 +213,16 @@ const CreateProjectPage: FC<CreateProjectProps> = ({ baseSamples }) => {
       setIsLoading(true);
       // const response = null;
 
-      // const response = await createProject(body, uploadedFiles);
+      const response = await createProject(body, uploadedFiles);
 
-      // if (!response) {
-      //   alert("Failed to create project");
-      //   setIsLoading(false);
-      //   return
-      // }
 
-      if (uploadedFiles) {
+      if (!response) {
+        alert("Failed to create project");
+        setIsLoading(false);
+        return
+      }
+
+      if (uploadedFiles.length > 0) {
         const fileResponse = await updateProjectFile(
           "65afbd8c987cf82566e265d0",
           uploadedFiles
