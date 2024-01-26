@@ -1,5 +1,5 @@
 "use client";
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -30,6 +30,7 @@ import { signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useToast } from "@/components/ui/use-toast";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 
 interface ProjectFormProps {
   form: UseFormReturn<z.infer<typeof createProjectValidation>>;
@@ -47,37 +48,36 @@ const ProjectForm: FC<ProjectFormProps> = ({
   const router = useRouter();
   const query = useSearchParams();
   const { toast } = useToast();
-
-  // 1. Define your form.
-  // const form = useForm<z.infer<typeof createProjectValidation>>({
-  //   resolver: zodResolver(createProjectValidation),
-  //   defaultValues: {
-  //     title: "",
-  //     custName: "",
-  //     alamatKantor: "",
-  //     alamatSampling: "",
-  //     surel: "",
-  //     contactPerson: "",
-  //   },
-  // });
-
-  //   async function onSubmit(values: z.infer<typeof createProjectValidation>) {
-  //     console.log(values);
-  //   }
+  const [paidStatus, setPaidStatus] = useState(form.watch('isPaid'))
+  
 
   return (
-    <Card className="w-[450px] max-sm:w-[400px] max-h-screen overflow-auto custom-scrollbar ">
+    <Card className="w-[450px] max-sm:w-[400px] max-h-screen md:max-h-[520px] overflow-auto custom-scrollbar ">
       <CardHeader>
         <CardTitle className="text-base font-bold ">
           Project Information
         </CardTitle>
-        {status && (
+        {status?.toLowerCase() === "cancelled" && (
           <div className="text-sm">
             <h1>
-              Status :{" "}
-              <span className="text-red-600 font-semibold">Canceled</span>
+              Status  :{" "}
+              <span className="text-red-600 font-semibold">Cancelled</span>
+            </h1> 
+          </div>
+        )}
+        {status?.toLocaleLowerCase() === "running" && (
+          <div>
+            <h1 className="text-sm mb-3">
+              Status Pembayaran:{" "}
+              <span className="font-bold">{paidStatus ? "Lunas" : "Belum lunas"}</span>
             </h1>
-            <p>Gakuat bayar jasa kita</p>
+            <div className=" flex flex-row w-full h-fit justify-center">
+              <button 
+              onClick={()=>{setPaidStatus(!paidStatus)}}
+              className={` ${paidStatus ? "bg-red-400 hover:bg-red-700" : "bg-moss_green hover:bg-dark_green"} h-2/3 text-white py-2 px-5 rounded-lg `}>
+                {paidStatus ? "Batalkan Pelunasan" : "Verifikasi Pelunasan"}
+              </button>
+            </div>
           </div>
         )}
       </CardHeader>
@@ -103,6 +103,33 @@ const ProjectForm: FC<ProjectFormProps> = ({
                 </FormItem>
               )}
             />
+            {status?.toLocaleLowerCase() === "cancelled" && (
+              <FormField
+                control={form.control}
+                name="desc_failed"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Reason Project Failed</FormLabel>
+                    <FormControl>
+                      {field.value === "" ? (
+                        <Input
+                          className=""
+                          placeholder="Not yet set reason"
+                          {...field}
+                        />
+                      ) : (
+                        <Textarea
+                          className=" h-24 border-2 border-[#bbbabf]"
+                          placeholder=""
+                          {...field}
+                        />
+                      )}
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            )}
             <FormField
               control={form.control}
               name="custName"
@@ -123,7 +150,70 @@ const ProjectForm: FC<ProjectFormProps> = ({
                 </FormItem>
               )}
             />
-
+            {status?.toLocaleLowerCase() !== "create" && (
+              <div>
+                <FormField
+                control={form.control}
+                name="numPenawaran"
+                render={({ field }) => (
+                  <FormItem>
+                        <FormLabel>Nomor Penawaran</FormLabel>
+                        <FormControl>
+                            <Input
+                            disabled={true}
+                            type="string"
+                            className=""
+                            placeholder=""
+                            {...field}
+                            />
+                        </FormControl>
+    
+                        <FormMessage />
+                        </FormItem>
+                    )}
+                    />
+                    <FormField
+                    control={form.control}
+                    name="numRevisi"
+                    render={({ field }) => (
+                        <FormItem>
+                        <FormLabel>Nomor Revisi</FormLabel>
+                        <FormControl>
+                            <Input
+                            disabled={true}
+                            type="number"
+                            className=""
+                            placeholder=""
+                            {...field}
+                            />
+                        </FormControl>
+    
+                        <FormMessage />
+                        </FormItem>
+                    )}
+                    />
+                <FormField
+                    control={form.control}
+                    name="valuasiProject"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Valuasi Project</FormLabel>
+                        <FormControl>
+                            <Input
+                            disabled={status?.toLocaleLowerCase() === "finished" ? true : false}
+                            type="text"
+                            className=""
+                            placeholder=""
+                            {...field}
+                            />
+                        </FormControl>
+    
+                        <FormMessage />
+                        </FormItem>
+                    )}
+                    />
+                  </div>
+                  )}
             <FormField
               control={form.control}
               name="alamatKantor"
@@ -204,7 +294,6 @@ const ProjectForm: FC<ProjectFormProps> = ({
                 </FormItem>
               )}
             />
-            <Button type="submit">Submit</Button>
           </form>
         </Form>
       </CardContent>

@@ -64,13 +64,13 @@ export default function ReviewDraftPage({ linkData }: { linkData: any }) {
 
         {/* Sample Section */}
         <TabsContent value="sampling">
-          <SamplingTab data={linkData.sampling_list} />
+          <SamplingTab data={linkData?linkData.sampling_list:[]} />
         </TabsContent>
         {/* End Sample Section */}
 
         {/* Document Section */}
         <TabsContent value="document">
-          <Document data={linkData.file} color="moss_green" />
+          <Document data={linkData?linkData.file:[]} color="moss_green" />
         </TabsContent>
         {/* End Document Section */}
       </Tabs>

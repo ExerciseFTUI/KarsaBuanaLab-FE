@@ -2,14 +2,14 @@
 import { AiOutlineFile, AiOutlineArrowRight } from "react-icons/ai";
 import { useRouter } from "next/navigation";
 
-export default function SamplingTab({ data }) {
+export default function SamplingTab({ data }:any) {
   const router = useRouter();
   return (
     <div className="px-16">
       <div className="text-moss_green space-y-6">
         <h2 className="text-xl">Rekaman Sampling</h2>
         <div className="space-y-2">
-          {data.map((item) => (
+          {data.map((item:any) => (
             <a
               key={item.name}
               className="grid grid-rows-12 items-center bg-[#e1e2d7] px-5 p-2 rounded-xl"

@@ -5,8 +5,8 @@ import { BsArrowRight } from "react-icons/bs";
 import { SelectSeparator } from "@/components/ui/select";
 
 interface LaporanHasilPemeriksaantLink {
-  value: string;
-  label: string;
+  url: string;
+  name: string;
 }
 
 interface LaporanHasilPemeriksaanProps {
@@ -40,8 +40,8 @@ const LaporanHasilPemeriksaan: FC<LaporanHasilPemeriksaanProps> = ({
             <SelectSeparator className="bg-pastel_moss_green" />
           </div>
           <div className="flex items-center justify-between text-ghost_white italic">
-            <p>{link.label}</p>
-            <a href={link.value} target="_blank">
+            <p>{link.name}</p>
+            <a href={link.url} target="_blank">
               <BsArrowRight className="text-4xl" />
             </a>
           </div>

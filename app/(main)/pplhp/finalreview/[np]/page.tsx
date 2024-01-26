@@ -183,21 +183,19 @@ export default async function Home({ params }: { params: { np: string } }) {
   // }
   console.log(linkData)
   return (
-    <>
+    <div>
       <main className="flex flex-col lg:flex-row gap-5 lg:gap-0 justify-between w-full">
-
         <div className="lg:w-3/5">
-          <FNPrintPage linkData={linkData} />
+          <FNPrintPage linkData={linkData ? linkData : []} />
         </div>
-
         <div className="lg:w-2/5 py-24 lg:py-0">
           <LaporanHasilPemeriksaan
             title="Pengisian LHP"
             color="dark_brown"
-            link={LaporanHasilPemeriksaanData}
+            link={linkData ? linkData.lhp : []}
           />
         </div>
       </main>
-    </>
+    </div>
   );
 }

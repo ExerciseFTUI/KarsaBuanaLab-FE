@@ -50,24 +50,28 @@ const Dropzone = ({ setUploadedFiles }) => {
       </span>
     </li>
   ));
+  
 
   return (
     <div>
       {/* Drag and drop files area */}
       <div
-        className={`m-5 h-48 rounded-lg grid place-items-center border-2 border-dashed border-black bg-light_green ${
+        className={`mx-5 h-48 rounded-lg grid place-items-center border-2 border-dashed border-black bg-light_green ${
           isDraggedOver
             ? "border-4 border-dark_green opacity-100 "
             : "opacity-80"
         }`}
         {...getRootProps()}
       >
-        <input {...getInputProps()} />
+        <input name="files" type="" {...getInputProps()} />
         <p>Drag &apos;n&apos; drop some files here, or click to select files</p>
       </div>
 
       <aside className="m-5">
-        <h4>Files Uploaded : </h4>
+        <h4>Files Uploaded :  </h4>
+        {uploadedFilesList.length === 0 && (
+          <p className=" text-sm flex flex-row justify-center">Nothing files uploaded</p>
+        )}
         <ul>{uploadedFilesList}</ul>
       </aside>
       {/* End of drag and drop files area */}

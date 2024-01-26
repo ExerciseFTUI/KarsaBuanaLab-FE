@@ -29,14 +29,14 @@ interface DocumentProps {
 
 import { useRouter } from "next/navigation";
 
-export default function DocumentTab({ data }) {
+export default function DocumentTab({ data }:any) {
   const router = useRouter();
   const [value, setValue] = React.useState("");
 
   return (
     <div className="w-full h-full px-16 space-y-6 ">
       <div className="space-y-4">
-        {data.map((field, index) => (
+        {data.map((field:any, index:any) => (
           <div key={index} className="space-y-3">
             <h2>{`Tahap ${index + 1}`}</h2>
             <Select

@@ -27,7 +27,7 @@ interface DocumentProps {
 const Document: FC<DocumentProps> = ({ data, color }) => {
   const groupDataByType = (data: DocumentData[], typesToGroup: string[]) => {
     return typesToGroup.reduce((acc, type) => {
-      const filteredData = data.filter(item => item.type === type);
+      const filteredData = data?data.filter(item => item.type === type):[];
       if (filteredData.length > 0) {
         acc[type] = filteredData;
       }
