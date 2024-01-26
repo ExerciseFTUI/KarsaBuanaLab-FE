@@ -1,31 +1,24 @@
 import React, { FC } from "react";
-import VerticalCheckbox from "../Checkbox/VerticalCheckbox";
+import CustomCheckbox from "../Checkbox/CustomCheckbox";
 
-interface AnalysisProps {
-
-}
+interface AnalysisProps {}
 
 const Analysis: FC<AnalysisProps> = () => {
-    const items = [
-        {
-            id: "phAirLimbahDomestik",
-            label: "PH Air Limbah Domestik",
-        },
-        {
-            id: "AMDK",
-            label: "Kandungan Air  Minum / AMDK",
-        },
-        {
-            id: "--------",
-            label: "--------",
-        },
-    ]
-    const initialValue = [
-        "phAirLimbahDomestik"
-    ]
-    return (
-        <VerticalCheckbox formLabel="Progress Analisa Sample" items={items} defaultValue={initialValue}/>
-    );
+  const items = [
+    {
+      label: "PH Air Limbah Domestik",
+      accepted: true,
+    },
+    {
+      label: "Kandungan Air  Minum / AMDK",
+      accepted: false,
+    },
+    {
+      label: "--------",
+      accepted: false,
+    },
+  ];
+  return <CustomCheckbox formLabel="Progress Analisa Sample" items={items} />;
 };
 
 export default Analysis;

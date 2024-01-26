@@ -25,7 +25,10 @@ import {
 } from "@/components/ui/card";
 
 import { useForm, useFormContext } from "react-hook-form";
-import { clientValidation } from "@/lib/validations/ClientValidation";
+import {
+  clientValidation,
+  clientValidationType,
+} from "@/lib/validations/ClientValidation";
 import { Input } from "../ui/input";
 
 interface IdCheckFormProps {
@@ -46,6 +49,7 @@ const IdCheckForm: FC<IdCheckFormProps> = ({ setResiNumber }) => {
   function onSubmit(values: z.infer<typeof clientValidation>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
+    console.log(values);
     setResiNumber(values.resiNumber);
   }
   return (
@@ -63,7 +67,11 @@ const IdCheckForm: FC<IdCheckFormProps> = ({ setResiNumber }) => {
                 <FormItem>
                   <FormLabel>Resi Number</FormLabel>
                   <FormControl>
-                    <Input className="py-6" placeholder="Input your number here" {...field} />
+                    <Input
+                      className="py-6"
+                      placeholder="Input your number here"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -76,20 +84,24 @@ const IdCheckForm: FC<IdCheckFormProps> = ({ setResiNumber }) => {
                 <FormItem>
                   <FormLabel>Password</FormLabel>
                   <FormControl>
-                    <Input className="py-6" placeholder="Input your password here" {...field} />
+                    <Input
+                      className="py-6"
+                      placeholder="Input your password here"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
             <div className="flex flex-row space-x-7">
-                <Button
+              <Button
                 className="w-full mt-6 py-5 bg-[#656D4A] hover:bg-[#332D29] text-lg"
                 type="submit"
                 variant="default"
-                >
+              >
                 Check
-                </Button>
+              </Button>
             </div>
           </form>
         </Form>
