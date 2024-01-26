@@ -148,7 +148,7 @@ import LHPDraftPage from "@/components/pplhp/LHPDraftPage";
 import LaporanHasilPemeriksaan from "@/components/pplhp/LaporanHasilPemeriksaan";
 import FNPrintPage from "@/components/pplhp/FNPrintPage";
 import axios from "axios";
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 
 const LaporanHasilPemeriksaanData = {
   value: "link1.",
@@ -181,13 +181,14 @@ export default async function Home({ params }: { params: { np: string } }) {
   // if (!data) {
   //   return <div>Loading...</div>;
   // }
-  console.log(linkData)
+  console.log(linkData);
   return (
-    <div>
+    <>
       <main className="flex flex-col lg:flex-row gap-5 lg:gap-0 justify-between w-full">
         <div className="lg:w-3/5">
           <FNPrintPage linkData={linkData ? linkData : []} />
         </div>
+
         <div className="lg:w-2/5 py-24 lg:py-0">
           <LaporanHasilPemeriksaan
             title="Pengisian LHP"
@@ -196,6 +197,6 @@ export default async function Home({ params }: { params: { np: string } }) {
           />
         </div>
       </main>
-    </div>
+    </>
   );
 }

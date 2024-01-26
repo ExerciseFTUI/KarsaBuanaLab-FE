@@ -31,3 +31,25 @@ export const getLinkFiles = async (projectId: string): Promise<any> => {
     return null;
   }
 };
+
+export const changeDraftStatus = async (
+  projectId: string,
+  newStatus: boolean
+): Promise<BaseApiResponse<Project>> => {
+  try {
+    const response = await axios.post(
+      `${apiBaseUrl}/projects/change-draft-status/${projectId}`,
+      {
+        status: newStatus,
+      }
+    );
+    console.log(response.data);
+    return response.data; // Access 'data' field
+  } catch (error: any) {
+    console.error(
+      `Error changing draft status for project with ID ${projectId}:`,
+      error.message
+    );
+    return null as unknown as BaseApiResponse<Project>;
+  }
+};

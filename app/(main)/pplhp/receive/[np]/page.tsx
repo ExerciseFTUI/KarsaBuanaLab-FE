@@ -7,7 +7,7 @@ import RangkaianPengamananSampel from "@/components/pplhp/RangkaianPengamananSam
 
 // Helper function to remove and return required files
 function removeAndReturnRequiredFiles(files: any) {
-  const requiredFiles = [];
+  const requiredFiles: any[] = [];
   const remainingFiles = files.filter((file: any) => {
     if (["Log Penerimaan", "DP Chain of Custody"].includes(file.name)) {
       requiredFiles.push(file);
