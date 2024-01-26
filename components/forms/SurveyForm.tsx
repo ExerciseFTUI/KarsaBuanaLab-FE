@@ -57,14 +57,12 @@ const SurveyForm: FC<SurveyFormProps> = ({ data }) => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <a href={data.url} target="_blank">
-          <Button
-            disabled={!data.isPaid}
-            className="flex bg-black_brown justify-center rounded-xl text-xl text-ghost_white py-2 w-full"
-          >
-            Laporan Hasil Penelitian
-          </Button>
-        </a>
+        <Button
+          disabled={!data.isPaid}
+          className="flex bg-black_brown justify-center rounded-xl text-xl text-ghost_white py-2 w-full"
+        >
+          Laporan Hasil Penelitian
+        </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-6xl sm:max-h-[85vh] mx-3">
         <DialogHeader>
@@ -72,7 +70,7 @@ const SurveyForm: FC<SurveyFormProps> = ({ data }) => {
             Please Fill the Survey First
           </DialogTitle>
         </DialogHeader>
-        <ScrollArea className="w-full h-1/2 py-4 -mx-3">
+        <ScrollArea className="w-full h-[55%] py-4 -mx-3">
           <div className="px-3">
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)}>
@@ -180,11 +178,8 @@ const SurveyForm: FC<SurveyFormProps> = ({ data }) => {
                     </FormItem>
                   )}
                 />
-                <div className="flex justify-center">
-                  <Button
-                    type="submit"
-                    className="absolute bottom-0 w-1/2 text-lg p-6"
-                  >
+                <div className="flex justify-center bg-white h-fit w-full my-16">
+                  <Button type="submit" className="bottom-0 w-1/2 text-lg p-6">
                     Submit Survey
                   </Button>
                 </div>
@@ -192,7 +187,6 @@ const SurveyForm: FC<SurveyFormProps> = ({ data }) => {
             </Form>
           </div>
         </ScrollArea>
-        <DialogFooter></DialogFooter>
       </DialogContent>
     </Dialog>
   );

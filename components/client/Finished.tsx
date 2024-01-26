@@ -13,7 +13,7 @@ const Finished: FC<FinishedProps> = () => {
 
   return (
     <section className="mt-4 m-10">
-      <h1 className="text-2xl font-bold">Progress Analisa Sampel</h1>
+      <h1 className="text-2xl font-bold">Hasil Penelitian</h1>
       <div className="bg-[#bbbabf] w-full h-0.5 m-2" />
       <div className="flex flex-row space-x-2 justify-center m-2 mt-12 ">
         <p>Status pembayaran:</p>
