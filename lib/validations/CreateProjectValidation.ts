@@ -35,10 +35,11 @@ export const createProjectValidation = z.object({
     .number()
     .optional(),
   isPaid: z.boolean().optional(),
-  descFailed: z
+  desc_failed: z
     .string()
     .max(280, {message: "Makismal 280 character"})
     .optional(),
+  status: z.string().optional()
 });
 
 export type createProjectValidation = z.infer<typeof createProjectValidation>;

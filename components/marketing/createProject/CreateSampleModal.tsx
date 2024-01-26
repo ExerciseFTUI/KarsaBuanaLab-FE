@@ -38,15 +38,6 @@ import { BaseSample } from "@/lib/models/baseSample.model";
 import { get } from "http";
 //Shadcn
 
-const datas = [
-  { value: "Parameter1", label: "Parameter 1" },
-  { value: "Parameter2", label: "Parameter 2" },
-  { value: "Parameter3", label: "Parameter 3" },
-  { value: "Parameter4", label: "Parameter 4" },
-  { value: "Parameter5", label: "Parameter 5" },
-  { value: "Parameter6", label: "Parameter 6" },
-];
-
 interface CreateSampleModalProps {
   isOpen?: boolean;
   onClose: () => void;
@@ -178,12 +169,6 @@ const CreateSampleModal: FC<CreateSampleModalProps> = ({
                                     {sample.sample_name}
                                   </SelectItem>
                                 ))}
-                                <SelectItem value="Sample 1">
-                                  Sample 1
-                                </SelectItem>
-                                <SelectItem value="Sample 2">
-                                  Sample 2
-                                </SelectItem>
                               </SelectGroup>
                             </SelectContent>
                           </Select>
@@ -225,20 +210,7 @@ const CreateSampleModal: FC<CreateSampleModalProps> = ({
                                       )
                                     );
                                   }
-
-                                  // <SelectItem
-                                  //   key={`${sample._id}-${sample.regulation}`}
-                                  //   value={sample.regulation}
-                                  // >
-                                  //   {sample.regulation}
-                                  // </SelectItem>
                                 })}
-                                {/* <SelectItem value="Pemerintah Pusat">
-                                  Pemerintah Pusat
-                                </SelectItem>
-                                <SelectItem value="Pemerintah Bogor">
-                                  Pemerintah Bogor
-                                </SelectItem> */}
                               </SelectGroup>
                             </SelectContent>
                           </Select>
@@ -251,20 +223,8 @@ const CreateSampleModal: FC<CreateSampleModalProps> = ({
                     <MultipleSelect
                       disabled={!watch("regulation")}
                       label="Parameters"
-                      // options={users.map((user) => ({
-                      //   value: user.id,
-                      //   label: user.name,
-                      // }))}
                       options={
                         getParameter()
-                        //   [
-                        //   { value: "Parameter1", label: "Parameter 1" },
-                        //   { value: "Parameter2", label: "Parameter 2" },
-                        //   { value: "Parameter3", label: "Parameter 3" },
-                        //   { value: "Parameter4", label: "Parameter 4" },
-                        //   { value: "Parameter5", label: "Parameter 5" },
-                        //   { value: "Parameter6", label: "Parameter 6" },
-                        // ]
                       }
                       onChange={(value) => {
                         setValue("parameters", value, { shouldValidate: true });

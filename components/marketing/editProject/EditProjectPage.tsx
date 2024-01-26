@@ -163,7 +163,8 @@ export default function EditProjectPage({
       numRevisi: project.jumlah_revisi || 0,
       valuasiProject: project.valuasi_proyek || "0",
       isPaid: project.isPaid || false,
-      descFailed: project.descFailed || ""
+      desc_failed: project.desc_failed || "",
+      status: project.status || "",
     },
   });
 
@@ -180,7 +181,8 @@ export default function EditProjectPage({
       jumlah_revisi: values.numRevisi,
       valuasi_proyek: values.valuasiProject,
       isPaid: values.isPaid,
-      descFailed: values.descFailed,
+      desc_failed: values.desc_failed,
+      status: values.status,
     };
 
     // // Check if all properties same exclude the isPaid will increase jumlahRevisi
@@ -246,14 +248,6 @@ export default function EditProjectPage({
     router.push("/marketing/running");
   }
 
-  //================================= End Project Information Section
-
-  //=============================== Document Section
-
-  const [uploadedFiles, setUploadedFiles] = useState([]);
-  const [isCancelled, setIsCancelled] = useState(false);
-  const [reason, setReason] = useState("");
-
   const handleCancelledProject = () => {
     console.log(reason);
 
@@ -264,6 +258,15 @@ export default function EditProjectPage({
 
     router.push("/marketing/cancelled");    
   }
+  
+  //================================= End Project Information Section
+
+  //=============================== Document Section
+
+  const [uploadedFiles, setUploadedFiles] = useState([]);
+  const [isCancelled, setIsCancelled] = useState(false);
+  const [reason, setReason] = useState("");
+
 
   const handleSubmitDocs = () => {
     // Log the uploaded files to the console

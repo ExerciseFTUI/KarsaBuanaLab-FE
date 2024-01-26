@@ -18,9 +18,12 @@ const CreateSamplePage = () => {
                 {/* Information for sampling and regulation */}
                 <div className='border border-dark_green rounded-lg p-3 h-full'>
                     {/* Add sampling Button */}
-                    <button className='p-3 flex hover:opacity-70 justify-center font-bold text-xl border-light_green border-2 rounded-lg w-full bg-dark_green text-white'>
-                        Create New Sample
-                    </button>
+                    <Link href={"/marketing/sample/createSample"}>
+                        <button 
+                            className='p-3 flex hover:opacity-70 justify-center font-bold text-xl border-light_green border-2 rounded-lg w-full bg-dark_green text-white'>
+                            Create New Sample
+                        </button>
+                    </Link>
                     {/* End of Add sampling Button */}
 
                     {/* Sampling choose */}

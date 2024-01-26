@@ -106,7 +106,7 @@ const ProjectForm: FC<ProjectFormProps> = ({
             {status?.toLocaleLowerCase() === "cancelled" && (
               <FormField
                 control={form.control}
-                name="descFailed"
+                name="desc_failed"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Reason Project Failed</FormLabel>

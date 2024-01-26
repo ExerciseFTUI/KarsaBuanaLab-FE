@@ -26,7 +26,7 @@ export interface Project {
   jadwal_sampling: string
   project_assigned_to: User[]
   isPaid: boolean
-  descFailed: string
+  desc_failed: string
   _id: string
   __v: number
 }
