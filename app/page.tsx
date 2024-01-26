@@ -10,13 +10,15 @@ export default function Home() {
 
   return (
     // Mantap albert
-    <div className="w-full flex flex-col items-center lg:items-start md:flex-row">
-      <IdCheckForm setResiNumber={setResiNumber} />
-      {resiNumber !== "" ? (
-        <ClientForm resiNumber={resiNumber} />
-      ) : (
-        <div className="w-full md:w-2/3 h-[90vh] flex flex-col m-6 mx-10 bg-ghost_white rounded-xl" />
-      )}
-    </div>
+    <>
+      <div className="w-screen flex flex-col md:flex-row">
+        <IdCheckForm setResiNumber={setResiNumber} />
+        {resiNumber !== "" ? (
+          <ClientForm resiNumber={resiNumber} stage="finished" />
+        ) : (
+          <div className="w-full md:w-2/3 h-[90vh] flex flex-col m-6 mx-10 bg-ghost_white rounded-xl" />
+        )}
+      </div>
+    </>
   );
 }

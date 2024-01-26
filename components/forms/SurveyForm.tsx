@@ -21,19 +21,19 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { ScrollArea } from "@/components/ui/scroll-area"
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 import { useForm, useFormContext } from "react-hook-form";
 import { surveyValidation } from "@/lib/validations/SurveyValidation";
 
 interface SurveyFormProps {
-    isPaid: boolean;
+  data: { isPaid: boolean; url: string };
 }
 
-const SurveyForm: FC<SurveyFormProps> = ({ isPaid }) => {
+const SurveyForm: FC<SurveyFormProps> = ({ data }) => {
   const form = useForm<z.infer<typeof surveyValidation>>({
     resolver: zodResolver(surveyValidation),
     defaultValues: {
@@ -57,17 +57,22 @@ const SurveyForm: FC<SurveyFormProps> = ({ isPaid }) => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button disabled={!isPaid} className="flex bg-black_brown justify-center rounded-xl text-xl text-ghost_white py-2 w-full">
-            Laporan Hasil Penelitian
+        <Button
+          disabled={!data.isPaid}
+          className="flex bg-black_brown justify-center rounded-xl text-xl text-ghost_white py-2 w-full"
+        >
+          Laporan Hasil Penelitian
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-6xl sm:max-h-[85vh] mx-3">
         <DialogHeader>
-          <DialogTitle className="text-3xl">Please Fill the Survey First</DialogTitle>
+          <DialogTitle className="text-3xl">
+            Please Fill the Survey First
+          </DialogTitle>
         </DialogHeader>
-        <ScrollArea className="w-full h-1/2 py-4 -mx-3">
+        <ScrollArea className="w-full h-[55%] py-4 -mx-3">
           <div className="px-3">
-            <Form  {...form}>
+            <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)}>
                 <FormField
                   control={form.control}
@@ -173,18 +178,17 @@ const SurveyForm: FC<SurveyFormProps> = ({ isPaid }) => {
                     </FormItem>
                   )}
                 />
-                <div className="flex justify-center">
-                  <Button type="submit" className="absolute bottom-0 w-1/2 text-lg p-6">Submit Survey</Button>
+                <div className="flex justify-center bg-white h-fit w-full my-16">
+                  <Button type="submit" className="bottom-0 w-1/2 text-lg p-6">
+                    Submit Survey
+                  </Button>
                 </div>
               </form>
             </Form>
           </div>
         </ScrollArea>
-        <DialogFooter >
-          
-        </DialogFooter>
       </DialogContent>
     </Dialog>
-  )
-}
+  );
+};
 export default SurveyForm;

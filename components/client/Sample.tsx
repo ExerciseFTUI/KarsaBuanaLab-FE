@@ -1,33 +1,24 @@
 import React, { FC } from "react";
-import VerticalCheckbox from "../Checkbox/VerticalCheckbox";
+import CustomCheckbox from "../Checkbox/CustomCheckbox";
 
-interface SampleProps {
-
-}
+interface SampleProps {}
 
 const Sample: FC<SampleProps> = () => {
-    const items = [
-        {
-            id: "airLimbahDomestik",
-            label: "air limbah domestik",
-        },
-        {
-            id: "AMDK",
-            label: "air minum / AMDK",
-        },
-        {
-            id: "udaraAmbien",
-            label: "udara ambien",
-        },
-    ]
-
-    const initialValue = [
-        "airLimbahDomestik",
-        "AMDK"
-    ]
-    return (
-        <VerticalCheckbox formLabel="Schedule Logbook" items={items} defaultValue={initialValue}/>
-    );
+  const items = [
+    {
+      label: "air limbah domestik",
+      accepted: true,
+    },
+    {
+      label: "air minum / AMDK",
+      accepted: true,
+    },
+    {
+      label: "udara ambien",
+      accepted: false,
+    },
+  ];
+  return <CustomCheckbox formLabel="Schedule Logbook" items={items} />;
 };
 
 export default Sample;
