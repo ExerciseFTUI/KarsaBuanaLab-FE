@@ -28,37 +28,11 @@ import {
 import { useRouter } from "next/navigation";
 import { set } from "date-fns";
 import LoadingScreen from "@/components/LoadingComp";
-
-export const updateProjectFile = async (id: string, files: any) => {
-  var bodyFormData = new FormData();
-  bodyFormData.append("_id", id);
-
-  // Append each file to the FormData object
-  for (let i = 0; i < files.length; i++) {
-    bodyFormData.append("files", files[i]);
-  }
-
-  console.log(bodyFormData);
-
-  try {
-    //Call API
-    const response = await axios.put(
-      `https://karsalab.netlabdte.com/projects/editFiles`,
-      bodyFormData,
-      {
-        headers: { "Content-Type": "multipart/form-data" },
-      }
-    );
-    if (response.data.result) {
-      return true;
-    } else {
-      return false;
-    }
-  } catch (error: any) {
-    console.error(`Error update projectFile :`, error.message);
-    return false;
-  }
-};
+import {
+  getProjectClient,
+  getUser,
+  updateProjectFile,
+} from "@/lib/actions/marketing.client.actions";
 
 const getProject = async () => {
   //Add try catch
@@ -92,7 +66,7 @@ const CreateProjectPage: FC<CreateProjectProps> = ({ baseSamples }) => {
     defaultValues: {
       sampling: "",
       regulation: "",
-      parameters: [""],
+      parameters: [],
     },
   });
 
@@ -104,7 +78,8 @@ const CreateProjectPage: FC<CreateProjectProps> = ({ baseSamples }) => {
   });
 
   // useEffect(() => {
-  //   getProject();
+  //   getUser();
+  //   getProjectClient("12");
   // }, []);
 
   //All the samples get save in here
@@ -172,151 +147,115 @@ const CreateProjectPage: FC<CreateProjectProps> = ({ baseSamples }) => {
   });
 
   // 2. Define a submit handler.
-  async function onSubmitForm(values: z.infer<typeof createProjectValidation>) {
-    if (samples.length > 0) {
-      //@ts-ignore
-      const sampling_list = samples.map((sample) => sample.sampleName);
-      //@ts-ignore
-      const regulation_list = samples.map((sample) => sample.regulation);
+  // async function onSubmitForm(values: z.infer<typeof createProjectValidation>) {
+  //   if (samples.length > 0) {
+  //     //@ts-ignore
+  //     const sampling_list = samples.map((sample) => sample.sampleName);
+  //     //@ts-ignore
+  //     const regulation_list = samples.map((sample) => sample.regulation);
 
-      console.log("Sampling List: ", sampling_list);
-      console.log("Regulation List: ", regulation_list);
+  //     console.log("Sampling List: ", sampling_list);
+  //     console.log("Regulation List: ", regulation_list);
 
-      const body = {
-        client_name: values.custName,
-        project_name: values.title,
-        alamat_kantor: values.alamatKantor,
-        alamat_sampling: values.alamatSampling,
-        surel: values.surel,
-        contact_person: values.contactPerson,
-        regulation_list: regulation_list,
-        sampling_list: sampling_list,
-      };
+  //     const body = {
+  //       client_name: values.custName,
+  //       project_name: values.title,
+  //       alamat_kantor: values.alamatKantor,
+  //       alamat_sampling: values.alamatSampling,
+  //       surel: values.surel,
+  //       contact_person: values.contactPerson,
+  //       regulation_list: regulation_list,
+  //       sampling_list: sampling_list,
+  //     };
 
-      //Create Project Function
-      setIsLoading(true);
-      // const response = null;
+  //     //Create Project Function
+  //     setIsLoading(true);
+  //     // const response = null;
 
-      const response = await createProject(body, uploadedFiles);
+  //     const response = await createProject(body, uploadedFiles);
 
-      if (!response) {
-        alert("Failed to create project");
-        setIsLoading(false);
-        return;
-      }
+  //     if (!response) {
+  //       alert("Failed to create project");
+  //       setIsLoading(false);
+  //       return;
+  //     }
 
-      if (uploadedFiles.length > 0) {
-        const fileResponse = await updateProjectFile(
-          "65afbd8c987cf82566e265d0",
-          uploadedFiles
-        );
+  //     if (uploadedFiles.length > 0) {
+  //       const fileResponse = await updateProjectFile(
+  //         "65afbd8c987cf82566e265d0",
+  //         uploadedFiles
+  //       );
 
-        if (!fileResponse) {
-          alert("Failed to upload file, You can add file in update page");
-          setIsLoading(false);
-          return;
-        }
-      }
+  //       if (!fileResponse) {
+  //         alert("Failed to upload file, You can add file in update page");
+  //         setIsLoading(false);
+  //         return;
+  //       }
+  //     }
 
-      setIsLoading(false);
-      alert("Success creating project");
-      router.push("/marketing/running");
-    } else {
-      alert("Please add at least one sample");
-    }
-  }
+  //     setIsLoading(false);
+  //     alert("Success creating project");
+  //     router.push("/marketing/running");
+  //   } else {
+  //     alert("Please add at least one sample");
+  //   }
+  // }
 
   async function onSubmitForm2(
     values: z.infer<typeof createProjectValidation>
   ) {
-    if (samples.length > 0) {
-      const sampling_list = samples.map((sample) => {
-        return {
-          //@ts-ignore
-          sample_name: sample.sampleName,
-          //@ts-ignore
-          regulation_name: sample.regulation,
-          //@ts-ignore
-          param: sample.parameters,
+    try {
+      setIsLoading(true); // Set loading to true before making API call
+
+      if (samples.length > 0) {
+        const sampling_list = samples.map((sample) => {
+          return {
+            //@ts-ignore
+            sample_name: sample.sampleName,
+            //@ts-ignore
+            regulation_name: sample.regulation,
+            //@ts-ignore
+            param: sample.parameters,
+          };
+        });
+
+        const body = {
+          client_name: values.custName,
+          project_name: values.title,
+          alamat_kantor: values.alamatKantor,
+          alamat_sampling: values.alamatSampling,
+          surel: values.surel,
+          contact_person: values.contactPerson,
+          sampling_list: sampling_list,
         };
-      });
 
-      const body = {
-        client_name: values.custName,
-        project_name: values.title,
-        alamat_kantor: values.alamatKantor,
-        alamat_sampling: values.alamatSampling,
-        surel: values.surel,
-        contact_person: values.contactPerson,
-        sampling_list: sampling_list,
-      };
+        const response = await createProjectJson(body);
 
-      setIsLoading(true);
-      const response = await createProjectJson(body);
+        // if (uploadedFiles.length > 0 && response?._id) {
+        //   const fileResponse = await updateProjectFile(
+        //     response?._id,
+        //     uploadedFiles
+        //   );
+        //   console.log("Hello World");
+        // }
 
-      if (response) {
+        // if (uploadedFiles.length > 0) {
+        //   const fileResponse = await updateProjectFile(
+        //     "65b79328c0bdd92b29e84f43",
+        //     uploadedFiles
+        //   );
+        // }
+
         alert("Success creating project");
         router.push("/marketing/running");
       } else {
-        alert("Failed to create project");
+        alert("Please add at least one sample");
       }
-
-      setIsLoading(false);
-    } else {
-      alert("Please add at least one sample");
+    } catch (error) {
+      console.error("Error creating project:", error);
+    } finally {
+      setIsLoading(false); // Set loading to false after API call is finished
     }
-
-    // if (samples.length > 0) {
-    //   //@ts-ignore
-    //   const sampling_list = samples.map((sample) => sample.sampleName);
-    //   //@ts-ignore
-    //   const regulation_list = samples.map((sample) => sample.regulation);
-
-    //   console.log("Sampling List: ", sampling_list);
-    //   console.log("Regulation List: ", regulation_list);
-
-    //   const body = {
-    //     client_name: values.custName,
-    //     project_name: values.title,
-    //     alamat_kantor: values.alamatKantor,
-    //     alamat_sampling: values.alamatSampling,
-    //     surel: values.surel,
-    //     contact_person: values.contactPerson,
-    //     regulation_list: regulation_list,
-    //     sampling_list: sampling_list,
-    //   };
-
-    //   //Create Project Function
-    //   setIsLoading(true);
-    //   // const response = null;
-
-    //   const response = await createProject(body, uploadedFiles);
-
-    //   if (!response) {
-    //     alert("Failed to create project");
-    //     setIsLoading(false);
-    //     return;
-    //   }
-
-    //   if (uploadedFiles.length > 0) {
-    //     const fileResponse = await updateProjectFile(
-    //       "65afbd8c987cf82566e265d0",
-    //       uploadedFiles
-    //     );
-
-    //     if (!fileResponse) {
-    //       alert("Failed to upload file, You can add file in update page");
-    //       setIsLoading(false);
-    //       return;
-    //     }
-    //   }
-
-    //   setIsLoading(false);
-    //   alert("Success creating project");
-    //   router.push("/marketing/running");
-    // } else {
-    //   alert("Please add at least one sample");
-    // }
   }
 
   //================================= End Project Information Section
@@ -334,7 +273,7 @@ const CreateProjectPage: FC<CreateProjectProps> = ({ baseSamples }) => {
   return (
     <div className="flex gap-6 max-md:flex-col max-md:items-center">
       {isLoading && <LoadingScreen />}
-      <ProjectForm form={form} onSubmit={onSubmitForm} status="CREATE" />
+      <ProjectForm form={form} onSubmit={onSubmitForm2} status="CREATE" />
       <Tabs
         defaultValue="sampling"
         className="w-[40rem] max-sm:w-[420px] justify-center"

@@ -125,7 +125,7 @@ export const createProjectJson = async (body: any) => {
   } catch (error: any) {
     console.error(error.response?.data?.message);
     console.error("Error creating project:", error.message);
-    return false;
+    return null;
   }
 };
 
