@@ -36,15 +36,18 @@ import { useRouter } from "next/navigation";
 import { set } from "date-fns";
 import { BaseSample } from "@/lib/models/baseSample.model";
 import LoadingScreen from "@/components/LoadingComp";
+import { Textarea } from "@/components/ui/textarea";
 
 interface EditProjectPageProps {
   project: Project;
   baseSamples: BaseSample[];
+  status?: string;
 }
 
 export default function EditProjectPage({
   project,
   baseSamples,
+  status
 }: EditProjectPageProps) {
   //General
   const { toast } = useToast();
@@ -164,62 +167,13 @@ export default function EditProjectPage({
       numPenawaran: project.no_penawaran || "",
       numRevisi: project.jumlah_revisi || 0,
       valuasiProject: project.valuasi_proyek || "0",
+      isPaid: project.isPaid || false,
+      desc_failed: project.desc_failed || "",
+      status: project.status || "",
     },
   });
 
-  // async function onSubmit(values: z.infer<typeof createProjectValidation>) {
-  //   const body = {
-  //     _id: project._id,
-  //     project_name: values.title,
-  //     client_name: values.custName,
-  //     alamat_kantor: values.alamatKantor,
-  //     alamat_sampling: values.alamatSampling,
-  //     surel: values.surel,
-  //     contact_person: values.contactPerson,
-  //     no_penawaran: values.numPenawaran,
-  //     jumlah_revisi: values.numRevisi,
-  //     valuasi_proyek: values.valuasiProject,
-  //   };
-
-  //   //Edit Project Function
-  //   const responseInfo = await updateProjectInfo(body);
-  //   if (!responseInfo) {
-  //     alert("Failed Updating Project Info");
-  //     return;
-  //   }
-  //   if (samples.length > 0) {
-  //     //@ts-ignore
-  //     const sampling_list = samples.map((sample) => sample.sampleName);
-  //     //@ts-ignore
-  //     const regulation_list = samples.map((sample) => sample.regulation);
-
-  //     console.log("Sampling List: ", sampling_list);
-  //     console.log("Regulation List: ", regulation_list);
-
-  //     const bodySampling = {
-  //       _id: project._id,
-  //       regulation_list: ["Pemerintah Bogor"],
-  //       sampling_list: ["Air_Limbah"],
-  //     };
-
-  //     const responseSampling = await updateProjectSample(bodySampling);
-
-  //     if (!responseSampling) {
-  //       alert("Failed Updating Project Samples");
-  //       router.refresh();
-  //       return;
-  //     }
-  //   }
-
-  //   if (uploadedFiles.length > 0) {
-  //     alert("Updating File");
-  //   }
-
-  //   alert("Success Updating Project");
-
-  //   router.push("/marketing/running");
-  // }
-
+  
   async function onSubmit2(values: z.infer<typeof createProjectValidation>) {
     try {
       setIsLoading(true); // Set loading to true before making API calls
@@ -237,11 +191,24 @@ export default function EditProjectPage({
         valuasi_proyek: values.valuasiProject,
       };
 
+      // // Check if all properties same exclude the isPaid will increase jumlahRevisi
+      // const propertiesMatch = Object.keys(body).every(
+      //   (key) => key === 'isPaid' || key === 'status' || body[key] as any  === project[key] 
+      // );
+
+      // if (propertiesMatch) {
+      //   body.jumlah_revisi? body.jumlah_revisi -= 1 : body.jumlah_revisi
+      // }
+
+
       // Edit Project Function
       const responseInfo = await updateProjectInfo(body);
 
       if (!responseInfo) {
-        alert("Failed Updating Project Info");
+        toast({
+          title: "Oops, Failed!",
+          description: "Failed Updating Project Info",
+        });
         return;
       }
 
@@ -263,7 +230,10 @@ export default function EditProjectPage({
         );
 
         if (!responseSampling) {
-          alert("Failed Updating Project Samples");
+          toast({
+            title: "Ooops, Failed!",
+            description: "Failed Updating Project Samples",
+          });
           router.refresh();
           return;
         }
@@ -271,7 +241,10 @@ export default function EditProjectPage({
 
       if (uploadedFiles.length > 0) {
         // Perform file upload logic here if needed
-        alert("Updating File");
+        toast({
+          title: "Updated!",
+          description: "Don't forget to click submit button",
+        });
       }
 
       //Display Toast
@@ -279,6 +252,7 @@ export default function EditProjectPage({
         title: "Successfully updating the project",
         description: "Good Job",
       });
+      
       router.push("/marketing/running");
     } catch (error) {
       console.error("Error during project update:", error);
@@ -286,14 +260,65 @@ export default function EditProjectPage({
       setIsLoading(false); // Set loading to false after API calls are finished
     }
   }
+  
+  // =============== Action to update reason why project cancelled =================================== //
+  const [reason, setReason] = useState("");
 
+  async function handleCancelledProject(values: z.infer<typeof createProjectValidation>) {
+    const body = {
+      desc_failed: reason,
+    };
+    console.log("desc failed : ", body);
+    
+    // //Connect to API
+    // const responseInfo = await updateProjectInfo(body);
+    // if (!responseInfo) {
+      //   toast({
+    //     title: "Oops, Failed!",
+    //     description: "Failed to cancel the project, please try again",
+    //   });
+    
+    //   return;
+    // }
+    
+    toast({
+        title: "Project success cancelled!",
+        description: "The project has been cancelled",
+      });
+      
+      router.push("/marketing/cancelled");    
+  }
+  // =============== End of Action to update reason why project cancelled =================================== //
+  
+  // ========================= Action to update status payment ============================================== //
+  
+  async function updatePayment(values: z.infer<typeof createProjectValidation>) {
+    const body = {
+      isPaid: values.isPaid,
+    };
+    console.log("Status payment : ", body);
+    
+    // //Connect to API
+    // const responseInfo = await updateProjectInfo(body);
+    // if (!responseInfo) {
+      //   toast({
+    //     title: "Oops, Failed!",
+    //     description: "Failed to cancel the project, please try again",
+    //   });
+    
+    //   return;
+    // }
+  }
+  
+  // ========================= End of Action to update status payment ============================================== //
+  
   //================================= End Project Information Section
 
   //=============================== Document Section
 
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [isCancelled, setIsCancelled] = useState(false);
-  const [reason, setReason] = useState("");
+
 
   const handleSubmitDocs = () => {
     // Log the uploaded files to the console
@@ -332,13 +357,12 @@ export default function EditProjectPage({
               <label htmlFor="reason" className="block mb-2">
                 Reason:
               </label>
-              <input
-                type="text"
+              <Textarea
                 id="reason"
                 name="reason"
                 value={reason}
                 onChange={(e) => setReason(e.target.value)}
-                className="w-full p-2 border border-gray-300 rounded-md mb-4"
+                className="border-2 border-[#bbbabf] rounded-lg h-24 mb-2"
                 required
               />
               <div className="flex justify-center space-x-4">
@@ -351,7 +375,7 @@ export default function EditProjectPage({
                 </button>
                 <button
                   type="button"
-                  //onClick={handleSubmitDocs}  // You can replace this with your actual cancel logic
+                  onClick={form.handleSubmit(handleCancelledProject)}  // You can replace this with your actual cancel logic
                   className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600"
                 >
                   Confirm
@@ -368,8 +392,9 @@ export default function EditProjectPage({
         <ProjectForm
           form={form}
           onSubmit={onSubmit2}
-          status="EDIT"
+          status={status}
           note="Gakuat bayar jasa kita"
+          updatePayment={updatePayment}
         />
         <Tabs defaultValue="sampling" className="w-[40rem] max-sm:w-[420px]">
           <TabsList className="grid w-full grid-cols-2">
@@ -486,12 +511,14 @@ export default function EditProjectPage({
               Submit
             </button>
             {/* Cancelled Project */}
-            <button
-              onClick={() => setIsCancelled(true)}
-              className=" bg-red-400 px-5 hover:bg-red-500 font-medium text-black hover:text-white rounded-lg py-3"
-            >
-              Cancel Project
-            </button>
+            {status?.toLocaleLowerCase() === "running" && (
+              <button
+                onClick={() => setIsCancelled(true)}
+                className=" bg-red-400 px-5 hover:bg-red-500 font-medium text-black hover:text-white rounded-lg py-3"
+              >
+                Cancel Project
+              </button>
+            )}
             {/* End of Cancelled Project */}
           </div>
           {/* End Button for submit */}

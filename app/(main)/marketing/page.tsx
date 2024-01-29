@@ -41,7 +41,7 @@ export default async function Home() {
           <BsGraphUp className="text-4xl bg-light_green p-1 rounded-lg"></BsGraphUp>
           <div className=" text-left text-xs md:text-sm ml-1">
             <div>Approved Offers</div>
-            <div className=" font-semibold">{ response ? `Rp ${response.result.offerPerMonth.totalValuation}` : "Please refresh the page"}</div>
+            <div className=" font-semibold">{ response ? `Rp${new Intl.NumberFormat('id-ID').format(response.result.offerPerMonth.totalValuation)}` : "Please refresh the page"}</div>
           </div>
         </div>
 
@@ -68,7 +68,7 @@ export default async function Home() {
           className="bg-light_green rounded-md max-lg:hidden hover:bg-light_green text-dark_green font-bold justify-center text-xs text-center "
           href="/marketing/createProject"
         >
-          <Button className=" bg-light_green text-dark_green hover:bg-light_green p-6 ">
+          <Button className=" bg-light_green hover:bg-dark_green hover:text-white text-dark_green p-6 ">
             <AiFillFolderAdd className="text-3xl mr-3"></AiFillFolderAdd>
             Create <br /> New Project
           </Button>
