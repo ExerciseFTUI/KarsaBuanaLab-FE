@@ -35,6 +35,7 @@ import {
 import { useRouter } from "next/navigation";
 import { set } from "date-fns";
 import { BaseSample } from "@/lib/models/baseSample.model";
+import LoadingScreen from "@/components/LoadingComp";
 
 interface EditProjectPageProps {
   project: Project;
@@ -49,6 +50,8 @@ export default function EditProjectPage({
   const { toast } = useToast();
 
   const router = useRouter();
+
+  const [isLoading, setIsLoading] = useState(false);
 
   //=============================== Sample Section
   const [openModal, setOpenModal] = useState(false);
@@ -162,57 +165,124 @@ export default function EditProjectPage({
     },
   });
 
-  async function onSubmit(values: z.infer<typeof createProjectValidation>) {
-    const body = {
-      _id: project._id,
-      project_name: values.title,
-      client_name: values.custName,
-      alamat_kantor: values.alamatKantor,
-      alamat_sampling: values.alamatSampling,
-      surel: values.surel,
-      contact_person: values.contactPerson,
-      no_penawaran: values.numPenawaran,
-      jumlah_revisi: values.numRevisi,
-      valuasi_proyek: values.valuasiProject,
-    };
+  // async function onSubmit(values: z.infer<typeof createProjectValidation>) {
+  //   const body = {
+  //     _id: project._id,
+  //     project_name: values.title,
+  //     client_name: values.custName,
+  //     alamat_kantor: values.alamatKantor,
+  //     alamat_sampling: values.alamatSampling,
+  //     surel: values.surel,
+  //     contact_person: values.contactPerson,
+  //     no_penawaran: values.numPenawaran,
+  //     jumlah_revisi: values.numRevisi,
+  //     valuasi_proyek: values.valuasiProject,
+  //   };
 
-    //Edit Project Function
-    const responseInfo = await updateProjectInfo(body);
-    if (!responseInfo) {
-      alert("Failed Updating Project Info");
-      return;
-    }
-    if (samples.length > 0) {
-      //@ts-ignore
-      const sampling_list = samples.map((sample) => sample.sampleName);
-      //@ts-ignore
-      const regulation_list = samples.map((sample) => sample.regulation);
+  //   //Edit Project Function
+  //   const responseInfo = await updateProjectInfo(body);
+  //   if (!responseInfo) {
+  //     alert("Failed Updating Project Info");
+  //     return;
+  //   }
+  //   if (samples.length > 0) {
+  //     //@ts-ignore
+  //     const sampling_list = samples.map((sample) => sample.sampleName);
+  //     //@ts-ignore
+  //     const regulation_list = samples.map((sample) => sample.regulation);
 
-      console.log("Sampling List: ", sampling_list);
-      console.log("Regulation List: ", regulation_list);
+  //     console.log("Sampling List: ", sampling_list);
+  //     console.log("Regulation List: ", regulation_list);
 
-      const bodySampling = {
+  //     const bodySampling = {
+  //       _id: project._id,
+  //       regulation_list: ["Pemerintah Bogor"],
+  //       sampling_list: ["Air_Limbah"],
+  //     };
+
+  //     const responseSampling = await updateProjectSample(bodySampling);
+
+  //     if (!responseSampling) {
+  //       alert("Failed Updating Project Samples");
+  //       router.refresh();
+  //       return;
+  //     }
+  //   }
+
+  //   if (uploadedFiles.length > 0) {
+  //     alert("Updating File");
+  //   }
+
+  //   alert("Success Updating Project");
+
+  //   router.push("/marketing/running");
+  // }
+
+  async function onSubmit2(values: z.infer<typeof createProjectValidation>) {
+    try {
+      setIsLoading(true); // Set loading to true before making API calls
+
+      const body = {
         _id: project._id,
-        regulation_list: ["Pemerintah Bogor"],
-        sampling_list: ["Air_Limbah"],
+        project_name: values.title,
+        client_name: values.custName,
+        alamat_kantor: values.alamatKantor,
+        alamat_sampling: values.alamatSampling,
+        surel: values.surel,
+        contact_person: values.contactPerson,
+        no_penawaran: values.numPenawaran,
+        jumlah_revisi: values.numRevisi,
+        valuasi_proyek: values.valuasiProject,
       };
 
-      const responseSampling = await updateProjectSample(bodySampling);
+      // Edit Project Function
+      const responseInfo = await updateProjectInfo(body);
 
-      if (!responseSampling) {
-        alert("Failed Updating Project Samples");
-        router.refresh();
+      if (!responseInfo) {
+        alert("Failed Updating Project Info");
         return;
       }
+
+      if (samples.length > 0) {
+        const samplingBody = samples.map((sample) => {
+          return {
+            //@ts-ignore
+            sample_name: sample.sampleName,
+            //@ts-ignore
+            regulation_name: sample.regulation,
+            //@ts-ignore
+            param: sample.parameters,
+          };
+        });
+
+        const responseSampling = await updateProjectSample(
+          samplingBody,
+          project._id
+        );
+
+        if (!responseSampling) {
+          alert("Failed Updating Project Samples");
+          router.refresh();
+          return;
+        }
+      }
+
+      if (uploadedFiles.length > 0) {
+        // Perform file upload logic here if needed
+        alert("Updating File");
+      }
+
+      //Display Toast
+      toast({
+        title: "Successfully updating the project",
+        description: "Good Job",
+      });
+      router.push("/marketing/running");
+    } catch (error) {
+      console.error("Error during project update:", error);
+    } finally {
+      setIsLoading(false); // Set loading to false after API calls are finished
     }
-
-    if (uploadedFiles.length > 0) {
-      alert("Updating File");
-    }
-
-    alert("Success Updating Project");
-
-    router.push("/marketing/running");
   }
 
   //================================= End Project Information Section
@@ -290,10 +360,12 @@ export default function EditProjectPage({
         </div>
       )}
 
+      {isLoading && <LoadingScreen />}
+
       <div className="flex gap-6 max-md:flex-col max-md:items-center">
         <ProjectForm
           form={form}
-          onSubmit={onSubmit}
+          onSubmit={onSubmit2}
           status="EDIT"
           note="Gakuat bayar jasa kita"
         />
@@ -406,7 +478,7 @@ export default function EditProjectPage({
           {/* Button for submit */}
           <div className="m-5 flex justify-evenly items-center  ">
             <button
-              onClick={form.handleSubmit(onSubmit)}
+              onClick={form.handleSubmit(onSubmit2)}
               className=" bg-light_green rounded-lg px-5 py-3 hover:bg-dark_green hover:text-white font-medium"
             >
               Submit

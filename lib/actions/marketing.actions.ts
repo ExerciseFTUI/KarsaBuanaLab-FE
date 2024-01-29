@@ -296,11 +296,11 @@ export const updateProjectInfo = async (body: any) => {
 };
 
 //Update Project Sample
-export const updateProjectSample = async (body: any) => {
+export const updateProjectSample = async (body: any, projectId: string) => {
   try {
     //Call API
     const response = await axios.put(
-      `${apiBaseUrl}/projects/editSamples`,
+      `${apiBaseUrl}/projects/editSamples/${projectId}`,
       body
     );
     if (response.data.result) {
