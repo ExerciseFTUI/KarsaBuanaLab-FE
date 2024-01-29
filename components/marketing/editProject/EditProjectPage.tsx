@@ -57,7 +57,7 @@ export default function EditProjectPage({
     defaultValues: {
       sampling: "",
       regulation: "",
-      parameters: [""],
+      parameters: [],
     },
   });
 
@@ -83,9 +83,10 @@ export default function EditProjectPage({
         regulation: sample.regulation_name[0]?.regulation_name
           ? sample.regulation_name[0].regulation_name
           : "Empty",
-        parameters: sample.regulation_name[0]?.regulation_name
-          ? sample.regulation_name[0].default_param
-          : [""],
+        parameters: sample.param ? sample.param : [""],
+        // parameters: sample.regulation_name[0]?.regulation_name
+        //   ? sample.regulation_name[0].default_param
+        //   : [""],
         // parameters: sample.regulation_name[0]?.param
         //   ? sample.regulation_name[0].param
         //   : [""],
@@ -142,7 +143,6 @@ export default function EditProjectPage({
     //Checker
     setChange(true);
   };
-
   //================================= End Sample Section
 
   //================================= Project Information Section
@@ -322,7 +322,7 @@ export default function EditProjectPage({
 
             <Card
               className={`overflow-y-auto md:max-h-[25rem] max-h-[90vh] custom-scrollbar`}
-              >
+            >
               <div>
                 <CardHeader>
                   <CardTitle className="text-base font-bold">

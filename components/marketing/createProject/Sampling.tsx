@@ -65,7 +65,7 @@ const Sampling: FC<SamplingProps> = ({
     defaultValues: {
       sampling: sampleName,
       regulation: regulation,
-      parameters: [""],
+      parameters: parameters,
     },
   });
 
@@ -116,6 +116,7 @@ const Sampling: FC<SamplingProps> = ({
         form={form}
         onSubmit={onSubmit}
         baseSamples={baseSamples}
+        change={false}
       />
       <Collapsible open={isOpen} onOpenChange={setIsOpen}>
         <CollapsibleTrigger asChild>

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useEffect, useRef, useState } from "react";
 import { Dialog } from "@headlessui/react";
 import { DevTool } from "@hookform/devtools";
 
@@ -33,7 +33,7 @@ import {
 import Modal from "@/components/Modal";
 import MultipleSelect from "@/components/MultipleSelect";
 import { Button } from "@/components/ui/button";
-import { array } from "zod";
+import { array, isDirty } from "zod";
 import { BaseSample } from "@/lib/models/baseSample.model";
 import { get } from "http";
 //Shadcn
@@ -54,6 +54,7 @@ interface CreateSampleModalProps {
   onSubmit: SubmitHandler<FieldValues>;
   title?: string;
   baseSamples?: BaseSample[];
+  change?: boolean;
 }
 
 const CreateSampleModal: FC<CreateSampleModalProps> = ({
@@ -63,8 +64,9 @@ const CreateSampleModal: FC<CreateSampleModalProps> = ({
   onSubmit,
   title,
   baseSamples,
+  change,
 }) => {
-  const { watch, setValue, resetField } = form;
+  const { watch, setValue, resetField, formState = { isDirty } } = form;
 
   const [currentSample, setCurrentSample] = useState("");
   const [currentRegulation, setCurrentRegulation] = useState("");
@@ -79,21 +81,30 @@ const CreateSampleModal: FC<CreateSampleModalProps> = ({
   const regulation = watch("regulation");
   const parameters = watch("parameters");
 
-  console.log(regulation);
+  //Checker
+
+  useEffect(() => {
+    setValue("parameters", transformParameter(), { shouldValidate: true });
+  }, []);
 
   useEffect(() => {
     setCurrentSample(sampling);
-    setValue("parameters", [""], {
-      shouldValidate: true,
-    });
+
+    if (formState.isDirty) {
+      setValue("parameters", [""], {
+        shouldValidate: true,
+      });
+    }
   }, [sampling]);
 
   useEffect(() => {
     setCurrentRegulation(regulation);
-    resetField("parameters");
-    setValue("parameters", getSpecificRegulationDefaultParam(), {
-      shouldValidate: true,
-    });
+
+    if (formState.isDirty) {
+      setValue("parameters", getSpecificRegulationDefaultParam(), {
+        shouldValidate: true,
+      });
+    }
   }, [regulation]);
 
   // useEffect(() => {
@@ -111,6 +122,17 @@ const CreateSampleModal: FC<CreateSampleModalProps> = ({
     }
 
     return [{ value: "", label: "" }];
+  };
+
+  const transformParameter = () => {
+    const temp = parameters?.map((param: any) => {
+      return {
+        value: param,
+        label: param,
+      };
+    });
+
+    return temp;
   };
 
   const getSpecificRegulationDefaultParam = (): any[] => {
@@ -161,7 +183,12 @@ const CreateSampleModal: FC<CreateSampleModalProps> = ({
                         <FormLabel>Sample</FormLabel>
                         <FormControl>
                           <Select
-                            onValueChange={(sample) => field.onChange(sample)}
+                            onValueChange={(sample) => {
+                              setValue("parameters", [""], {
+                                shouldValidate: true,
+                              });
+                              return field.onChange(sample);
+                            }}
                             defaultValue={watch("sampling")}
                           >
                             <SelectTrigger className="">
@@ -172,7 +199,7 @@ const CreateSampleModal: FC<CreateSampleModalProps> = ({
                                 <SelectLabel>Select the sample</SelectLabel>
                                 {baseSamples?.map((sample) => (
                                   <SelectItem
-                                    key={sample._id}
+                                    key={sample._id + sample.sample_name}
                                     value={sample.sample_name}
                                   >
                                     {sample.sample_name}
@@ -201,9 +228,9 @@ const CreateSampleModal: FC<CreateSampleModalProps> = ({
                         <FormControl>
                           <Select
                             disabled={!watch("sampling")}
-                            onValueChange={(regulation) =>
-                              field.onChange(regulation)
-                            }
+                            onValueChange={(regulation) => {
+                              return field.onChange(regulation);
+                            }}
                             defaultValue={watch("regulation")}
                           >
                             <SelectTrigger className="">
@@ -267,7 +294,9 @@ const CreateSampleModal: FC<CreateSampleModalProps> = ({
                         // ]
                       }
                       onChange={(value) => {
-                        setValue("parameters", value, { shouldValidate: true });
+                        setValue("parameters", value, {
+                          shouldValidate: true,
+                        });
                       }}
                       value={parameters}
                     />

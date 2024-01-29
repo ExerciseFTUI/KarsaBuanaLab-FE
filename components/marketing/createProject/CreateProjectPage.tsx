@@ -22,71 +22,55 @@ import { BaseApiResponse } from "@/lib/models/baseApiResponse.model";
 import { BaseSample } from "@/lib/models/baseSample.model";
 import {
   createProject,
-  updateProjectFile,
+  createProjectJson,
 } from "@/lib/actions/marketing.actions";
 
 import { useRouter } from "next/navigation";
 import { set } from "date-fns";
 import LoadingScreen from "@/components/LoadingComp";
 
-// const createProject = async (
-//   body: any,
-//   files?: any // Assuming files is a File or an array of File objects
-// ) => {
-//   try {
-//     if (
-//       !body.client_name ||
-//       !body.project_name ||
-//       !body.alamat_kantor ||
-//       !body.alamat_sampling ||
-//       !body.surel ||
-//       !body.contact_person ||
-//       !body.regulation ||
-//       !body.sampling_list
-//       //      || !body.assigned_to
-//     ) {
-//       throw new Error("Please provide all required fields");
-//     }
+export const updateProjectFile = async (id: string, files: any) => {
+  var bodyFormData = new FormData();
+  bodyFormData.append("_id", id);
 
-//     var bodyFormData = new FormData();
+  // Append each file to the FormData object
+  for (let i = 0; i < files.length; i++) {
+    bodyFormData.append("files", files[i]);
+  }
 
-//     // Append all fields from the body object to bodyFormData
-//     Object.keys(body).forEach((key) => {
-//       bodyFormData.append(key, body[key]);
-//     });
+  console.log(bodyFormData);
 
-//     // Append files to bodyFormData
-//     if (files || files.length > 0) {
-//       if (Array.isArray(files)) {
-//         files.forEach((file, index) => {
-//           bodyFormData.append(`files${index}`, file);
-//         });
-//       } else {
-//         bodyFormData.append("files", files);
-//       }
-//     }
+  try {
+    //Call API
+    const response = await axios.put(
+      `https://karsalab.netlabdte.com/projects/editFiles`,
+      bodyFormData,
+      {
+        headers: { "Content-Type": "multipart/form-data" },
+      }
+    );
+    if (response.data.result) {
+      return true;
+    } else {
+      return false;
+    }
+  } catch (error: any) {
+    console.error(`Error update projectFile :`, error.message);
+    return false;
+  }
+};
 
-//     console.log("Masuk sini");
-
-//     console.log(`http://localhost:5000/projects/create`);
-
-//     const response = await axios.post(
-//       `http://localhost:5000/projects/create`,
-//       bodyFormData,
-//       {
-//         headers: { "Content-Type": "multipart/form-data" },
-//       }
-//     );
-
-//     console.log("Success");
-
-//     // return response.data as BaseApiResponse<ProjectResult>;
-//     return "Success";
-//   } catch (error: any) {
-//     console.error("Error creating project:", error.message);
-//     return null as unknown as BaseApiResponse<PromiseRejectedResult>;
-//   }
-// };
+const getProject = async () => {
+  //Add try catch
+  try {
+    const response = await axios.get(
+      `https://karsalab.netlabdte.com//marketing/getSample`
+    );
+    console.log(response.data);
+  } catch (error: any) {
+    console.error(`Error get project :`, error.message);
+  }
+};
 
 interface CreateProjectProps {
   baseSamples: BaseSample[];
@@ -120,8 +104,8 @@ const CreateProjectPage: FC<CreateProjectProps> = ({ baseSamples }) => {
   });
 
   // useEffect(() => {
-  //   console.log(arrayField.fields);
-  // }, [arrayField.fields]);
+  //   getProject();
+  // }, []);
 
   //All the samples get save in here
   const { fields: samples, append, remove } = arrayField;
@@ -213,15 +197,15 @@ const CreateProjectPage: FC<CreateProjectProps> = ({ baseSamples }) => {
       setIsLoading(true);
       // const response = null;
 
-      // const response = await createProject(body, uploadedFiles);
+      const response = await createProject(body, uploadedFiles);
 
-      // if (!response) {
-      //   alert("Failed to create project");
-      //   setIsLoading(false);
-      //   return
-      // }
+      if (!response) {
+        alert("Failed to create project");
+        setIsLoading(false);
+        return;
+      }
 
-      if (uploadedFiles) {
+      if (uploadedFiles.length > 0) {
         const fileResponse = await updateProjectFile(
           "65afbd8c987cf82566e265d0",
           uploadedFiles
@@ -240,6 +224,99 @@ const CreateProjectPage: FC<CreateProjectProps> = ({ baseSamples }) => {
     } else {
       alert("Please add at least one sample");
     }
+  }
+
+  async function onSubmitForm2(
+    values: z.infer<typeof createProjectValidation>
+  ) {
+    if (samples.length > 0) {
+      const sampling_list = samples.map((sample) => {
+        return {
+          //@ts-ignore
+          sample_name: sample.sampleName,
+          //@ts-ignore
+          regulation_name: sample.regulation,
+          //@ts-ignore
+          param: sample.parameters,
+        };
+      });
+
+      const body = {
+        client_name: values.custName,
+        project_name: values.title,
+        alamat_kantor: values.alamatKantor,
+        alamat_sampling: values.alamatSampling,
+        surel: values.surel,
+        contact_person: values.contactPerson,
+        sampling_list: sampling_list,
+      };
+
+      setIsLoading(true);
+      const response = await createProjectJson(body);
+
+      if (response) {
+        alert("Success creating project");
+        router.push("/marketing/running");
+      } else {
+        alert("Failed to create project");
+      }
+
+      setIsLoading(false);
+    } else {
+      alert("Please add at least one sample");
+    }
+
+    // if (samples.length > 0) {
+    //   //@ts-ignore
+    //   const sampling_list = samples.map((sample) => sample.sampleName);
+    //   //@ts-ignore
+    //   const regulation_list = samples.map((sample) => sample.regulation);
+
+    //   console.log("Sampling List: ", sampling_list);
+    //   console.log("Regulation List: ", regulation_list);
+
+    //   const body = {
+    //     client_name: values.custName,
+    //     project_name: values.title,
+    //     alamat_kantor: values.alamatKantor,
+    //     alamat_sampling: values.alamatSampling,
+    //     surel: values.surel,
+    //     contact_person: values.contactPerson,
+    //     regulation_list: regulation_list,
+    //     sampling_list: sampling_list,
+    //   };
+
+    //   //Create Project Function
+    //   setIsLoading(true);
+    //   // const response = null;
+
+    //   const response = await createProject(body, uploadedFiles);
+
+    //   if (!response) {
+    //     alert("Failed to create project");
+    //     setIsLoading(false);
+    //     return;
+    //   }
+
+    //   if (uploadedFiles.length > 0) {
+    //     const fileResponse = await updateProjectFile(
+    //       "65afbd8c987cf82566e265d0",
+    //       uploadedFiles
+    //     );
+
+    //     if (!fileResponse) {
+    //       alert("Failed to upload file, You can add file in update page");
+    //       setIsLoading(false);
+    //       return;
+    //     }
+    //   }
+
+    //   setIsLoading(false);
+    //   alert("Success creating project");
+    //   router.push("/marketing/running");
+    // } else {
+    //   alert("Please add at least one sample");
+    // }
   }
 
   //================================= End Project Information Section
@@ -289,9 +366,13 @@ const CreateProjectPage: FC<CreateProjectProps> = ({ baseSamples }) => {
         </TabsContent>
         {/* End Document Section */}
 
-
         <div className="flex flex-row justify-center items-center mt-5 w-full">
-          <button onClick={form.handleSubmit(onSubmitForm)} className=" text-white w-1/3 rounded-lg py-4 hover:bg-dark_green text-base font-medium hover:cursor-pointer bg-moss_green">Submit</button>
+          <button
+            onClick={form.handleSubmit(onSubmitForm2)}
+            className=" text-white w-1/3 rounded-lg py-4 hover:bg-dark_green text-base font-medium hover:cursor-pointer bg-moss_green"
+          >
+            Submit
+          </button>
         </div>
       </Tabs>
     </div>

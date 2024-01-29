@@ -1,6 +1,8 @@
+"use client";
+
 import axios from "axios";
 
-const apiBaseUrl = process.env.API_BASE_URL || "http://localhost:5000";
+const apiBaseUrl = process.env.API_BASE_URL || "https://karsalab.netlabdte.com";
 
 //Update Project file
 export const updateProjectFile = async (id: string, files: any) => {
@@ -12,12 +14,10 @@ export const updateProjectFile = async (id: string, files: any) => {
     bodyFormData.append("files", files[i]);
   }
 
-  console.log(bodyFormData);
-
   try {
     //Call API
     const response = await axios.put(
-      `${apiBaseUrl}/projects/editFiles`,
+      `https://karsalab.netlabdte.com/projects/editFiles`,
       bodyFormData,
       {
         headers: { "Content-Type": "multipart/form-data" },

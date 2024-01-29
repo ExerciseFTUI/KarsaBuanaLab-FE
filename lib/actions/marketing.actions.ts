@@ -44,7 +44,7 @@ interface DashboardResult {
     totalForCancelled: number;
     totalForFinished: number;
     totalProjectReal: number;
-  }
+  };
 }
 
 export const createProject = async (
@@ -108,8 +108,24 @@ export const createProject = async (
     // return response.data as BaseApiResponse<ProjectResult>;
     return "Success";
   } catch (error: any) {
+    console.error(error.response?.data?.message);
     console.error("Error creating project:", error.message);
     return null as unknown as BaseApiResponse<ProjectResult>;
+  }
+};
+
+export const createProjectJson = async (body: any) => {
+  try {
+    const response = await axios.post(
+      `${apiBaseUrl}/projects/createJSON`,
+      body
+    );
+    revalidatePath("/marketing/running");
+    return response.data as Project;
+  } catch (error: any) {
+    console.error(error.response?.data?.message);
+    console.error("Error creating project:", error.message);
+    return false;
   }
 };
 
@@ -175,42 +191,52 @@ export const getSample = async (): Promise<BaseApiResponse<[BaseSample]>> => {
   }
 };
 
-
-export const getDashboard = async () : Promise<BaseApiResponse<DashboardResult>> => {
+export const getDashboard = async (): Promise<
+  BaseApiResponse<DashboardResult>
+> => {
   try {
     const response = await axios.get(`${apiBaseUrl}/marketing/dashboard`);
 
-
     // Calculate total sales for projectRunning
-    const totalForRunning = response.data.result.projectRunning.reduce((totalMonth: any, monthData: any) => totalMonth + monthData.sales, 0);
+    const totalForRunning = response.data.result.projectRunning.reduce(
+      (totalMonth: any, monthData: any) => totalMonth + monthData.sales,
+      0
+    );
 
     // Calculate total sales for projectFinished
-    const totalForFinished = response.data.result.projectFinished.reduce((totalMonth: any, monthData: any) => totalMonth + monthData.sales, 0);
+    const totalForFinished = response.data.result.projectFinished.reduce(
+      (totalMonth: any, monthData: any) => totalMonth + monthData.sales,
+      0
+    );
 
     // Calculate total sales for projectCancelled
-    const totalForCancelled = response.data.result.projectCancelled.reduce((totalMonth: any, monthData: any) => totalMonth + monthData.sales, 0);
+    const totalForCancelled = response.data.result.projectCancelled.reduce(
+      (totalMonth: any, monthData: any) => totalMonth + monthData.sales,
+      0
+    );
 
     // Calculate total project real
-    const totalProjectReal = totalForCancelled + totalForFinished + totalForRunning;
+    const totalProjectReal =
+      totalForCancelled + totalForFinished + totalForRunning;
 
     // Add the calculated totals to the response
     const updatedResponse = {
       ...response.data,
       result: {
         ...response.data.result,
-        forPie : {
+        forPie: {
           totalForRunning,
           totalForFinished,
           totalForCancelled,
-          totalProjectReal
-        }
+          totalProjectReal,
+        },
       },
     };
-    
+
     return updatedResponse as BaseApiResponse<DashboardResult>;
-  } catch (error:any) {
-    console.error('Error getting api because : ', error.message);
-    return null as unknown as BaseApiResponse<DashboardResult>
+  } catch (error: any) {
+    console.error("Error getting api because : ", error.message);
+    return null as unknown as BaseApiResponse<DashboardResult>;
   }
 };
 
@@ -291,38 +317,38 @@ export const updateProjectSample = async (body: any) => {
 };
 
 //Update Project file
-export const updateProjectFile = async (id: string, files: any) => {
-  var bodyFormData = new FormData();
-  bodyFormData.append("_id", id);
+// export const updateProjectFile = async (id: string, files: any) => {
+//   var bodyFormData = new FormData();
+//   bodyFormData.append("_id", id);
 
-  // Append each file to the FormData object
-  for (let i = 0; i < files.length; i++) {
-    bodyFormData.append("files", files[i]);
-  }
+//   // Append each file to the FormData object
+//   for (let i = 0; i < files.length; i++) {
+//     bodyFormData.append("files", files[i]);
+//   }
 
-  console.log(bodyFormData);
+//   console.log(bodyFormData);
 
-  try {
-    //Call API
-    const response = await axios.put(
-      `${apiBaseUrl}/projects/editFiles`,
-      bodyFormData,
-      {
-        headers: { "Content-Type": "multipart/form-data" },
-      }
-    );
-    if (response.data.result) {
-      //Refetch
-      revalidatePath("/marketing/running");
-      return true;
-    } else {
-      return false;
-    }
-  } catch (error: any) {
-    console.error(`Error update projectFile :`, error.message);
-    return false;
-  }
-};
+//   try {
+//     //Call API
+//     const response = await axios.put(
+//       `${apiBaseUrl}/projects/editFiles`,
+//       bodyFormData,
+//       {
+//         headers: { "Content-Type": "multipart/form-data" },
+//       }
+//     );
+//     if (response.data.result) {
+//       //Refetch
+//       revalidatePath("/marketing/running");
+//       return true;
+//     } else {
+//       return false;
+//     }
+//   } catch (error: any) {
+//     console.error(`Error update projectFile :`, error.message);
+//     return false;
+//   }
+// };
 
 // export const testing = async () => {
 //   try {
