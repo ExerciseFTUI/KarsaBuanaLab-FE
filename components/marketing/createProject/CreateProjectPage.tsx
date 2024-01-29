@@ -77,10 +77,10 @@ const CreateProjectPage: FC<CreateProjectProps> = ({ baseSamples }) => {
     name: "samples",
   });
 
-  // useEffect(() => {
-  //   getUser();
-  //   getProjectClient("12");
-  // }, []);
+  useEffect(() => {
+    // getUser();
+    getProjectClient("12");
+  }, []);
 
   //All the samples get save in here
   const { fields: samples, append, remove } = arrayField;
