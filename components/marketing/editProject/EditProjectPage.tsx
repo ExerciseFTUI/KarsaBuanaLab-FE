@@ -187,7 +187,7 @@ export default function EditProjectPage({
 
     // // Check if all properties same exclude the isPaid will increase jumlahRevisi
     // const propertiesMatch = Object.keys(body).every(
-    //   (key) => key === 'isPaid' || body[key] as any  === project[key] 
+    //   (key) => key === 'isPaid' || key === 'status' || body[key] as any  === project[key] 
     // );
 
     // if (propertiesMatch) {
@@ -247,17 +247,57 @@ export default function EditProjectPage({
 
     router.push("/marketing/running");
   }
+  
+  // =============== Action to update reason why project cancelled =================================== //
+  const [reason, setReason] = useState("");
 
-  const handleCancelledProject = () => {
-    console.log(reason);
-
+  async function handleCancelledProject(values: z.infer<typeof createProjectValidation>) {
+    const body = {
+      desc_failed: reason,
+    };
+    console.log("desc failed : ", body);
+    
+    // //Connect to API
+    // const responseInfo = await updateProjectInfo(body);
+    // if (!responseInfo) {
+      //   toast({
+    //     title: "Oops, Failed!",
+    //     description: "Failed to cancel the project, please try again",
+    //   });
+    
+    //   return;
+    // }
+    
     toast({
         title: "Project success cancelled!",
         description: "The project has been cancelled",
       });
-
-    router.push("/marketing/cancelled");    
+      
+      router.push("/marketing/cancelled");    
   }
+  // =============== End of Action to update reason why project cancelled =================================== //
+  
+  // ========================= Action to update status payment ============================================== //
+  
+  async function updatePayment(values: z.infer<typeof createProjectValidation>) {
+    const body = {
+      isPaid: values.isPaid,
+    };
+    console.log("Status payment : ", body);
+    
+    // //Connect to API
+    // const responseInfo = await updateProjectInfo(body);
+    // if (!responseInfo) {
+      //   toast({
+    //     title: "Oops, Failed!",
+    //     description: "Failed to cancel the project, please try again",
+    //   });
+    
+    //   return;
+    // }
+  }
+  
+  // ========================= End of Action to update status payment ============================================== //
   
   //================================= End Project Information Section
 
@@ -265,7 +305,6 @@ export default function EditProjectPage({
 
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [isCancelled, setIsCancelled] = useState(false);
-  const [reason, setReason] = useState("");
 
 
   const handleSubmitDocs = () => {
@@ -323,7 +362,7 @@ export default function EditProjectPage({
                 </button>
                 <button
                   type="button"
-                  onClick={handleCancelledProject}  // You can replace this with your actual cancel logic
+                  onClick={form.handleSubmit(handleCancelledProject)}  // You can replace this with your actual cancel logic
                   className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600"
                 >
                   Confirm
@@ -340,6 +379,7 @@ export default function EditProjectPage({
           onSubmit={onSubmit}
           status={status}
           note="Gakuat bayar jasa kita"
+          updatePayment={updatePayment}
         />
         <Tabs defaultValue="sampling" className="w-[40rem] max-sm:w-[420px]">
           <TabsList className="grid w-full grid-cols-2">

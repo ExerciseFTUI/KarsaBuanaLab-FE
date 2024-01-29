@@ -70,8 +70,6 @@ const CreateSampleModal: FC<CreateSampleModalProps> = ({
   const regulation = watch("regulation");
   const parameters = watch("parameters");
 
-  console.log(regulation);
-
   useEffect(() => {
     setCurrentSample(sampling);
     setValue("parameters", [""], {

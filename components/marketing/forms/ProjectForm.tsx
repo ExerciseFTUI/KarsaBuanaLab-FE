@@ -1,5 +1,5 @@
 "use client";
-import React, { FC, useState } from "react";
+import React, { FC, useState, useEffect } from "react";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -37,6 +37,7 @@ interface ProjectFormProps {
   onSubmit(values: z.infer<typeof createProjectValidation>): Promise<void>;
   status?: string;
   note?: string;
+  updatePayment(values: z.infer<typeof createProjectValidation>): Promise<void>;
 }
 
 const ProjectForm: FC<ProjectFormProps> = ({
@@ -44,12 +45,12 @@ const ProjectForm: FC<ProjectFormProps> = ({
   onSubmit,
   status,
   note,
+  updatePayment,
 }) => {
   const router = useRouter();
   const query = useSearchParams();
   const { toast } = useToast();
-  const [paidStatus, setPaidStatus] = useState(form.watch('isPaid'))
-  
+  const [paidStatus, setPaidStatus] = useState(form.getValues('isPaid'))
 
   return (
     <Card className="w-[450px] max-sm:w-[400px] max-h-screen md:max-h-[520px] overflow-auto custom-scrollbar ">
@@ -73,7 +74,11 @@ const ProjectForm: FC<ProjectFormProps> = ({
             </h1>
             <div className=" flex flex-row w-full h-fit justify-center">
               <button 
-              onClick={()=>{setPaidStatus(!paidStatus)}}
+              onClick={async () => {
+                setPaidStatus(!paidStatus);
+                form.setValue("isPaid", !paidStatus, { shouldValidate: true });
+                await updatePayment(form.getValues());  // Pass the latest form values to updatePayment
+              }}
               className={` ${paidStatus ? "bg-red-400 hover:bg-red-700" : "bg-moss_green hover:bg-dark_green"} h-2/3 text-white py-2 px-5 rounded-lg `}>
                 {paidStatus ? "Batalkan Pelunasan" : "Verifikasi Pelunasan"}
               </button>
