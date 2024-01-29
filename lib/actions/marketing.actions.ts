@@ -327,27 +327,6 @@ export const updateProjectSample = async (body: any, projectId: string) => {
   }
 };
 
-//Update Project Sample
-export const updateProjectSample = async (body: any, projectId: string) => {
-  try {
-    //Call API
-    const response = await axios.put(
-      `${apiBaseUrl}/projects/editSamples/${projectId}`,
-      body
-    );
-    if (response.data.result) {
-      //Refetch
-      revalidatePath("/marketing/running");
-      return true;
-    } else {
-      return false;
-    }
-  } catch (error: any) {
-    console.error(`Error update projectSample :`, error.message);
-    return false;
-  }
-};
-
 // export const testing = async () => {
 //   try {
 //     const body = {
