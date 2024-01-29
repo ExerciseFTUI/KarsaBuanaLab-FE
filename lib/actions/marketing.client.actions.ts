@@ -26,7 +26,6 @@ export const getProjectClient = async (projectId: string) => {
     const response = await axios.get(
       `${apiBaseUrl}/marketing/project/65b75f8dc0bdd92b29e81ad0`
     );
-    console.log(response);
 
     // Convert valuasi proyek to string
     if (response.data && response.data.valuasi_proyek !== undefined) {
@@ -51,8 +50,6 @@ export const updateProjectFile = async (id: string, files: any) => {
   for (let i = 0; i < files.length; i++) {
     bodyFormData.append("files", files[i]);
   }
-
-  alert("Update Project File");
 
   try {
     //Call API

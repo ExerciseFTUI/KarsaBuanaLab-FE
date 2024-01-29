@@ -93,7 +93,6 @@ export const createProject = async (
       }
     }
 
-
     const response = await axios.post(
       `${apiBaseUrl}/projects/create`,
       bodyFormData,
@@ -101,8 +100,6 @@ export const createProject = async (
         headers: { "Content-Type": "multipart/form-data" },
       }
     );
-
-    
 
     revalidatePath("/marketing/running");
 
@@ -122,11 +119,14 @@ export const createProjectJson = async (body: any) => {
       body
     );
     revalidatePath("/marketing/running");
-    return response.data as Project;
+
+    console.log(response.data);
+    return response.data.result.project as Project;
   } catch (error: any) {
     console.error(error.response?.data?.message);
     console.error("Error creating project:", error.message);
-    return null;
+    throw new error("Error creating project:", error.message);
+    // return null;
   }
 };
 
@@ -184,7 +184,6 @@ export const getSample = async (): Promise<BaseApiResponse<[BaseSample]>> => {
     const response = await axios.get(`${apiBaseUrl}/marketing/getSample`);
 
     console.log(response.data.result);
-    
 
     return response.data as BaseApiResponse<[BaseSample]>;
   } catch (error: any) {
@@ -271,12 +270,16 @@ export const getbyStatus = async (
 ): Promise<BaseApiResponse<[ProjectMarketingType]>> => {
   try {
     const response = await axios.get(`${apiBaseUrl}/marketing/${status}`);
-    
+
     // Sort the data by the newest createdAt
-    const sortedData = response.data.result.sort((a : ProjectMarketingType, b:ProjectMarketingType) => {
-      return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
-    });
-    
+    const sortedData = response.data.result.sort(
+      (a: ProjectMarketingType, b: ProjectMarketingType) => {
+        return (
+          new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+        );
+      }
+    );
+
     return {
       ...response.data,
       result: sortedData,
@@ -289,7 +292,6 @@ export const getbyStatus = async (
 
 //Update Project Info
 export const updateProjectInfo = async (body: any) => {
-
   try {
     //Call API
     const response = await axios.put(`${apiBaseUrl}/projects/edit`, body);
