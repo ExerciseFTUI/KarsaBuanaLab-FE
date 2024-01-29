@@ -231,13 +231,12 @@ const CreateProjectPage: FC<CreateProjectProps> = ({ baseSamples }) => {
 
         const response = await createProjectJson(body);
 
-        // if (uploadedFiles.length > 0 && response?._id) {
-        //   const fileResponse = await updateProjectFile(
-        //     response?._id,
-        //     uploadedFiles
-        //   );
-        //   console.log("Hello World");
-        // }
+        if (uploadedFiles.length > 0 && response?._id) {
+          const fileResponse = await updateProjectFile(
+            response?._id,
+            uploadedFiles
+          );
+        }
 
         // if (uploadedFiles.length > 0) {
         //   const fileResponse = await updateProjectFile(

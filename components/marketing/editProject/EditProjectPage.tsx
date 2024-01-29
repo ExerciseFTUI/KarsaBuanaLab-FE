@@ -98,7 +98,6 @@ export default function EditProjectPage({
 
     if (!change) {
       setChange(true);
-      alert("Append");
       append(newSamples);
     }
   }

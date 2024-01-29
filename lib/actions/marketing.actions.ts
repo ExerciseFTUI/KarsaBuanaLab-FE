@@ -121,11 +121,14 @@ export const createProjectJson = async (body: any) => {
       body
     );
     revalidatePath("/marketing/running");
-    return response.data as Project;
+
+    console.log(response.data);
+    return response.data.result.project as Project;
   } catch (error: any) {
     console.error(error.response?.data?.message);
     console.error("Error creating project:", error.message);
-    return null;
+    throw new error("Error creating project:", error.message);
+    // return null;
   }
 };
 
@@ -159,8 +162,6 @@ export const updateProject = async (
         bodyFormData.append("file", files);
       }
     }
-
-    console.log("Masuk sini");
 
     const response = await axios.put(
       `${apiBaseUrl}/projects/edit`,
