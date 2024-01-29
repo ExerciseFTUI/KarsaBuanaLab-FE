@@ -52,6 +52,7 @@ export const updateProjectFile = async (id: string, files: any) => {
   }
 
   try {
+    // throw new Error("Error update projectFile :");
     //Call API
     const response = await axios.put(
       `${apiBaseUrl}/projects/editFiles`,

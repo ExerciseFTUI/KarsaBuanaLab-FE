@@ -37,6 +37,7 @@ import { set } from "date-fns";
 import { BaseSample } from "@/lib/models/baseSample.model";
 import LoadingScreen from "@/components/LoadingComp";
 import { Textarea } from "@/components/ui/textarea";
+import { updateProjectFile } from "@/lib/actions/marketing.client.actions";
 
 interface EditProjectPageProps {
   project: Project;
@@ -47,7 +48,7 @@ interface EditProjectPageProps {
 export default function EditProjectPage({
   project,
   baseSamples,
-  status
+  status,
 }: EditProjectPageProps) {
   //General
   const { toast } = useToast();
@@ -172,7 +173,6 @@ export default function EditProjectPage({
     },
   });
 
-  
   async function onSubmit2(values: z.infer<typeof createProjectValidation>) {
     try {
       setIsLoading(true); // Set loading to true before making API calls
@@ -192,13 +192,12 @@ export default function EditProjectPage({
 
       // // Check if all properties same exclude the isPaid will increase jumlahRevisi
       // const propertiesMatch = Object.keys(body).every(
-      //   (key) => key === 'isPaid' || key === 'status' || body[key] as any  === project[key] 
+      //   (key) => key === 'isPaid' || key === 'status' || body[key] as any  === project[key]
       // );
 
       // if (propertiesMatch) {
       //   body.jumlah_revisi? body.jumlah_revisi -= 1 : body.jumlah_revisi
       // }
-
 
       // Edit Project Function
       const responseInfo = await updateProjectInfo(body);
@@ -207,6 +206,7 @@ export default function EditProjectPage({
         toast({
           title: "Oops, Failed!",
           description: "Failed Updating Project Info",
+          variant: "destructive",
         });
         return;
       }
@@ -232,6 +232,7 @@ export default function EditProjectPage({
           toast({
             title: "Ooops, Failed!",
             description: "Failed Updating Project Samples",
+            variant: "destructive",
           });
           router.refresh();
           return;
@@ -240,10 +241,11 @@ export default function EditProjectPage({
 
       if (uploadedFiles.length > 0) {
         // Perform file upload logic here if needed
-        toast({
-          title: "Updated!",
-          description: "Don't forget to click submit button",
-        });
+        const responseFile = await updateProjectFile(
+          project._id,
+          uploadedFiles
+        );
+        router.refresh();
       }
 
       //Display Toast
@@ -251,73 +253,83 @@ export default function EditProjectPage({
         title: "Successfully updating the project",
         description: "Good Job",
       });
-      
+
       router.push("/marketing/running");
-    } catch (error) {
-      console.error("Error during project update:", error);
+    } catch (error: any) {
+      const errorMsg = error?.response?.data?.message || error;
+      toast({
+        title: "Oops, Failed!",
+        description: errorMsg,
+        variant: "destructive",
+      });
+      console.error("Error from backend", errorMsg);
+      console.error("Error during project update:", errorMsg);
     } finally {
       setIsLoading(false); // Set loading to false after API calls are finished
     }
   }
-  
+
   // =============== Action to update reason why project cancelled =================================== //
   const [reason, setReason] = useState("");
 
-  async function handleCancelledProject(values: z.infer<typeof createProjectValidation>) {
+  async function handleCancelledProject(
+    values: z.infer<typeof createProjectValidation>
+  ) {
     const body = {
       desc_failed: reason,
     };
     console.log("desc failed : ", body);
-    
+
     // //Connect to API
     // const responseInfo = await updateProjectInfo(body);
     // if (!responseInfo) {
-      //   toast({
+    //   toast({
     //     title: "Oops, Failed!",
     //     description: "Failed to cancel the project, please try again",
     //   });
-    
+
     //   return;
     // }
-    
+
     toast({
-        title: "Project success cancelled!",
-        description: "The project has been cancelled",
-      });
-      
-      router.push("/marketing/cancelled");    
+      title: "Project success cancelled!",
+      description: "The project has been cancelled",
+    });
+
+    router.push("/marketing/cancelled");
   }
   // =============== End of Action to update reason why project cancelled =================================== //
-  
+
   // ========================= Action to update status payment ============================================== //
-  
-  async function updatePayment(values: z.infer<typeof createProjectValidation>) {
+
+  async function updatePayment(
+    values: z.infer<typeof createProjectValidation>
+  ) {
     const body = {
       isPaid: values.isPaid,
     };
     console.log("Status payment : ", body);
-    
+
     // //Connect to API
     // const responseInfo = await updateProjectInfo(body);
     // if (!responseInfo) {
-      //   toast({
+    //   toast({
     //     title: "Oops, Failed!",
     //     description: "Failed to cancel the project, please try again",
     //   });
-    
+
     //   return;
     // }
   }
-  
+
   // ========================= End of Action to update status payment ============================================== //
-  
+
   //================================= End Project Information Section
 
   //=============================== Document Section
 
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [isCancelled, setIsCancelled] = useState(false);
-
 
   const handleSubmitDocs = () => {
     // Log the uploaded files to the console
@@ -374,7 +386,7 @@ export default function EditProjectPage({
                 </button>
                 <button
                   type="button"
-                  onClick={form.handleSubmit(handleCancelledProject)}  // You can replace this with your actual cancel logic
+                  onClick={form.handleSubmit(handleCancelledProject)} // You can replace this with your actual cancel logic
                   className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600"
                 >
                   Confirm
@@ -432,7 +444,18 @@ export default function EditProjectPage({
                 <div className="mx-5">
                   <h1 className=" font-semibold mb-2 "> Based Files </h1>
                   <div className=" grid grid-cols-2 gap-4 justify-center items-center">
-                    <a
+                    {project.lab_file.map((file, index) => (
+                      <a
+                        key={index + file._id}
+                        href={`https://drive.google.com/file/d/${file.file_id}/edit`}
+                        className="bg-light_green items-center justify-between rounded-lg px-5 py-3 hover:bg-dark_green hover:text-white font-medium flex"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {file.file_name} <MdOpenInNew />
+                      </a>
+                    ))}
+                    {/* <a
                       href="#"
                       className="bg-light_green items-center justify-between rounded-lg px-5 py-3 hover:bg-dark_green hover:text-white font-medium flex"
                     >
@@ -449,7 +472,7 @@ export default function EditProjectPage({
                       className="bg-light_green items-center justify-between rounded-lg px-5 py-3 hover:bg-dark_green hover:text-white font-medium flex"
                     >
                       Surat Penawaran <MdOpenInNew />
-                    </a>
+                    </a> */}
                   </div>
                 </div>
                 {/* End of Based spreadsheet files */}
@@ -458,13 +481,15 @@ export default function EditProjectPage({
                 <div className="mx-5 mt-5">
                   <h1 className="font-semibold mb-2">Another Files</h1>
                   <div className="grid grid-cols-2 gap-4 justify-center items-center">
-                    {buttonNames.map((buttonName, index) => (
+                    {project.file.map((file, index) => (
                       <a
-                        key={index}
-                        href="#"
+                        key={index + file._id}
+                        href={`https://drive.google.com/file/d/${file.file_id}/view`}
                         className="bg-light_green items-center justify-between rounded-lg px-5 py-3 hover:bg-dark_green hover:text-white font-medium flex"
+                        target="_blank"
+                        rel="noopener noreferrer"
                       >
-                        {buttonName} <MdOpenInNew />
+                        {file.file_name} <MdOpenInNew />
                       </a>
                     ))}
                   </div>
