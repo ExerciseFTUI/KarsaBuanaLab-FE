@@ -147,60 +147,6 @@ const CreateProjectPage: FC<CreateProjectProps> = ({ baseSamples }) => {
   });
 
   // 2. Define a submit handler.
-  // async function onSubmitForm(values: z.infer<typeof createProjectValidation>) {
-  //   if (samples.length > 0) {
-  //     //@ts-ignore
-  //     const sampling_list = samples.map((sample) => sample.sampleName);
-  //     //@ts-ignore
-  //     const regulation_list = samples.map((sample) => sample.regulation);
-
-  //     console.log("Sampling List: ", sampling_list);
-  //     console.log("Regulation List: ", regulation_list);
-
-  //     const body = {
-  //       client_name: values.custName,
-  //       project_name: values.title,
-  //       alamat_kantor: values.alamatKantor,
-  //       alamat_sampling: values.alamatSampling,
-  //       surel: values.surel,
-  //       contact_person: values.contactPerson,
-  //       regulation_list: regulation_list,
-  //       sampling_list: sampling_list,
-  //     };
-
-  //     //Create Project Function
-  //     setIsLoading(true);
-  //     // const response = null;
-
-  //     const response = await createProject(body, uploadedFiles);
-
-  //     if (!response) {
-  //       alert("Failed to create project");
-  //       setIsLoading(false);
-  //       return;
-  //     }
-
-  //     if (uploadedFiles.length > 0) {
-  //       const fileResponse = await updateProjectFile(
-  //         "65afbd8c987cf82566e265d0",
-  //         uploadedFiles
-  //       );
-
-  //       if (!fileResponse) {
-  //         alert("Failed to upload file, You can add file in update page");
-  //         setIsLoading(false);
-  //         return;
-  //       }
-  //     }
-
-  //     setIsLoading(false);
-  //     alert("Success creating project");
-  //     router.push("/marketing/running");
-  //   } else {
-  //     alert("Please add at least one sample");
-  //   }
-  // }
-
   async function onSubmitForm2(
     values: z.infer<typeof createProjectValidation>
   ) {
@@ -230,6 +176,15 @@ const CreateProjectPage: FC<CreateProjectProps> = ({ baseSamples }) => {
         };
 
         const response = await createProjectJson(body);
+        
+        if (!response) {
+          toast({
+            title: "Failed to create project",
+            description: "please resubmit the form",
+          });
+          setIsLoading(false);
+          return
+        }
 
         if (uploadedFiles.length > 0 && response?._id) {
           const fileResponse = await updateProjectFile(
@@ -245,10 +200,17 @@ const CreateProjectPage: FC<CreateProjectProps> = ({ baseSamples }) => {
         //   );
         // }
 
-        alert("Success creating project");
+        toast({
+          title: "Successfully Create project!",
+          description: "Good Job",
+        });
+        setIsLoading(false);
         router.push("/marketing/running");
       } else {
-        alert("Please add at least one sample");
+        toast({
+          title: "Oops, you forget something!",
+          description: "Please add at least one sample",
+        });
       }
     } catch (error) {
       console.error("Error creating project:", error);
