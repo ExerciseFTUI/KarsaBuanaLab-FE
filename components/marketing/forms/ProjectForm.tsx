@@ -37,7 +37,7 @@ interface ProjectFormProps {
   onSubmit(values: z.infer<typeof createProjectValidation>): Promise<void>;
   status?: string;
   note?: string;
-  updatePayment(values: z.infer<typeof createProjectValidation>): Promise<void>;
+  updatePayment?(values: z.infer<typeof createProjectValidation>): Promise<void>;
 }
 
 const ProjectForm: FC<ProjectFormProps> = ({
@@ -77,7 +77,9 @@ const ProjectForm: FC<ProjectFormProps> = ({
               onClick={async () => {
                 setPaidStatus(!paidStatus);
                 form.setValue("isPaid", !paidStatus, { shouldValidate: true });
-                await updatePayment(form.getValues());  // Pass the latest form values to updatePayment
+                if (updatePayment) {
+                  await updatePayment(form.getValues());  // Pass the latest form values to updatePayment
+                } 
               }}
               className={` ${paidStatus ? "bg-red-400 hover:bg-red-700" : "bg-moss_green hover:bg-dark_green"} h-2/3 text-white py-2 px-5 rounded-lg `}>
                 {paidStatus ? "Batalkan Pelunasan" : "Verifikasi Pelunasan"}
