@@ -53,7 +53,7 @@ const ProjectForm: FC<ProjectFormProps> = ({
   const [paidStatus, setPaidStatus] = useState(form.getValues('isPaid'))
 
   return (
-    <Card className="w-[450px] max-sm:w-[400px] max-h-screen md:max-h-[520px] overflow-auto custom-scrollbar ">
+    <Card className="w-[450px] max-sm:w-[400px] min-h-[85vh] max-md:max-h-[520px] overflow-auto custom-scrollbar ">
       <CardHeader>
         <CardTitle className="text-base font-bold ">
           Project Information
@@ -160,45 +160,45 @@ const ProjectForm: FC<ProjectFormProps> = ({
             {status?.toLocaleLowerCase() !== "create" && (
               <div>
                 <FormField
-                control={form.control}
-                name="numPenawaran"
-                render={({ field }) => (
-                  <FormItem>
-                        <FormLabel>Nomor Penawaran</FormLabel>
-                        <FormControl>
-                            <Input
-                            disabled={true}
-                            type="string"
-                            className=""
-                            placeholder=""
-                            {...field}
-                            />
-                        </FormControl>
-    
-                        <FormMessage />
-                        </FormItem>
-                    )}
-                    />
-                    <FormField
-                    control={form.control}
-                    name="numRevisi"
-                    render={({ field }) => (
-                        <FormItem>
-                        <FormLabel>Nomor Revisi</FormLabel>
-                        <FormControl>
-                            <Input
-                            disabled={true}
-                            type="number"
-                            className=""
-                            placeholder=""
-                            {...field}
-                            />
-                        </FormControl>
-    
-                        <FormMessage />
-                        </FormItem>
-                    )}
-                    />
+                  control={form.control}
+                  name="numPenawaran"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Nomor Penawaran</FormLabel>
+                      <FormControl>
+                        <Input
+                          disabled={true}
+                          type="string"
+                          className=""
+                          placeholder=""
+                          {...field}
+                        />
+                      </FormControl>
+
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="numRevisi"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Nomor Revisi</FormLabel>
+                      <FormControl>
+                        <Input
+                          disabled={true}
+                          type="number"
+                          className=""
+                          placeholder=""
+                          {...field}
+                        />
+                      </FormControl>
+
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
                 <FormField
                     control={form.control}
                     name="valuasiProject"
@@ -221,6 +221,9 @@ const ProjectForm: FC<ProjectFormProps> = ({
                     />
                   </div>
                   )}
+                />
+              </div>
+            )}
             <FormField
               control={form.control}
               name="alamatKantor"

@@ -147,6 +147,7 @@ const SamplingTab: FC<SamplingTabProps> = ({
         form={form}
         onSubmit={onSubmit}
         baseSamples={baseSamples}
+        change={false}
       />
     </>
   );
