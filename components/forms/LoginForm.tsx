@@ -1,5 +1,5 @@
 "use client";
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -35,6 +35,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useToast } from "../ui/use-toast";
 import axios from "axios";
 import { access } from "fs";
+import { ReloadIcon } from "@radix-ui/react-icons";
 
 interface LoginFormProps {}
 
@@ -64,6 +65,7 @@ const LoginForm: FC<LoginFormProps> = ({}) => {
   const router = useRouter();
   const query = useSearchParams();
   const { toast } = useToast();
+  const [isLoading, setIsLoading] = useState(false);
 
   // 1. Define your form.
   const form = useForm<z.infer<typeof loginValidation>>({
@@ -82,25 +84,33 @@ const LoginForm: FC<LoginFormProps> = ({}) => {
     // ✅ This will be type-safe and validated.
     // console.log(result);
 
+    setIsLoading(true);
     //NextAuth SignIn
     signIn("credentials", {
       ...values,
       redirect: false, //Add redirect to data object
-    }).then((callback) => {
-      console.log(callback);
-      if (callback?.error) {
-        toast({
-          description: "Invalid username or password",
-          variant: "destructive",
-          title: "Uh oh! Something went wrong.",
-        });
-      }
-      if (callback?.ok && !callback?.error) {
-        toast({ title: "Successfully logged in", description: "Welcome back" });
-        const callbackUrl = query.get("callbackUrl");
-        router.push(callbackUrl || "/");
-      }
-    });
+    })
+      .then((callback) => {
+        console.log(callback);
+        if (callback?.error) {
+          toast({
+            description: "Invalid username or password",
+            variant: "destructive",
+            title: "Uh oh! Something went wrong.",
+          });
+        }
+        if (callback?.ok && !callback?.error) {
+          toast({
+            title: "Successfully logged in",
+            description: "Welcome back",
+          });
+          const callbackUrl = query.get("callbackUrl");
+          router.push(callbackUrl || "/");
+        }
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   }
 
   return (
@@ -146,10 +156,18 @@ const LoginForm: FC<LoginFormProps> = ({}) => {
               )}
             />
             <Button
+              disabled={isLoading}
               className="w-full mt-6 bg-[#656D4A] hover:bg-[#332D29]"
               type="submit"
             >
-              Submit
+              {isLoading ? (
+                <>
+                  <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
+                  Please wait
+                </>
+              ) : (
+                "Submit"
+              )}
             </Button>
           </form>
         </Form>
