@@ -233,6 +233,9 @@ const ProjectForm: FC<ProjectFormProps> = ({
                       <FormMessage />
                     </FormItem>
                   )}
+                />
+              </div>
+            )}
             <FormField
               control={form.control}
               name="alamatKantor"
