@@ -35,16 +35,22 @@ import {
 import { useRouter } from "next/navigation";
 import { set } from "date-fns";
 import { BaseSample } from "@/lib/models/baseSample.model";
+
 import LoadingScreen from "@/components/LoadingComp";
+
+import { Textarea } from "@/components/ui/textarea";
+
 
 interface EditProjectPageProps {
   project: Project;
   baseSamples: BaseSample[];
+  status?: string;
 }
 
 export default function EditProjectPage({
   project,
   baseSamples,
+  status
 }: EditProjectPageProps) {
   //General
   const { toast } = useToast();
@@ -162,8 +168,12 @@ export default function EditProjectPage({
       numPenawaran: project.no_penawaran || "",
       numRevisi: project.jumlah_revisi || 0,
       valuasiProject: project.valuasi_proyek || "0",
+      isPaid: project.isPaid || false,
+      desc_failed: project.desc_failed || "",
+      status: project.status || "",
     },
   });
+
 
   // async function onSubmit(values: z.infer<typeof createProjectValidation>) {
   //   const body = {
@@ -218,7 +228,7 @@ export default function EditProjectPage({
   //   router.push("/marketing/running");
   // }
 
-  async function onSubmit2(values: z.infer<typeof createProjectValidation>) {
+    async function onSubmit2(values: z.infer<typeof createProjectValidation>) {
     try {
       setIsLoading(true); // Set loading to true before making API calls
 
@@ -284,7 +294,6 @@ export default function EditProjectPage({
       setIsLoading(false); // Set loading to false after API calls are finished
     }
   }
-
   //================================= End Project Information Section
 
   //=============================== Document Section
@@ -292,6 +301,7 @@ export default function EditProjectPage({
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [isCancelled, setIsCancelled] = useState(false);
   const [reason, setReason] = useState("");
+
 
   const handleSubmitDocs = () => {
     // Log the uploaded files to the console
@@ -330,13 +340,12 @@ export default function EditProjectPage({
               <label htmlFor="reason" className="block mb-2">
                 Reason:
               </label>
-              <input
-                type="text"
+              <Textarea
                 id="reason"
                 name="reason"
                 value={reason}
                 onChange={(e) => setReason(e.target.value)}
-                className="w-full p-2 border border-gray-300 rounded-md mb-4"
+                className="border-2 border-[#bbbabf] rounded-lg h-24 mb-2"
                 required
               />
               <div className="flex justify-center space-x-4">
@@ -349,7 +358,7 @@ export default function EditProjectPage({
                 </button>
                 <button
                   type="button"
-                  //onClick={handleSubmitDocs}  // You can replace this with your actual cancel logic
+                  onClick={handleCancelledProject}  // You can replace this with your actual cancel logic
                   className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600"
                 >
                   Confirm
@@ -366,7 +375,7 @@ export default function EditProjectPage({
         <ProjectForm
           form={form}
           onSubmit={onSubmit2}
-          status="EDIT"
+          status={status}
           note="Gakuat bayar jasa kita"
         />
         <Tabs defaultValue="sampling" className="w-[40rem] max-sm:w-[420px]">
@@ -484,12 +493,14 @@ export default function EditProjectPage({
               Submit
             </button>
             {/* Cancelled Project */}
-            <button
-              onClick={() => setIsCancelled(true)}
-              className=" bg-red-400 px-5 hover:bg-red-500 font-medium text-black hover:text-white rounded-lg py-3"
-            >
-              Cancel Project
-            </button>
+            {status?.toLocaleLowerCase() === "running" && (
+              <button
+                onClick={() => setIsCancelled(true)}
+                className=" bg-red-400 px-5 hover:bg-red-500 font-medium text-black hover:text-white rounded-lg py-3"
+              >
+                Cancel Project
+              </button>
+            )}
             {/* End of Cancelled Project */}
           </div>
           {/* End Button for submit */}

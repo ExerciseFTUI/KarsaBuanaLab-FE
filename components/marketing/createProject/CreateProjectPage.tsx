@@ -250,6 +250,7 @@ const CreateProjectPage: FC<CreateProjectProps> = ({ baseSamples }) => {
         router.push("/marketing/running");
       } else {
         alert("Please add at least one sample");
+
       }
     } catch (error) {
       console.error("Error creating project:", error);
