@@ -256,7 +256,7 @@ export default function EditProjectPage({
 
       router.push("/marketing/running");
     } catch (error: any) {
-      const errorMsg = error?.response?.data?.message || error;
+      const errorMsg = error?.response?.data?.message || error.message;
       toast({
         title: "Oops, Failed!",
         description: errorMsg,

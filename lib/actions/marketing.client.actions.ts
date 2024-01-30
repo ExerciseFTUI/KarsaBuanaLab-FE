@@ -4,7 +4,8 @@ import axios from "axios";
 
 // const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || "https://karsalab.netlabdte.com";
 //Ganti ke NEXT_PUBLIC_API_BASE_URL
-const apiBaseUrl = process.env.API_BASE_URL || "http://localhost:5000";
+const apiBaseUrl =
+  process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:5000";
 
 export const getUser = async () => {
   try {
@@ -56,7 +57,7 @@ export const updateProjectFile = async (id: string, files: any) => {
     // throw new Error("Error update projectFile :");
     //Call API
     const response = await axios.put(
-      `${apiBaseUrl}/projects/editFiles`,
+      `${apiBaseUrl}/projects/addFiles`,
       bodyFormData,
       {
         headers: { "Content-Type": "multipart/form-data" },
