@@ -8,7 +8,7 @@ export default async function Home() {
   return (
     <div className="flex justify-between w-full h-screen">
       {/* <CancelledTable projects={projects.result} /> */}
-      <DataTable datas={response ? response.result : []} />
+      <DataTable datas={response ? response.result : []} status="CANCELLED" />
     </div>
   );
 }
