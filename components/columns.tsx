@@ -160,6 +160,115 @@ export const columns: ColumnDef<ProjectMarketingType>[] = [
   }
 ];
 
+// Table for cancelled project
+export const columnsCancelled: ColumnDef<ProjectMarketingType>[] = [
+  //No Penawaran
+  {
+    accessorKey: "no_penawaran",
+    header: "No Penawaran",
+    cell: ({ row }) => <div className="">{row.getValue("no_penawaran")}</div>,
+  },
+  {
+    accessorKey: "project_name",
+    header: ({ column }) => {
+      return (
+        <Button
+          className=""
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Project Name
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => (
+      <div className="capitalize pl-4">{row.getValue("project_name")}</div>
+    ),
+  },
+  //Status
+  {
+    accessorKey: "status",
+    header: ({ column }) => {
+      return (
+        <Button className="pl-6" variant="ghost">
+          Status
+        </Button>
+      );
+    },
+
+    cell: ({ row }) => {
+      const status = true;
+
+      return (
+        <div className="">
+          <div
+            className={`font-light text-white w-fit px-6 py-0.5 rounded-full ${status ? "bg-yellow-700" : "bg-red-400"
+              }`}
+          >
+            {row.getValue("status")}
+          </div>
+        </div>
+      );
+    },
+  },
+
+  //Reason project cancelled
+  {
+    accessorKey: "desc_failed",
+    header: ({ column }) => {
+      return (
+        <Button className="flex flex-row w-full justify-center" variant="ghost">
+          Cancelled Description
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      return (
+        <div className="capitalize pl-0.5 overflow-x-clip">
+          {row.getValue("desc_failed")}
+        </div>
+      );
+    },
+  },
+  
+  //Action
+  {
+    id: "actions",
+    enableHiding: false,
+    cell: ({ row }) => {
+      const project = row.original._id;
+      
+      return (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" className="h-8 w-8 p-0">
+              <span className="sr-only">Open menu</span>
+              <MoreHorizontal className="h-4 w-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuLabel>Actions</DropdownMenuLabel>
+            <DropdownMenuItem>
+              <Link href={`/marketing/project/${row.original.status}/${project}`}>
+                View project details
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem
+              onClick={() =>
+                navigator.clipboard.writeText(row.getValue("no_penawaran"))
+              }
+            >
+              Copy No Penawaran
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      );
+    },
+  }
+];
+
 //Table Column for Penerima Sampling
 export const receiveProjectPageColumns: ColumnDef<ProjectType>[] = [
   //No Penawaran

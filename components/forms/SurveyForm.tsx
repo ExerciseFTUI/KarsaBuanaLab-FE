@@ -30,10 +30,10 @@ import { useForm, useFormContext } from "react-hook-form";
 import { surveyValidation } from "@/lib/validations/SurveyValidation";
 
 interface SurveyFormProps {
-    isPaid: boolean;
+    is_paid: boolean;
 }
 
-const SurveyForm: FC<SurveyFormProps> = ({ isPaid }) => {
+const SurveyForm: FC<SurveyFormProps> = ({ is_paid }) => {
   const form = useForm<z.infer<typeof surveyValidation>>({
     resolver: zodResolver(surveyValidation),
     defaultValues: {
@@ -57,7 +57,7 @@ const SurveyForm: FC<SurveyFormProps> = ({ isPaid }) => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button disabled={!isPaid} className="flex bg-black_brown justify-center rounded-xl text-xl text-ghost_white py-2 w-full">
+        <Button disabled={!is_paid} className="flex bg-black_brown justify-center rounded-xl text-xl text-ghost_white py-2 w-full">
             Laporan Hasil Penelitian
         </Button>
       </DialogTrigger>

@@ -167,7 +167,7 @@ export default function EditProjectPage({
       numPenawaran: project.no_penawaran || "",
       numRevisi: project.jumlah_revisi || 0,
       valuasiProject: project.valuasi_proyek || "0",
-      isPaid: project.isPaid || false,
+      is_paid: project.is_paid || false,
       desc_failed: project.desc_failed || "",
       status: project.status || "",
     },
@@ -188,11 +188,12 @@ export default function EditProjectPage({
         no_penawaran: values.numPenawaran,
         jumlah_revisi: values.numRevisi,
         valuasi_proyek: values.valuasiProject,
+        desc_failed: values.desc_failed,
       };
 
-      // // Check if all properties same exclude the isPaid will increase jumlahRevisi
+      // // Check if all properties same exclude the is_paid will increase jumlahRevisi
       // const propertiesMatch = Object.keys(body).every(
-      //   (key) => key === 'isPaid' || key === 'status' || body[key] as any  === project[key]
+      //   (key) => key === 'is_paid' || key === 'status' || body[key] as any  === project[key]
       // );
 
       // if (propertiesMatch) {
@@ -254,7 +255,13 @@ export default function EditProjectPage({
         description: "Good Job",
       });
 
-      router.push("/marketing/running");
+      if (status === "RUNNING") {
+        router.push("/marketing/running");
+      } else if (status === "FINISHED") {
+        router.push("/marketing/finished");
+      } else if (status === "CANCELLED") {
+        router.push("/marketing/cancelled");
+      }
     } catch (error: any) {
       const errorMsg = error?.response?.data?.message || error.message;
       toast({
@@ -275,28 +282,42 @@ export default function EditProjectPage({
   async function handleCancelledProject(
     values: z.infer<typeof createProjectValidation>
   ) {
-    const body = {
-      desc_failed: reason,
-    };
-    console.log("desc failed : ", body);
-
-    // //Connect to API
-    // const responseInfo = await updateProjectInfo(body);
-    // if (!responseInfo) {
-    //   toast({
-    //     title: "Oops, Failed!",
-    //     description: "Failed to cancel the project, please try again",
-    //   });
-
-    //   return;
-    // }
-
-    toast({
-      title: "Project success cancelled!",
-      description: "The project has been cancelled",
-    });
-
-    router.push("/marketing/cancelled");
+    try {
+      const body = {
+        _id: project._id,
+        desc_failed: reason,
+        status: "CANCELLED",
+      };
+      console.log("desc failed : ", body);
+  
+      //Connect to API
+      const responseInfo = await updateProjectInfo(body);
+      if (!responseInfo) {
+        toast({
+          title: "Oops, Failed!",
+          description: "Failed to cancel the project, please try again",
+        });
+  
+        return;
+      }
+  
+      toast({
+        title: "Project success cancelled!",
+        description: "The project has been cancelled",
+      });
+  
+      router.push("/marketing/cancelled");
+      
+    } catch (error: any) {
+      const errorMsg = error?.response?.data?.message || error;
+      toast({
+        title: "Oops, Failed!",
+        description: errorMsg,
+        variant: "destructive",
+      });
+      console.error("Error from backend", errorMsg);
+      console.error("Error during project update:", errorMsg);
+    }
   }
   // =============== End of Action to update reason why project cancelled =================================== //
 
@@ -305,21 +326,38 @@ export default function EditProjectPage({
   async function updatePayment(
     values: z.infer<typeof createProjectValidation>
   ) {
-    const body = {
-      isPaid: values.isPaid,
-    };
-    console.log("Status payment : ", body);
+    try {
+      const body = {
+        _id: project._id,
+        is_paid: values.is_paid,
+      };
+  
+      //Connect to API
+      const responseInfo = await updateProjectInfo(body);
+      if (!responseInfo) {
+        toast({
+          title: "Oops, Failed!",
+          description: "Failed to update payment",
+        });
+  
+        return;
+      }
 
-    // //Connect to API
-    // const responseInfo = await updateProjectInfo(body);
-    // if (!responseInfo) {
-    //   toast({
-    //     title: "Oops, Failed!",
-    //     description: "Failed to cancel the project, please try again",
-    //   });
-
-    //   return;
-    // }
+      console.log("Success updated");
+      
+      
+    } catch (error: any) {
+      const errorMsg = error?.response?.data?.message || error;
+      toast({
+        title: "Oops, Failed!",
+        description: errorMsg,
+        variant: "destructive",
+      });
+      console.error("Error from backend", errorMsg);
+      console.error("Error during project update:", errorMsg);
+    } finally {
+      router.refresh();
+    }
   }
 
   // ========================= End of Action to update status payment ============================================== //

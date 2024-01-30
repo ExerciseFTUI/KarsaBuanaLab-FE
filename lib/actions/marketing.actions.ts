@@ -120,7 +120,6 @@ export const createProjectJson = async (body: any) => {
     );
     revalidatePath("/marketing/running");
 
-    console.log(response.data);
     return response.data.result.project as Project;
   } catch (error: any) {
     console.error(error.response?.data?.message);
@@ -183,8 +182,6 @@ export const getSample = async (): Promise<BaseApiResponse<[BaseSample]>> => {
   try {
     const response = await axios.get(`${apiBaseUrl}/marketing/getSample`);
 
-    console.log(response.data.result);
-
     return response.data as BaseApiResponse<[BaseSample]>;
   } catch (error: any) {
     console.error("Error getting sample:", error.message);
@@ -233,6 +230,9 @@ export const getDashboard = async (): Promise<
         },
       },
     };
+
+    console.log(updatedResponse.result);
+    
 
     return updatedResponse as BaseApiResponse<DashboardResult>;
   } catch (error: any) {
@@ -294,10 +294,15 @@ export const getbyStatus = async (
 export const updateProjectInfo = async (body: any) => {
   try {
     //Call API
+    console.log(body);
+    
     const response = await axios.put(`${apiBaseUrl}/projects/edit`, body);
+    console.log(response.data.result);
+
     if (response.data.result) {
       //Refetch
       revalidatePath("/marketing/running");
+      revalidatePath("/marketing");
       return true;
     } else {
       return false;
