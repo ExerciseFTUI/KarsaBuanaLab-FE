@@ -52,7 +52,7 @@ const ProjectForm: FC<ProjectFormProps> = ({
   const router = useRouter();
   const query = useSearchParams();
   const { toast } = useToast();
-  const [paidStatus, setPaidStatus] = useState(form.getValues("isPaid"));
+  const [paidStatus, setPaidStatus] = useState(form.getValues("is_paid"));
 
   return (
     <Card className="w-[450px] max-sm:w-[400px] min-h-[85vh] max-md:max-h-[520px] overflow-auto custom-scrollbar ">
@@ -80,7 +80,7 @@ const ProjectForm: FC<ProjectFormProps> = ({
               <button
                 onClick={async () => {
                   setPaidStatus(!paidStatus);
-                  form.setValue("isPaid", !paidStatus, {
+                  form.setValue("is_paid", !paidStatus, {
                     shouldValidate: true,
                   });
                   if (updatePayment) {

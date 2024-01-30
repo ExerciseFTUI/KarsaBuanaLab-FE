@@ -26,7 +26,7 @@ export interface Project {
   created_at: string;
   jadwal_sampling: string;
   project_assigned_to: User[];
-  isPaid: boolean;
+  is_paid: boolean;
   desc_failed: string;
   _id: string;
   __v: number;

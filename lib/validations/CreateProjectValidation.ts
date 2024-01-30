@@ -34,7 +34,7 @@ export const createProjectValidation = z.object({
   numRevisi: z
     .number()
     .optional(),
-  isPaid: z.boolean().optional(),
+  is_paid: z.boolean().optional(),
   desc_failed: z
     .string()
     .max(280, {message: "Makismal 280 character"})

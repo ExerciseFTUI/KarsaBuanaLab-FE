@@ -22,6 +22,7 @@ export type ProjectMarketingType = {
   created_at: string;
   status: string;
   valuasi_proyek: number;
+  desc_failed: string;
 };
 
 export type BaseSampleType = {
