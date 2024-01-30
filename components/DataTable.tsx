@@ -61,9 +61,10 @@ import Link from "next/link";
 
 interface DataTableProps {
   datas: ProjectMarketingType[];
+  status: string;
 }
 
-export function DataTable({ datas }: DataTableProps) {
+export function DataTable({ datas, status }: DataTableProps) {
   const router = useRouter();
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -84,9 +85,12 @@ export function DataTable({ datas }: DataTableProps) {
     }
   }, []);
 
+  console.log(data);
+  
+
   const table = useReactTable({
     data: data,
-    columns,
+    columns: status === "CANCELLED" ? columnsCancelled : columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),

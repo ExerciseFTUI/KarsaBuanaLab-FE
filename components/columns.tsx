@@ -216,7 +216,13 @@ export const columnsCancelled: ColumnDef<ProjectMarketingType>[] = [
   //Reason project cancelled
   {
     accessorKey: "desc_failed",
-    header: "Karena",
+    header: ({ column }) => {
+      return (
+        <Button className="flex flex-row w-full justify-center" variant="ghost">
+          Cancelled Description
+        </Button>
+      );
+    },
     cell: ({ row }) => {
       return (
         <div className="capitalize pl-0.5 overflow-x-clip">
