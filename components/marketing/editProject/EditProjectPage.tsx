@@ -289,7 +289,7 @@ export default function EditProjectPage({
         status: "CANCELLED",
       };
       console.log("desc failed : ", body);
-  
+
       //Connect to API
       const responseInfo = await updateProjectInfo(body);
       if (!responseInfo) {
@@ -297,17 +297,16 @@ export default function EditProjectPage({
           title: "Oops, Failed!",
           description: "Failed to cancel the project, please try again",
         });
-  
+
         return;
       }
-  
+
       toast({
         title: "Project success cancelled!",
         description: "The project has been cancelled",
       });
-  
+
       router.push("/marketing/cancelled");
-      
     } catch (error: any) {
       const errorMsg = error?.response?.data?.message || error;
       toast({
@@ -331,7 +330,7 @@ export default function EditProjectPage({
         _id: project._id,
         is_paid: values.is_paid,
       };
-  
+
       //Connect to API
       const responseInfo = await updateProjectInfo(body);
       if (!responseInfo) {
@@ -339,13 +338,11 @@ export default function EditProjectPage({
           title: "Oops, Failed!",
           description: "Failed to update payment",
         });
-  
+
         return;
       }
 
       console.log("Success updated");
-      
-      
     } catch (error: any) {
       const errorMsg = error?.response?.data?.message || error;
       toast({
@@ -445,7 +442,7 @@ export default function EditProjectPage({
           note="Gakuat bayar jasa kita"
           updatePayment={updatePayment}
         />
-        <Tabs defaultValue="sampling" className="w-[40rem] max-sm:w-[420px]">
+        <Tabs defaultValue="sampling" className="w-[40rem] max-sm:w-[420px] ">
           <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger value="sampling">Sampling</TabsTrigger>
             <TabsTrigger value="document">Document</TabsTrigger>
@@ -469,7 +466,7 @@ export default function EditProjectPage({
             {/* Right Card for Dropzone */}
 
             <Card
-              className={`overflow-y-auto md:max-h-[25rem] max-h-[90vh] custom-scrollbar`}
+              className={`overflow-y-auto min-h-[75vh] max-md:max-h-[520px] custom-scrollbar`}
             >
               <div>
                 <CardHeader>
@@ -481,6 +478,11 @@ export default function EditProjectPage({
                 {/* Based spreadsheet files */}
                 <div className="mx-5">
                   <h1 className=" font-semibold mb-2 "> Based Files </h1>
+                  {project.lab_file.length === 0 && (
+                    <p className=" text-sm flex flex-row justify-center py-3">
+                      Lab File Not Found
+                    </p>
+                  )}
                   <div className=" grid grid-cols-2 gap-4 justify-center items-center">
                     {project.lab_file.map((file, index) => (
                       <a
@@ -518,6 +520,11 @@ export default function EditProjectPage({
                 {/* Uploaded files */}
                 <div className="mx-5 mt-5">
                   <h1 className="font-semibold mb-2">Another Files</h1>
+                  {project.file.length === 0 && (
+                    <p className=" text-sm flex flex-row justify-center py-3">
+                      File Not Found
+                    </p>
+                  )}
                   <div className="grid grid-cols-2 gap-4 justify-center items-center">
                     {project.file.map((file, index) => (
                       <a
