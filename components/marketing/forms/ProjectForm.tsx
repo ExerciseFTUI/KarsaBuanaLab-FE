@@ -55,7 +55,7 @@ const ProjectForm: FC<ProjectFormProps> = ({
   const [paidStatus, setPaidStatus] = useState(form.getValues("is_paid"));
 
   return (
-    <Card className="w-[450px] max-sm:w-[400px] min-h-[85vh] max-md:max-h-[520px] overflow-auto custom-scrollbar ">
+    <Card className="w-[450px] max-sm:w-[400px] md:max-h-[33rem]  overflow-auto custom-scrollbar ">
       <CardHeader>
         <CardTitle className="text-base font-bold ">
           Project Information
