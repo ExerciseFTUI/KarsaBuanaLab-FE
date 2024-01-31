@@ -1,24 +1,20 @@
-import React, { FC } from "react";
+"use client";
+import React, { FC, useEffect, useState } from "react";
 import CustomCheckbox from "../Checkbox/CustomCheckbox";
+import axios from "axios";
+import { getSampleById } from "@/lib/actions/client.actions";
+import { ClientResponses } from "@/lib/type";
 
-interface SampleProps {}
+interface SampleProps {
+  data: ClientResponses[];
+}
 
-const Sample: FC<SampleProps> = () => {
-  const items = [
-    {
-      label: "air limbah domestik",
-      accepted: true,
-    },
-    {
-      label: "air minum / AMDK",
-      accepted: true,
-    },
-    {
-      label: "udara ambien",
-      accepted: false,
-    },
-  ];
-  return <CustomCheckbox formLabel="Schedule Logbook" items={items} />;
+const Sample: FC<SampleProps> = ({ data }) => {
+  return (
+    <>
+      <CustomCheckbox formLabel="Schedule Logbook" items={data ? data : []} />
+    </>
+  );
 };
 
 export default Sample;

@@ -2,12 +2,12 @@
 
 import React, { FC } from "react";
 
-import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
+import { clientResponses } from "@/lib/type";
 
 interface CustomCheckboxProps {
   formLabel: string;
-  items: { label: string; accepted: boolean }[];
+  items: clientResponses[];
 }
 
 const CustomCheckbox: FC<CustomCheckboxProps> = ({ formLabel, items }) => {
@@ -18,22 +18,22 @@ const CustomCheckbox: FC<CustomCheckboxProps> = ({ formLabel, items }) => {
           <h1 className="text-2xl font-bold">{`${formLabel}`}</h1>
           <div className="bg-[#bbbabf] w-full h-0.5 m-2" />
         </div>
-        {items.map((item) => (
-          <div key={item.label} className="flex flex-col space-y-4  ">
+        {items.map((item: clientResponses) => (
+          <div key={item.sample_name} className="flex flex-col space-y-4  ">
             <div className="absolute z-0 h-16 w-[1px] mx-3 bg-[#bbbabf]" />
             <div className="flex flex-row items-center space-x-3 space-y-0 z-10">
               <div>
                 <Checkbox
                   className="h-6 w-6 bg-ghost_white cursor-default"
-                  checked={item.accepted}
+                  checked={item.status}
                 />
               </div>
               <div
                 className={`text-lg font-normal ${
-                  item.accepted ? "" : "text-moss_green"
+                  item.status ? "" : "text-moss_green"
                 }`}
               >
-                {item.label}
+                {item.sample_name}
               </div>
             </div>
           </div>

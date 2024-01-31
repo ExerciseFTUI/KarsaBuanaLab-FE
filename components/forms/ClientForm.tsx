@@ -2,7 +2,6 @@
 import React, { useState, useEffect, FC } from "react";
 import dynamic from "next/dynamic";
 
-import { FiDownload } from "react-icons/fi";
 import { FiRefreshCw } from "react-icons/fi";
 
 import {
@@ -17,6 +16,7 @@ import Sample from "../client/Sample";
 import Analysis from "../client/Analysis";
 import Finished from "../client/Finished";
 import { Button } from "../ui/button";
+import { ClientDataType } from "@/lib/type";
 
 const ClientStepper = dynamic(() => import("../Stepper/ClientStepper"), {
   ssr: false,
@@ -25,11 +25,13 @@ const ClientStepper = dynamic(() => import("../Stepper/ClientStepper"), {
 interface ClientFormProps {
   resiNumber: string;
   stage: string;
+  clientData: ClientDataType;
 }
 
-const ClientForm: FC<ClientFormProps> = ({ resiNumber, stage }) => {
+const ClientForm: FC<ClientFormProps> = ({ resiNumber, stage, clientData }) => {
   const [activeStep, setActiveStep] = useState(0);
   const [step, setStep] = useState(0);
+
   useEffect(() => {
     const convertStageToStep = () => {
       switch (stage) {
@@ -43,7 +45,7 @@ const ClientForm: FC<ClientFormProps> = ({ resiNumber, stage }) => {
           setStep(2);
           break;
         default:
-          setStep(0); // Default to 0 if the stage is not recognized
+          setStep(0);
       }
     };
     convertStageToStep();
@@ -62,11 +64,11 @@ const ClientForm: FC<ClientFormProps> = ({ resiNumber, stage }) => {
   function getSectionComponent() {
     switch (activeStep) {
       case 0:
-        return <Sample />;
+        return clientData.sample && <Sample data={clientData.sample} />;
       case 1:
-        return <Analysis />;
+        return clientData.analysis && <Analysis data={clientData.analysis} />;
       case 2:
-        return <Finished />;
+        return clientData.finished && <Finished data={clientData.finished} />;
       default:
         return null;
     }

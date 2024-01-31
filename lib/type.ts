@@ -184,3 +184,19 @@ export const Sampling = {
     },
   ],
 };
+
+export type ClientResponses = {
+  sample_name: string;
+  status: boolean;
+};
+
+export type FinishedData = {
+  is_paid: boolean;
+  report: string;
+};
+
+export type ClientDataType = {
+  sample: ClientResponses[];
+  analysis: ClientResponses[];
+  finished: FinishedData;
+};

@@ -2,14 +2,12 @@ import React, { useState, FC } from "react";
 import { Button } from "../ui/button";
 import SurveyForm from "../forms/SurveyForm";
 
-interface FinishedProps {}
+interface FinishedProps {
+  data: any;
+}
 
-const Finished: FC<FinishedProps> = () => {
-  const data = {
-    isPaid: true,
-    url: "https://docs.google.com/spreadsheets/d/1lRrfqm-8Yn7zOkwql2UBShpgJOXxE1pRf9C5x78GEMY/edit#gid=1359557677",
-  };
-  const paymentStatus = data.isPaid ? "Sudah Terbayar" : "Belum Bayar";
+const Finished: FC<FinishedProps> = ({ data }) => {
+  const paymentStatus = data.is_paid ? "Sudah Terbayar" : "Belum Bayar";
 
   return (
     <section className="mt-4 m-10">

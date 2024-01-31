@@ -30,7 +30,7 @@ import { useForm, useFormContext } from "react-hook-form";
 import { surveyValidation } from "@/lib/validations/SurveyValidation";
 
 interface SurveyFormProps {
-  data: { isPaid: boolean; url: string };
+  data: { is_paid: boolean; report: string };
 }
 
 const SurveyForm: FC<SurveyFormProps> = ({ data }) => {
@@ -48,7 +48,6 @@ const SurveyForm: FC<SurveyFormProps> = ({ data }) => {
     },
   });
 
-  // 2. Define a submit handler.
   function onSubmit(values: z.infer<typeof surveyValidation>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
@@ -58,7 +57,7 @@ const SurveyForm: FC<SurveyFormProps> = ({ data }) => {
     <Dialog>
       <DialogTrigger asChild>
         <Button
-          disabled={!data.isPaid}
+          disabled={!data.is_paid}
           className="flex bg-black_brown justify-center rounded-xl text-xl text-ghost_white py-2 w-full"
         >
           Laporan Hasil Penelitian
