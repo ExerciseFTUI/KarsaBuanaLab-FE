@@ -28,9 +28,10 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 
 import { useForm, useFormContext } from "react-hook-form";
 import { surveyValidation } from "@/lib/validations/SurveyValidation";
+import { FinishedData } from "@/lib/type";
 
 interface SurveyFormProps {
-  data: { is_paid: boolean; report: string };
+  data: FinishedData;
 }
 
 const SurveyForm: FC<SurveyFormProps> = ({ data }) => {

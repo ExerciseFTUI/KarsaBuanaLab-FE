@@ -8,13 +8,10 @@ export const getProjectDivision = async (
   password: string
 ) => {
   try {
-    const response = await axios.post(
-      `https://karsalab.netlabdte.com/clients/login`,
-      {
-        projectId,
-        password,
-      }
-    );
+    const response = await axios.post(`${apiBaseUrl}/clients/login`, {
+      projectId,
+      password,
+    });
     return response.data.result;
   } catch (error: any) {
     console.error("Error getting Project", error.message);
@@ -25,7 +22,7 @@ export const getProjectDivision = async (
 export const getSampleById = async (projectId: string): Promise<any[]> => {
   try {
     const response = await axios.get(
-      `https://karsalab.netlabdte.com/clients/get-sample-status`,
+      `${apiBaseUrl}/clients/get-sample-status`,
       {
         data: {
           projectId: projectId,
@@ -46,7 +43,7 @@ export const getSampleById = async (projectId: string): Promise<any[]> => {
 export const getAnalysisById = async (projectId: string): Promise<any> => {
   try {
     const response = await axios.get(
-      `https://karsalab.netlabdte.com/clients/get-analysis-status`,
+      `${apiBaseUrl}/clients/get-analysis-status`,
       {
         data: {
           projectId: projectId,
@@ -66,7 +63,7 @@ export const getAnalysisById = async (projectId: string): Promise<any> => {
 export const getReportById = async (projectId: string): Promise<any> => {
   try {
     const response = await axios.get(
-      `https://karsalab.netlabdte.com/clients/get-payment-status`,
+      `${apiBaseUrl}/clients/get-payment-status`,
       {
         data: {
           projectId: projectId,

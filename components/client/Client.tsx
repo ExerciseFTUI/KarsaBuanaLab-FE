@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { useSession } from "next-auth/react";
 import IdCheckForm from "../forms/IdCheckForm";
-import ClientForm from "../forms/ClientForm";
+import ClientCard from "./ClientCard";
 
 export default function Client() {
   const [resiNumber, setResiNumber] = useState("");
@@ -20,7 +20,7 @@ export default function Client() {
           setClientData={setClientData}
         />
         {resiNumber !== "" ? (
-          <ClientForm
+          <ClientCard
             resiNumber={resiNumber}
             stage="finished"
             clientData={clientData ? clientData : null}

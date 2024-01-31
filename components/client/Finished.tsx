@@ -17,7 +17,19 @@ const Finished: FC<FinishedProps> = ({ data }) => {
         <p>Status pembayaran:</p>
         <p className="font-bold">{paymentStatus}</p>
       </div>
-      <SurveyForm data={data} />
+      {!data.is_survey_filled ? (
+        <SurveyForm data={data} />
+      ) : (
+        <a href={data.report} target="_blank">
+          <Button
+            disabled={!data.is_paid}
+            className="flex bg-black_brown justify-center rounded-xl text-xl text-ghost_white py-2 w-full"
+          >
+            Laporan Hasil Penelitian
+          </Button>
+        </a>
+      )}
+
       <div className="mt-2">
         <p className="m-2 text-charcoal_green italic">
           Klik Tombol Refresh untuk perbarui status Pembayaran

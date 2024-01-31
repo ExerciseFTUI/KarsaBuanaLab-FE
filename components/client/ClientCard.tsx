@@ -22,13 +22,13 @@ const ClientStepper = dynamic(() => import("../Stepper/ClientStepper"), {
   ssr: false,
 });
 
-interface ClientFormProps {
+interface ClientCardProps {
   resiNumber: string;
   stage: string;
-  clientData: ClientDataType;
+  clientData: ClientDataType | null;
 }
 
-const ClientForm: FC<ClientFormProps> = ({ resiNumber, stage, clientData }) => {
+const ClientCard: FC<ClientCardProps> = ({ resiNumber, stage, clientData }) => {
   const [activeStep, setActiveStep] = useState(0);
   const [step, setStep] = useState(0);
 
@@ -64,11 +64,11 @@ const ClientForm: FC<ClientFormProps> = ({ resiNumber, stage, clientData }) => {
   function getSectionComponent() {
     switch (activeStep) {
       case 0:
-        return clientData.sample && <Sample data={clientData.sample} />;
+        return clientData?.sample && <Sample data={clientData.sample} />;
       case 1:
-        return clientData.analysis && <Analysis data={clientData.analysis} />;
+        return clientData?.analysis && <Analysis data={clientData.analysis} />;
       case 2:
-        return clientData.finished && <Finished data={clientData.finished} />;
+        return clientData?.finished && <Finished data={clientData.finished} />;
       default:
         return null;
     }
@@ -110,4 +110,4 @@ const ClientForm: FC<ClientFormProps> = ({ resiNumber, stage, clientData }) => {
   );
 };
 
-export default ClientForm;
+export default ClientCard;

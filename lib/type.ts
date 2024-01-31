@@ -193,6 +193,7 @@ export type ClientResponses = {
 export type FinishedData = {
   is_paid: boolean;
   report: string;
+  is_survey_filled: boolean;
 };
 
 export type ClientDataType = {
