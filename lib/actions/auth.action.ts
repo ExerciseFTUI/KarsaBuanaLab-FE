@@ -8,7 +8,6 @@ const apiBaseUrl = process.env.API_BASE_URL || "http://localhost:5000";
 
 export const register = async (data: registerValidationType) => {
   const session = await getSessionServer();
-
   console.log(session);
 
   try {

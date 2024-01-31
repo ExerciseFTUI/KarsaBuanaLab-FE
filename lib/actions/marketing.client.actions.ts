@@ -74,3 +74,25 @@ export const updateProjectFile = async (id: string, files: any) => {
     throw new Error(error.message);
   }
 };
+
+//Update Project file
+export const deleteProjectFile = async (id: string, file_id: string) => {
+  const body = {
+    _id: id,
+    file_id: file_id,
+  };
+
+  try {
+    // throw new Error("Error update projectFile :");
+    //Call API
+    const response = await axios.put(`${apiBaseUrl}/projects/removeFile`, body);
+    if (response.data.result) {
+      return true;
+    } else {
+      return false;
+    }
+  } catch (error: any) {
+    console.error(error.response.data);
+    console.error(`Error delete projectFile :`, error.message);
+  }
+};

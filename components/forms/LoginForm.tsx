@@ -35,7 +35,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useToast } from "../ui/use-toast";
 import axios from "axios";
 import { access } from "fs";
-import { ReloadIcon } from "@radix-ui/react-icons";
+import { ReloadIcon, TrashIcon } from "@radix-ui/react-icons";
 
 interface LoginFormProps {}
 

@@ -36,15 +36,15 @@ export const options: NextAuthOptions = {
         );
 
         console.log(response.data);
-        //Response Backend masih ngaco
-        const user2 = {
-          id: response.data._id,
-          name: response.data.username,
-          role: response.data.role,
-          division: response.data.division,
-        };
 
-        if (response.data._id) {
+        if (response.data.result) {
+          const user2 = {
+            id: response.data.result._id,
+            name: response.data.result.username,
+            role: response.data.result.role,
+            division: response.data.result.division,
+          };
+
           return user2;
         }
 

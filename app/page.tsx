@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ClientForm from "@/components/forms/ClientForm";
 import IdCheckForm from "@/components/forms/IdCheckForm";
 import { useSession } from "next-auth/react";
@@ -7,6 +7,10 @@ import { useSession } from "next-auth/react";
 export default function Home() {
   const [resiNumber, setResiNumber] = useState("");
   const { data } = useSession();
+
+  useEffect(() => {
+    console.log(data);
+  }, []);
 
   return (
     // Mantap albert
