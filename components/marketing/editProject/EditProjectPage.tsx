@@ -492,7 +492,7 @@ export default function EditProjectPage({
             {/* Right Card for Dropzone */}
 
             <Card
-              className={`overflow-y-auto min-h-[75vh] max-md:max-h-[520px] custom-scrollbar`}
+              className={`overflow-y-auto md:max-h-[25rem] custom-scrollbar`}
             >
               <div>
                 <CardHeader>
