@@ -114,7 +114,7 @@ const LoginForm: FC<LoginFormProps> = ({}) => {
   }
 
   return (
-    <Card className="w-[450px]">
+    <Card className="w-[450px] max-sm:w-[350px]">
       <CardHeader>
         <CardTitle className="text-xl">Log In</CardTitle>
         <CardDescription>To continue to Lab Karsa Buana</CardDescription>

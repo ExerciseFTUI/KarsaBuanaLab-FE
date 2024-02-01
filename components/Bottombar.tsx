@@ -5,6 +5,7 @@ import {
   samplingLinks,
   labLinks,
   pplhpLinks,
+  adminLinks,
 } from "@/constants/sidebarlinks";
 import Image from "next/image";
 import Link from "next/link";
@@ -30,6 +31,8 @@ function Bottombar() {
     ? samplingLinks
     : pathname.includes("lab")
     ? labLinks
+    : pathname.includes("admin")
+    ? adminLinks
     : pplhpLinks;
 
   return (
