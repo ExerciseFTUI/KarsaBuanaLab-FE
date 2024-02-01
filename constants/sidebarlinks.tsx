@@ -21,7 +21,7 @@ export interface ISidebarLinks {
 export const adminLinks: ISidebarLinks[] = [
   {
     icon: <AiFillHome />,
-    route: "",
+    route: "/admin",
     label: "Dashboard",
   },
   {
@@ -39,11 +39,11 @@ export const adminLinks: ISidebarLinks[] = [
     route: "/pplhp",
     label: "PPLHP Page",
   },
-  {
-    icon: <Mail />,
-    route: "/lab",
-    label: "Lab Page",
-  },
+  // {
+  //   icon: <Mail />,
+  //   route: "/lab",
+  //   label: "Lab Page",
+  // },
 ];
 
 export const marketingLink: ISidebarLinks[] = [

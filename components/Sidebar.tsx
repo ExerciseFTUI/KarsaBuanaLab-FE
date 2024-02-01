@@ -61,7 +61,8 @@ const Sidebar: FC<LeftSidebarProps> = ({}) => {
         {links.map((link) => {
           const isActive =
             (pathname.includes(link.route) && link.route.length > 1) ||
-            pathname === routeSection + link.route;
+            pathname === routeSection + link.route ||
+            pathname === link.route;
           //   if (link.route === "/profile") link.route = `/profile/${userId}`;
 
           return (

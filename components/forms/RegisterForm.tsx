@@ -116,9 +116,9 @@ const RegisterForm: FC<RegisterFormProps> = ({}) => {
   }
 
   return (
-    <Card className="w-[450px]">
+    <Card className="w-[450px] max-sm:w-[300px]">
       <CardHeader>
-        <CardTitle className="text-xl">Register</CardTitle>
+        <CardTitle className="text-xl">Add New User</CardTitle>
         <CardDescription>To join Lab Karsa Buana</CardDescription>
       </CardHeader>
       <CardContent>

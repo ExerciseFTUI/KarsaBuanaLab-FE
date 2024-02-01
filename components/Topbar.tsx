@@ -12,9 +12,16 @@ import {
   EnvelopeOpenIcon,
   LockOpen1Icon,
   LockClosedIcon,
+  PlusIcon,
+  PlusCircledIcon,
 } from "@radix-ui/react-icons";
+import { UserType } from "@/lib/type";
+import { DefaultSession } from "next-auth";
+import { Session } from "next-auth";
 
-interface TopbarProps {}
+interface TopbarProps {
+  data?: Session | null;
+}
 
 function extractPageName(pathname: string) {
   const parts = pathname.split("/").filter((part) => part !== "");
@@ -36,10 +43,10 @@ function extractPageName(pathname: string) {
   return final;
 }
 
-const Topbar: FC<TopbarProps> = ({}) => {
+const Topbar: FC<TopbarProps> = ({ data }) => {
   const pathname = extractPageName(usePathname());
 
-  const { data } = useSession();
+  const { data: session } = useSession();
 
   console.log(data);
 
@@ -68,6 +75,19 @@ const Topbar: FC<TopbarProps> = ({}) => {
         </p>
       </div>
       <div className="flex items-center gap-8">
+        {/* ===========================Admin Button */}
+
+        {/* <div className="">
+          {session?.user.role.toLowerCase() == "admin" &&
+            pathname.split(" / ")[0] !== "Admin" && (
+              <Link href="/admin">
+                <Button variant={"outline"}>
+                  <LockClosedIcon className="mr-2 h-4 w-4" /> Go to Admin Page
+                </Button>
+              </Link>
+            )}
+        </div> */}
+
         <div className="">
           {data?.user.role.toLowerCase() == "admin" &&
             pathname.split(" / ")[0] !== "Admin" && (
@@ -80,10 +100,22 @@ const Topbar: FC<TopbarProps> = ({}) => {
         </div>
 
         <div className="">
+          {pathname.split(" / ")[0] == "Admin" &&
+            pathname.split(" / ")[1] !== "Register" && (
+              <Link href="/admin/register">
+                <Button variant={"outline"}>
+                  <PlusIcon className="mr-2 h-4 w-4" /> Add New User
+                </Button>
+              </Link>
+            )}
+        </div>
+        {/* =========================== End Admin Button */}
+
+        <div className="">
           {pathname.split(" / ")[0] == "Sampling" && <DeadlineNotification />}
         </div>
 
-        <div className="">
+        <div className="max-md:hidden">
           <Avatar>
             <AvatarImage src="/assets/avatar2.png" />
             <AvatarFallback>RD</AvatarFallback>
