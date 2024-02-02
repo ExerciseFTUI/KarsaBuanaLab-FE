@@ -105,7 +105,7 @@ const LoginForm: FC<LoginFormProps> = ({}) => {
             description: "Welcome back",
           });
           const callbackUrl = query.get("callbackUrl");
-          router.push(callbackUrl || "/");
+          router.push(callbackUrl || "/admin");
         }
       })
       .finally(() => {

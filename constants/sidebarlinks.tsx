@@ -24,21 +24,21 @@ export const adminLinks: ISidebarLinks[] = [
     route: "/admin",
     label: "Dashboard",
   },
-  {
-    icon: <GiLoveLetter />,
-    route: "/marketing",
-    label: "Marketing Page",
-  },
-  {
-    icon: <GiPaper />,
-    route: "/sampling",
-    label: "Sampling Page",
-  },
-  {
-    icon: <BiSolidBox />,
-    route: "/pplhp",
-    label: "PPLHP Page",
-  },
+  // {
+  //   icon: <GiLoveLetter />,
+  //   route: "/marketing",
+  //   label: "Marketing Page",
+  // },
+  // {
+  //   icon: <GiPaper />,
+  //   route: "/sampling",
+  //   label: "Sampling Page",
+  // },
+  // {
+  //   icon: <BiSolidBox />,
+  //   route: "/pplhp",
+  //   label: "PPLHP Page",
+  // },
   // {
   //   icon: <Mail />,
   //   route: "/lab",
