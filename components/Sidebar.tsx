@@ -61,17 +61,12 @@ const Sidebar: FC<LeftSidebarProps> = ({}) => {
         {links.map((link) => {
           const isActive =
             (pathname.includes(link.route) && link.route.length > 1) ||
-            pathname === routeSection + link.route ||
-            pathname === link.route;
+            pathname === routeSection + link.route;
           //   if (link.route === "/profile") link.route = `/profile/${userId}`;
 
           return (
             <Link
-              href={
-                routeSection == "/admin"
-                  ? link.route
-                  : routeSection + link.route
-              }
+              href={routeSection + link.route}
               key={link.label}
               className={`relative hover:bg-light_green ease-in-out duration-300 flex justify-start items-center gap-4 rounded-lg p-4 ${
                 isActive && "bg-light_green"

@@ -215,9 +215,14 @@ const RegisterForm: FC<RegisterFormProps> = ({}) => {
                           ADMIN
                         </DropdownMenuItem>
                         <DropdownMenuItem
-                          onSelect={() => field.onChange("STAFF")}
+                          onSelect={() => field.onChange("SPV")}
                         >
-                          STAFF
+                          SUPERVISOR
+                        </DropdownMenuItem>
+                        <DropdownMenuItem
+                          onSelect={() => field.onChange("USER")}
+                        >
+                          STAFF / USER
                         </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
@@ -255,11 +260,11 @@ const RegisterForm: FC<RegisterFormProps> = ({}) => {
                         >
                           Sampling
                         </DropdownMenuItem>
-                        <DropdownMenuItem
+                        {/* <DropdownMenuItem
                           onSelect={() => field.onChange("Sampling Recipient")}
                         >
                           Sampling Recipient
-                        </DropdownMenuItem>
+                        </DropdownMenuItem> */}
                         <DropdownMenuItem
                           onSelect={() => field.onChange("PPLHP")}
                         >

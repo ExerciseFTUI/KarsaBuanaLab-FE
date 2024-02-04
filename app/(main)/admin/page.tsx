@@ -82,19 +82,19 @@ const dummyUsers: UserType[] = [
 
 export default async function AdminPage() {
   // const response = await getbyStatus("running");
-  const data = await getSessionServer();
+  // const data = await getSessionServer();
 
-  if (data && data.user.role.toLowerCase() !== "admin") {
-    {
-      data.user.division.toLowerCase() === "marketing"
-        ? redirect("/marketing")
-        : data.user.division.toLowerCase() === "sampling"
-        ? redirect("/sampling")
-        : data.user.division.toLowerCase() === "pplhp"
-        ? redirect("/pplhp")
-        : redirect("/lab");
-    }
-  }
+  // if (data && data.user.role.toLowerCase() !== "admin") {
+  //   {
+  //     data.user.division.toLowerCase() === "marketing"
+  //       ? redirect("/marketing")
+  //       : data.user.division.toLowerCase() === "sampling"
+  //       ? redirect("/sampling")
+  //       : data.user.division.toLowerCase() === "pplhp"
+  //       ? redirect("/pplhp")
+  //       : redirect("/lab");
+  //   }
+  // }
 
   return (
     <div className="w-full">

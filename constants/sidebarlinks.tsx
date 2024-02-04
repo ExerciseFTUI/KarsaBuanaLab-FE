@@ -1,11 +1,18 @@
 import { HiChartBar } from "react-icons/hi";
 import { LiaRunningSolid } from "react-icons/lia";
-import { AiFillHome, AiOutlineCheckCircle } from "react-icons/ai";
+import {
+  AiFillHome,
+  AiOutlineCheckCircle,
+  AiOutlineGooglePlus,
+  AiOutlinePlus,
+  AiOutlinePlusCircle,
+  AiOutlinePlusSquare,
+} from "react-icons/ai";
 import { MdOutlineCancel } from "react-icons/md";
 import { FaRunning } from "react-icons/fa";
 import { ReactNode } from "react";
 import { GiLoveLetter, GiPaper } from "react-icons/gi";
-import { LetterCaseCapitalizeIcon } from "@radix-ui/react-icons";
+import { LetterCaseCapitalizeIcon, PlusIcon } from "@radix-ui/react-icons";
 import { Archive, Mail } from "lucide-react";
 import { BsFileText } from "react-icons/bs";
 import { BiSolidBox } from "react-icons/bi";
@@ -21,14 +28,14 @@ export interface ISidebarLinks {
 export const adminLinks: ISidebarLinks[] = [
   {
     icon: <AiFillHome />,
-    route: "/admin",
+    route: "",
     label: "Dashboard",
   },
-  // {
-  //   icon: <GiLoveLetter />,
-  //   route: "/marketing",
-  //   label: "Marketing Page",
-  // },
+  {
+    icon: <AiOutlinePlusCircle />,
+    route: "/register",
+    label: "Register",
+  },
   // {
   //   icon: <GiPaper />,
   //   route: "/sampling",
