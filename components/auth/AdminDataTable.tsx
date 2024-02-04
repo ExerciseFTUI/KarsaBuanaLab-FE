@@ -111,7 +111,7 @@ export function AdminDataTable({ datas }: AdminDataTableProps) {
       <div className="flex items-center py-4">
         {/* Seach Input */}
         <Input
-          placeholder="Filter By Project Title"
+          placeholder="Filter By Name"
           value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
             table.getColumn("name")?.setFilterValue(event.target.value)
