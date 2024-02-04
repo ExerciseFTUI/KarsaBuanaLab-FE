@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import IdCheckForm from "../forms/IdCheckForm";
 import ClientCard from "./ClientCard";
@@ -10,6 +10,10 @@ export default function Client() {
   const [clientData, setClientData] = useState();
 
   const { data } = useSession();
+
+  useEffect(() => {
+    console.log(data);
+  }, []);
 
   return (
     <>

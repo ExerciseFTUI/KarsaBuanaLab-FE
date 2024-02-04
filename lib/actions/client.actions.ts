@@ -60,6 +60,7 @@ export const getAnalysisById = async (projectId: string): Promise<any> => {
     return null as unknown;
   }
 };
+
 export const getReportById = async (projectId: string): Promise<any> => {
   try {
     const response = await axios.get(

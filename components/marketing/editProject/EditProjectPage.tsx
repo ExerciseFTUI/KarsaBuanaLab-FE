@@ -5,7 +5,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import SamplingTab from "@/components/marketing/createProject/SamplingTab";
 import Dropzone from "@/components/Dropzone";
 import { useEffect, useState } from "react";
-import { MdOpenInNew } from "react-icons/md";
+import { MdOpenInNew, MdRestoreFromTrash } from "react-icons/md";
+import { ReloadIcon, TrashIcon } from "@radix-ui/react-icons";
 import {
   FieldValues,
   SubmitHandler,
@@ -37,7 +38,14 @@ import { set } from "date-fns";
 import { BaseSample } from "@/lib/models/baseSample.model";
 import LoadingScreen from "@/components/LoadingComp";
 import { Textarea } from "@/components/ui/textarea";
-import { updateProjectFile } from "@/lib/actions/marketing.client.actions";
+import {
+  deleteProjectFile,
+  updateProjectFile,
+} from "@/lib/actions/marketing.client.actions";
+import { Button } from "@/components/ui/button";
+import DeleteDialog from "@/components/DeleteDialog";
+import { AlertDialog } from "@/components/ui/alert-dialog";
+import { AlertDialogTrigger } from "@radix-ui/react-alert-dialog";
 
 interface EditProjectPageProps {
   project: Project;
@@ -263,7 +271,7 @@ export default function EditProjectPage({
         router.push("/marketing/cancelled");
       }
     } catch (error: any) {
-      const errorMsg = error?.response?.data?.message || error;
+      const errorMsg = error?.response?.data?.message || error.message;
       toast({
         title: "Oops, Failed!",
         description: errorMsg,
@@ -289,7 +297,7 @@ export default function EditProjectPage({
         status: "CANCELLED",
       };
       console.log("desc failed : ", body);
-  
+
       //Connect to API
       const responseInfo = await updateProjectInfo(body);
       if (!responseInfo) {
@@ -297,17 +305,16 @@ export default function EditProjectPage({
           title: "Oops, Failed!",
           description: "Failed to cancel the project, please try again",
         });
-  
+
         return;
       }
-  
+
       toast({
         title: "Project success cancelled!",
         description: "The project has been cancelled",
       });
-  
+
       router.push("/marketing/cancelled");
-      
     } catch (error: any) {
       const errorMsg = error?.response?.data?.message || error;
       toast({
@@ -331,7 +338,7 @@ export default function EditProjectPage({
         _id: project._id,
         is_paid: values.is_paid,
       };
-  
+
       //Connect to API
       const responseInfo = await updateProjectInfo(body);
       if (!responseInfo) {
@@ -339,13 +346,11 @@ export default function EditProjectPage({
           title: "Oops, Failed!",
           description: "Failed to update payment",
         });
-  
+
         return;
       }
 
       console.log("Success updated");
-      
-      
     } catch (error: any) {
       const errorMsg = error?.response?.data?.message || error;
       toast({
@@ -368,6 +373,8 @@ export default function EditProjectPage({
 
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [isCancelled, setIsCancelled] = useState(false);
+  const [fileIdToDelete, setFileIdToDelete] = useState("");
+  const [dialogOpen, setDialogOpen] = useState(false);
 
   const handleSubmitDocs = () => {
     // Log the uploaded files to the console
@@ -389,8 +396,24 @@ export default function EditProjectPage({
     }
   };
 
-  // TODO: Change this arrays use the uploaded files from API
-  const buttonNames = ["Surat Pemerintah", "Super Semar 212"];
+  const handleDeleteFile = async (id: string, file_id: string) => {
+    const response = await deleteProjectFile(id, file_id);
+    if (response) {
+      //send toast
+      toast({
+        title: "Success",
+        description: "File deleted successfully",
+      });
+      router.refresh();
+    } else {
+      //send toast
+      toast({
+        title: "Failed",
+        description: "File failed to delete",
+        variant: "destructive",
+      });
+    }
+  };
 
   //=============================== End Document Section
 
@@ -445,7 +468,7 @@ export default function EditProjectPage({
           note="Gakuat bayar jasa kita"
           updatePayment={updatePayment}
         />
-        <Tabs defaultValue="sampling" className="w-[40rem] max-sm:w-[420px]">
+        <Tabs defaultValue="sampling" className="w-[40rem] max-sm:w-[420px] ">
           <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger value="sampling">Sampling</TabsTrigger>
             <TabsTrigger value="document">Document</TabsTrigger>
@@ -469,7 +492,7 @@ export default function EditProjectPage({
             {/* Right Card for Dropzone */}
 
             <Card
-              className={`overflow-y-auto md:max-h-[25rem] max-h-[90vh] custom-scrollbar`}
+              className={`overflow-y-auto md:max-h-[25rem] custom-scrollbar`}
             >
               <div>
                 <CardHeader>
@@ -481,16 +504,22 @@ export default function EditProjectPage({
                 {/* Based spreadsheet files */}
                 <div className="mx-5">
                   <h1 className=" font-semibold mb-2 "> Based Files </h1>
+                  {project.lab_file.length === 0 && (
+                    <p className=" text-sm flex flex-row justify-center py-3">
+                      Lab File Not Found
+                    </p>
+                  )}
                   <div className=" grid grid-cols-2 gap-4 justify-center items-center">
                     {project.lab_file.map((file, index) => (
                       <a
                         key={index + file._id}
                         href={`https://drive.google.com/file/d/${file.file_id}/edit`}
-                        className="bg-light_green items-center justify-between rounded-lg px-5 py-3 hover:bg-dark_green hover:text-white font-medium flex"
+                        className="bg-light_green items-center justify-between rounded-lg px-5 py-3 hover:bg-dark_green hover:text-white font-medium flex delay-150"
                         target="_blank"
                         rel="noopener noreferrer"
                       >
-                        {file.file_name} <MdOpenInNew />
+                        {file.file_name}
+                        <MdOpenInNew />
                       </a>
                     ))}
                     {/* <a
@@ -518,17 +547,45 @@ export default function EditProjectPage({
                 {/* Uploaded files */}
                 <div className="mx-5 mt-5">
                   <h1 className="font-semibold mb-2">Another Files</h1>
+                  {project.file.length === 0 && (
+                    <p className=" text-sm flex flex-row justify-center py-3">
+                      File Not Found
+                    </p>
+                  )}
                   <div className="grid grid-cols-2 gap-4 justify-center items-center">
                     {project.file.map((file, index) => (
-                      <a
-                        key={index + file._id}
-                        href={`https://drive.google.com/file/d/${file.file_id}/view`}
-                        className="bg-light_green items-center justify-between rounded-lg px-5 py-3 hover:bg-dark_green hover:text-white font-medium flex"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        {file.file_name} <MdOpenInNew />
-                      </a>
+                      // <a
+                      //   key={index + file._id}
+                      //   href={`https://drive.google.com/file/d/${file.file_id}/view`}
+                      //   className="bg-light_green items-center justify-between rounded-lg px-5 py-3 hover:bg-dark_green hover:text-white font-medium flex"
+                      //   target="_blank"
+                      //   rel="noopener noreferrer"
+                      // >
+                      //   {file.file_name} <MdOpenInNew />
+                      // </a>
+                      <div className="bg-light_green items-center justify-between rounded-lg px-5 py-3 hover:bg-dark_green hover:text-white font-medium flex delay-150">
+                        <a
+                          key={index + file._id}
+                          href={`https://drive.google.com/file/d/${file.file_id}/view`}
+                          className="w-full mr-4"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          {file.file_name}
+                        </a>
+
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="delay-150"
+                          onClick={() => {
+                            setDialogOpen(true);
+                            setFileIdToDelete(file._id);
+                          }}
+                        >
+                          <TrashIcon className="h-5 w-5 " />
+                        </Button>
+                      </div>
                     ))}
                   </div>
                 </div>
@@ -588,6 +645,12 @@ export default function EditProjectPage({
           {/* End Document Section */}
         </Tabs>
       </div>
+      <DeleteDialog
+        setIsOpen={setDialogOpen}
+        isOpen={dialogOpen}
+        deleteFunction={() => handleDeleteFile(project._id, fileIdToDelete)}
+        description="This action cannot be undone. This will be permanently delete your file "
+      />
     </>
   );
 }

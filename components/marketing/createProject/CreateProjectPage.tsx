@@ -176,15 +176,20 @@ const CreateProjectPage: FC<CreateProjectProps> = ({ baseSamples }) => {
         };
 
         const response = await createProjectJson(body);
-        
+
         if (!response) {
           toast({
             title: "Failed to create project",
             description: "please resubmit the form",
           });
           setIsLoading(false);
-          return
+          return;
         }
+
+        toast({
+          title: "Create Project Success",
+          description: "Continue to upload document please wait...",
+        });
 
         if (uploadedFiles.length > 0 && response?._id) {
           const fileResponse = await updateProjectFile(
@@ -212,8 +217,12 @@ const CreateProjectPage: FC<CreateProjectProps> = ({ baseSamples }) => {
           description: "Please add at least one sample",
         });
       }
-    } catch (error) {
-      console.error("Error creating project:", error);
+    } catch (error: any) {
+      toast({
+        title: "Oops, Create project failed!",
+        description: "Please Try Again Later",
+      });
+      console.error("Error creating project:", error.message);
     } finally {
       setIsLoading(false); // Set loading to false after API call is finished
     }
