@@ -15,6 +15,7 @@ import {
   adminLinks,
 } from "@/constants/sidebarlinks";
 import { signOut } from "next-auth/react";
+import DeleteDialog from "./DeleteDialog";
 
 function extractFirstPathSegment(path: string) {
   // Remove leading and trailing slashes and split the path by "/"
@@ -29,6 +30,9 @@ const Sidebar: FC<LeftSidebarProps> = ({}) => {
   const router = useRouter();
   const pathname = usePathname();
   const routeSection = "/" + extractFirstPathSegment(pathname);
+  const [showDeleteDialog, setShowDeleteDialog] =
+    React.useState<boolean>(false);
+
   //   const { userId } = useAuth();
 
   const links = pathname.includes("marketing")
@@ -102,7 +106,7 @@ const Sidebar: FC<LeftSidebarProps> = ({}) => {
       <div className="mt-10 px-2">
         <div
           className="flex gap-3 cursor-pointer p-4 items-center rounded-lg hover:bg-[#C2C5AA] "
-          onClick={() => signOut()}
+          onClick={() => setShowDeleteDialog(true)}
         >
           {/* <Image
                 src={"assets/logout.svg"}
@@ -115,6 +119,12 @@ const Sidebar: FC<LeftSidebarProps> = ({}) => {
           <p className="text-sm text-moss_green max-lg:hidden">Log Out</p>
         </div>
       </div>
+      <DeleteDialog
+        isOpen={showDeleteDialog}
+        setIsOpen={setShowDeleteDialog}
+        deleteFunction={() => signOut()}
+        description="You will be logged out of the system and redirected to the login page. Are you sure you want to continue?"
+      />
     </section>
   );
 };

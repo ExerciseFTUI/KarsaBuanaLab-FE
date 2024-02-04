@@ -41,7 +41,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "./../ui/select";
+} from "../ui/select";
 import {
   ChevronLeftIcon,
   ChevronRightIcon,
@@ -50,8 +50,8 @@ import {
 } from "@radix-ui/react-icons";
 import { ProjectMarketingType, ProjectType, UserType } from "@/lib/type";
 import { Project } from "@/lib/models/project.model";
-import { adminColumns, columns } from "./../columns";
-import { columnsCancelled } from "./../columns";
+import { adminColumns, columns } from "../columns";
+import { columnsCancelled } from "../columns";
 import Link from "next/link";
 
 // interface AdminDataTableProps<TData, TValue> {

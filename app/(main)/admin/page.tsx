@@ -1,4 +1,4 @@
-import { AdminDataTable } from "@/components/admin/AdminDataTable";
+import { AdminDataTable } from "@/components/auth/AdminDataTable";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import getSessionServer from "@/lib/actions/getSessionServer";
