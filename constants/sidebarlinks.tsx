@@ -10,7 +10,7 @@ import { Archive, Mail } from "lucide-react"
 import { BsFileText } from "react-icons/bs"
 import { BiSolidBox } from "react-icons/bi"
 import { FiFileText } from "react-icons/fi"
-import { FiArchive } from "react-icons/fi";
+import { FiArchive } from "react-icons/fi"
 
 export interface ISidebarLinks {
   route: string
@@ -46,7 +46,7 @@ export const marketingLink: ISidebarLinks[] = [
   },
 ]
 
-export const samplingLinks: ISidebarLinks[] = [
+export const samplingSPVLinks: ISidebarLinks[] = [
   {
     icon: <AiFillHome />,
     route: "/project",
@@ -63,6 +63,8 @@ export const samplingLinks: ISidebarLinks[] = [
     label: "Sample",
   },
 ]
+
+export const samplingUSERLinks: ISidebarLinks[] = [samplingSPVLinks[1]]
 
 export const pplhpLinks: ISidebarLinks[] = [
   {
