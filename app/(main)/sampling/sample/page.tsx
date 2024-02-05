@@ -12,7 +12,10 @@ export default async function SamplingProject() {
   if (role == "STAFF") res = await getSampleByAccount("2023", "2")
   else res = await getProjectByDivision("sampling")
 
-  let data: Project[] = res && res.result ? res.result : []
+  let data: Project[] =
+    res && (res as any).projects ? (res as any).projects : []
+
+  data = data.filter((p) => p.jadwal_sampling != null)
 
   return (
     <div className="flex flex-col w-full ">
