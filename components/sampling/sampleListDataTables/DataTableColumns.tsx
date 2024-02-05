@@ -104,14 +104,9 @@ export const groupUserSelectableColumns: ColumnDef<User>[] = [
     ),
   },
   {
-    accessorKey: "division",
+    accessorKey: "role",
     header: "Role",
-    cell: ({ row }) => <div className="">{row.getValue("division")}</div>,
-  },
-  {
-    accessorKey: "phone",
-    header: "Phone",
-    cell: ({ row }) => <div className="">{row.getValue("phone")}</div>,
+    cell: ({ row }) => <div className="">{row.getValue("role")}</div>,
   },
 ]
 
