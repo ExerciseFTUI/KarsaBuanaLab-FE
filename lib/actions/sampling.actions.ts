@@ -65,16 +65,19 @@ export const getLinkFiles = async (
   }
 }
 
-export const getSampleByAccount = async (
-  year: string,
+export const getProjectsByAcc = async (
   accountId: string
 ): Promise<BaseApiResponse<[Project]>> => {
   try {
-    const response = await axios.get(`${apiBaseUrl}/sampling/sample/${year}`, {
-      data: {
-        accountId: accountId,
-      },
-    })
+    const response = await axios.get(
+      `${apiBaseUrl}/projects/get-project-by-acc`,
+      {
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        data: {
+          accountId: accountId,
+        },
+      }
+    )
 
     return response.data as BaseApiResponse<[Project]>
   } catch (error: any) {

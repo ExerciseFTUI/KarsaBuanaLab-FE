@@ -13,8 +13,6 @@ export default async function SamplingProject({
   const resFiles = await getLinkFiles(params.id)
   const resUser = await getAllUser("USER")
 
-  console.log(resUser.result)
-
   let samplingUser: User[] = []
 
   if (resProject.result.project_assigned_to.length)
