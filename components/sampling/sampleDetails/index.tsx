@@ -15,9 +15,7 @@ export default function Project({ data }: { data: SamplingRequestData }) {
 
   const currentUser = useSession().data?.user
 
-  console.log(currentUser)
-
-  const role = currentUser?.name
+  const role = currentUser?.role.toUpperCase()
 
   if (data == null)
     return (
