@@ -22,9 +22,10 @@ export interface Project {
   created_year: string
   sampling_list: Sampling[]
   file: File[]
+  lab_file: File[]
   created_at: string
-  jadwal_sampling: string
-  project_assigned_to: User[]
+  jadwal_sampling: { from: Date; to: Date }
+  project_assigned_to: string[]
   _id: string
   __v: number
 }
