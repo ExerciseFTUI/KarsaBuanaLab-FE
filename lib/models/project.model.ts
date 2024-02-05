@@ -23,7 +23,6 @@ export interface Project {
   sampling_list: Sampling[]
   file: File[]
   lab_file: File[]
-  lab_file: File[]
   created_at: string
   jadwal_sampling: { from: Date; to: Date }
   project_assigned_to: string[]
