@@ -63,7 +63,7 @@ export function DeadlineNotification() {
                 <span className="font-bold">
                   {Math.round(
                     (j.jadwal_sampling.getTime() - new Date().getTime()) /
-                      (1000 * 3600 * 24)
+                      (24 * 365 * 3600)
                   )}
                 </span>{" "}
                 days left.
