@@ -24,6 +24,7 @@ export type ProjectMarketingType = {
   created_at: string
   status: string
   valuasi_proyek: number
+  desc_failed: string
 }
 
 export type BaseSampleType = {
@@ -48,7 +49,7 @@ export type UserType = {
   username: string
   email: string
   password: string
-  phone: string
+  // phone: string
   role: string
   division: string
 }

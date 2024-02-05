@@ -59,11 +59,8 @@ interface PPLHPDataTableProps {
 const PPLHPDataTable: FC<PPLHPDataTableProps> = ({ data }) => {
   const router = useRouter();
   const [sorting, setSorting] = useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(
-    []
-  );
-  const [columnVisibility, setColumnVisibility] =
-    useState<VisibilityState>({});
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({ _id: false });
   const [rowSelection, setRowSelection] = useState({});
 
   const table = useReactTable({
@@ -75,6 +72,7 @@ const PPLHPDataTable: FC<PPLHPDataTableProps> = ({ data }) => {
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
+    // HERE
     onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: setRowSelection,
     state: {
@@ -91,11 +89,13 @@ const PPLHPDataTable: FC<PPLHPDataTableProps> = ({ data }) => {
         <BiFilterAlt className="text-xl translate-x-8" />
         <Input
           placeholder="Filter Projects On LHP Draft"
-          value={(table.getColumn("project_name")?.getFilterValue() as string) ?? ""}
+          value={
+            (table.getColumn("project_name")?.getFilterValue() as string) ?? ""
+          }
           onChange={(event) =>
             table.getColumn("project_name")?.setFilterValue(event.target.value)
           }
-          className="max-w-sm pl-10"
+          className="max-w-sm bg-pastel_moss_green pl-10"
         />
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -109,29 +109,39 @@ const PPLHPDataTable: FC<PPLHPDataTableProps> = ({ data }) => {
               .filter((column) => column.getCanHide())
               .map((column) => {
                 return (
-                  <DropdownMenuCheckboxItem
-                    key={column.id}
-                    className="capitalize"
-                    checked={column.getIsVisible()}
-                    onCheckedChange={(value) =>
-                      column.toggleVisibility(!!value)
-                    }
-                  >
-                    {column.id}
-                  </DropdownMenuCheckboxItem>
+                  (column.id !== "_id" &&
+                    <DropdownMenuCheckboxItem
+                      key={column.id}
+                      className="capitalize"
+                      checked={column.getIsVisible()}
+                      onCheckedChange={(value) =>
+                        column.toggleVisibility(!!value)
+                      }
+                    >
+                      {column.id}
+                    </DropdownMenuCheckboxItem>
+                  )
                 );
               })}
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
       <div className=" text-moss_green">
-        <Table className="italic font-dm-sans">
+        <Table className="font-dm-sans">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow className="italic" key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
+                {headerGroup.headers.map((header, index) => {
+                  let className =
+                    "text-center text-ghost_white italic bg-moss_green p-2";
+                  if (index === 0) {
+                    className += " rounded-l-full"; // Add rounded corners to the left side
+                  }
+                  if (index === headerGroup.headers.length - 1) {
+                    className += " rounded-r-full"; // Add rounded corners to the right side
+                  }
                   return (
-                    <TableHead key={header.id} className="text-moss_green">
+                    <TableHead key={header.id} className={className}>
                       {header.isPlaceholder
                         ? null
                         : flexRender(
@@ -148,12 +158,10 @@ const PPLHPDataTable: FC<PPLHPDataTableProps> = ({ data }) => {
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
-                  className="hover:bg-light_green ease-in-out duration-500 text-xs hover:cursor-pointer hover:rounded-xl"
+                  className="hover:bg-pastel_moss_green ease-in-out duration-500 text-xs hover:cursor-pointer hover:rounded-xl text-center"
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
-                  onClick={() =>
-                    router.push("lhpdraft/" + row.getValue("_id"))
-                  }
+                  onClick={() => router.push("lhpdraft/" + row.getValue("_id"))}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id} className="py-4">
@@ -249,6 +257,6 @@ const PPLHPDataTable: FC<PPLHPDataTableProps> = ({ data }) => {
       </div>
     </div>
   );
-}
+};
 
 export default PPLHPDataTable;

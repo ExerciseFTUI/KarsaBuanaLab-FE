@@ -55,7 +55,7 @@ const EditProjectForm: FC<EditProjectFormProps> = ({ form }) => {
   // });
 
   async function onSubmit(values: z.infer<typeof createProjectValidation>) {
-    console.log(values);
+    // console.log(values);
   }
 
   return (

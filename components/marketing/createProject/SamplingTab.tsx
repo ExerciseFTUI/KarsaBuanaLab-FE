@@ -98,7 +98,7 @@ const SamplingTab: FC<SamplingTabProps> = ({
 
   return (
     <>
-      <Card className="overflow-y-auto max-h-[90vh] custom-scrollbar">
+      <Card className="overflow-y-auto max-h-[90vh]  md:max-h-[25rem] custom-scrollbar">
         <CardHeader>
           <CardTitle>Sampling</CardTitle>
           <CardDescription>
@@ -128,6 +128,7 @@ const SamplingTab: FC<SamplingTabProps> = ({
                   index={index}
                   deleteSample={() => deleteSample(index)}
                   update={update}
+                  baseSamples={baseSamples}
                 />
               ))}
             </>
@@ -146,6 +147,7 @@ const SamplingTab: FC<SamplingTabProps> = ({
         form={form}
         onSubmit={onSubmit}
         baseSamples={baseSamples}
+        change={false}
       />
     </>
   );

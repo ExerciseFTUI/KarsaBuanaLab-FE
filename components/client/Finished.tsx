@@ -7,9 +7,9 @@ interface FinishedProps {
 }
 
 const Finished: FC<FinishedProps> = () => {
-    const [isPaid, setIsPaid] = useState(true);
+    const [is_paid, setIs_paid] = useState(true);
 
-    const paymentStatus = isPaid ? "Sudah Terbayar" : "Belum Bayar";
+    const paymentStatus = is_paid ? "Sudah Terbayar" : "Belum Bayar";
 
     return (
         <section className="mt-4 m-10">
@@ -19,7 +19,7 @@ const Finished: FC<FinishedProps> = () => {
                 <p>Status pembayaran:</p> 
                 <p className="font-bold">{paymentStatus}</p>
             </div>
-            <SurveyForm isPaid={isPaid}/>
+            <SurveyForm is_paid={is_paid}/>
             <div className="mt-2">
                 <p className="m-2 text-charcoal_green italic">Klik Tombol Refresh untuk perbarui status Pembayaran</p>
             </div>

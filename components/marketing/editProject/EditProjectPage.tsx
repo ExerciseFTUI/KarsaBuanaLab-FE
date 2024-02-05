@@ -5,7 +5,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import SamplingTab from "@/components/marketing/createProject/SamplingTab";
 import Dropzone from "@/components/Dropzone";
 import { useEffect, useState } from "react";
-import { MdOpenInNew } from "react-icons/md";
+import { MdOpenInNew, MdRestoreFromTrash } from "react-icons/md";
+import { ReloadIcon, TrashIcon } from "@radix-ui/react-icons";
 import {
   FieldValues,
   SubmitHandler,
@@ -27,18 +28,42 @@ import EditProjectForm from "./EditProjectForm";
 import ProjectForm from "../forms/ProjectForm";
 import { Project } from "@/lib/models/project.model";
 import { useToast } from "@/components/ui/use-toast";
-import { updateProject } from "@/lib/actions/marketing.actions";
+import {
+  updateProject,
+  updateProjectInfo,
+  updateProjectSample,
+} from "@/lib/actions/marketing.actions";
 import { useRouter } from "next/navigation";
+import { set } from "date-fns";
+import { BaseSample } from "@/lib/models/baseSample.model";
+import LoadingScreen from "@/components/LoadingComp";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  deleteProjectFile,
+  updateProjectFile,
+} from "@/lib/actions/marketing.client.actions";
+import { Button } from "@/components/ui/button";
+import DeleteDialog from "@/components/DeleteDialog";
+import { AlertDialog } from "@/components/ui/alert-dialog";
+import { AlertDialogTrigger } from "@radix-ui/react-alert-dialog";
 
 interface EditProjectPageProps {
   project: Project;
+  baseSamples: BaseSample[];
+  status?: string;
 }
 
-export default function EditProjectPage({ project }: EditProjectPageProps) {
+export default function EditProjectPage({
+  project,
+  baseSamples,
+  status,
+}: EditProjectPageProps) {
   //General
   const { toast } = useToast();
 
   const router = useRouter();
+
+  const [isLoading, setIsLoading] = useState(false);
 
   //=============================== Sample Section
   const [openModal, setOpenModal] = useState(false);
@@ -47,7 +72,7 @@ export default function EditProjectPage({ project }: EditProjectPageProps) {
     defaultValues: {
       sampling: "",
       regulation: "",
-      parameters: [""],
+      parameters: [],
     },
   });
 
@@ -61,6 +86,9 @@ export default function EditProjectPage({ project }: EditProjectPageProps) {
   //All the samples get save in here
   const { fields: samples, append, remove } = arrayField;
 
+  //Checker
+  const [change, setChange] = useState(false);
+
   //Append all the samples from API to the samples array
   if (project.sampling_list && project.sampling_list.length > samples.length) {
     const newSamples = project.sampling_list.map((sample) => {
@@ -70,23 +98,24 @@ export default function EditProjectPage({ project }: EditProjectPageProps) {
         regulation: sample.regulation_name[0]?.regulation_name
           ? sample.regulation_name[0].regulation_name
           : "Empty",
-        parameters: sample.regulation_name[0]?.regulation_name
-          ? sample.regulation_name[0].default_param
-          : [""],
+        parameters: sample.param ? sample.param : [""],
+        // parameters: sample.regulation_name[0]?.regulation_name
+        //   ? sample.regulation_name[0].default_param
+        //   : [""],
         // parameters: sample.regulation_name[0]?.param
         //   ? sample.regulation_name[0].param
         //   : [""],
       };
     });
 
-    append(newSamples);
-    console.log(newSamples);
+    if (!change) {
+      setChange(true);
+      append(newSamples);
+    }
   }
 
   //Add to the samples array
   const onSubmitSample: SubmitHandler<FieldValues> = async (data) => {
-    console.log(data.parameters);
-
     //Handle Missing Data
     if (
       data.sampling === "" ||
@@ -126,8 +155,10 @@ export default function EditProjectPage({ project }: EditProjectPageProps) {
       title: "Successfully adding new sample",
       description: "Good Job",
     });
-  };
 
+    //Checker
+    setChange(true);
+  };
   //================================= End Sample Section
 
   //================================= Project Information Section
@@ -144,28 +175,197 @@ export default function EditProjectPage({ project }: EditProjectPageProps) {
       numPenawaran: project.no_penawaran || "",
       numRevisi: project.jumlah_revisi || 0,
       valuasiProject: project.valuasi_proyek || "0",
+      is_paid: project.is_paid || false,
+      desc_failed: project.desc_failed || "",
+      status: project.status || "",
     },
   });
 
-  async function onSubmit(values: z.infer<typeof createProjectValidation>) {
-    const body = {
-      _id: project._id,
-      project_name: values.title,
-      client_name: values.custName,
-      alamat_kantor: values.alamatKantor,
-      alamat_sampling: values.alamatSampling,
-      surel: values.surel,
-      contact_person: values.contactPerson,
-      no_penawaran: values.numPenawaran,
-      jumlah_revisi: values.numRevisi,
-      valuasi_proyek: values.valuasiProject
-    };
-    
-    //Edit Project Function
-    const response = await updateProject(body, uploadedFiles);
-    alert("Project Updated");
-    router.push("/marketing/running");
+  async function onSubmit2(values: z.infer<typeof createProjectValidation>) {
+    try {
+      setIsLoading(true); // Set loading to true before making API calls
+
+      const body = {
+        _id: project._id,
+        project_name: values.title,
+        client_name: values.custName,
+        alamat_kantor: values.alamatKantor,
+        alamat_sampling: values.alamatSampling,
+        surel: values.surel,
+        contact_person: values.contactPerson,
+        no_penawaran: values.numPenawaran,
+        jumlah_revisi: values.numRevisi,
+        valuasi_proyek: values.valuasiProject,
+        desc_failed: values.desc_failed,
+      };
+
+      // // Check if all properties same exclude the is_paid will increase jumlahRevisi
+      // const propertiesMatch = Object.keys(body).every(
+      //   (key) => key === 'is_paid' || key === 'status' || body[key] as any  === project[key]
+      // );
+
+      // if (propertiesMatch) {
+      //   body.jumlah_revisi? body.jumlah_revisi -= 1 : body.jumlah_revisi
+      // }
+
+      // Edit Project Function
+      const responseInfo = await updateProjectInfo(body);
+
+      if (!responseInfo) {
+        toast({
+          title: "Oops, Failed!",
+          description: "Failed Updating Project Info",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      if (samples.length > 0) {
+        const samplingBody = samples.map((sample) => {
+          return {
+            //@ts-ignore
+            sample_name: sample.sampleName,
+            //@ts-ignore
+            regulation_name: sample.regulation,
+            //@ts-ignore
+            param: sample.parameters,
+          };
+        });
+
+        const responseSampling = await updateProjectSample(
+          samplingBody,
+          project._id
+        );
+
+        if (!responseSampling) {
+          toast({
+            title: "Ooops, Failed!",
+            description: "Failed Updating Project Samples",
+            variant: "destructive",
+          });
+          router.refresh();
+          return;
+        }
+      }
+
+      if (uploadedFiles.length > 0) {
+        // Perform file upload logic here if needed
+        const responseFile = await updateProjectFile(
+          project._id,
+          uploadedFiles
+        );
+        router.refresh();
+      }
+
+      //Display Toast
+      toast({
+        title: "Successfully updating the project",
+        description: "Good Job",
+      });
+
+      if (status === "RUNNING") {
+        router.push("/marketing/running");
+      } else if (status === "FINISHED") {
+        router.push("/marketing/finished");
+      } else if (status === "CANCELLED") {
+        router.push("/marketing/cancelled");
+      }
+    } catch (error: any) {
+      const errorMsg = error?.response?.data?.message || error.message;
+      toast({
+        title: "Oops, Failed!",
+        description: errorMsg,
+        variant: "destructive",
+      });
+      console.error("Error from backend", errorMsg);
+      console.error("Error during project update:", errorMsg);
+    } finally {
+      setIsLoading(false); // Set loading to false after API calls are finished
+    }
   }
+
+  // =============== Action to update reason why project cancelled =================================== //
+  const [reason, setReason] = useState("");
+
+  async function handleCancelledProject(
+    values: z.infer<typeof createProjectValidation>
+  ) {
+    try {
+      const body = {
+        _id: project._id,
+        desc_failed: reason,
+        status: "CANCELLED",
+      };
+      console.log("desc failed : ", body);
+
+      //Connect to API
+      const responseInfo = await updateProjectInfo(body);
+      if (!responseInfo) {
+        toast({
+          title: "Oops, Failed!",
+          description: "Failed to cancel the project, please try again",
+        });
+
+        return;
+      }
+
+      toast({
+        title: "Project success cancelled!",
+        description: "The project has been cancelled",
+      });
+
+      router.push("/marketing/cancelled");
+    } catch (error: any) {
+      const errorMsg = error?.response?.data?.message || error;
+      toast({
+        title: "Oops, Failed!",
+        description: errorMsg,
+        variant: "destructive",
+      });
+      console.error("Error from backend", errorMsg);
+      console.error("Error during project update:", errorMsg);
+    }
+  }
+  // =============== End of Action to update reason why project cancelled =================================== //
+
+  // ========================= Action to update status payment ============================================== //
+
+  async function updatePayment(
+    values: z.infer<typeof createProjectValidation>
+  ) {
+    try {
+      const body = {
+        _id: project._id,
+        is_paid: values.is_paid,
+      };
+
+      //Connect to API
+      const responseInfo = await updateProjectInfo(body);
+      if (!responseInfo) {
+        toast({
+          title: "Oops, Failed!",
+          description: "Failed to update payment",
+        });
+
+        return;
+      }
+
+      console.log("Success updated");
+    } catch (error: any) {
+      const errorMsg = error?.response?.data?.message || error;
+      toast({
+        title: "Oops, Failed!",
+        description: errorMsg,
+        variant: "destructive",
+      });
+      console.error("Error from backend", errorMsg);
+      console.error("Error during project update:", errorMsg);
+    } finally {
+      router.refresh();
+    }
+  }
+
+  // ========================= End of Action to update status payment ============================================== //
 
   //================================= End Project Information Section
 
@@ -173,7 +373,8 @@ export default function EditProjectPage({ project }: EditProjectPageProps) {
 
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [isCancelled, setIsCancelled] = useState(false);
-  const [reason, setReason] = useState('');
+  const [fileIdToDelete, setFileIdToDelete] = useState("");
+  const [dialogOpen, setDialogOpen] = useState(false);
 
   const handleSubmitDocs = () => {
     // Log the uploaded files to the console
@@ -195,14 +396,30 @@ export default function EditProjectPage({ project }: EditProjectPageProps) {
     }
   };
 
-  // TODO: Change this arrays use the uploaded files from API
-  const buttonNames = ["Surat Pemerintah", "Super Semar 212"];
+  const handleDeleteFile = async (id: string, file_id: string) => {
+    const response = await deleteProjectFile(id, file_id);
+    if (response) {
+      //send toast
+      toast({
+        title: "Success",
+        description: "File deleted successfully",
+      });
+      router.refresh();
+    } else {
+      //send toast
+      toast({
+        title: "Failed",
+        description: "File failed to delete",
+        variant: "destructive",
+      });
+    }
+  };
 
   //=============================== End Document Section
 
   return (
     <>
-    {isCancelled && (
+      {isCancelled && (
         <div className="modal-overlay fixed top-0 left-0 w-full h-full flex justify-center items-center bg-gray-800 bg-opacity-50 z-50">
           <div className="modal-content bg-white rounded-lg border-2 p-8">
             <p className="text-center text-xl font-bold mb-4">
@@ -212,13 +429,12 @@ export default function EditProjectPage({ project }: EditProjectPageProps) {
               <label htmlFor="reason" className="block mb-2">
                 Reason:
               </label>
-              <input
-                type="text"
+              <Textarea
                 id="reason"
                 name="reason"
                 value={reason}
                 onChange={(e) => setReason(e.target.value)}
-                className="w-full p-2 border border-gray-300 rounded-md mb-4"
+                className="border-2 border-[#bbbabf] rounded-lg h-24 mb-2"
                 required
               />
               <div className="flex justify-center space-x-4">
@@ -231,7 +447,7 @@ export default function EditProjectPage({ project }: EditProjectPageProps) {
                 </button>
                 <button
                   type="button"
-                  //onClick={handleSubmitDocs}  // You can replace this with your actual cancel logic
+                  onClick={form.handleSubmit(handleCancelledProject)} // You can replace this with your actual cancel logic
                   className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600"
                 >
                   Confirm
@@ -242,14 +458,17 @@ export default function EditProjectPage({ project }: EditProjectPageProps) {
         </div>
       )}
 
+      {isLoading && <LoadingScreen />}
+
       <div className="flex gap-6 max-md:flex-col max-md:items-center">
         <ProjectForm
           form={form}
-          onSubmit={onSubmit}
-          status="EDIT"
+          onSubmit={onSubmit2}
+          status={status}
           note="Gakuat bayar jasa kita"
-          />
-        <Tabs defaultValue="sampling" className="w-[40rem] max-sm:w-[420px]">
+          updatePayment={updatePayment}
+        />
+        <Tabs defaultValue="sampling" className="w-[40rem] max-sm:w-[420px] ">
           <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger value="sampling">Sampling</TabsTrigger>
             <TabsTrigger value="document">Document</TabsTrigger>
@@ -263,16 +482,18 @@ export default function EditProjectPage({ project }: EditProjectPageProps) {
               openModal={openModal}
               setOpenModal={setOpenModal}
               onSubmit={onSubmitSample}
-              />
+              baseSamples={baseSamples}
+            />
           </TabsContent>
           {/* End Sample Section */}
 
           {/* Document Section */}
           <TabsContent value="document">
             {/* Right Card for Dropzone */}
+
             <Card
-              className={`overflow-y-auto md:max-h-[25rem] max-h-[90vh] custom-scrollbar`}
-              >
+              className={`overflow-y-auto md:max-h-[25rem] custom-scrollbar`}
+            >
               <div>
                 <CardHeader>
                   <CardTitle className="text-base font-bold">
@@ -283,25 +504,42 @@ export default function EditProjectPage({ project }: EditProjectPageProps) {
                 {/* Based spreadsheet files */}
                 <div className="mx-5">
                   <h1 className=" font-semibold mb-2 "> Based Files </h1>
+                  {project.lab_file.length === 0 && (
+                    <p className=" text-sm flex flex-row justify-center py-3">
+                      Lab File Not Found
+                    </p>
+                  )}
                   <div className=" grid grid-cols-2 gap-4 justify-center items-center">
-                    <a
+                    {project.lab_file.map((file, index) => (
+                      <a
+                        key={index + file._id}
+                        href={`https://drive.google.com/file/d/${file.file_id}/edit`}
+                        className="bg-light_green items-center justify-between rounded-lg px-5 py-3 hover:bg-dark_green hover:text-white font-medium flex delay-150"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {file.file_name}
+                        <MdOpenInNew />
+                      </a>
+                    ))}
+                    {/* <a
                       href="#"
                       className="bg-light_green items-center justify-between rounded-lg px-5 py-3 hover:bg-dark_green hover:text-white font-medium flex"
-                      >
+                    >
                       Formulir Permohonan Pengajuan <MdOpenInNew />
                     </a>
                     <a
                       href="#"
                       className="bg-light_green items-center justify-between rounded-lg px-5 py-3 hover:bg-dark_green hover:text-white font-medium flex"
-                      >
+                    >
                       KUPTK <MdOpenInNew />
                     </a>
                     <a
                       href="#"
                       className="bg-light_green items-center justify-between rounded-lg px-5 py-3 hover:bg-dark_green hover:text-white font-medium flex"
-                      >
+                    >
                       Surat Penawaran <MdOpenInNew />
-                    </a>
+                    </a> */}
                   </div>
                 </div>
                 {/* End of Based spreadsheet files */}
@@ -309,15 +547,45 @@ export default function EditProjectPage({ project }: EditProjectPageProps) {
                 {/* Uploaded files */}
                 <div className="mx-5 mt-5">
                   <h1 className="font-semibold mb-2">Another Files</h1>
+                  {project.file.length === 0 && (
+                    <p className=" text-sm flex flex-row justify-center py-3">
+                      File Not Found
+                    </p>
+                  )}
                   <div className="grid grid-cols-2 gap-4 justify-center items-center">
-                    {buttonNames.map((buttonName, index) => (
-                      <a
-                        key={index}
-                        href="#"
-                        className="bg-light_green items-center justify-between rounded-lg px-5 py-3 hover:bg-dark_green hover:text-white font-medium flex"
-                      >
-                        {buttonName} <MdOpenInNew />
-                      </a>
+                    {project.file.map((file, index) => (
+                      // <a
+                      //   key={index + file._id}
+                      //   href={`https://drive.google.com/file/d/${file.file_id}/view`}
+                      //   className="bg-light_green items-center justify-between rounded-lg px-5 py-3 hover:bg-dark_green hover:text-white font-medium flex"
+                      //   target="_blank"
+                      //   rel="noopener noreferrer"
+                      // >
+                      //   {file.file_name} <MdOpenInNew />
+                      // </a>
+                      <div className="bg-light_green items-center justify-between rounded-lg px-5 py-3 hover:bg-dark_green hover:text-white font-medium flex delay-150">
+                        <a
+                          key={index + file._id}
+                          href={`https://drive.google.com/file/d/${file.file_id}/view`}
+                          className="w-full mr-4"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          {file.file_name}
+                        </a>
+
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="delay-150"
+                          onClick={() => {
+                            setDialogOpen(true);
+                            setFileIdToDelete(file._id);
+                          }}
+                        >
+                          <TrashIcon className="h-5 w-5 " />
+                        </Button>
+                      </div>
                     ))}
                   </div>
                 </div>
@@ -346,33 +614,43 @@ export default function EditProjectPage({ project }: EditProjectPageProps) {
                 <Dropzone setUploadedFiles={setUploadedFiles} />
                 {/* End of Drag and drop files area */}
               </div>
-
             </Card>
-          {/* End of Right Card for Dropzone */}
+            {/* End of Right Card for Dropzone */}
             {/* <DocumentTab
               uploadedFiles={uploadedFiles}
               setUploadedFiles={setUploadedFiles}
             /> */}
           </TabsContent>
-              {/* Button for submit */}
-              <div className="m-5 flex justify-evenly items-center  ">
-                <button
-                  onClick={form.handleSubmit(onSubmit)}
-                  className=" bg-light_green rounded-lg px-5 py-3 hover:bg-dark_green hover:text-white font-medium">
-                  Submit
-                </button>
-                {/* Cancelled Project */}
-                <button onClick={() => setIsCancelled(true)} 
-                  className=" bg-red-400 px-5 hover:bg-red-500 font-medium text-black hover:text-white rounded-lg py-3">
-                  Cancel Project
-                </button>
-                {/* End of Cancelled Project */}
-              </div>
-              {/* End Button for submit */}
+          {/* Button for submit */}
+          <div className="m-5 flex justify-evenly items-center  ">
+            <button
+              onClick={form.handleSubmit(onSubmit2)}
+              className=" bg-light_green rounded-lg px-5 py-3 hover:bg-dark_green hover:text-white font-medium"
+            >
+              Submit
+            </button>
+            {/* Cancelled Project */}
+            {status?.toLocaleLowerCase() === "running" && (
+              <button
+                onClick={() => setIsCancelled(true)}
+                className=" bg-red-400 px-5 hover:bg-red-500 font-medium text-black hover:text-white rounded-lg py-3"
+              >
+                Cancel Project
+              </button>
+            )}
+            {/* End of Cancelled Project */}
+          </div>
+          {/* End Button for submit */}
 
           {/* End Document Section */}
         </Tabs>
       </div>
+      <DeleteDialog
+        setIsOpen={setDialogOpen}
+        isOpen={dialogOpen}
+        deleteFunction={() => handleDeleteFile(project._id, fileIdToDelete)}
+        description="This action cannot be undone. This will be permanently delete your file "
+      />
     </>
   );
 }
