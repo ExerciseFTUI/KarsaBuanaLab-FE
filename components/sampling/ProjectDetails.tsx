@@ -5,6 +5,7 @@ import { object } from "zod"
 import { cn } from "@/lib/utils"
 import { Project } from "@/lib/models/project.model"
 import LoadingScreen from "../LoadingScreen"
+import { format } from "date-fns"
 
 interface pdType {
   data: Project
@@ -27,7 +28,7 @@ export default function ProjectDetails({ data, className = "" }: pdType) {
           { val: "Nama Project", acc: "project_name" },
           { val: "Nomor Sampling", acc: "no_sampling" },
           { val: "Alamat Sampling", acc: "alamat_sampling" },
-          { val: "Jadwal", acc: "jadwal" },
+          { val: "Jadwal", acc: "jadwal_sampling" },
         ].map((d, i) => {
           const key = d.acc as keyof typeof object
 
@@ -36,9 +37,15 @@ export default function ProjectDetails({ data, className = "" }: pdType) {
               <p className="text-dark_brown font-medium">{d.val} </p>
 
               <p className="ml-4 text-light_brown">
-                {
-                  (d.acc == "jadwal") ? data[key] != null ? new Date(data[key]).toUTCString() : "Jadwal belum ada." : data[key]
-                }
+                {d.acc == "jadwal_sampling"
+                  ? data[key] != null
+                    ? (data[key] as any).to != null
+                      ? format(new Date((data[key] as any).from), "LLL dd, y") +
+                        " - " +
+                        format(new Date((data[key] as any).to), "LLL dd, y")
+                      : format(new Date((data[key] as any).from), "LLL dd, y")
+                    : "Jadwal belum ada."
+                  : data[key]}
               </p>
             </div>
           )
