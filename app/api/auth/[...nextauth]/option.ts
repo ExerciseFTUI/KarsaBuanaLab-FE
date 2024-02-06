@@ -70,6 +70,7 @@ export const options: NextAuthOptions = {
     // Ref: https://authjs.dev/guides/basics/role-based-access-control#persisting-the-role
     async jwt({ token, user }) {
       if (user) {
+        token.id = user.id;
         token.role = user.role;
         token.division = user.division;
       }
@@ -79,6 +80,7 @@ export const options: NextAuthOptions = {
     // If you want to use the role in client components
     async session({ session, token }) {
       if (session?.user) {
+        session.user.id = token.id as string;
         session.user.role = token.role;
         session.user.division = token.division;
       }
