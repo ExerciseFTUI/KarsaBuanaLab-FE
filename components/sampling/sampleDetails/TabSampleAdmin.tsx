@@ -96,7 +96,7 @@ export default function TabSampleAdmin({
                   <Button
                     className="bg-light_brown hover:bg-dark_brown"
                     title="Revisi"
-                    onClick={(e) => submitSample(s.sample_name, "REVISION")}
+                    onClick={(e) => submitSample(s.sample_name, "SUBMIT")}
                   >
                     Revisi
                   </Button>
