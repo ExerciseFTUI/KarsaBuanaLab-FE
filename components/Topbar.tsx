@@ -6,8 +6,11 @@ import Image from "next/image"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { usePathname } from "next/navigation"
 import { DeadlineNotification } from "./sampling/DeadlineNotification"
+import { Project } from "@/lib/models/project.model"
 
-interface TopbarProps {}
+interface TopbarProps {
+  projects: Project[]
+}
 
 function extractPageName(pathname: string) {
   const parts = pathname.split("/").filter((part) => part !== "")
@@ -27,7 +30,7 @@ function extractPageName(pathname: string) {
   return final
 }
 
-const Topbar: FC<TopbarProps> = ({}) => {
+const Topbar: FC<TopbarProps> = ({ projects }) => {
   const pathname = extractPageName(usePathname())
 
   const formattedPathname =
@@ -56,7 +59,9 @@ const Topbar: FC<TopbarProps> = ({}) => {
       </div>
       <div className="flex items-center gap-8">
         <div className="">
-          {pathname.split(" / ")[0] == "Sampling" && <DeadlineNotification />}
+          {pathname.split(" / ")[0] == "Sampling" && (
+            <DeadlineNotification projects={projects} />
+          )}
         </div>
         <div className="">
           <Avatar>

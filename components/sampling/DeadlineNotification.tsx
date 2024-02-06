@@ -12,32 +12,35 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet"
 import { Separator } from "../ui/separator"
+import { Project } from "@/lib/models/project.model"
+import { cn } from "@/lib/utils"
 
-const projectsData = [
-  {
-    project_name: "Project 2",
-    jadwal_sampling: new Date("2024-02-15"),
-  },
-  {
-    project_name: "Project 1",
-    jadwal_sampling: new Date("2024-01-28"),
-  },
-  {
-    project_name: "Project 3",
-    jadwal_sampling: new Date("2024-01-30"),
-  },
-]
+export function DeadlineNotification({ projects }: { projects: Project[] }) {
+  const deadlineData = projects.map((d) => ({
+    project_name: d.project_name,
+    deadline: Math.round(
+      d.jadwal_sampling.to == null
+        ? new Date(d.jadwal_sampling.from).getDay() - new Date().getDay()
+        : new Date(d.jadwal_sampling.to).getDay() - new Date().getDay()
+    ),
+  }))
 
-export function DeadlineNotification() {
-  // prettier-ignore
-  const sortedData = projectsData.sort((a, b) => (a.jadwal_sampling as any) - (b.jadwal_sampling as any))
+  const sortedDeadline = deadlineData.sort((a, b) => a.deadline - b.deadline)
 
   return (
     <Sheet>
       <SheetTrigger asChild>
         <Button
           variant="outline"
-          className="bg-moss_green text-ghost_white hover:bg-light_green"
+          className={cn(
+            "bg-moss_green text-ghost_white relative hover:bg-light_green",
+            sortedDeadline[0].deadline <= 3
+              ? "before:absolute before:-top-1 before:-right-1 before:w-4 before:h-4 before:bg-brick_red before:rounded-full before:border-2 before:border-black"
+              : "",
+            sortedDeadline[0].deadline <= 3
+              ? "hover:bg-brick_red hover:text-ghost_white"
+              : ""
+          )}
         >
           Deadline Project
         </Button>
@@ -52,21 +55,14 @@ export function DeadlineNotification() {
         <Separator orientation="horizontal" className="mt-4" />
 
         <div className="grid gap-4 py-4">
-          {sortedData.map((j, i) => (
+          {sortedDeadline.map((j, i) => (
             <div
               className="w-full border-b-2 border-pastel_moss_green py-2 text-moss_green"
               key={i}
             >
               <p>
                 📅 <span className="font-bold">{j.project_name}</span> deadline
-                is{" "}
-                <span className="font-bold">
-                  {Math.round(
-                    (j.jadwal_sampling.getTime() - new Date().getTime()) /
-                      (24 * 365 * 3600)
-                  )}
-                </span>{" "}
-                days left.
+                is <span className="font-bold">{j.deadline}</span> days left.
               </p>
             </div>
           ))}
