@@ -16,9 +16,7 @@ export default async function SamplingProject() {
   let data: Project[] = []
 
   if (role == "USER") {
-    res = await getProjectsByAcc(
-      /* user ? user?.id : "" */ "65bd86e4e29501962cc23446"
-    )
+    res = await getProjectsByAcc(user ? user?.id : "")
     data = (res as any).projectList
   } else {
     res = await getProjectByDivision("sampling")
