@@ -39,8 +39,6 @@ export default function TabSampleAdmin({
 
     const response = await verifySample(project._id, status, sampleName)
 
-    console.log("makan")
-
     setIsLoading(false)
 
     if (!response) {

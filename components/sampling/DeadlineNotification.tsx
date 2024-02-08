@@ -14,16 +14,44 @@ import {
 import { Separator } from "../ui/separator"
 import { Project } from "@/lib/models/project.model"
 import { cn } from "@/lib/utils"
+import { differenceInCalendarDays, format } from "date-fns"
 
 export function DeadlineNotification({ projects }: { projects: Project[] }) {
-  const deadlineData = projects.map((d) => ({
-    project_name: d.project_name,
-    deadline: Math.round(
-      d.jadwal_sampling.to == null
-        ? new Date(d.jadwal_sampling.from).getDay() - new Date().getDay()
-        : new Date(d.jadwal_sampling.to).getDay() - new Date().getDay()
-    ),
-  }))
+  const deadlineData = projects.map((d) => {
+    const { jadwal_sampling } = d
+
+    const now = format(new Date(), "dd-LL-y").split("-")
+    const from = jadwal_sampling.from ? jadwal_sampling.from.split("-") : null
+    const to = jadwal_sampling.to ? jadwal_sampling.to.split("-") : null
+
+    return {
+      project_name: d.project_name,
+      deadline:
+        from != null
+          ? to != null
+            ? differenceInCalendarDays(
+                new Date(parseInt(to[2]), parseInt(to[1]) - 1, parseInt(to[0])),
+                new Date(
+                  parseInt(now[2]),
+                  parseInt(now[1]) - 1,
+                  parseInt(now[0])
+                )
+              )
+            : differenceInCalendarDays(
+                new Date(
+                  parseInt(from[2]),
+                  parseInt(from[1]) - 1,
+                  parseInt(from[0])
+                ),
+                new Date(
+                  parseInt(now[2]),
+                  parseInt(now[1]) - 1,
+                  parseInt(now[0])
+                )
+              )
+          : 0,
+    }
+  })
 
   const sortedDeadline = deadlineData.sort((a, b) => a.deadline - b.deadline)
 

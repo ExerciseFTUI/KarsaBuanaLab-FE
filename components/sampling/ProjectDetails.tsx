@@ -32,6 +32,13 @@ export default function ProjectDetails({ data, className = "" }: pdType) {
         ].map((d, i) => {
           const key = d.acc as keyof typeof object
 
+          const jadwal_sampling = data["jadwal_sampling"]
+
+          const from = jadwal_sampling.from
+            ? jadwal_sampling.from.split("-")
+            : ""
+          const to = jadwal_sampling.to ? jadwal_sampling.to.split("-") : ""
+
           return (
             <div className="mb-4" key={i}>
               <p className="text-dark_brown font-medium">{d.val} </p>
@@ -40,10 +47,31 @@ export default function ProjectDetails({ data, className = "" }: pdType) {
                 {d.acc == "jadwal_sampling"
                   ? data[key] != null
                     ? (data[key] as any).to != null
-                      ? format(new Date((data[key] as any).from), "LLL dd, y") +
+                      ? format(
+                          new Date(
+                            parseInt(from[2]),
+                            parseInt(from[1]) - 1,
+                            parseInt(from[0])
+                          ),
+                          "LLL dd, y"
+                        ) +
                         " - " +
-                        format(new Date((data[key] as any).to), "LLL dd, y")
-                      : format(new Date((data[key] as any).from), "LLL dd, y")
+                        format(
+                          new Date(
+                            parseInt(to[2]),
+                            parseInt(to[1]) - 1,
+                            parseInt(to[0])
+                          ),
+                          "LLL dd, y"
+                        )
+                      : format(
+                          new Date(
+                            parseInt(from[2]),
+                            parseInt(from[1]) - 1,
+                            parseInt(from[0])
+                          ),
+                          "LLL dd, y"
+                        )
                     : "Jadwal belum ada."
                   : data[key]}
               </p>

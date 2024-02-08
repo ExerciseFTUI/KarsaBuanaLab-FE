@@ -11,7 +11,7 @@ import {
 import { cn } from "@/lib/utils"
 import { CalendarIcon } from "lucide-react"
 import { Calendar } from "@/components/ui/calendar"
-import { addDays, format } from "date-fns"
+import { format, differenceInCalendarDays } from "date-fns"
 import React, { useState } from "react"
 import SamplingTabsList from "../tab/SamplingTabsList"
 import { GroupUnassignedTable } from "./GroupUnassignedTable"
@@ -39,22 +39,12 @@ interface Params {
 export default function SampleProjectTab({ data }: Params) {
   const { files, user, project } = data
 
-  const { jadwal_sampling } = project
+  const jadwal_sampling = project.jadwal_sampling
 
-  const from = (
-    jadwal_sampling
-      ? jadwal_sampling.from
-        ? new Date(jadwal_sampling.from)
-        : null
-      : null
-  ) as Date
-  const to = (
-    jadwal_sampling
-      ? jadwal_sampling.to
-        ? new Date(jadwal_sampling.to)
-        : null
-      : null
-  ) as Date
+  let from = jadwal_sampling.from
+    ? jadwal_sampling.from.split("-").reverse()
+    : null
+  let to = jadwal_sampling.to ? jadwal_sampling.to.split("-").reverse() : null
 
   let initialState: RowSelectionState = {}
 
@@ -65,9 +55,14 @@ export default function SampleProjectTab({ data }: Params) {
     })
 
   const [date, setDate] = React.useState<DateRange | undefined>({
-    from: from,
-    to: to,
+    from: from
+      ? new Date(parseInt(from[0]), parseInt(from[1]) - 1, parseInt(from[2]))
+      : undefined,
+    to: to
+      ? new Date(parseInt(to[0]), parseInt(to[1]) - 1, parseInt(to[2]))
+      : undefined,
   })
+
   const [rowSelection, setRowSelection] =
     React.useState<RowSelectionState>(initialState)
 
@@ -94,7 +89,12 @@ export default function SampleProjectTab({ data }: Params) {
 
     setIsLoading(true)
 
-    const response = await assignProject(data.project._id, assigned, {from: date?.from.toString() || null, to: date?.to?.toString() || null})
+    const response = await assignProject(
+      data.project._id, 
+      assigned, 
+      { from: date?.from ? format(date.from, "dd-LL-y") : null, 
+        to: date?.to ? format(date.to, "dd-LL-y") : null }
+      )
 
     setIsLoading(false)
 

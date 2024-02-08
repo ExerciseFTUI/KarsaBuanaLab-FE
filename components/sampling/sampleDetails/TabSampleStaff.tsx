@@ -37,8 +37,6 @@ export default function TabSampleStaff({
 
     const response = await verifySample(project._id, "WAITING", sampleName)
 
-    console.log("makan")
-
     setIsLoading(false)
 
     if (!response) {

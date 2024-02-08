@@ -24,7 +24,7 @@ export interface Project {
   file: File[]
   lab_file: File[]
   created_at: string
-  jadwal_sampling: { from: Date; to: Date }
+  jadwal_sampling: { from: string; to: string }
   project_assigned_to: string[]
   is_paid: boolean
   desc_failed: string
