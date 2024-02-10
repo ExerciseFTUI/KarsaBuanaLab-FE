@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 
 export default async function GatewayPage() {
   const data = await getSessionServer();
-  if (data) {
+  if (data?.user.division) {
     data.user.division.toLowerCase() === "marketing"
       ? redirect("/marketing")
       : data.user.division.toLowerCase() === "sampling"
@@ -15,7 +15,7 @@ export default async function GatewayPage() {
       ? redirect("/admin")
       : redirect("/lab");
   } else {
-    redirect("/login");
+    redirect("/denied");
   }
 
   return (

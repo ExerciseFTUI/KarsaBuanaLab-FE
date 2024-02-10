@@ -12,8 +12,8 @@ import {
   labLinks,
   pplhpLinks,
   sampleReceiveLinks,
-  // adminLinks,   // NOTE: Gatau masih butuh atau engga [DEN]
   samplingUSERLinks,
+  adminLinks,
 } from "@/constants/sidebarlinks"
 import { signOut, useSession } from "next-auth/react"
 import DeleteDialog from "./DeleteDialog"
@@ -46,6 +46,8 @@ const Sidebar: FC<LeftSidebarProps> = ({}) => {
       : samplingUSERLinks
     : pathname.includes("lab")
     ? labLinks
+    : pathname.includes("admin")
+    ? adminLinks
     : pplhpLinks
 
   //Receive
