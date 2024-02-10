@@ -8,8 +8,8 @@ export const registerValidation = z
     email: z.string().email({
       message: "Email is Required",
     }),
-    password: z.string().min(8, {
-      message: "Password must be at least 8 characters long",
+    password: z.string().min(5, {
+      message: "Password must be at least 5 characters long",
     }),
     confirmPassword: z.string(),
     role: z.string().min(1, {

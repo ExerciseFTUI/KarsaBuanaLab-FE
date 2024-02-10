@@ -80,9 +80,9 @@ export const options: NextAuthOptions = {
     // If you want to use the role in client components
     async session({ session, token }) {
       if (session?.user) {
-        session.user.id = token.sub as string
-        session.user.role = token.role
-        session.user.division = token.division
+        session.user.id = token.sub as string;
+        session.user.role = token.role;
+        session.user.division = token.division;
       }
       return session
     },

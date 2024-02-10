@@ -46,9 +46,10 @@ export type FileType = {
 }
 
 export type UserType = {
-  username: string
-  email: string
-  password: string
+  id?: string;
+  name?: string;
+  email?: string;
+  // password: string;
   // phone: string
   role: string
   division: string

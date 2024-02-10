@@ -23,7 +23,8 @@ export default async function RootLayout({
   children: React.ReactNode
 }) {
   const session = await getSessionServer()
-
+  if (session) console.log(session.user);
+        
   const user = session?.user || ""
   const role = user ? user?.role.toUpperCase() : ""
 
@@ -46,9 +47,9 @@ export default async function RootLayout({
     <>
       <main className="flex flex-row ">
         <Sidebar />
-        <section className="flex flex-col min-h-screen items-center flex-1 pt-2 px-6 pb-10 max-lg:pb-32 sm:px-10 bg-[#F8F8F8] overflow-auto">
+        <section className="flex flex-col sm:min-h-screen items-center flex-1 pt-2 px-6 pb-10 max-lg:pb-32 sm:px-10 bg-[#F8F8F8] overflow-auto">
           <div className="w-full ">
-            <Topbar projects={data} />
+            <Topbar projects={data ? data : null} data={session ? session : null />
             {children}
           </div>
         </section>

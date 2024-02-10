@@ -551,21 +551,11 @@ export default function EditProjectPage({
                   )}
                   <div className="grid grid-cols-2 gap-4 justify-center items-center">
                     {project.file.map((file, index) => (
-                      // <a
-                      //   key={index + file._id}
-                      //   href={`https://drive.google.com/file/d/${file.file_id}/view`}
-                      //   className="bg-light_green items-center justify-between rounded-lg px-5 py-3 hover:bg-dark_green hover:text-white font-medium flex"
-                      //   target="_blank"
-                      //   rel="noopener noreferrer"
-                      // >
-                      //   {file.file_name} <MdOpenInNew />
-                      // </a>
                       <div
-                        key={index}
                         className="bg-light_green items-center justify-between rounded-lg px-5 py-3 hover:bg-dark_green hover:text-white font-medium flex delay-150"
+                        key={index + file._id}
                       >
                         <a
-                          key={index + file._id}
                           href={`https://drive.google.com/file/d/${file.file_id}/view`}
                           className="w-full mr-4"
                           target="_blank"

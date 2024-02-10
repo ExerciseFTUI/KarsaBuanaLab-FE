@@ -1,26 +1,27 @@
-"use client"
+"use client";
 
-import Link from "next/link"
-import React, { FC } from "react"
-import Image from "next/image"
-import { usePathname, useRouter } from "next/navigation"
+import Link from "next/link";
+import React, { FC } from "react";
+import Image from "next/image";
+import { usePathname, useRouter } from "next/navigation";
 // import { marketingLink } from "@/constants";
-import { BiLogOut } from "react-icons/bi"
+import { BiLogOut } from "react-icons/bi";
 import {
   marketingLink,
   samplingSPVLinks,
   labLinks,
   pplhpLinks,
   sampleReceiveLinks,
+  // adminLinks,   // NOTE: Gatau masih butuh atau engga [DEN]
   samplingUSERLinks,
 } from "@/constants/sidebarlinks"
 import { signOut, useSession } from "next-auth/react"
 
 function extractFirstPathSegment(path: string) {
   // Remove leading and trailing slashes and split the path by "/"
-  const segments = path.replace(/^\/|\/$/g, "").split("/")
+  const segments = path.replace(/^\/|\/$/g, "").split("/");
   // Return the first segment
-  return segments[0]
+  return segments[0];
 }
 
 interface LeftSidebarProps {}
@@ -64,7 +65,7 @@ const Sidebar: FC<LeftSidebarProps> = ({}) => {
         {links.map((link) => {
           const isActive =
             (pathname.includes(link.route) && link.route.length > 1) ||
-            pathname === routeSection + link.route
+            pathname === routeSection + link.route;
           //   if (link.route === "/profile") link.route = `/profile/${userId}`;
 
           return (
@@ -99,13 +100,13 @@ const Sidebar: FC<LeftSidebarProps> = ({}) => {
                 {link.label}
               </p>
             </Link>
-          )
+          );
         })}
       </div>
       <div className="mt-10 px-2">
         <div
           className="flex gap-3 cursor-pointer p-4 items-center rounded-lg hover:bg-[#C2C5AA] "
-          onClick={() => signOut()}
+          onClick={() => setShowDeleteDialog(true)}
         >
           {/* <Image
                 src={"assets/logout.svg"}
@@ -118,8 +119,14 @@ const Sidebar: FC<LeftSidebarProps> = ({}) => {
           <p className="text-sm text-moss_green max-lg:hidden">Log Out</p>
         </div>
       </div>
+      <DeleteDialog
+        isOpen={showDeleteDialog}
+        setIsOpen={setShowDeleteDialog}
+        deleteFunction={() => signOut()}
+        description="You will be logged out of the system and redirected to the login page. Are you sure you want to continue?"
+      />
     </section>
-  )
-}
+  );
+};
 
-export default Sidebar
+export default Sidebar;

@@ -7,23 +7,27 @@ import Parameter from "./Parameters";
 import { Sampling } from '@/lib/type';
 import Link from 'next/link';
 import EditSample from './EditSample';
+import { NewSample } from '../addSample/NewSample';
 
 const CreateSamplePage = () => {
     const [sample, setSample] = useState<string>("");
     const [regulation, setRegulation] = useState<number>(0);
+    const [newSample, setNewSample] = useState(false)
 
     return (
         <>
+            {newSample && (
+                <NewSample setNewSample={setNewSample} />
+            )}
             <div className='grid grid-cols-2 justify-between gap-6 max-md:flex-col max-md:items-center'>
                 {/* Information for sampling and regulation */}
                 <div className='border border-dark_green rounded-lg p-3 h-full'>
                     {/* Add sampling Button */}
-                    <Link href={"/marketing/sample/createSample"}>
-                        <button 
-                            className='p-3 flex hover:opacity-70 justify-center font-bold text-xl border-light_green border-2 rounded-lg w-full bg-dark_green text-white'>
-                            Create New Sample
-                        </button>
-                    </Link>
+                    <button 
+                        onClick={() => {setNewSample(true)}}
+                        className='p-3 flex hover:opacity-70 justify-center font-bold text-xl border-light_green border-2 rounded-lg w-full bg-dark_green text-white'>
+                        Create New Sample
+                    </button>
                     {/* End of Add sampling Button */}
 
                     {/* Sampling choose */}
