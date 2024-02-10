@@ -85,12 +85,15 @@ export function DeadlineNotification({ projects }: { projects: Project[] }) {
         <div className="grid gap-4 py-4">
           {sortedDeadline.map((j, i) => (
             <div
-              className="w-full border-b-2 border-pastel_moss_green py-2 text-moss_green"
+              className={cn(
+                "w-full border-b-2 border-pastel_moss_green py-2 text-moss_green",
+                j.deadline <= 0 ? "text-brick_red" : ""
+              )}
               key={i}
             >
               <p>
-                📅 <span className="font-bold">{j.project_name}</span> deadline
-                is{" "}
+                {j.deadline <= 0 ? "🚩" : "📅"}{" "}
+                <span className="font-bold">{j.project_name}</span> deadline is{" "}
                 <span className="font-bold">
                   {j.deadline > 0 ? j.deadline + " days left." : "Today!"}
                 </span>
