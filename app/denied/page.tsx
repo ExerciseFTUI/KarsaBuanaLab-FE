@@ -1,3 +1,4 @@
+import BackButton from "@/components/auth/BackButton";
 import Link from "next/link";
 
 export default function Denied() {
@@ -8,9 +9,10 @@ export default function Denied() {
         You are logged in, but you do not have the required access level to view
         this page.
       </p>
-      <Link href="/" className="text-3xl underline">
-        Return to Home Page
+      <Link href="/login" className="text-3xl underline">
+        Return to Login Page
       </Link>
+      <BackButton />
     </section>
   );
 }
