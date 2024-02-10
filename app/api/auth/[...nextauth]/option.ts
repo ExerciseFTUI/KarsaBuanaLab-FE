@@ -1,8 +1,8 @@
-import type { NextAuthOptions, User } from "next-auth";
-import GitHubProvider from "next-auth/providers/github";
-import CredentialsProvider from "next-auth/providers/credentials";
-import axios from "axios";
-import { UserType } from "@/lib/type";
+import type { NextAuthOptions, User } from "next-auth"
+import GitHubProvider from "next-auth/providers/github"
+import CredentialsProvider from "next-auth/providers/credentials"
+import axios from "axios"
+import { UserType } from "@/lib/type"
 
 export const options: NextAuthOptions = {
   providers: [
@@ -33,9 +33,9 @@ export const options: NextAuthOptions = {
             email: credentials?.email,
             password: credentials?.password,
           }
-        );
+        )
 
-        console.log(response.data);
+        console.log(response.data)
 
         if (response.data.result) {
           const user2 = {
@@ -43,9 +43,9 @@ export const options: NextAuthOptions = {
             name: response.data.result.username,
             role: response.data.result.role,
             division: response.data.result.division,
-          };
+          }
 
-          return user2;
+          return user2
         }
 
         const user = {
@@ -54,14 +54,14 @@ export const options: NextAuthOptions = {
           password: "admin",
           role: "ADMIN",
           division: "Marketing",
-        };
+        }
         if (
           credentials?.email === user.name &&
           credentials?.password === user.password
         ) {
-          return user;
+          return user
         } else {
-          return null;
+          return null
         }
       },
     }),
@@ -70,19 +70,21 @@ export const options: NextAuthOptions = {
     // Ref: https://authjs.dev/guides/basics/role-based-access-control#persisting-the-role
     async jwt({ token, user }) {
       if (user) {
-        token.role = user.role;
-        token.division = user.division;
+        token.uid = user.id
+        token.role = user.role
+        token.division = user.division
       }
 
-      return token;
+      return token
     },
     // If you want to use the role in client components
     async session({ session, token }) {
       if (session?.user) {
+        session.user.id = token.sub as string;
         session.user.role = token.role;
         session.user.division = token.division;
       }
-      return session;
+      return session
     },
   },
-};
+}
