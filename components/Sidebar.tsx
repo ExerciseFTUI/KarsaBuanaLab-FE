@@ -16,6 +16,7 @@ import {
   samplingUSERLinks,
 } from "@/constants/sidebarlinks"
 import { signOut, useSession } from "next-auth/react"
+import DeleteDialog from "./DeleteDialog";
 
 function extractFirstPathSegment(path: string) {
   // Remove leading and trailing slashes and split the path by "/"
@@ -27,6 +28,8 @@ function extractFirstPathSegment(path: string) {
 interface LeftSidebarProps {}
 
 const Sidebar: FC<LeftSidebarProps> = ({}) => {
+  const [showDeleteDialog, setShowDeleteDialog] = React.useState<boolean>(false);
+
   const router = useRouter()
   const pathname = usePathname()
   const routeSection = "/" + extractFirstPathSegment(pathname)

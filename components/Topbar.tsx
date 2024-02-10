@@ -90,7 +90,7 @@ const Topbar: FC<TopbarProps> = ({ projects, data }) => {
         </div> */}
 
         <div className="">
-          <!-- NOTE: NEED TO BE CHECKED            -->
+          {/* <!-- NOTE: NEED TO BE CHECKED            --> */}
           {pathname.split(" / ")[0] == "Sampling" && (
             <DeadlineNotification projects={projects} />
           )}
@@ -116,11 +116,11 @@ const Topbar: FC<TopbarProps> = ({ projects, data }) => {
             )}
         </div>
         
-          <!-- END NOTE: NEED TO BE CHECKED            -->
+          {/* <!-- END NOTE: NEED TO BE CHECKED            --> */}
         {/* =========================== End Admin Button */}
 
         <div className="">
-          {pathname.split(" / ")[0] == "Sampling" && <DeadlineNotification />}
+          {pathname.split(" / ")[0] == "Sampling" && <DeadlineNotification projects={projects}/>}
         </div>
 
         <div className="max-md:hidden">
