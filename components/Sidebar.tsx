@@ -12,10 +12,10 @@ import {
   labLinks,
   pplhpLinks,
   sampleReceiveLinks,
-  // adminLinks,   // NOTE: Gatau masih butuh atau engga [DEN]
   samplingUSERLinks,
-} from "@/constants/sidebarlinks"
-import { signOut, useSession } from "next-auth/react"
+  adminLinks,
+} from "@/constants/sidebarlinks";
+import { signOut, useSession } from "next-auth/react";
 import DeleteDialog from "./DeleteDialog";
 
 function extractFirstPathSegment(path: string) {
@@ -28,15 +28,16 @@ function extractFirstPathSegment(path: string) {
 interface LeftSidebarProps {}
 
 const Sidebar: FC<LeftSidebarProps> = ({}) => {
-  const [showDeleteDialog, setShowDeleteDialog] = React.useState<boolean>(false);
+  const [showDeleteDialog, setShowDeleteDialog] =
+    React.useState<boolean>(false);
 
-  const router = useRouter()
-  const pathname = usePathname()
-  const routeSection = "/" + extractFirstPathSegment(pathname)
+  const router = useRouter();
+  const pathname = usePathname();
+  const routeSection = "/" + extractFirstPathSegment(pathname);
 
-  const currentUser = useSession().data?.user
+  const currentUser = useSession().data?.user;
 
-  const role = currentUser?.role.toUpperCase()
+  const role = currentUser?.role.toUpperCase();
 
   const links = pathname.includes("marketing")
     ? marketingLink
@@ -46,7 +47,9 @@ const Sidebar: FC<LeftSidebarProps> = ({}) => {
       : samplingUSERLinks
     : pathname.includes("lab")
     ? labLinks
-    : pplhpLinks
+    : pathname.includes("admin")
+    ? adminLinks
+    : pplhpLinks;
 
   //Receive
 
