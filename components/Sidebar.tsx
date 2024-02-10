@@ -8,14 +8,14 @@ import { usePathname, useRouter } from "next/navigation";
 import { BiLogOut } from "react-icons/bi";
 import {
   marketingLink,
-  samplingLinks,
+  samplingSPVLinks,
   labLinks,
   pplhpLinks,
   sampleReceiveLinks,
-  adminLinks,
-} from "@/constants/sidebarlinks";
-import { signOut } from "next-auth/react";
-import DeleteDialog from "./DeleteDialog";
+  // adminLinks,   // NOTE: Gatau masih butuh atau engga [DEN]
+  samplingUSERLinks,
+} from "@/constants/sidebarlinks"
+import { signOut, useSession } from "next-auth/react"
 
 function extractFirstPathSegment(path: string) {
   // Remove leading and trailing slashes and split the path by "/"
@@ -27,23 +27,23 @@ function extractFirstPathSegment(path: string) {
 interface LeftSidebarProps {}
 
 const Sidebar: FC<LeftSidebarProps> = ({}) => {
-  const router = useRouter();
-  const pathname = usePathname();
-  const routeSection = "/" + extractFirstPathSegment(pathname);
-  const [showDeleteDialog, setShowDeleteDialog] =
-    React.useState<boolean>(false);
+  const router = useRouter()
+  const pathname = usePathname()
+  const routeSection = "/" + extractFirstPathSegment(pathname)
 
-  //   const { userId } = useAuth();
+  const currentUser = useSession().data?.user
+
+  const role = currentUser?.role.toUpperCase()
 
   const links = pathname.includes("marketing")
     ? marketingLink
     : pathname.includes("sampling")
-    ? samplingLinks
+    ? role == "SPV"
+      ? samplingSPVLinks
+      : samplingUSERLinks
     : pathname.includes("lab")
     ? labLinks
-    : pathname.includes("admin")
-    ? adminLinks
-    : pplhpLinks;
+    : pplhpLinks
 
   //Receive
 

@@ -81,7 +81,7 @@ export const marketingLink: ISidebarLinks[] = [
   },
 ];
 
-export const samplingLinks: ISidebarLinks[] = [
+export const samplingSPVLinks: ISidebarLinks[] = [
   {
     icon: <AiFillHome />,
     route: "/project",
@@ -98,6 +98,8 @@ export const samplingLinks: ISidebarLinks[] = [
     label: "Sample",
   },
 ];
+
+export const samplingUSERLinks: ISidebarLinks[] = [samplingSPVLinks[1]]
 
 export const pplhpLinks: ISidebarLinks[] = [
   {

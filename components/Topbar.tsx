@@ -7,6 +7,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { usePathname } from "next/navigation";
 import { DeadlineNotification } from "./sampling/DeadlineNotification";
 import { useSession } from "next-auth/react";
+import { Project } from "@/lib/models/project.model"
 import { Button } from "./ui/button";
 import {
   EnvelopeOpenIcon,
@@ -20,6 +21,7 @@ import { DefaultSession } from "next-auth";
 import { Session } from "next-auth";
 
 interface TopbarProps {
+  projects: Project[]
   data?: Session | null;
 }
 
@@ -43,11 +45,10 @@ function extractPageName(pathname: string) {
   return final;
 }
 
-const Topbar: FC<TopbarProps> = ({ data }) => {
-  const pathname = extractPageName(usePathname());
-
+const Topbar: FC<TopbarProps> = ({ projects, data }) => {
+  const pathname = extractPageName(usePathname())
+  
   const { data: session } = useSession();
-
   console.log(data);
 
   const formattedPathname =
@@ -89,6 +90,11 @@ const Topbar: FC<TopbarProps> = ({ data }) => {
         </div> */}
 
         <div className="">
+          <!-- NOTE: NEED TO BE CHECKED            -->
+          {pathname.split(" / ")[0] == "Sampling" && (
+            <DeadlineNotification projects={projects} />
+          )}
+        
           {data?.user.role.toLowerCase() == "admin" &&
             pathname.split(" / ")[0] !== "Admin" && (
               <Link href="/admin">
@@ -109,6 +115,8 @@ const Topbar: FC<TopbarProps> = ({ data }) => {
               </Link>
             )}
         </div>
+        
+          <!-- END NOTE: NEED TO BE CHECKED            -->
         {/* =========================== End Admin Button */}
 
         <div className="">
