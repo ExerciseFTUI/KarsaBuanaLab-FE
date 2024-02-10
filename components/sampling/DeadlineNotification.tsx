@@ -90,7 +90,10 @@ export function DeadlineNotification({ projects }: { projects: Project[] }) {
             >
               <p>
                 📅 <span className="font-bold">{j.project_name}</span> deadline
-                is <span className="font-bold">{j.deadline}</span> days left.
+                is{" "}
+                <span className="font-bold">
+                  {j.deadline > 0 ? j.deadline + " days left." : "Today!"}
+                </span>
               </p>
             </div>
           ))}
