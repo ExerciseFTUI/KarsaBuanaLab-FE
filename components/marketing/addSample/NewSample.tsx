@@ -19,6 +19,10 @@ export const NewSample = ({setNewSample} : {setNewSample : React.Dispatch<React.
     const onSubmit = () => {
         console.log("Sample new name: ", sampleName);
 
+        // Check if the sample name already avail or not 
+
+        // Toast to notify already avail
+
         // Call API
 
         // Check response, if false give toast
