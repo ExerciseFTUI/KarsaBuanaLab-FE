@@ -62,10 +62,10 @@ export function DeadlineNotification({ projects }: { projects: Project[] }) {
           variant="outline"
           className={cn(
             "bg-moss_green text-ghost_white relative hover:bg-light_green",
-            sortedDeadline[0].deadline <= 3
+            sortedDeadline.length && sortedDeadline[0].deadline <= 3
               ? "before:absolute before:-top-1 before:-right-1 before:w-4 before:h-4 before:bg-brick_red before:rounded-full before:border-2 before:border-black"
               : "",
-            sortedDeadline[0].deadline <= 3
+            sortedDeadline.length && sortedDeadline[0].deadline <= 3
               ? "hover:bg-brick_red hover:text-ghost_white"
               : ""
           )}
