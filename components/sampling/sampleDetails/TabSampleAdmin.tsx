@@ -34,10 +34,10 @@ export default function TabSampleAdmin({
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
 
-  const submitSample = async (sampleName: string, status: string) => {
+  const submitSample = async (sample_id: string, status: string) => {
     setIsLoading(true)
 
-    const response = await verifySample(project._id, status, sampleName)
+    const response = await verifySample(project._id, status, sample_id)
 
     setIsLoading(false)
 
@@ -86,7 +86,7 @@ export default function TabSampleAdmin({
                       s.status == "ACCEPTED" ? "hidden" : ""
                     )}
                     title="Accept"
-                    onClick={(e) => submitSample(s.sample_name, "ACCEPTED")}
+                    onClick={(e) => submitSample(s._id, "ACCEPTED")}
                   >
                     Accept
                   </Button>
@@ -94,7 +94,7 @@ export default function TabSampleAdmin({
                   <Button
                     className="bg-light_brown hover:bg-dark_brown"
                     title="Revisi"
-                    onClick={(e) => submitSample(s.sample_name, "SUBMIT")}
+                    onClick={(e) => submitSample(s._id, "REVISION")}
                   >
                     Revisi
                   </Button>
