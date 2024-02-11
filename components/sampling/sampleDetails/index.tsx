@@ -17,6 +17,8 @@ export default function Project({ data }: { data: SamplingRequestData }) {
 
   const role = currentUser?.role.toUpperCase()
 
+  if (role == null) return
+
   if (data == null)
     return (
       <div className="w-full h-full flex justify-center items-center font-bold">
