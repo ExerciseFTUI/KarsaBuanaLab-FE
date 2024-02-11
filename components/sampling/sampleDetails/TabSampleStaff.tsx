@@ -32,10 +32,10 @@ export default function TabSampleStaff({
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
 
-  const submitSample = async (e: any, sampleName: string) => {
+  const submitSample = async (e: any, sample_id: string) => {
     setIsLoading(true)
 
-    const response = await verifySample(project._id, "WAITING", sampleName)
+    const response = await verifySample(project._id, "WAITING", sample_id)
 
     setIsLoading(false)
 
@@ -63,7 +63,7 @@ export default function TabSampleStaff({
               />
               <Button
                 className="w-24 py-4 self-center bg-light_brown hover:bg-dark_brown disabled:bg-transparent disabled:text-dark_brown disabled:font-bold disabled:border-2 disabled:border-dark_brown"
-                onClick={(e) => submitSample(e, s.sample_name)}
+                onClick={(e) => submitSample(e, s._id)}
                 disabled={s.status == "WAITING" || s.status == "ACCEPTED"}
               >
                 {s.status == "SUBMIT"
