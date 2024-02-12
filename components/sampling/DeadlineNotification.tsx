@@ -62,10 +62,10 @@ export function DeadlineNotification({ projects }: { projects: Project[] }) {
           variant="outline"
           className={cn(
             "bg-moss_green text-ghost_white relative hover:bg-light_green",
-            sortedDeadline.length && sortedDeadline[0].deadline <= 3
+            sortedDeadline.length && sortedDeadline[0].deadline <= 2
               ? "before:absolute before:-top-1 before:-right-1 before:w-4 before:h-4 before:bg-brick_red before:rounded-full before:border-2 before:border-black"
               : "",
-            sortedDeadline.length && sortedDeadline[0].deadline <= 3
+            sortedDeadline.length && sortedDeadline[0].deadline <= 2
               ? "hover:bg-brick_red hover:text-ghost_white"
               : ""
           )}
@@ -95,7 +95,11 @@ export function DeadlineNotification({ projects }: { projects: Project[] }) {
                 {j.deadline <= 0 ? "🚩" : "📅"}{" "}
                 <span className="font-bold">{j.project_name}</span> deadline is{" "}
                 <span className="font-bold">
-                  {j.deadline > 0 ? j.deadline + " days left." : "Today!"}
+                  {j.deadline > 0
+                    ? j.deadline + " days left."
+                    : j.deadline == 0
+                    ? "Today!"
+                    : "is over for " + -1 * j.deadline + " days!"}
                 </span>
               </p>
             </div>
