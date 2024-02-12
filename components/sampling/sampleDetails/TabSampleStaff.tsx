@@ -15,13 +15,14 @@ import LoadingScreen from "@/components/LoadingScreen"
 import { User } from "@/lib/models/user.model"
 import { Sampling } from "@/lib/models/sampling.model"
 import { SamplingRequestData } from "@/lib/type"
+import { useToast } from "@/components/ui/use-toast"
 
 export default function TabSampleStaff({
   data,
 }: {
   data: SamplingRequestData
 }) {
-  const { project, user } = data
+  const { project, user, files } = data
 
   const table = useReactTable({
     data: user,
@@ -30,6 +31,8 @@ export default function TabSampleStaff({
   })
 
   const router = useRouter()
+  const { toast } = useToast()
+
   const [isLoading, setIsLoading] = useState(false)
 
   const submitSample = async (e: any, sample_id: string) => {
@@ -40,9 +43,16 @@ export default function TabSampleStaff({
     setIsLoading(false)
 
     if (!response) {
-      alert("Failed to submit sample!")
+      toast({
+        title: "Failed to Verify Sampling",
+        description: "Please Try Again",
+        variant: "destructive",
+      })
     } else {
-      alert("Success")
+      toast({
+        title: "Sampling Has Been Requested to be Verified",
+        description: "Wait for the Supervisor to check the sampling",
+      })
     }
 
     router.refresh()
@@ -59,7 +69,7 @@ export default function TabSampleStaff({
             <div key={i} className="flex items-center gap-8">
               <HyperLinkButton
                 title={s.sample_name}
-                href={"https://google.com"}
+                href={files.sampling_list[i].url || "/"}
               />
               <Button
                 className="w-24 py-4 self-center bg-light_brown hover:bg-dark_brown disabled:bg-transparent disabled:text-dark_brown disabled:font-bold disabled:border-2 disabled:border-dark_brown"
