@@ -1,31 +1,53 @@
-"use client";
+"use client"
 
-import { sidebarLinks } from "@/constants/sidebarlinks";
-import Image from "next/image";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import {
+  marketingLink,
+  samplingSPVLinks,
+  labLinks,
+  pplhpLinks,
+  // adminLinks,   // NOTE: gatau masih butuh atau engga [DEN]
+  samplingUSERLinks,
+} from "@/constants/sidebarlinks"
+import { useSession } from "next-auth/react"
+import Image from "next/image"
+import Link from "next/link"
+import { usePathname } from "next/navigation"
 
 // import { sidebarLinks } from "@/constants";
 
 function extractFirstPathSegment(path: string) {
   // Remove leading and trailing slashes and split the path by "/"
-  const segments = path.replace(/^\/|\/$/g, "").split("/");
+  const segments = path.replace(/^\/|\/$/g, "").split("/")
 
   // Return the first segment
-  return segments[0];
+  return segments[0]
 }
 
 function Bottombar() {
-  const pathname = usePathname();
-  const routeSection = "/" + extractFirstPathSegment(pathname);
+  const pathname = usePathname()
+  const routeSection = "/" + extractFirstPathSegment(pathname)
+
+  const currentUser = useSession().data?.user
+
+  const role = currentUser?.role.toUpperCase()
+
+  const links = pathname.includes("marketing")
+    ? marketingLink
+    : pathname.includes("sampling")
+    ? role == "SPV"
+      ? samplingSPVLinks
+      : samplingUSERLinks
+    : pathname.includes("lab")
+    ? labLinks
+    : pplhpLinks
 
   return (
     <section className="fixed bottom-0 z-10 w-full rounded-t-3xl p-4 bg-white max-sm:px-7 lg:hidden ">
-      <div className="flex items-center justify-between gap-3 max-sm:gap-5">
-        {sidebarLinks.map((link) => {
+      <div className="flex items-center justify-around gap-3 max-sm:gap-5">
+        {links.map((link) => {
           const isActive =
             (pathname.includes(link.route) && link.route.length > 1) ||
-            pathname === routeSection + link.route;
+            pathname === routeSection + link.route
 
           return (
             <Link
@@ -59,11 +81,11 @@ function Bottombar() {
                 {link.label.split(/\s+/)[0]}
               </p>
             </Link>
-          );
+          )
         })}
       </div>
     </section>
-  );
+  )
 }
 
-export default Bottombar;
+export default Bottombar

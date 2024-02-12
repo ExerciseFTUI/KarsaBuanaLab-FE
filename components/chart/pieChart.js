@@ -1,69 +1,65 @@
-// "use client";
-// import { Pie } from "react-chartjs-2";
+"use client"
+// Importing necessary modules from Chart.js
+import React, { useEffect, useRef } from 'react';
+import Chart from 'chart.js/auto';
 
-// // import {
-// //     Chart as ChartJS,
-// //     PieElement,
-// //     CategoryScale, // x axis
-// //     LinearScale, // y axis
-// //     PointElement,
-// //     Legend,
-// //     Tooltip,
-// //     Filler,
-// // } from "chart.js";
+// Functional component
+export default function PieChart({ detailGraph }) {
+  // Refs for chart canvas and chart instance
+  const chartRef = useRef(null);
+  const chartInstance = useRef(null);
+  var projectRunning = 10;
+  var projectCancelled = 5;
+  var projectFinshed = 20;
 
-// // ChartJS.register(
-// //     PieElement,
-// //     CategoryScale,
-// //     LinearScale,
-// //     PointElement,
-// //     Legend,
-// //     Tooltip,
-// //     Filler
-// // );
+    if (detailGraph !== 0) {
+        projectRunning = detailGraph.totalForRunning;
+        projectCancelled = detailGraph.totalForCancelled;
+        projectFinshed = detailGraph.totalForFinished;
+    } 
 
-// const DATA_COUNT = 5;
-// const NUMBER_CFG = {count: DATA_COUNT, min: 0, max: 100};
+  useEffect(() => {
+    // Destroy the existing chart instance if it exists
+    if (chartInstance.current) {
+      chartInstance.current.destroy();
+    }
 
-// const data = {
-// labels: ['Red', 'Orange', 'Yellow', 'Green', 'Blue'],
-// datasets: [
-//     {
-//     label: 'Dataset 1',
-//     data: Utils.numbers(NUMBER_CFG),
-//     }
-// ]
-// };
+    // Get the 2D context of the chart canvas
+    const myChartRef = chartRef.current.getContext('2d');
 
-// function PieChart() {
+    // Create a new Chart instance
+    chartInstance.current = new Chart(myChartRef, {
+      type: 'pie',
+      data: {
+        labels: [`Running = ${projectRunning}`, `Cancelled = ${projectCancelled}`, `Finished = ${projectFinshed}`],
+        datasets: [
+          {
+            data: [ projectRunning, projectCancelled, projectFinshed],
+            backgroundColor: ['#03FCF0', '#FF8383', '#C2FC03'],
+          },
+        ],
+      },
+    });
 
-//     const config = {
-//         type: 'doughnut',
-//         data: data,
-//         options: {
-//             responsive: true,
-//             plugins: {
-//             legend: {
-//                 position: 'top',
-//             },
-//             title: {
-//                 display: true,
-//                 text: 'Chart.js Doughnut Chart'
-//             }
-//             }
-//         },
-//         };
+    // Cleanup function to destroy the chart on component unmount
+    return () => {
+      if (chartInstance.current) {
+        chartInstance.current.destroy();
+      }
+    };
+  }, []); // Empty dependency array to run the effect only once on mount
 
-//     return (
-//         <div className="h-60 w-full sm:w-60 mr-10 mt-6 ">
-//             <h4 className="text-xs bg-light_green w-fit px-2 rounded-md font-medium text-start">
-//                 Project Cancelled
-//             </h4>
-//             <div className="cursor-pointer ">
-//                 <Pie data={data} options={config}></Pie>
-//             </div>
-//         </div>
-//     );
-// }
-
-// export {PieChart};
+  // Render the chart canvas
+  return (
+    <div>
+        <div className="h-full w-full mt-6  items-center flex flex-col ">
+            <h4 className={`text-xs  w-fit px-2 rounded-md font-medium bg-light_green text-start`}>
+                Percentage of Project Status
+            </h4>
+            <div className="cursor-pointer w-3/5 h-3/w-3/5 flex flex-row justify-center ">
+                <canvas ref={chartRef} className=' ' />
+            </div>
+        </div>
+    </div>
+  );
+}

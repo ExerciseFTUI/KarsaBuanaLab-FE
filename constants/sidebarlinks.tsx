@@ -1,9 +1,23 @@
 import { HiChartBar } from "react-icons/hi";
 import { LiaRunningSolid } from "react-icons/lia";
-import { AiFillHome, AiOutlineCheckCircle } from "react-icons/ai";
+import {
+  AiFillHome,
+  AiOutlineCheckCircle,
+  AiOutlineGooglePlus,
+  AiOutlinePlus,
+  AiOutlinePlusCircle,
+  AiOutlinePlusSquare,
+} from "react-icons/ai";
 import { MdOutlineCancel } from "react-icons/md";
 import { FaRunning } from "react-icons/fa";
 import { ReactNode } from "react";
+import { GiLoveLetter, GiPaper } from "react-icons/gi";
+import { LetterCaseCapitalizeIcon, PlusIcon } from "@radix-ui/react-icons";
+import { Archive, Mail } from "lucide-react";
+import { BsFileText } from "react-icons/bs";
+import { BiSolidBox } from "react-icons/bi";
+import { FiFileText } from "react-icons/fi";
+import { FiArchive } from "react-icons/fi";
 
 export interface ISidebarLinks {
   route: string;
@@ -11,16 +25,39 @@ export interface ISidebarLinks {
   icon: ReactNode;
 }
 
-export const sidebarLinks: ISidebarLinks[] = [
+export const adminLinks: ISidebarLinks[] = [
   {
     icon: <AiFillHome />,
     route: "",
     label: "Dashboard",
   },
   {
-    icon: <HiChartBar />,
-    route: "/ondiscuss",
-    label: "OnDiscuss",
+    icon: <AiOutlinePlusCircle />,
+    route: "/register",
+    label: "Register",
+  },
+  // {
+  //   icon: <GiPaper />,
+  //   route: "/sampling",
+  //   label: "Sampling Page",
+  // },
+  // {
+  //   icon: <BiSolidBox />,
+  //   route: "/pplhp",
+  //   label: "PPLHP Page",
+  // },
+  // {
+  //   icon: <Mail />,
+  //   route: "/lab",
+  //   label: "Lab Page",
+  // },
+];
+
+export const marketingLink: ISidebarLinks[] = [
+  {
+    icon: <AiFillHome />,
+    route: "",
+    label: "Dashboard",
   },
   {
     icon: <FaRunning />,
@@ -37,32 +74,78 @@ export const sidebarLinks: ISidebarLinks[] = [
     route: "/cancelled",
     label: "Cancelled",
   },
+  {
+    icon: <HiChartBar />,
+    route: "/sample",
+    label: "Sample",
+  },
 ];
 
-// export const sidebarLinks = [
-//   {
-//     imgURL: "/assets/home.svg",
-//     route: "",
-//     label: "Dashboard",
-//   },
-//   {
-//     imgURL: "/assets/discuss.svg",
-//     route: "/ondiscuss",
-//     label: "OnDiscuss",
-//   },
-//   {
-//     imgURL: "/assets/running.svg",
-//     route: "/running",
-//     label: "Running",
-//   },
-//   {
-//     imgURL: "/assets/finished.svg",
-//     route: "/finished",
-//     label: "Finished",
-//   },
-//   {
-//     imgURL: "/assets/cancelled.svg",
-//     route: "/cancelled",
-//     label: "Cancelled",
-//   },
-// ];
+export const samplingSPVLinks: ISidebarLinks[] = [
+  {
+    icon: <AiFillHome />,
+    route: "/project",
+    label: "Project",
+  },
+  // {
+  //   icon: <FiFileText />,
+  //   route: "/assignment-letter",
+  //   label: "Assignment Letter",
+  // },
+  {
+    icon: <Archive />,
+    route: "/sample",
+    label: "Sample",
+  },
+];
+
+export const samplingUSERLinks: ISidebarLinks[] = [samplingSPVLinks[1]]
+
+export const pplhpLinks: ISidebarLinks[] = [
+  {
+    icon: <AiFillHome />,
+    route: "/receive",
+    label: "Receive",
+  },
+  {
+    icon: <HiChartBar />,
+    route: "/lhpdraft",
+    label: "Pembuatan Draft LHP",
+  },
+  {
+    icon: <FaRunning />,
+    route: "/finalreview",
+    label: "Final Review LHP dan Printing",
+  },
+];
+
+export const labLinks: ISidebarLinks[] = [
+  {
+    icon: <AiFillHome />,
+    route: "",
+    label: "Dashboard",
+  },
+  {
+    icon: <FiFileText />,
+    route: "/verifikasidata",
+    label: "Verifikasi Data",
+  },
+  {
+    icon: <FiArchive />,
+    route: "/finalreview",
+    label: "Final Review",
+  },
+];
+
+export const sampleReceiveLinks: ISidebarLinks[] = [
+  {
+    icon: <AiFillHome />,
+    route: "",
+    label: "Projects",
+  },
+  {
+    icon: <HiChartBar />,
+    route: "/ondiscuss",
+    label: "Pengamanan",
+  },
+];

@@ -21,12 +21,15 @@ import {
   useForm,
 } from "react-hook-form";
 import { useToast } from "@/components/ui/use-toast";
+import { BaseSample } from "@/lib/models/baseSample.model";
 
 interface SamplingTabProps {
   openModal: boolean;
   setOpenModal: (boolean: boolean) => void;
   form: UseFormReturn<FieldValues, any, undefined>;
   arrayField: UseFieldArrayReturn<FieldValues, any, "id">;
+  onSubmit: SubmitHandler<FieldValues>;
+  baseSamples?: BaseSample[];
 }
 
 const SamplingTab: FC<SamplingTabProps> = ({
@@ -34,6 +37,8 @@ const SamplingTab: FC<SamplingTabProps> = ({
   arrayField,
   openModal,
   setOpenModal,
+  onSubmit,
+  baseSamples,
 }) => {
   const { toast } = useToast();
 
@@ -42,36 +47,49 @@ const SamplingTab: FC<SamplingTabProps> = ({
   const { fields: samples, append, remove, update } = arrayField;
 
   //Add to the samples array
-  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
-    //Get the parameter only value
-    const parametersValue = data.parameters.map(
-      (parameter: any) => parameter.value
-    );
+  // const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+  //   console.log(data.parameters);
 
-    //Get the needed data
-    const finalSample = {
-      sampleName: data.sampling,
-      regulation: data.regulation,
-      parameters: parametersValue,
-    };
+  //   //Handle Missing Data
+  //   if (
+  //     data.sampling === "" ||
+  //     data.regulation === "" ||
+  //     data.parameters.length === 0 ||
+  //     data.parameters[0] === ""
+  //   ) {
+  //     alert("Please fill the data");
+  //     return;
+  //   }
 
-    //Add to samples array
-    append(finalSample);
+  //   //Get the parameter only value
+  //   const parametersValue = data.parameters.map(
+  //     (parameter: any) => parameter.value
+  //   );
 
-    //Reset all the form
-    setValue("parameters", [""], { shouldValidate: true });
-    resetField("sampling");
-    resetField("parameters");
+  //   //Get the needed data
+  //   const finalSample = {
+  //     sampleName: data.sampling,
+  //     regulation: data.regulation,
+  //     parameters: parametersValue,
+  //   };
 
-    //Close Modal
-    setOpenModal(false);
+  //   //Add to samples array
+  //   append(finalSample);
 
-    //Display Toast
-    toast({
-      title: "Successfully adding new sample",
-      description: "Good Job",
-    });
-  };
+  //   //Reset all the form
+  //   setValue("parameters", [""], { shouldValidate: true });
+  //   resetField("sampling");
+  //   resetField("parameters");
+
+  //   //Close Modal
+  //   setOpenModal(false);
+
+  //   //Display Toast
+  //   toast({
+  //     title: "Successfully adding new sample",
+  //     description: "Good Job",
+  //   });
+  // };
 
   //Remove Sample
   function deleteSample(index: number) {
@@ -80,11 +98,12 @@ const SamplingTab: FC<SamplingTabProps> = ({
 
   return (
     <>
-      <Card className="overflow-y-auto max-h-[90vh] custom-scrollbar">
+      <Card className="overflow-y-auto max-h-[90vh]  md:max-h-[25rem] custom-scrollbar">
         <CardHeader>
           <CardTitle>Sampling</CardTitle>
           <CardDescription>
-            Make changes to your sampling here. Click save when you're done.
+            Make changes to your sampling here. Click save when you&apos;re
+            done.
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-2">
@@ -109,6 +128,7 @@ const SamplingTab: FC<SamplingTabProps> = ({
                   index={index}
                   deleteSample={() => deleteSample(index)}
                   update={update}
+                  baseSamples={baseSamples}
                 />
               ))}
             </>
@@ -126,6 +146,8 @@ const SamplingTab: FC<SamplingTabProps> = ({
         }}
         form={form}
         onSubmit={onSubmit}
+        baseSamples={baseSamples}
+        change={false}
       />
     </>
   );

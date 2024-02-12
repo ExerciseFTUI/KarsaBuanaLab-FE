@@ -8,6 +8,9 @@ module.exports = {
     "./src/**/*.{ts,tsx}",
   ],
   theme: {
+    fontFamily: {
+      'dm-sans': ['DM Sans', 'system-ui'],
+    },
     container: {
       center: true,
       padding: "2rem",
@@ -20,12 +23,15 @@ module.exports = {
         black_brown: "#333D29",
         dark_brown: "#7E4F23",
         light_brown: "#9B7F5A",
+        ghost_brown: "#B19C80",
         light_green: "#C2C5AA",
         moss_green: "#666D4B",
+        pastel_moss_green: "#EBEBE6",
         charcoal_green: "#A2A6A1",
         dark_green: "#343D2A",
         ghost_green: "#8A8F85",
         ghost_white: "#EDECF2",
+        brick_red: "#AC5C43",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
