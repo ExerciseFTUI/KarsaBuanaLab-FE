@@ -10,14 +10,16 @@ import { Project } from "@/lib/models/project.model"
 import LoadingScreen from "@/components/LoadingScreen"
 import { SamplingRequestData } from "@/lib/type"
 
-export default function Project({ data }: { data: SamplingRequestData }) {
+export default function Project({
+  data,
+  role,
+}: {
+  data: SamplingRequestData
+  role: string
+}) {
   const { project, files, user } = data
 
-  const currentUser = useSession().data?.user
-
-  const role = currentUser?.role.toUpperCase()
-
-  if (role == null) return
+  if (role == "") return
 
   if (data == null)
     return (
