@@ -45,8 +45,7 @@ function extractPageName(pathname: string) {
 
 const Topbar: FC<TopbarProps> = ({ projects, data }) => {
   const pathname = extractPageName(usePathname())
-
-  const { data: session } = useSession()
+  const { data: session } = useSession();
 
   const formattedPathname =
     pathname.split("-").length > 1

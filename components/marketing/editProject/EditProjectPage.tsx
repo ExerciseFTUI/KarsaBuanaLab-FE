@@ -85,7 +85,7 @@ export default function EditProjectPage({
 
   //All the samples get save in here
   const { fields: samples, append, remove } = arrayField
-
+  
   //Checker
   const [change, setChange] = useState(false)
 
