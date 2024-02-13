@@ -49,7 +49,6 @@ const Topbar: FC<TopbarProps> = ({ projects, data }) => {
   const pathname = extractPageName(usePathname())
   
   const { data: session } = useSession();
-  console.log(data);
 
   const formattedPathname =
     pathname.split("-").length > 1
