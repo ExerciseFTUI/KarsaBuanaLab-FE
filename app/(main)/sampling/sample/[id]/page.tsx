@@ -1,4 +1,5 @@
 import ProjectDetail from "@/components/sampling/sampleDetails"
+import getSessionServer from "@/lib/actions/getSessionServer"
 import { getProject } from "@/lib/actions/marketing.actions"
 import { getAllUser, getLinkFiles } from "@/lib/actions/sampling.actions"
 import { User } from "@/lib/models/user.model"
@@ -12,6 +13,11 @@ export default async function SamplingProject({
   const resProject = await getProject(params.id)
   const resFiles = await getLinkFiles(params.id)
   const resUser = await getAllUser("USER")
+
+  const session = await getSessionServer()
+
+  const user = session?.user || ""
+  const role = user ? user?.role.toUpperCase() : ""
 
   let samplingUser: User[] = []
 
@@ -29,7 +35,7 @@ export default async function SamplingProject({
 
   return (
     <div className="flex overflow-auto custom-scrollbar w-full border-t-light_brown border-t-2 py-4">
-      <ProjectDetail data={data} />
+      <ProjectDetail role={role} data={data} />
     </div>
   )
 }
