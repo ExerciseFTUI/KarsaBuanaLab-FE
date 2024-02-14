@@ -14,6 +14,17 @@ import LoadingScreen from "@/components/LoadingScreen"
 import { SamplingRequestData } from "@/lib/type"
 import { cn } from "@/lib/utils"
 import { useToast } from "@/components/ui/use-toast"
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
 
 export default function TabSampleAdmin({
   data,
@@ -92,24 +103,64 @@ export default function TabSampleAdmin({
                 />
 
                 <div className="flex gap-2">
-                  <Button
-                    className={cn(
-                      "bg-light_brown hover:bg-dark_brown",
-                      s.status == "ACCEPTED" ? "hidden" : ""
-                    )}
-                    title="Accept"
-                    onClick={(e) => submitSample(s._id, "ACCEPTED")}
-                  >
-                    Accept
-                  </Button>
+                  <AlertDialog>
+                    <AlertDialogTrigger>
+                      <Button
+                        className={cn(
+                          "bg-light_brown hover:bg-dark_brown",
+                          s.status == "ACCEPTED" ? "hidden" : ""
+                        )}
+                        title="Accept"
+                      >
+                        Accept
+                      </Button>
+                    </AlertDialogTrigger>
 
-                  <Button
-                    className="bg-light_brown hover:bg-dark_brown"
-                    title="Revisi"
-                    onClick={(e) => submitSample(s._id, "REVISION")}
-                  >
-                    Revisi
-                  </Button>
+                    <AlertDialogContent>
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>
+                          Are you sure to ACCEPT this sampling?
+                        </AlertDialogTitle>
+                      </AlertDialogHeader>
+
+                      <AlertDialogFooter>
+                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogAction
+                          onClick={(e) => submitSample(s._id, "ACCEPTED")}
+                        >
+                          Continue
+                        </AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
+
+                  <AlertDialog>
+                    <AlertDialogTrigger>
+                      <Button
+                        className="bg-light_brown hover:bg-dark_brown"
+                        title="Revisi"
+                      >
+                        Revisi
+                      </Button>
+                    </AlertDialogTrigger>
+
+                    <AlertDialogContent>
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>
+                          Are you sure to REVISE this sampling?
+                        </AlertDialogTitle>
+                      </AlertDialogHeader>
+
+                      <AlertDialogFooter>
+                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogAction
+                          onClick={(e) => submitSample(s._id, "REVISION")}
+                        >
+                          Continue
+                        </AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
                 </div>
               </div>
             ))}
