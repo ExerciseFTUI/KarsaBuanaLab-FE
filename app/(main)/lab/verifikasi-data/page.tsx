@@ -1,6 +1,5 @@
-import LabDataTable from "@/components/lab/LabDataTable";
-import { getProject } from "@/lib/actions/pplhp.actions";
-import { Project } from "@/lib/models/project.model";
+import LabDataTable from "@/components/lab/LabDataTable"
+import { getProject } from "@/lib/actions/pplhp.actions"
 
 const data = [
   {
@@ -163,14 +162,14 @@ const data = [
     lokasi: "Location 20",
     lokasiPengambilanSampel: "Jl. Flamboyan",
   },
-];
+]
 
 export default async function Home() {
-  const projects = await getProject("running");
+  const projects = await getProject("running")
 
   return (
     <div className="flex justify-between w-full h-screen">
-      <LabDataTable data={projects ? projects : []} link="finalreview/" />
+      <LabDataTable data={projects ? projects : []} link="verifikasi-data/" />
     </div>
-  );
+  )
 }
