@@ -32,6 +32,17 @@ import { useRouter } from "next/navigation"
 import LoadingScreen from "@/components/LoadingScreen"
 import { SamplingRequestData } from "@/lib/type"
 import { useToast } from "@/components/ui/use-toast"
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
 
 interface Params {
   data: SamplingRequestData
@@ -114,7 +125,8 @@ export default function SampleProjectTab({ data }: Params) {
       });
     }
     
-    router.refresh()
+    // router.refresh()
+    router.push("/sampling/project")
   }
 
   return (
@@ -186,12 +198,30 @@ export default function SampleProjectTab({ data }: Params) {
             </PopoverContent>
           </Popover>
 
-          <Button
-            className="w-48 py-4 self-center mt-4 bg-light_brown hover:bg-dark_brown disabled:bg-transparent disabled:text-dark_brown disabled:font-bold disabled:border-2 disabled:border-dark_brown"
-            onClick={(e) => addProjectDeadline(e)}
-          >
-            {date == null ? "Choose Deadline" : "Save"}
-          </Button>
+          <AlertDialog>
+            <AlertDialogTrigger>
+              <Button className="w-48 py-4 self-center mt-4 bg-light_brown hover:bg-dark_brown disabled:bg-transparent disabled:text-dark_brown disabled:font-bold disabled:border-2 disabled:border-dark_brown">
+                {date == null ? "Choose Deadline" : "Save"}
+              </Button>
+            </AlertDialogTrigger>
+
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+
+                <AlertDialogDescription>
+                  Please kindly check the deadline and the users again.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction onClick={(e) => addProjectDeadline(e)}>
+                  Continue
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
         </div>
       </TabsContent>
     </Tabs>
