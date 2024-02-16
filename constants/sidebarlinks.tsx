@@ -122,7 +122,7 @@ export const pplhpLinks: ISidebarLinks[] = [
 export const labLinks: ISidebarLinks[] = [
   {
     icon: <AiFillHome />,
-    route: "",
+    route: "/dashboard",
     label: "Dashboard",
   },
   {
