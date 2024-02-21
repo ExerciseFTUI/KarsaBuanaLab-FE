@@ -40,7 +40,7 @@ const CreateSamplePage = ({
                     <div className='flex flex-col mt-10'>
                         <h1 className='text-black font-semibold text-lg mb-3'>Regulation</h1>
                         <div className='flex flex-row justify-center'>
-                            <TableRegulation sample={sample} regulation={regulation} setRegulation={setRegulation} />
+                            <TableRegulation baseSample={baseSample} sample={sample} setRegulation={setRegulation} />
                         </div>
                     </div>
                     {/* End of Regulations */}

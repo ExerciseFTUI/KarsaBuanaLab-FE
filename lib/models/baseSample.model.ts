@@ -9,6 +9,6 @@ export interface BaseSample {
 
 export interface Regulation {
   regulation_name: string;
-  _id: string;
+  _id: number;
   default_param: string[];
 }
