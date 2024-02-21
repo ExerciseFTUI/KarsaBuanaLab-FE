@@ -13,6 +13,7 @@ import { verifySample } from "@/lib/actions/sampling.actions"
 import LoadingScreen from "@/components/LoadingScreen"
 import { SamplingRequestData } from "@/lib/type"
 import { cn } from "@/lib/utils"
+import { useToast } from "@/components/ui/use-toast"
 
 export default function TabSampleAdmin({
   data,
@@ -32,23 +33,34 @@ export default function TabSampleAdmin({
   })
 
   const router = useRouter()
+  const { toast } = useToast()
+
   const [isLoading, setIsLoading] = useState(false)
 
-  const submitSample = async (sampleName: string, status: string) => {
+  const submitSample = async (sample_id: string, status: string) => {
     setIsLoading(true)
 
-    const response = await verifySample(project._id, status, sampleName)
+    const response = await verifySample(project._id, status, sample_id)
 
     setIsLoading(false)
 
     if (!response) {
-      alert("Failed to submit sample!")
+      toast({
+        title: "Failed to Verify Sampling",
+        description: "Please Try Again",
+        variant: "destructive",
+      })
     } else {
-      alert("Success")
+      toast({
+        title: "Sampling Has Been Verified",
+        description: "Please check again if its correct",
+      })
     }
 
     router.refresh()
   }
+
+  // console.log(files)
 
   return (
     <Tabs defaultValue="buatDokumen" className="flex-1">
@@ -76,7 +88,7 @@ export default function TabSampleAdmin({
                 <HyperLinkButton
                   className="w-full"
                   title={s.sample_name}
-                  href={"https://drive.google.com/file/d/" + s.fileId}
+                  href={files.sampling_list[i].url || "/"}
                 />
 
                 <div className="flex gap-2">
@@ -86,7 +98,7 @@ export default function TabSampleAdmin({
                       s.status == "ACCEPTED" ? "hidden" : ""
                     )}
                     title="Accept"
-                    onClick={(e) => submitSample(s.sample_name, "ACCEPTED")}
+                    onClick={(e) => submitSample(s._id, "ACCEPTED")}
                   >
                     Accept
                   </Button>
@@ -94,7 +106,7 @@ export default function TabSampleAdmin({
                   <Button
                     className="bg-light_brown hover:bg-dark_brown"
                     title="Revisi"
-                    onClick={(e) => submitSample(s.sample_name, "SUBMIT")}
+                    onClick={(e) => submitSample(s._id, "REVISION")}
                   >
                     Revisi
                   </Button>
@@ -119,7 +131,11 @@ export default function TabSampleAdmin({
 
           <HyperLinkButton
             title="Logbook Rekaman Sampel"
-            href={files.file.find((f: any) => f.name == "logbook") || "/"}
+            href={
+              files.file.find(
+                (f: any) => f.name == "Logbook Jadwal Sampling"
+              ) || "/"
+            }
             className=""
           />
         </div>
