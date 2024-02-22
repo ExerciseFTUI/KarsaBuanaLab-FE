@@ -201,3 +201,15 @@ export type ClientDataType = {
   analysis: ClientResponses[];
   finished: FinishedData;
 };
+
+export type SurveySchema = {
+  title: string;
+  question: QuestionType[];
+};
+
+export type QuestionType = {
+  _id: string;
+  text: string;
+  type: string;
+  choices: string;
+};

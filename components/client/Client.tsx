@@ -11,10 +11,6 @@ export default function Client() {
 
   const { data } = useSession();
 
-  useEffect(() => {
-    console.log(data);
-  }, []);
-
   return (
     <>
       <div className="w-screen flex flex-col md:flex-row">

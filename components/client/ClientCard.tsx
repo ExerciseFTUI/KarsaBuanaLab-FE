@@ -96,9 +96,11 @@ const ClientCard: FC<ClientCardProps> = ({ resiNumber, stage, clientData }) => {
         return clientData?.analysis && <Analysis data={clientData.analysis} />;
       case 2:
         return refreshed ? (
-          <Finished data={localClientData} />
+          <Finished data={localClientData} resiNumber={resiNumber} />
         ) : (
-          clientData?.finished && <Finished data={clientData.finished} />
+          clientData?.finished && (
+            <Finished data={clientData.finished} resiNumber={resiNumber} />
+          )
         );
       default:
         return null;

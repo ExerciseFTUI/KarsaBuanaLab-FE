@@ -4,9 +4,10 @@ import SurveyForm from "../forms/SurveyForm";
 
 interface FinishedProps {
   data: any;
+  resiNumber: string;
 }
 
-const Finished: FC<FinishedProps> = ({ data }) => {
+const Finished: FC<FinishedProps> = ({ data, resiNumber }) => {
   const paymentStatus = data.is_paid ? "Sudah Terbayar" : "Belum Bayar";
 
   return (
@@ -17,8 +18,8 @@ const Finished: FC<FinishedProps> = ({ data }) => {
         <p>Status pembayaran:</p>
         <p className="font-bold">{paymentStatus}</p>
       </div>
-      {!data.is_survey_filled ? (
-        <SurveyForm data={data} />
+      {/* {data.is_survey_filled ? (
+        <SurveyForm data={data} resiNumber={resiNumber} />
       ) : (
         <a href={data.report} target="_blank">
           <Button
@@ -28,7 +29,8 @@ const Finished: FC<FinishedProps> = ({ data }) => {
             Laporan Hasil Penelitian
           </Button>
         </a>
-      )}
+      )} */}
+      <SurveyForm data={data} resiNumber={resiNumber} />
 
       <div className="mt-2">
         <p className="m-2 text-charcoal_green italic">

@@ -61,7 +61,9 @@ const LabDataTable: FC<LabDataTableProps> = ({ data, link }) => {
   const router = useRouter();
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
+    _id: false,
+  });
   const [rowSelection, setRowSelection] = useState({});
 
   const table = useReactTable({
@@ -89,9 +91,11 @@ const LabDataTable: FC<LabDataTableProps> = ({ data, link }) => {
         <CiSearch className="text-xl translate-x-8" />
         <Input
           placeholder="Search Project Title"
-          value={(table.getColumn("judul")?.getFilterValue() as string) ?? ""}
+          value={
+            (table.getColumn("project_name")?.getFilterValue() as string) ?? ""
+          }
           onChange={(event) =>
-            table.getColumn("judul")?.setFilterValue(event.target.value)
+            table.getColumn("project_name")?.setFilterValue(event.target.value)
           }
           className="max-w-sm pl-10"
         />
@@ -107,16 +111,18 @@ const LabDataTable: FC<LabDataTableProps> = ({ data, link }) => {
               .filter((column) => column.getCanHide())
               .map((column) => {
                 return (
-                  <DropdownMenuCheckboxItem
-                    key={column.id}
-                    className="capitalize"
-                    checked={column.getIsVisible()}
-                    onCheckedChange={(value) =>
-                      column.toggleVisibility(!!value)
-                    }
-                  >
-                    {column.id}
-                  </DropdownMenuCheckboxItem>
+                  column.id !== "_id" && (
+                    <DropdownMenuCheckboxItem
+                      key={column.id}
+                      className="capitalize"
+                      checked={column.getIsVisible()}
+                      onCheckedChange={(value) =>
+                        column.toggleVisibility(!!value)
+                      }
+                    >
+                      {column.id}
+                    </DropdownMenuCheckboxItem>
+                  )
                 );
               })}
           </DropdownMenuContent>
@@ -149,9 +155,7 @@ const LabDataTable: FC<LabDataTableProps> = ({ data, link }) => {
                   className="hover:bg-light_green ease-in-out duration-500 text-xs hover:cursor-pointer hover:rounded-xl"
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
-                  onClick={() =>
-                    router.push(link + row.getValue("noPenawaran"))
-                  }
+                  onClick={() => router.push(link + row.getValue("_id"))}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id} className="py-4">

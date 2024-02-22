@@ -19,6 +19,18 @@ export const getProjectDivision = async (
   }
 };
 
+export const submitSurvey = async (projectId: string) => {
+  try {
+    const response = await axios.post(`${apiBaseUrl}/clients/fill-survey`, {
+      projectId,
+    });
+    return response.data.result;
+  } catch (error: any) {
+    console.error("Error getting Project", error.message);
+    return null as unknown;
+  }
+};
+
 export const getSampleById = async (projectId: string): Promise<any[]> => {
   try {
     const response = await axios.get(
@@ -78,6 +90,16 @@ export const getReportById = async (projectId: string): Promise<any> => {
     return response.data.result; // Access 'result' field
   } catch (error: any) {
     console.error(`Error getting sample : ${projectId}:`, error.message);
+    return null as unknown;
+  }
+};
+
+export const getSurvey = async (): Promise<any> => {
+  try {
+    const response = await axios.get(`${apiBaseUrl}/survey/get-survey`);
+    return response.data.survey;
+  } catch (error: any) {
+    console.error(`Error getting survey}:`, error.message);
     return null as unknown;
   }
 };

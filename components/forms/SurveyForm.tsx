@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useEffect, useState } from "react";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -27,38 +27,69 @@ import { Label } from "@/components/ui/label";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
 import { useForm, useFormContext } from "react-hook-form";
-import { surveyValidation } from "@/lib/validations/SurveyValidation";
-import { FinishedData } from "@/lib/type";
+import {
+  surveyValidation,
+  surveyValidationType,
+} from "@/lib/validations/SurveyValidation";
+import { FinishedData, QuestionType } from "@/lib/type";
+import { getSurvey, submitSurvey } from "@/lib/actions/client.actions";
+import { useToast } from "../ui/use-toast";
 
 interface SurveyFormProps {
   data: FinishedData;
+  resiNumber: string;
 }
 
-const SurveyForm: FC<SurveyFormProps> = ({ data }) => {
+const SurveyForm: FC<SurveyFormProps> = ({ data, resiNumber }) => {
+  const [questions, setQuestions] = useState<QuestionType[]>();
+  const [loading, setLoading] = useState(false);
+  const { toast } = useToast();
+
+  const fetchData = async () => {
+    setLoading(true);
+    try {
+      const data = await getSurvey();
+      setQuestions(data);
+      console.log(questions);
+    } catch (error: any) {
+      console.error("Error fetching data:", error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+  useEffect(() => {
+    fetchData();
+    console.log(questions);
+  }, []);
+
   const form = useForm<z.infer<typeof surveyValidation>>({
     resolver: zodResolver(surveyValidation),
-    defaultValues: {
-      question1: "",
-      question2: "",
-      question3: "",
-      question4: "",
-      question5: "",
-      question6: "",
-      question7: "",
-      question8: "",
-    },
   });
+  async function onSubmit(values: z.infer<typeof surveyValidation>) {
+    try {
+      setLoading(true);
 
-  function onSubmit(values: z.infer<typeof surveyValidation>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
+      // const response = await submitSurvey(values.resiNumber);
+
+      // if (!response) {
+      //   toast({
+      //     title: "Failed to get the project",
+      //     description: "please resubmit the form",
+      //   });
+      //   setIsLoading(false);
+      //   return;
+      // }
+    } catch (error) {
+      console.error("Error getting project :", error);
+    } finally {
+      setLoading(false);
+    }
   }
   return (
     <Dialog>
       <DialogTrigger asChild>
         <Button
-          disabled={!data.is_paid}
+          // disabled={!data.is_paid}
           className="flex bg-black_brown justify-center rounded-xl text-xl text-ghost_white py-2 w-full"
         >
           Laporan Hasil Penelitian
@@ -74,110 +105,26 @@ const SurveyForm: FC<SurveyFormProps> = ({ data }) => {
           <div className="px-3">
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)}>
-                <FormField
-                  control={form.control}
-                  name="question1"
-                  render={({ field }) => (
-                    <FormItem className="flex flex-col items-start gap-4 my-4">
-                      <FormLabel>Question 1</FormLabel>
-                      <FormControl>
-                        <Input className="py-6" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="question2"
-                  render={({ field }) => (
-                    <FormItem className="flex flex-col items-start gap-4 my-4">
-                      <FormLabel>Question 2</FormLabel>
-                      <FormControl>
-                        <Input className="py-6" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="question3"
-                  render={({ field }) => (
-                    <FormItem className="flex flex-col items-start gap-4 my-4">
-                      <FormLabel>Question 3</FormLabel>
-                      <FormControl>
-                        <Input className="py-6" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="question4"
-                  render={({ field }) => (
-                    <FormItem className="flex flex-col items-start gap-4 my-4">
-                      <FormLabel>Question 4</FormLabel>
-                      <FormControl>
-                        <Input className="py-6" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="question5"
-                  render={({ field }) => (
-                    <FormItem className="flex flex-col items-start gap-4 my-4">
-                      <FormLabel>Question 5</FormLabel>
-                      <FormControl>
-                        <Input className="py-6" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="question6"
-                  render={({ field }) => (
-                    <FormItem className="flex flex-col items-start gap-4 my-4">
-                      <FormLabel>Question 6</FormLabel>
-                      <FormControl>
-                        <Input className="py-6" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="question7"
-                  render={({ field }) => (
-                    <FormItem className="flex flex-col items-start gap-4 my-4">
-                      <FormLabel>Question 7</FormLabel>
-                      <FormControl>
-                        <Input className="py-6" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="question8"
-                  render={({ field }) => (
-                    <FormItem className="flex flex-col items-start gap-4 my-4">
-                      <FormLabel>Question 8</FormLabel>
-                      <FormControl>
-                        <Input className="py-6" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                {/* {questions?.map((question) => (
+                  <div>
+                    {question.type === "essay" && (
+                      <FormField
+                        control={form.control}
+                        name="question1"
+                        render={({ field }) => (
+                          <FormItem className="flex flex-col items-start gap-4 my-4">
+                            <FormLabel>Question 1</FormLabel>
+                            <FormControl>
+                              <Input className="py-6" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    )}
+                  </div>
+                ))} */}
+
                 <div className="flex justify-center bg-white h-fit w-full my-16">
                   <Button type="submit" className="bottom-0 w-1/2 text-lg p-6">
                     Submit Survey

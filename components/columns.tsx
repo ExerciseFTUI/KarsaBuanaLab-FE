@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -65,8 +65,9 @@ export const columns: ColumnDef<ProjectMarketingType>[] = [
       return (
         <div className="">
           <div
-            className={`font-light text-white w-fit px-6 py-0.5 rounded-full ${status ? "bg-yellow-700" : "bg-red-400"
-              }`}
+            className={`font-light text-white w-fit px-6 py-0.5 rounded-full ${
+              status ? "bg-yellow-700" : "bg-red-400"
+            }`}
           >
             {row.getValue("status")}
           </div>
@@ -129,7 +130,7 @@ export const columns: ColumnDef<ProjectMarketingType>[] = [
     enableHiding: false,
     cell: ({ row }) => {
       const project = row.original._id;
-      
+
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -141,7 +142,9 @@ export const columns: ColumnDef<ProjectMarketingType>[] = [
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem>
-              <Link href={`/marketing/project/${row.original.status}/${project}`}>
+              <Link
+                href={`/marketing/project/${row.original.status}/${project}`}
+              >
                 View project details
               </Link>
             </DropdownMenuItem>
@@ -157,7 +160,7 @@ export const columns: ColumnDef<ProjectMarketingType>[] = [
         </DropdownMenu>
       );
     },
-  }
+  },
 ];
 
 // Table for cancelled project
@@ -203,8 +206,9 @@ export const columnsCancelled: ColumnDef<ProjectMarketingType>[] = [
       return (
         <div className="">
           <div
-            className={`font-light text-white w-fit px-6 py-0.5 rounded-full ${status ? "bg-yellow-700" : "bg-red-400"
-              }`}
+            className={`font-light text-white w-fit px-6 py-0.5 rounded-full ${
+              status ? "bg-yellow-700" : "bg-red-400"
+            }`}
           >
             {row.getValue("status")}
           </div>
@@ -231,14 +235,14 @@ export const columnsCancelled: ColumnDef<ProjectMarketingType>[] = [
       );
     },
   },
-  
+
   //Action
   {
     id: "actions",
     enableHiding: false,
     cell: ({ row }) => {
       const project = row.original._id;
-      
+
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -250,7 +254,9 @@ export const columnsCancelled: ColumnDef<ProjectMarketingType>[] = [
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem>
-              <Link href={`/marketing/project/${row.original.status}/${project}`}>
+              <Link
+                href={`/marketing/project/${row.original.status}/${project}`}
+              >
                 View project details
               </Link>
             </DropdownMenuItem>
@@ -266,7 +272,7 @@ export const columnsCancelled: ColumnDef<ProjectMarketingType>[] = [
         </DropdownMenu>
       );
     },
-  }
+  },
 ];
 
 //Table Column for Penerima Sampling
@@ -329,8 +335,8 @@ export const receiveProjectPageColumns: ColumnDef<ProjectType>[] = [
         stat == "Need Schedule" || stat == "Get Sample"
           ? "bg-moss_green"
           : stat == "On Discuss" || stat == "Verifying"
-            ? "bg-light_brown"
-            : "bg-brick_red";
+          ? "bg-light_brown"
+          : "bg-brick_red";
 
       return (
         <div
@@ -406,8 +412,8 @@ export const samplingProjectPageColumns: ColumnDef<ProjectSamplingType>[] = [
         status == "Need Schedule" || status == "Get Sample"
           ? "bg-moss_green"
           : status == "On Discuss" || status == "Verifying"
-            ? "bg-light_brown"
-            : "bg-brick_red";
+          ? "bg-light_brown"
+          : "bg-brick_red";
 
       return (
         <div
@@ -618,12 +624,12 @@ export const PPLHPFinalReviewPageColumns: ColumnDef<ProjectLHPType>[] = [
 export const LabDashboardPageColumns: ColumnDef<LabDataType>[] = [
   // No Penawaran
   {
-    accessorKey: "noPenawaran",
+    accessorKey: "no_penawaran",
     header: "No Penawaran",
-    cell: ({ row }) => <div className="">{row.getValue("noPenawaran")}</div>,
+    cell: ({ row }) => <div className="">{row.getValue("no_penawaran")}</div>,
   },
   {
-    accessorKey: "judul",
+    accessorKey: "project_name",
     header: ({ column }) => {
       return (
         <Button
@@ -637,22 +643,33 @@ export const LabDashboardPageColumns: ColumnDef<LabDataType>[] = [
       );
     },
     cell: ({ row }) => (
-      <div className="capitalize pl-4">{row.getValue("judul")}</div>
+      <div className="capitalize pl-4">{row.getValue("project_name")}</div>
     ),
   },
   //Lokasi
   {
-    accessorKey: "lokasi",
+    accessorKey: "alamat_sampling",
     header: "Lokasi",
     cell: ({ row }) => {
-      return <div className="capitalize pl-0.5">{row.getValue("lokasi")}</div>;
+      return (
+        <div className="capitalize pl-0.5">
+          {row.getValue("alamat_sampling")}
+        </div>
+      );
     },
   },
   {
-    accessorKey: "cp",
+    accessorKey: "contact_person",
     header: "Contact Person",
     cell: ({ row }) => {
-      return <div className="capitalize pl-0.5">{row.getValue("cp")}</div>;
+      return (
+        <div className="capitalize pl-0.5">
+          {row.getValue("contact_person")}
+        </div>
+      );
     },
+  },
+  {
+    accessorKey: "_id",
   },
 ];
