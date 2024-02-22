@@ -46,6 +46,8 @@ import DropzoneSample from "@/components/DropzoneSample"
 import { useToast } from "@/components/ui/use-toast"
 import { BaseSample } from "@/lib/models/baseSample.model"
 import { FiEdit } from "react-icons/fi"
+import { MdDelete } from "react-icons/md"
+import CancelPopup from "@/components/cancelPopup"
 
 // Define the SearchableDropdownProps interface
 interface SearchableDropdownProps {
@@ -65,6 +67,7 @@ const SearchableDropdown: React.FC<SearchableDropdownProps> = ({ sample, setSamp
   const [editingId, setEditingId] = useState("");
   const [editedValue, setEditedValue] = useState(""); // Track edited value
   const [edit, setEdit] = useState(false);
+  const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
 
   const handleEditClick = (id : string, currentValue : any) => {
     setEditingId(id);
@@ -107,7 +110,25 @@ const SearchableDropdown: React.FC<SearchableDropdownProps> = ({ sample, setSamp
     }
   }
 
+  // TODO : INI JUGA DIT Call API for delete sample
+  const handleCancelledProject = async () => {
+    // Implement your logic to handle the cancellation of the project
+    // For example, make an API call to cancel the project
+    // await api.cancelProject(projectId);
+  };
+
+
   return (
+    <>
+    {showDeleteConfirmation && (
+      <CancelPopup
+        isCancelled={true}
+        setIsCancelled={setShowDeleteConfirmation}
+        message={`Are you sure you want to delete ${sampleName.replace(/_/g, " ")} sample?`} // Concatenate sampleName in the message
+        handleCancelledProject={handleCancelledProject}
+      />
+    )}
+
     <Dialog open={showNewTeamDialog} onOpenChange={setShowNewTeamDialog}>
       <Popover open={open} onOpenChange={setOpen} >
         <PopoverTrigger asChild>
@@ -179,14 +200,26 @@ const SearchableDropdown: React.FC<SearchableDropdownProps> = ({ sample, setSamp
                       // )
                     )}
                   </div>
-                  <FiEdit
-                    className="h-5 w-5 mr-4 hover:cursor-pointer hover:text-white hover:bg-dark_green hover:rounded-md"
-                    onClick={(e:any) => {
-                      e.stopPropagation(); // Prevent the onClick event from bubbling up
-                      handleEditClick(data._id, data.sample_name);
-                      setEdit(true);
-                    }}
-                  />
+                  <div className=" flex flex-row">
+                    <MdDelete 
+                      className="h-5 w-5 mr-2 text-red-500 hover:cursor-pointer hover:text-white hover:bg-red-500 hover:rounded-md"
+                      onClick={(e:any) => {
+                        setEdit(false)
+                        setShowDeleteConfirmation(true);
+                        setSampleName(data.sample_name);
+                        // e.stopPropagation(); // Prevent the onClick event from bubbling up
+                        // setEdit(true);
+                      }}
+                    />
+                    <FiEdit
+                      className="h-5 w-5 mr-4 hover:cursor-pointer hover:text-white hover:bg-dark_green hover:rounded-md"
+                      onClick={(e:any) => {
+                        e.stopPropagation(); // Prevent the onClick event from bubbling up
+                        handleEditClick(data._id, data.sample_name);
+                        setEdit(true);
+                      }}
+                      />
+                  </div>
                 </CommandItem>
               ))}
             </CommandGroup>
@@ -255,6 +288,7 @@ const SearchableDropdown: React.FC<SearchableDropdownProps> = ({ sample, setSamp
       </DialogFooter>
   </DialogContent>
 </Dialog>
+  </>
   );
 }
 
