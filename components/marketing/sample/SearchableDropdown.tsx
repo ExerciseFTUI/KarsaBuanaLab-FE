@@ -68,6 +68,7 @@ const SearchableDropdown: React.FC<SearchableDropdownProps> = ({ sample, setSamp
   const [editedValue, setEditedValue] = useState(""); // Track edited value
   const [edit, setEdit] = useState(false);
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
+  const [hoveredSample, setHoveredSample] = useState('');
 
   const handleEditClick = (id : string, currentValue : any) => {
     setEditingId(id);
@@ -169,7 +170,9 @@ const SearchableDropdown: React.FC<SearchableDropdownProps> = ({ sample, setSamp
                     setSample(currentValue === sample ? "" : currentValue);
                     if (!edit) setOpen(false);
                   }}
-                  className=" -mx-4 flex justify-between items-center"
+                  className=" -mx-4 flex justify-between items-center relative" // Add relative class for positioning
+                  onMouseEnter={() => setHoveredSample(data._id)} // Set the hovered sample when mouse enters
+                  onMouseLeave={() => setHoveredSample('')} // Clear the hovered sample when mouse leaves
                 >
                   <div className="flex items-start">
                     <Check
@@ -200,26 +203,27 @@ const SearchableDropdown: React.FC<SearchableDropdownProps> = ({ sample, setSamp
                       // )
                     )}
                   </div>
-                  <div className=" flex flex-row">
-                    <MdDelete 
-                      className="h-5 w-5 mr-2 text-red-500 hover:cursor-pointer hover:text-white hover:bg-red-500 hover:rounded-md"
-                      onClick={(e:any) => {
-                        setEdit(false)
-                        setShowDeleteConfirmation(true);
-                        setSampleName(data.sample_name);
-                        // e.stopPropagation(); // Prevent the onClick event from bubbling up
-                        // setEdit(true);
-                      }}
-                    />
-                    <FiEdit
-                      className="h-5 w-5 mr-4 hover:cursor-pointer hover:text-white hover:bg-dark_green hover:rounded-md"
-                      onClick={(e:any) => {
-                        e.stopPropagation(); // Prevent the onClick event from bubbling up
-                        handleEditClick(data._id, data.sample_name);
-                        setEdit(true);
-                      }}
+                  {/* Conditional rendering of delete and edit buttons based on hover state */}
+                  {hoveredSample === data._id && (
+                    <div className="flex flex-row">
+                      <MdDelete 
+                        className="h-5 w-5 mr-2 text-red-500 hover:cursor-pointer hover:text-white hover:bg-red-500 hover:rounded-md"
+                        onClick={(e:any) => {
+                          setEdit(false);
+                          setSampleName(data.sample_name);
+                          setShowDeleteConfirmation(true);
+                        }}
                       />
-                  </div>
+                      <FiEdit
+                        className="h-5 w-5 mr-4 hover:cursor-pointer hover:text-white hover:bg-dark_green hover:rounded-md"
+                        onClick={(e:any) => {
+                          handleEditClick(data._id, data.sample_name);
+                          setEdit(true);
+                          e.stopPropagation(); // Prevent the onClick event from bubbling up
+                        }}
+                      />
+                    </div>
+                  )}
                 </CommandItem>
               ))}
             </CommandGroup>

@@ -369,7 +369,6 @@ export default function EditProjectPage({
   //=============================== Document Section
 
   const [uploadedFiles, setUploadedFiles] = useState([])
-  const [isCancelled, setIsCancelled] = useState(false)
   const [fileIdToDelete, setFileIdToDelete] = useState("")
   const [dialogOpen, setDialogOpen] = useState(false)
 
