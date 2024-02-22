@@ -79,7 +79,7 @@ const SearchableDropdown: React.FC<SearchableDropdownProps> = ({ sample, setSamp
     setEditedValue(e.target.value);
   };
 
-  // TODO: DIT TOLONG INTEGRASI KE API
+  // TODO: DIT TOLONG INTEGRASI KE API INI BUAT EDIT SAMPLE NAME
   const handleEditSubmit = (id : string) => {
     console.log("New value:", editedValue);
     console.log("ID: ", id);
@@ -208,7 +208,7 @@ const SearchableDropdown: React.FC<SearchableDropdownProps> = ({ sample, setSamp
                     <div className="flex flex-row">
                       <MdDelete 
                         className="h-5 w-5 mr-2 text-red-500 hover:cursor-pointer hover:text-white hover:bg-red-500 hover:rounded-md"
-                        onClick={(e:any) => {
+                        onClick={() => {
                           setEdit(false);
                           setSampleName(data.sample_name);
                           setShowDeleteConfirmation(true);
