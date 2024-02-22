@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { AiOutlineFile } from "react-icons/ai";
 import { BsArrowRight } from "react-icons/bs";
 import { SelectSeparator } from "@/components/ui/select";
+import { changeToDraft } from "@/lib/actions/pplhp.actions";
 
 interface RangkaianPengamananSampelLink {
   value: string;
@@ -25,9 +26,14 @@ const RangkaianPengamananSampel: FC<RangkaianPengamananSampelProps> = ({
 }) => {
   const router = useRouter();
 
-  const handleSubmitDraft = () => {
-    // Perform the redirect
-    router.push(`/pplhp/lhpdraft/${params.np}`);
+  const handleSubmitDraft = async () => {
+    try {
+      const message = await changeToDraft(params.np);
+      console.log(message); // Log the message here
+      router.push(`/pplhp/lhpdraft/`);
+    } catch (error) {
+      console.error("Failed to submit draft:", error);
+    }
   };
 
   return (
@@ -67,7 +73,7 @@ const RangkaianPengamananSampel: FC<RangkaianPengamananSampelProps> = ({
           onClick={handleSubmitDraft}
           className={`w-full bg-${color} text-lg text-ghost_white p-3 rounded-2xl`}
         >
-          SUBMIT DRAFT
+          SUBMIT TO LHP DRAFT
         </button>
       </div>
     </div>
