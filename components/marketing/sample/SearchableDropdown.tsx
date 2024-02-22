@@ -45,6 +45,7 @@ import Dropzone from "@/components/Dropzone"
 import DropzoneSample from "@/components/DropzoneSample"
 import { useToast } from "@/components/ui/use-toast"
 import { BaseSample } from "@/lib/models/baseSample.model"
+import { FiEdit } from "react-icons/fi"
 
 // Define the SearchableDropdownProps interface
 interface SearchableDropdownProps {
@@ -61,7 +62,31 @@ const SearchableDropdown: React.FC<SearchableDropdownProps> = ({ sample, setSamp
   const [JSAFile, setJSAFile] = useState([])
   const [templateSampleForm, setTemplateSampleForm] = useState([])
   const [sampleName, setSampleName] = useState("")
+  const [editingId, setEditingId] = useState("");
+  const [editedValue, setEditedValue] = useState(""); // Track edited value
+  const [edit, setEdit] = useState(false);
 
+  const handleEditClick = (id : string, currentValue : any) => {
+    setEditingId(id);
+    setEditedValue(currentValue);
+  };
+
+  const handleInputChange = (e : any) => {
+    setEditedValue(e.target.value);
+  };
+
+  // TODO: DIT TOLONG INTEGRASI KE API
+  const handleEditSubmit = (id : string) => {
+    console.log("New value:", editedValue);
+    console.log("ID: ", id);
+    
+    // Make an API call to update data.sample_name with editedValue
+    // After successful update, reset editing state
+    setEditingId("");
+    // Make API call to update the value on the server
+  };
+
+  // TODO: INI JUGA DIT, TAPI KHUSUS BUAT UPLOAD FILE BARU
   const onSubmit = () => {
     // Check if sampleName is empty or JSAFile and templateSampleForm are empty arrays
     if (sampleName === "" || (JSAFile.length === 0 || templateSampleForm.length === 0)) {
@@ -101,24 +126,67 @@ const SearchableDropdown: React.FC<SearchableDropdownProps> = ({ sample, setSamp
         <PopoverContent className="w-full p-0">
           <Command>
             <CommandInput placeholder="Search Sample..." />
-            <CommandEmpty>No Sample found.</CommandEmpty>
+            <CommandEmpty>
+              No Sample found.
+            </CommandEmpty>
+            <CommandEmpty 
+              className=' p-2 m-1 rounded-md bg-light_green hover:bg-dark_green hover:text-white hover:cursor-pointer flex flex-row items-center '
+              onSelect={() => {
+              setOpen(false)
+              setShowNewTeamDialog(true)
+              }}
+            >
+              <CommandSeparator/>
+              <PlusCircledIcon className="h-5 w-5" />
+              <p className=" text-base font-semibold ml-3 ">Create New Sample</p>
+            </CommandEmpty>
             <CommandGroup>
-            {/* SET NEW BASESAMPLE.NAME IN HERE AND REPLATE THE SAMPLING */}
               {baseSample.map((data) => (
                 <CommandItem
                   key={data._id}
                   onSelect={(currentValue: any) => {
                     setSample(currentValue === sample ? "" : currentValue);
-                    setOpen(false);
+                    if (!edit) setOpen(false);
                   }}
+                  className=" -mx-4 flex justify-between items-center"
                 >
-                  <Check
-                    className={cn(
-                      "mr-2 h-4 w-4",
-                      sample === data.sample_name ? "opacity-100" : "opacity-0"
+                  <div className="flex items-start">
+                    <Check
+                      className={cn(
+                        "h-4 w-4",
+                        sample === data.sample_name ? "opacity-100" : "opacity-0"
+                      )}
+                    />
+                    {editingId === data._id ? (
+                      <input
+                        type="text"
+                        value={editedValue}
+                        onChange={(e) => handleInputChange(e)}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter') {
+                            handleEditSubmit(data._id);
+                            setEdit(false);
+                          }
+                        }}
+                        className="ml-2 border-b border-gray-300 text-slate-700 font-medium focus:outline-none"
+                      />
+                    ) : (
+                      <span>{data.sample_name.replace(/_/g, " ")}</span>
+                      // data.sample_name.includes("_") ? (
+                      //   <span>{data.sample_name.replace(/_/g, " ")}</span>
+                      //   ) : (
+                      //   <span>{data.sample_name}</span>
+                      // )
                     )}
+                  </div>
+                  <FiEdit
+                    className="h-5 w-5 mr-4 hover:cursor-pointer hover:text-white hover:bg-dark_green hover:rounded-md"
+                    onClick={(e:any) => {
+                      e.stopPropagation(); // Prevent the onClick event from bubbling up
+                      handleEditClick(data._id, data.sample_name);
+                      setEdit(true);
+                    }}
                   />
-                  {data.sample_name}
                 </CommandItem>
               ))}
             </CommandGroup>
