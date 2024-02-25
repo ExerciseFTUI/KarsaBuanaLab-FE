@@ -79,6 +79,7 @@ const TableRegulation: React.FC<TableRegulationProps> = ({ sample, setRegulation
             <TableHead className="text-dark_green font-bold">Regulation Name</TableHead>
           </TableRow>
         </TableHeader>
+        {/* <div className="max-h-80 custom-scrollbar overflow-y-scroll"> */}
         <TableBody>
           {regulations.map((regulationData, index) => (
             <TableRow
@@ -99,16 +100,17 @@ const TableRegulation: React.FC<TableRegulationProps> = ({ sample, setRegulation
                         handleEditSubmit(regulationData._id);
                       }
                     }}
-                    className="border-b border-gray-300 placeholder:text-slate-700 text-slate-700  font-medium focus:outline-none"
-                    />
+                    className="border-b border-gray-300 placeholder:text-slate-700 text-slate-700 font-medium focus:outline-none"
+                  />
                 ) : (
-                    <Input
-                      type="text"
-                      defaultValue={regulationData.regulation_name}
-                      onClick={() => handleEditClick(regulationData._id, regulationData.regulation_name)}
-                      className="border-b border-gray-300 placeholder:text-slate-700 text-slate-700  font-medium focus:outline-none"
-                      />
-                      )}
+                  <Input
+                  type="text"
+                    value={regulationData.regulation_name}
+                    onChange={handleInputChange}
+                    onClick={() => handleEditClick(regulationData._id, regulationData.regulation_name)}
+                    className="border-b border-gray-300 placeholder:text-slate-700 text-slate-700  font-medium focus:outline-none"
+                  />
+                )}
                 <MdDelete
                 className="h-7 w-7 mx-2 text-red-500 hover:text-white hover:cursor-pointer  hover:bg-red-500 hover:rounded-md"
                 onClick={() => {
@@ -117,13 +119,20 @@ const TableRegulation: React.FC<TableRegulationProps> = ({ sample, setRegulation
                 }
                 />
                 </div>
-              </TableCell>
-            </TableRow>
-          ))}
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
           {sample !== "" && (
-            <div className="hover:bg-dark_green hover:text-white hover:cursor-pointer w-full rounded-lg p-2 mt-1 font-semibold flex justify-center bg-light_green"> + Add Regulation </div>
+            <TableFooter className=" bg-transparent">
+              <TableRow>
+                <TableCell>
+                  <div className="hover:bg-dark_green hover:text-white hover:cursor-pointer w-full rounded-lg p-2 mt-1 font-semibold flex justify-center bg-light_green"> + Add Regulation </div>
+                </TableCell>
+              </TableRow>
+            </TableFooter>
           )}
-        </TableBody>
+            {/* </div> */}
       </Table>
     </div>
     </>
