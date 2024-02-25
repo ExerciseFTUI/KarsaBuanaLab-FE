@@ -90,7 +90,7 @@ const SearchableDropdown: React.FC<SearchableDropdownProps> = ({ sample, setSamp
     // Make API call to update the value on the server
   };
 
-  // TODO: INI JUGA DIT, TAPI KHUSUS BUAT UPLOAD FILE BARU
+  // TODO: create new sample with 2 files :JSA and template
   const onSubmit = () => {
     // Check if sampleName is empty or JSAFile and templateSampleForm are empty arrays
     if (sampleName === "" || (JSAFile.length === 0 || templateSampleForm.length === 0)) {
