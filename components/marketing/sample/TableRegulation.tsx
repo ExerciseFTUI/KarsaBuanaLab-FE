@@ -72,6 +72,7 @@ const TableRegulation: React.FC<TableRegulationProps> = ({ sample, setRegulation
     
     <div className="w-fit border-2 border-dark_green rounded-xl p-5 items-center justify-center">
       <p className="text-xs mb-3 opacity-70">Click on target regulation to see the detail of parameters</p>
+      <div className="max-h-80 custom-scrollbar overflow-y-scroll">
       <Table className="w-full">
         <TableCaption>Lists regulation of sample {sample} </TableCaption>
         <TableHeader>
@@ -79,7 +80,6 @@ const TableRegulation: React.FC<TableRegulationProps> = ({ sample, setRegulation
             <TableHead className="text-dark_green font-bold">Regulation Name</TableHead>
           </TableRow>
         </TableHeader>
-        {/* <div className="max-h-80 custom-scrollbar overflow-y-scroll"> */}
         <TableBody>
           {regulations.map((regulationData, index) => (
             <TableRow
@@ -123,17 +123,11 @@ const TableRegulation: React.FC<TableRegulationProps> = ({ sample, setRegulation
               </TableRow>
             ))}
           </TableBody>
-          {sample !== "" && (
-            <TableFooter className=" bg-transparent">
-              <TableRow>
-                <TableCell>
-                  <div className="hover:bg-dark_green hover:text-white hover:cursor-pointer w-full rounded-lg p-2 mt-1 font-semibold flex justify-center bg-light_green"> + Add Regulation </div>
-                </TableCell>
-              </TableRow>
-            </TableFooter>
-          )}
-            {/* </div> */}
       </Table>
+      </div>
+      {sample !== "" && (
+        <div className="hover:bg-dark_green hover:text-white hover:cursor-pointer w-full rounded-lg p-2 mt-1 font-semibold flex justify-center bg-light_green"> + Add Regulation </div>
+      )}
     </div>
     </>
   );
