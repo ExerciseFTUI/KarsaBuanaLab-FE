@@ -126,7 +126,9 @@ const TableRegulation: React.FC<TableRegulationProps> = ({ sample, setRegulation
       </Table>
       </div>
       {sample !== "" && (
-        <div className="hover:bg-dark_green hover:text-white hover:cursor-pointer w-full rounded-lg p-2 mt-1 font-semibold flex justify-center bg-light_green"> + Add Regulation </div>
+        <div className="hover:bg-dark_green hover:text-white hover:cursor-pointer w-full rounded-lg p-2 mt-1 font-semibold flex justify-center bg-light_green"> 
+        Add Regulation 
+        </div>
       )}
     </div>
     </>
