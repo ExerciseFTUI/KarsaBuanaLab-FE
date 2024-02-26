@@ -20,7 +20,7 @@ const Sampel: FC<SampelProps> = ({ data, title, textColor, bgColor }) => {
       <div className={`w-full text-${textColor} space-y-6`}>
         <h2 className="text-xl text-center md:text-left">{title}</h2>
         <div className="space-y-2">
-          {data.map((item) => (
+          {data? data.map((item) => (
             <a
               key={item.name}
               className={`grid grid-rows-12 items-center bg-${bgColor} text-dark_brown px-3 md:px-5 p-2 rounded-xl`}
@@ -39,7 +39,7 @@ const Sampel: FC<SampelProps> = ({ data, title, textColor, bgColor }) => {
                 <AiOutlineArrowRight className="text-4xl" />
               </div>
             </a>
-          ))}
+          )) : "Please refresh the page"}
         </div>
       </div>
     </div>

@@ -24,7 +24,7 @@ const InputDokumenFinalReview: FC<InputDokumenFinalReviewProps> = ({ color }) =>
             </div>
             <div className="flex items-center justify-between text-ghost_white italic">
               <p className="text-sm">nama-file-buat.doc</p>
-              <a href="" target="_blank">
+              <a href="/" target="_blank">
                 <BsArrowRight className="text-3xl" />
               </a>
             </div>

@@ -1,3 +1,4 @@
+"use client"
 import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -16,12 +17,13 @@ import {
   ProjectLHPType,
   LabDataType,
   ProjectType,
+  ProjectMarketingType,
 } from "@/lib/type";
 import Link from "next/link";
 import { ProjectSamplingType } from "@/lib/type";
 
 // Table Column for Marketing OnDiscuss
-export const columns: ColumnDef<ProjectType>[] = [
+export const columns: ColumnDef<ProjectMarketingType>[] = [
   //No Penawaran
   {
     accessorKey: "no_penawaran",
@@ -59,6 +61,7 @@ export const columns: ColumnDef<ProjectType>[] = [
 
     cell: ({ row }) => {
       const status = true;
+
       return (
         <div className="">
           <div
@@ -76,7 +79,11 @@ export const columns: ColumnDef<ProjectType>[] = [
     accessorKey: "alamat_sampling",
     header: "Lokasi Sampling",
     cell: ({ row }) => {
-      return <div className="capitalize pl-0.5">{row.getValue("lokasi")}</div>;
+      return (
+        <div className="capitalize pl-0.5">
+          {row.getValue("alamat_sampling")}
+        </div>
+      );
     },
   },
   //createdAt
@@ -95,7 +102,8 @@ export const columns: ColumnDef<ProjectType>[] = [
     },
 
     cell: ({ row }) => {
-      const date = new Date(row.getValue("createdAt"));
+      const date = new Date(row.getValue("created_at"));
+
       let month = (date.getMonth() + 1).toString().padStart(2, "0"); // Months are zero-based
       let day = date.getDate().toString().padStart(2, "0");
       let year = date.getFullYear();
@@ -105,23 +113,23 @@ export const columns: ColumnDef<ProjectType>[] = [
     },
   },
   //Last Update
-  {
-    accessorKey: "lastUpdate",
-    header: () => (
-      <div className={`pl-2 font-medium text-[#666D4B]`}>Last Update</div>
-    ),
-    cell: ({ row }) => {
-      return <div className={`pl-4 font-medium`}>Today</div>;
-    },
-  },
+  // {
+  //   accessorKey: "lastUpdate",
+  //   header: () => (
+  //     <div className={`pl-2 font-medium text-[#666D4B]`}>Last Update</div>
+  //   ),
 
+  //   cell: ({ row }) => {
+  //     return <div className={`pl-4 font-medium`}>Today</div>;
+  //   },
+  // },
   //Action
   {
     id: "actions",
     enableHiding: false,
     cell: ({ row }) => {
-      const project = row.original;
-
+      const project = row.original._id;
+      
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -133,17 +141,15 @@ export const columns: ColumnDef<ProjectType>[] = [
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem>
-              <Link href={`/marketing/project/${row.id}`}>
-                View project details
-              </Link>
-              <Link href={`/marketing/project/${row.id}`}>
+              <Link href={`/marketing/project/${row.original.status}/${project}`}>
                 View project details
               </Link>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-
             <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(project.noPenawaran)}
+              onClick={() =>
+                navigator.clipboard.writeText(row.getValue("no_penawaran"))
+              }
             >
               Copy No Penawaran
             </DropdownMenuItem>
@@ -151,8 +157,9 @@ export const columns: ColumnDef<ProjectType>[] = [
         </DropdownMenu>
       );
     },
-  },
+  }
 ];
+
 //Table Column for Penerima Sampling
 export const receiveProjectPageColumns: ColumnDef<ProjectType>[] = [
   //No Penawaran
@@ -370,7 +377,6 @@ export const receiveSamplingColumns: ColumnDef<ReceiveSamplingType>[] = [
   },
   {
     accessorKey: "_id",
-    hide: true,
   },
 ];
 
@@ -434,7 +440,6 @@ export const LHPDraftPageColumns: ColumnDef<ProjectLHPType>[] = [
   },
   {
     accessorKey: "_id",
-    hide: true,
   },
 ];
 
@@ -498,7 +503,6 @@ export const PPLHPFinalReviewPageColumns: ColumnDef<ProjectLHPType>[] = [
   },
   {
     accessorKey: "_id",
-    hide: true,
   },
 ];
 

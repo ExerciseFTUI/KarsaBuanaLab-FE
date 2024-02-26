@@ -41,7 +41,7 @@ const DocumentTab: FC<DocumentTabProps> = ({
     <>
       {/* Right Card for Dropzone */}
       <Card
-        className={`max-w-[38rem] overflow-auto h-[36rem] custom-scrollbar flex flex-col justify-between`}
+        className={`max-w-[38rem] overflow-auto h-fit md:max-h-[26rem] custom-scrollbar flex flex-col justify-between`}
       >
         <div>
           <CardHeader>
@@ -57,7 +57,7 @@ const DocumentTab: FC<DocumentTabProps> = ({
         </div>
 
         {/* Button for submit */}
-        <div className="m-5 flex justify-center items-center  ">
+        {/* <div className="m-5 flex justify-center items-center  ">
           <button
             onClick={handleSubmit}
             className=" bg-light_green rounded-lg px-5 py-3 hover:bg-dark_green hover:text-white font-medium"
@@ -65,7 +65,7 @@ const DocumentTab: FC<DocumentTabProps> = ({
             {" "}
             Submit{" "}
           </button>
-        </div>
+        </div> */}
       </Card>
       {/* End of Right Card for Dropzone */}
     </>

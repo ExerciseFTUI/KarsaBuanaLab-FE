@@ -48,10 +48,10 @@ import {
   DoubleArrowLeftIcon,
   DoubleArrowRightIcon,
 } from "@radix-ui/react-icons";
-import { dummyTableData } from "@/constants";
 import { ProjectMarketingType, ProjectType } from "@/lib/type";
 import { Project } from "@/lib/models/project.model";
 import { columns } from "./columns";
+import Link from "next/link";
 
 // interface DataTableProps<TData, TValue> {
 //   columns: ColumnDef<TData, TValue>[];
@@ -177,19 +177,21 @@ export function DataTable({ datas }: DataTableProps) {
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
-                  className="hover:bg-pastel_moss_green ease-in-out duration-500 text-xs hover:cursor-pointer hover:rounded-xl "
-                  key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
+                className="hover:bg-pastel_moss_green ease-in-out duration-500 text-xs hover:cursor-pointer hover:rounded-xl "
+                key={row.id}
+                data-state={row.getIsSelected() && "selected"}
                 >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </TableCell>
-                  ))}
-                </TableRow>
+                    {row.getVisibleCells().map((cell) => (
+                      <TableCell key={cell.id}>
+                        {/* <Link href={`/marketing/project/65afbed1987cf82566e2669a`}> */}
+                          {flexRender(
+                            cell.column.columnDef.cell,
+                            cell.getContext()
+                          )}
+                        {/* </Link> */}
+                      </TableCell>
+                    ))}
+                  </TableRow>
               ))
             ) : (
               <TableRow>

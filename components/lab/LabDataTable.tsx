@@ -53,18 +53,15 @@ import { LabDashboardPageColumns, columns } from "@/components/columns";
 import { LabDataType } from "@/lib/type";
 
 interface LabDataTableProps {
-    data: LabDataType[];
-    link: string;
+  data: LabDataType[];
+  link: string;
 }
 
 const LabDataTable: FC<LabDataTableProps> = ({ data, link }) => {
   const router = useRouter();
   const [sorting, setSorting] = useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(
-    []
-  );
-  const [columnVisibility, setColumnVisibility] =
-    useState<VisibilityState>({});
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
 
   const table = useReactTable({
@@ -89,7 +86,7 @@ const LabDataTable: FC<LabDataTableProps> = ({ data, link }) => {
   return (
     <div className="w-full">
       <div className="flex items-center py-4">
-        <CiSearch  className="text-xl translate-x-8"/>
+        <CiSearch className="text-xl translate-x-8" />
         <Input
           placeholder="Search Project Title"
           value={(table.getColumn("judul")?.getFilterValue() as string) ?? ""}
@@ -250,6 +247,6 @@ const LabDataTable: FC<LabDataTableProps> = ({ data, link }) => {
       </div>
     </div>
   );
-}
+};
 
 export default LabDataTable;
