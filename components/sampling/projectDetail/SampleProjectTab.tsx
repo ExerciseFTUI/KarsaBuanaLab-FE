@@ -31,6 +31,7 @@ import { DateRange } from "react-day-picker"
 import { useRouter } from "next/navigation"
 import LoadingScreen from "@/components/LoadingScreen"
 import { SamplingRequestData } from "@/lib/type"
+import { useToast } from "@/components/ui/use-toast"
 
 interface Params {
   data: SamplingRequestData
@@ -77,6 +78,8 @@ export default function SampleProjectTab({ data }: Params) {
   })
 
   const router = useRouter()
+  const { toast } = useToast()
+
   const [isLoading, setIsLoading] = useState(false)
 
   // prettier-ignore
@@ -99,9 +102,16 @@ export default function SampleProjectTab({ data }: Params) {
     setIsLoading(false)
 
     if (!response) {
-      alert("Failed to assign project!")
+      toast({
+        title: "Failed to Assign Deadline and User",
+        description: "Please Try Again",
+        variant: "destructive",
+      });
     } else {
-      alert("Success")
+      toast({
+        title: "User and Deadline Has Been Assigned",
+        description: "Check again in the screen if its correct",
+      });
     }
     
     router.refresh()

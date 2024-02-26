@@ -110,13 +110,13 @@ export const sampleAssignment = async (
 export const verifySample = async (
   projectId: string,
   status: string,
-  sampleName: string
+  sample_id: string
 ): Promise<BaseApiResponse<Project>> => {
   try {
     const response = await axios.post(`${apiBaseUrl}/sampling/change`, {
       projectId,
       status,
-      sample_name: sampleName,
+      sample_id,
     })
 
     revalidatePath(`/sampling/sample/${projectId}`) // path sekarang

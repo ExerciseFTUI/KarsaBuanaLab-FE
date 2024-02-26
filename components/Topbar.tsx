@@ -1,55 +1,51 @@
-"use client";
+"use client"
 
-import Link from "next/link";
-import React, { FC } from "react";
-import Image from "next/image";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { usePathname } from "next/navigation";
-import { DeadlineNotification } from "./sampling/DeadlineNotification";
-import { useSession } from "next-auth/react";
+import Link from "next/link"
+import React, { FC } from "react"
+import Image from "next/image"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { usePathname } from "next/navigation"
+import { DeadlineNotification } from "./sampling/DeadlineNotification"
+import { useSession } from "next-auth/react"
 import { Project } from "@/lib/models/project.model"
-import { Button } from "./ui/button";
+import { Button } from "./ui/button"
 import {
   EnvelopeOpenIcon,
   LockOpen1Icon,
   LockClosedIcon,
   PlusIcon,
   PlusCircledIcon,
-} from "@radix-ui/react-icons";
-import { UserType } from "@/lib/type";
-import { DefaultSession } from "next-auth";
-import { Session } from "next-auth";
+} from "@radix-ui/react-icons"
+import { UserType } from "@/lib/type"
+import { DefaultSession } from "next-auth"
+import { Session } from "next-auth"
 
 interface TopbarProps {
   projects: Project[]
-  data?: Session | null;
+  data?: Session | null
 }
 
 function extractPageName(pathname: string) {
-  const parts = pathname.split("/").filter((part) => part !== "");
-  let final = "";
+  const parts = pathname.split("/").filter((part) => part !== "")
+  let final = ""
 
   if (!parts[1]) {
-    return (
-      parts[0].charAt(0).toUpperCase() + parts[0].slice(1) + " / Dashboard"
-    );
+    return parts[0].charAt(0).toUpperCase() + parts[0].slice(1) + " / Dashboard"
   }
 
   for (let i = 0; i < parts.length; i++) {
     final +=
       parts[i].charAt(0).toUpperCase() +
       parts[i].slice(1) +
-      (i == parts.length - 1 ? "" : " / ");
+      (i == parts.length - 1 ? "" : " / ")
   }
 
-  return final;
+  return final
 }
 
 const Topbar: FC<TopbarProps> = ({ projects, data }) => {
   const pathname = extractPageName(usePathname())
-  
   const { data: session } = useSession();
-  console.log(data);
 
   const formattedPathname =
     pathname.split("-").length > 1
@@ -57,12 +53,12 @@ const Topbar: FC<TopbarProps> = ({ projects, data }) => {
         " " +
         pathname.split("-")[1][0].toUpperCase() +
         pathname.split("-")[1].slice(1, pathname.split("-")[1].length)
-      : pathname.split("-")[0];
-  const extractedSecondPath = pathname.split(" / ")[1].split("-");
+      : pathname.split("-")[0]
+  const extractedSecondPath = pathname.split(" / ")[1].split("-")
   const secondPath =
     extractedSecondPath.length > 1
       ? extractedSecondPath[0] + " " + extractedSecondPath[1]
-      : extractedSecondPath[0];
+      : extractedSecondPath[0]
 
   return (
     <nav className="flex w-full items-center justify-between px-2 py-6 ">
@@ -91,10 +87,10 @@ const Topbar: FC<TopbarProps> = ({ projects, data }) => {
 
         <div className="">
           {/* <!-- NOTE: NEED TO BE CHECKED            --> */}
-          {pathname.split(" / ")[0] == "Sampling" && (
+          {/* {pathname.split(" / ")[0] == "Sampling" && (
             <DeadlineNotification projects={projects} />
-          )}
-        
+          )} */}
+
           {data?.user.role.toLowerCase() == "admin" &&
             pathname.split(" / ")[0] !== "Admin" && (
               <Link href="/admin">
@@ -115,12 +111,14 @@ const Topbar: FC<TopbarProps> = ({ projects, data }) => {
               </Link>
             )}
         </div>
-        
-          {/* <!-- END NOTE: NEED TO BE CHECKED            --> */}
+
+        {/* <!-- END NOTE: NEED TO BE CHECKED            --> */}
         {/* =========================== End Admin Button */}
 
         <div className="">
-          {pathname.split(" / ")[0] == "Sampling" && <DeadlineNotification projects={projects}/>}
+          {pathname.split(" / ")[0] == "Sampling" && (
+            <DeadlineNotification projects={projects} />
+          )}
         </div>
 
         <div className="max-md:hidden">
@@ -131,7 +129,7 @@ const Topbar: FC<TopbarProps> = ({ projects, data }) => {
         </div>
       </div>
     </nav>
-  );
-};
+  )
+}
 
-export default Topbar;
+export default Topbar
