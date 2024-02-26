@@ -19,16 +19,16 @@ const CreateSamplePage = ({
     baseSample,
 }: SamplingMarketingProps) => {
     const [sample, setSample] = useState<string>("");
-    const [regulation, setRegulation] = useState<number>(0);
+    const [regulation, setRegulation] = useState<number>(-1);
+    const [listRegulation, setListRegulation] = useState([])
     const [newSample, setNewSample] = useState(false)
-
     
     return (
         <>
             <div className='grid grid-cols-2 justify-between gap-6 max-md:flex-col max-md:items-center'>
                 {/* Information for sampling and regulation */}
                 <div className='border border-dark_green rounded-lg p-5 h-full'>
-                    <h1 className='text-xl font-bold text-dark_green mb-3'>Sample</h1>
+                    <h1 className='text-xl font-semibold text-black mb-3'>Sample</h1>
 
                     {/* Dropdown Search and edit */}
                     <div className='flex justify-center w-full items-center'>
@@ -40,16 +40,16 @@ const CreateSamplePage = ({
                     <div className='flex flex-col mt-10'>
                         <h1 className='text-black font-semibold text-lg mb-3'>Regulation</h1>
                         <div className='flex flex-row justify-center'>
-                            <TableRegulation baseSample={baseSample} sample={sample} setRegulation={setRegulation} />
+                            <TableRegulation baseSample={baseSample} setListRegulation={setListRegulation} sample={sample} setRegulation={setRegulation} />
                         </div>
                     </div>
                     {/* End of Regulations */}
 
                     {/* Parameter */}
                     <div className='flex flex-col mt-10'>
-                        <h1 className='text-black font-bold text-xl mb-3'>Parameter</h1>
+                        <h1 className='text-black font-semibold text-lg mb-3'>Parameter</h1>
                         <div className='flex flex-row justify-center'>
-                            <Parameter regulation={regulation} />
+                            <Parameter bySample={false} regulation={regulation} baseSample={baseSample} sample={sample} />
                         </div>
                     </div>
                     {/* End of Parameter */}
@@ -58,8 +58,11 @@ const CreateSamplePage = ({
 
                 {/* Information for Edit */}
                 <div className='border border-dark_green rounded-lg p-5 h-full'>
-                    <h1 className='text-xl font-bold text-dark_green mb-10'>Edit Sample</h1>
-                    <EditSample sample={sample} regulation={regulation} />
+                    <h1 className='text-xl font-bold text-dark_green mb-10'>List All Parameter for {sample.toUpperCase()} Sample </h1>
+                        <div className=' flex flex-row justify-center'>
+                            <Parameter bySample={true} regulation={regulation} baseSample={baseSample} sample={sample} />
+                        {/* <EditSample sample={sample} regulation={regulation} /> */}
+                        </div>
                 </div>
                 {/* End Information for Parameter */}
             </div>

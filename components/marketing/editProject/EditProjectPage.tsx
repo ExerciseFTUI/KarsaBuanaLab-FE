@@ -46,6 +46,7 @@ import { Button } from "@/components/ui/button"
 import DeleteDialog from "@/components/DeleteDialog"
 import { AlertDialog } from "@/components/ui/alert-dialog"
 import { AlertDialogTrigger } from "@radix-ui/react-alert-dialog"
+import CancelPopup from "@/components/cancelPopup"
 
 interface EditProjectPageProps {
   project: Project
@@ -62,7 +63,7 @@ export default function EditProjectPage({
   const { toast } = useToast()
 
   const router = useRouter()
-
+  const [showCancelConfirmation, setShowCancelConfirmation] = useState(false); // State to control the cancellation confirmation popup
   const [isLoading, setIsLoading] = useState(false)
 
   //=============================== Sample Section
@@ -285,7 +286,6 @@ export default function EditProjectPage({
   const [reason, setReason] = useState("")
 
   async function handleCancelledProject(
-    values: z.infer<typeof createProjectValidation>
   ) {
     try {
       const body = {
@@ -369,7 +369,6 @@ export default function EditProjectPage({
   //=============================== Document Section
 
   const [uploadedFiles, setUploadedFiles] = useState([])
-  const [isCancelled, setIsCancelled] = useState(false)
   const [fileIdToDelete, setFileIdToDelete] = useState("")
   const [dialogOpen, setDialogOpen] = useState(false)
 
@@ -416,43 +415,15 @@ export default function EditProjectPage({
 
   return (
     <>
-      {isCancelled && (
-        <div className="modal-overlay fixed top-0 left-0 w-full h-full flex justify-center items-center bg-gray-800 bg-opacity-50 z-50">
-          <div className="modal-content bg-white rounded-lg border-2 p-8">
-            <p className="text-center text-xl font-bold mb-4">
-              Are you sure you want to cancel the project?
-            </p>
-            <form>
-              <label htmlFor="reason" className="block mb-2">
-                Reason:
-              </label>
-              <Textarea
-                id="reason"
-                name="reason"
-                value={reason}
-                onChange={(e) => setReason(e.target.value)}
-                className="border-2 border-[#bbbabf] rounded-lg h-24 mb-2"
-                required
-              />
-              <div className="flex justify-center space-x-4">
-                <button
-                  type="button"
-                  onClick={() => setIsCancelled(false)}
-                  className="bg-gray-400 text-white px-4 py-2 rounded-md hover:bg-gray-500"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="button"
-                  onClick={form.handleSubmit(handleCancelledProject)} // You can replace this with your actual cancel logic
-                  className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600"
-                >
-                  Confirm
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
+      {showCancelConfirmation && (
+        <CancelPopup
+          isCancelled={true}
+          setIsCancelled={setShowCancelConfirmation}
+          message={`Are you sure you want to cancel the project ${project.project_name}?`} // Include project name in the message
+          handleCancelledProject={handleCancelledProject}
+          reason={reason}
+          setReason={setReason}
+        />
       )}
 
       {isLoading && <LoadingScreen />}
@@ -622,7 +593,7 @@ export default function EditProjectPage({
             {/* Cancelled Project */}
             {status?.toLocaleLowerCase() === "running" && (
               <button
-                onClick={() => setIsCancelled(true)}
+                onClick={() => setShowCancelConfirmation(true)}
                 className=" bg-red-400 px-5 hover:bg-red-500 font-medium text-black hover:text-white rounded-lg py-3"
               >
                 Cancel Project

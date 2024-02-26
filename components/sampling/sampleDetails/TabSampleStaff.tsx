@@ -16,6 +16,17 @@ import { User } from "@/lib/models/user.model"
 import { Sampling } from "@/lib/models/sampling.model"
 import { SamplingRequestData } from "@/lib/type"
 import { useToast } from "@/components/ui/use-toast"
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
 
 export default function TabSampleStaff({
   data,
@@ -71,21 +82,40 @@ export default function TabSampleStaff({
                 title={s.sample_name}
                 href={files.sampling_list[i].url || "/"}
               />
-              <Button
-                className="w-24 py-4 self-center bg-light_brown hover:bg-dark_brown disabled:bg-transparent disabled:text-dark_brown disabled:font-bold disabled:border-2 disabled:border-dark_brown"
-                onClick={(e) => submitSample(e, s._id)}
-                disabled={s.status == "WAITING" || s.status == "ACCEPTED"}
-              >
-                {s.status == "SUBMIT"
-                  ? "Save"
-                  : s.status == "WAITING"
-                  ? "Verifying"
-                  : s.status == "ACCEPTED"
-                  ? "Verified"
-                  : s.status == "REVISION"
-                  ? "Revision"
-                  : "Save"}
-              </Button>
+
+              <AlertDialog>
+                <AlertDialogTrigger>
+                  <Button
+                    className="w-24 py-4 self-center bg-light_brown hover:bg-dark_brown disabled:bg-transparent disabled:text-dark_brown disabled:font-bold disabled:border-2 disabled:border-dark_brown"
+                    disabled={s.status == "WAITING" || s.status == "ACCEPTED"}
+                  >
+                    {s.status == "SUBMIT"
+                      ? "Save"
+                      : s.status == "WAITING"
+                      ? "Verifying"
+                      : s.status == "ACCEPTED"
+                      ? "Verified"
+                      : s.status == "REVISION"
+                      ? "Revision"
+                      : "Save"}
+                  </Button>
+                </AlertDialogTrigger>
+
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>
+                      Are you sure to SUBMIT this sampling?
+                    </AlertDialogTitle>
+                  </AlertDialogHeader>
+
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                    <AlertDialogAction onClick={(e) => submitSample(e, s._id)}>
+                      Continue
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
             </div>
           ))}
         </div>
