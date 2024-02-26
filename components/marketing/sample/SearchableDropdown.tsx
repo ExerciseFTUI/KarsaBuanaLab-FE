@@ -46,6 +46,8 @@ import DropzoneSample from "@/components/DropzoneSample"
 import { useToast } from "@/components/ui/use-toast"
 import { BaseSample } from "@/lib/models/baseSample.model"
 import { FiEdit } from "react-icons/fi"
+import { MdDelete } from "react-icons/md"
+import CancelPopup from "@/components/cancelPopup"
 
 // Define the SearchableDropdownProps interface
 interface SearchableDropdownProps {
@@ -65,6 +67,8 @@ const SearchableDropdown: React.FC<SearchableDropdownProps> = ({ sample, setSamp
   const [editingId, setEditingId] = useState("");
   const [editedValue, setEditedValue] = useState(""); // Track edited value
   const [edit, setEdit] = useState(false);
+  const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
+  const [hoveredSample, setHoveredSample] = useState('');
 
   const handleEditClick = (id : string, currentValue : any) => {
     setEditingId(id);
@@ -75,7 +79,7 @@ const SearchableDropdown: React.FC<SearchableDropdownProps> = ({ sample, setSamp
     setEditedValue(e.target.value);
   };
 
-  // TODO: DIT TOLONG INTEGRASI KE API
+  // TODO: DIT TOLONG INTEGRASI KE API INI BUAT EDIT SAMPLE NAME
   const handleEditSubmit = (id : string) => {
     console.log("New value:", editedValue);
     console.log("ID: ", id);
@@ -86,7 +90,7 @@ const SearchableDropdown: React.FC<SearchableDropdownProps> = ({ sample, setSamp
     // Make API call to update the value on the server
   };
 
-  // TODO: INI JUGA DIT, TAPI KHUSUS BUAT UPLOAD FILE BARU
+  // TODO: create new sample with 2 files :JSA and template
   const onSubmit = () => {
     // Check if sampleName is empty or JSAFile and templateSampleForm are empty arrays
     if (sampleName === "" || (JSAFile.length === 0 || templateSampleForm.length === 0)) {
@@ -107,7 +111,25 @@ const SearchableDropdown: React.FC<SearchableDropdownProps> = ({ sample, setSamp
     }
   }
 
+  // TODO : INI JUGA DIT Call API for delete sample
+  const handleCancelledProject = async () => {
+    // Implement your logic to handle the cancellation of the project
+    // For example, make an API call to cancel the project
+    // await api.cancelProject(projectId);
+  };
+
+
   return (
+    <>
+    {showDeleteConfirmation && (
+      <CancelPopup
+        isCancelled={true}
+        setIsCancelled={setShowDeleteConfirmation}
+        message={`Are you sure you want to delete ${sampleName.replace(/_/g, " ")} sample?`} // Concatenate sampleName in the message
+        handleCancelledProject={handleCancelledProject}
+      />
+    )}
+
     <Dialog open={showNewTeamDialog} onOpenChange={setShowNewTeamDialog}>
       <Popover open={open} onOpenChange={setOpen} >
         <PopoverTrigger asChild>
@@ -148,7 +170,9 @@ const SearchableDropdown: React.FC<SearchableDropdownProps> = ({ sample, setSamp
                     setSample(currentValue === sample ? "" : currentValue);
                     if (!edit) setOpen(false);
                   }}
-                  className=" -mx-4 flex justify-between items-center"
+                  className=" -mx-4 flex justify-between items-center relative" // Add relative class for positioning
+                  onMouseEnter={() => setHoveredSample(data._id)} // Set the hovered sample when mouse enters
+                  onMouseLeave={() => setHoveredSample('')} // Clear the hovered sample when mouse leaves
                 >
                   <div className="flex items-start">
                     <Check
@@ -179,14 +203,27 @@ const SearchableDropdown: React.FC<SearchableDropdownProps> = ({ sample, setSamp
                       // )
                     )}
                   </div>
-                  <FiEdit
-                    className="h-5 w-5 mr-4 hover:cursor-pointer hover:text-white hover:bg-dark_green hover:rounded-md"
-                    onClick={(e:any) => {
-                      e.stopPropagation(); // Prevent the onClick event from bubbling up
-                      handleEditClick(data._id, data.sample_name);
-                      setEdit(true);
-                    }}
-                  />
+                  {/* Conditional rendering of delete and edit buttons based on hover state */}
+                  {hoveredSample === data._id && (
+                    <div className="flex flex-row">
+                      <MdDelete 
+                        className="h-5 w-5 mr-2 text-red-500 hover:cursor-pointer hover:text-white hover:bg-red-500 hover:rounded-md"
+                        onClick={() => {
+                          setEdit(false);
+                          setSampleName(data.sample_name);
+                          setShowDeleteConfirmation(true);
+                        }}
+                      />
+                      <FiEdit
+                        className="h-5 w-5 mr-4 hover:cursor-pointer hover:text-white hover:bg-dark_green hover:rounded-md"
+                        onClick={(e:any) => {
+                          handleEditClick(data._id, data.sample_name);
+                          setEdit(true);
+                          e.stopPropagation(); // Prevent the onClick event from bubbling up
+                        }}
+                      />
+                    </div>
+                  )}
                 </CommandItem>
               ))}
             </CommandGroup>
@@ -255,6 +292,7 @@ const SearchableDropdown: React.FC<SearchableDropdownProps> = ({ sample, setSamp
       </DialogFooter>
   </DialogContent>
 </Dialog>
+  </>
   );
 }
 

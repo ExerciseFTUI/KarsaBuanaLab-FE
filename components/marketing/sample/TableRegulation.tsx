@@ -11,16 +11,24 @@ import {
 import { FC, useState } from "react";
 import { BaseSample } from "@/lib/models/baseSample.model";
 import { Input } from "@/components/ui/input";
+import { MdDelete } from "react-icons/md";
+import CancelPopup from "@/components/cancelPopup";
+import CreateRegulationParam from "./CreateRegulationParam";
 
 interface TableRegulationProps {
   sample: string;
   setRegulation: React.Dispatch<React.SetStateAction<number>>;
   baseSample: BaseSample[];
+  setListRegulation: React.Dispatch<React.SetStateAction<never[]>>;
 }
 
-const TableRegulation: React.FC<TableRegulationProps> = ({ sample, setRegulation, baseSample }) => {
+const TableRegulation: React.FC<TableRegulationProps> = ({ sample, setRegulation, setListRegulation, baseSample }) => {
   const [editingId, setEditingId] = useState(-1); // Track which item is being edited (-1 means no item is being edited)
   const [editedValue, setEditedValue] = useState(""); // Track edited value
+  const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
+  const [isCreateOpen, setIsCreateOpen] = useState(false);
+  // const [regulationId, setRegulationId] = useState(-1);
+  const [regulationName, setRegulationName] = useState("");
 
   const sampleData = baseSample.find(s => s.sample_name.toLowerCase() === sample.replace(/ /g, "_"));
   const regulations = sampleData ? sampleData.regulation : [];
@@ -34,6 +42,7 @@ const TableRegulation: React.FC<TableRegulationProps> = ({ sample, setRegulation
     setEditedValue(e.target.value);
   };
 
+  // TODO : INI BUAT EDIT NAME REGULATION DIT
   const handleEditSubmit = (id: number) => {
     // Log the edited value
     console.log("ID : ", id);
@@ -45,9 +54,31 @@ const TableRegulation: React.FC<TableRegulationProps> = ({ sample, setRegulation
     // Make API call to update the value on the server
   };
 
+  // TODO : INI BUAT HAPUS REGULATION DIT
+  const handleCancelledProject = async () => {
+    console.log("yang bakal dihapus : ", regulationName);
+
+    // CALL API
+  }
+
   return (
+    <>
+    {showDeleteConfirmation && (
+      <CancelPopup
+        isCancelled={true}
+        setIsCancelled={setShowDeleteConfirmation}
+        message={`Are you sure you want to delete regulation of ${regulationName.replace(/_/g, " ")}?`} // Concatenate sampleName in the message
+        handleCancelledProject={handleCancelledProject}
+      />
+    )}
+
+    {isCreateOpen && (
+      <CreateRegulationParam isCreateOpen={isCreateOpen} from="regulation" setIsCreateOpen={setIsCreateOpen} message={`Please give your new regulation name for ${sample} `}/>
+    )}
+    
     <div className="w-fit border-2 border-dark_green rounded-xl p-5 items-center justify-center">
       <p className="text-xs mb-3 opacity-70">Click on target regulation to see the detail of parameters</p>
+      <div className="max-h-80 custom-scrollbar overflow-y-scroll">
       <Table className="w-full">
         <TableCaption>Lists regulation of sample {sample} </TableCaption>
         <TableHeader>
@@ -58,11 +89,12 @@ const TableRegulation: React.FC<TableRegulationProps> = ({ sample, setRegulation
         <TableBody>
           {regulations.map((regulationData, index) => (
             <TableRow
-              onClick={() => setRegulation(regulationData._id)}
+              onClick={() => {setRegulation(regulationData._id); }}
               className="hover:bg-light_green hover:cursor-pointer"
               key={regulationData._id}
             >
               <TableCell className="rounded-lg">
+                <div className=" flex flex-row items-center">
                 {editingId === regulationData._id ? (
                   <Input
                     type="text"
@@ -74,25 +106,40 @@ const TableRegulation: React.FC<TableRegulationProps> = ({ sample, setRegulation
                         handleEditSubmit(regulationData._id);
                       }
                     }}
-                    className="border-b border-gray-300 placeholder:text-slate-700 text-slate-700 hover:text-white font-medium focus:outline-none"
+                    className="border-b border-gray-300 placeholder:text-slate-700 text-slate-700 font-medium focus:outline-none"
                   />
                 ) : (
                   <Input
-                    type="text"
-                    defaultValue={regulationData.regulation_name}
+                  type="text"
+                    value={regulationData.regulation_name}
+                    onChange={handleInputChange}
                     onClick={() => handleEditClick(regulationData._id, regulationData.regulation_name)}
-                    className="border-b border-gray-300 placeholder:text-slate-700 text-slate-700 hover:text-white font-medium focus:outline-none"
+                    className="border-b border-gray-300 placeholder:text-slate-700 text-slate-700  font-medium focus:outline-none"
                   />
                 )}
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
+                <MdDelete
+                className="h-7 w-7 mx-2 text-red-500 hover:text-white hover:cursor-pointer  hover:bg-red-500 hover:rounded-md"
+                onClick={() => {
+                  setRegulationName(regulationData.regulation_name);
+                  setShowDeleteConfirmation(true);}
+                }
+                />
+                </div>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
       </Table>
+      </div>
       {sample !== "" && (
-        <div className="hover:bg-dark_green hover:text-white hover:cursor-pointer w-full rounded-lg p-2 mt-1 font-semibold flex justify-center bg-light_green"> + Add Regulation </div>
+        <div 
+          className="hover:bg-dark_green hover:text-white hover:cursor-pointer w-full rounded-lg p-2 mt-1 font-semibold flex justify-center bg-light_green"
+          onClick={() => {setIsCreateOpen(true)}}> 
+          Add Regulation 
+        </div>
       )}
     </div>
+    </>
   );
 }
 
