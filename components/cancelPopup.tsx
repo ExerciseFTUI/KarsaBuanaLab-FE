@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Textarea } from './ui/textarea';
 
 interface ValidateCancel {
@@ -31,6 +31,30 @@ const CancelPopup: React.FC<ValidateCancel> = ({ isCancelled, reason, message, s
             // Handle error, display error message, etc.
         }
     };
+
+    const handleConfirmationCancel = () => {
+        setShowConfirmation(false);
+    };
+
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            const target = event.target as HTMLElement;
+            if (!target.closest(".modal-content")) {
+                setIsCancelled(false);
+                setShowConfirmation(false);
+            }
+        };
+
+        if (isCancelled) {
+            document.addEventListener("mousedown", handleClickOutside);
+        } else {
+            document.removeEventListener("mousedown", handleClickOutside);
+        }
+
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, [isCancelled, setIsCancelled]);
 
     return (
         <>
@@ -86,7 +110,7 @@ const CancelPopup: React.FC<ValidateCancel> = ({ isCancelled, reason, message, s
                         <div className="flex justify-center space-x-4">
                             <button
                                 type="button"
-                                onClick={() => setShowConfirmation(false)}
+                                onClick={handleConfirmationCancel}
                                 className="bg-gray-400 text-white px-4 py-2 rounded-md hover:bg-gray-500"
                             >
                                 No, go back
