@@ -37,6 +37,7 @@ const LaporanHasilPemeriksaan: FC<LaporanHasilPemeriksaanProps> = ({
         router.push(`/pplhp/lhpdraft`);
       } else if (context === "finalreview") {
         message = await changeToFinished(np);
+        router.push(`/pplhp/finalreview`);
       }
       console.log(message);
     } catch (error) {

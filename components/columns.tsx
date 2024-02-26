@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -65,8 +65,9 @@ export const columns: ColumnDef<ProjectMarketingType>[] = [
       return (
         <div className="">
           <div
-            className={`font-light text-white w-fit px-6 py-0.5 rounded-full ${status ? "bg-yellow-700" : "bg-red-400"
-              }`}
+            className={`font-light text-white w-fit px-6 py-0.5 rounded-full ${
+              status ? "bg-yellow-700" : "bg-red-400"
+            }`}
           >
             {row.getValue("status")}
           </div>
@@ -129,7 +130,7 @@ export const columns: ColumnDef<ProjectMarketingType>[] = [
     enableHiding: false,
     cell: ({ row }) => {
       const project = row.original._id;
-      
+
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -141,7 +142,9 @@ export const columns: ColumnDef<ProjectMarketingType>[] = [
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem>
-              <Link href={`/marketing/project/${row.original.status}/${project}`}>
+              <Link
+                href={`/marketing/project/${row.original.status}/${project}`}
+              >
                 View project details
               </Link>
             </DropdownMenuItem>
@@ -157,7 +160,7 @@ export const columns: ColumnDef<ProjectMarketingType>[] = [
         </DropdownMenu>
       );
     },
-  }
+  },
 ];
 
 //Table Column for Penerima Sampling
@@ -220,8 +223,8 @@ export const receiveProjectPageColumns: ColumnDef<ProjectType>[] = [
         stat == "Need Schedule" || stat == "Get Sample"
           ? "bg-moss_green"
           : stat == "On Discuss" || stat == "Verifying"
-            ? "bg-light_brown"
-            : "bg-brick_red";
+          ? "bg-light_brown"
+          : "bg-brick_red";
 
       return (
         <div
@@ -297,8 +300,8 @@ export const samplingProjectPageColumns: ColumnDef<ProjectSamplingType>[] = [
         status == "Need Schedule" || status == "Get Sample"
           ? "bg-moss_green"
           : status == "On Discuss" || status == "Verifying"
-            ? "bg-light_brown"
-            : "bg-brick_red";
+          ? "bg-light_brown"
+          : "bg-brick_red";
 
       return (
         <div
@@ -319,21 +322,20 @@ export const receiveSamplingColumns: ColumnDef<ReceiveSamplingType>[] = [
   //No Penawaran
   {
     accessorKey: "no_penawaran",
-    header: "No. Penawaran",
+    header: "No Penawaran",
     cell: ({ row }) => <div className="">{row.getValue("no_penawaran")}</div>,
   },
-  // Project Title
   {
     accessorKey: "project_name",
     header: ({ column }) => {
       return (
         <Button
-          className="italic hover:bg-transparent hover:text-pastel_moss_green"
+          className="italic"
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Project Title
-          <ArrowUpDown strokeWidth={1.5} className="ml-2 h-4 w-4" />
+          Judul Project
+          <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
@@ -341,7 +343,7 @@ export const receiveSamplingColumns: ColumnDef<ReceiveSamplingType>[] = [
       <div className="capitalize pl-4">{row.getValue("project_name")}</div>
     ),
   },
-  //Lokasi Pengambilan Sampel
+  //Status
   {
     accessorKey: "alamat_sampling",
     header: "Lokasi Pengambilan Sampel",
@@ -363,7 +365,6 @@ export const receiveSamplingColumns: ColumnDef<ReceiveSamplingType>[] = [
       );
     },
   },
-  //Contact Person
   {
     accessorKey: "contact_person",
     header: "Contact Person",
@@ -392,7 +393,7 @@ export const LHPDraftPageColumns: ColumnDef<ProjectLHPType>[] = [
     header: ({ column }) => {
       return (
         <Button
-          className="italic hover:bg-transparent hover:text-pastel_moss_green"
+          className="italic"
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >

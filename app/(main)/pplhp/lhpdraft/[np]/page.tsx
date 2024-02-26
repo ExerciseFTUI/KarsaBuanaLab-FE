@@ -24,7 +24,7 @@ export default async function Home({ params }: { params: { np: string } }) {
             title="Pembuatan Draft LHP"
             color="moss_green"
             link={linkData ? linkData.lhp : []}
-            params={params}
+            np={params.np}
             context="lhpdraft"
           />
         </div>
