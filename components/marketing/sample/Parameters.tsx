@@ -14,6 +14,7 @@ import { BaseSample, Regulation } from "@/lib/models/baseSample.model";
 import CancelPopup from "@/components/cancelPopup";
 import { Input } from "@/components/ui/input";
 import { MdDelete } from "react-icons/md";
+import CreateRegulationParam from "./CreateRegulationParam";
 
 interface TableParameterProps {
   regulation: number;
@@ -26,6 +27,7 @@ const Parameter: React.FC<TableParameterProps> = ({ regulation, sample, bySample
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
   const [editingParam, setEditingParam] = useState("");
   const [editedValue, setEditedValue] = useState(""); // Set initial value to an empty string
+  const [isCreateOpen, setIsCreateOpen] = useState(false);
   const allReg = baseSample.find(s => s.sample_name.toLowerCase() === sample.replace(/ /g, "_"));
   // Check if allReg exists before accessing its properties
   const fixReg: Regulation | undefined = allReg ? allReg.regulation.find(reg => reg._id === regulation) : undefined;
@@ -73,9 +75,15 @@ const Parameter: React.FC<TableParameterProps> = ({ regulation, sample, bySample
       />
     )}
 
+    {bySample ? (
+      <CreateRegulationParam isCreateOpen={isCreateOpen} setIsCreateOpen={setIsCreateOpen} from="param" message={`Please give your new base sample name for ${titleName} `}/>
+      ) : (
+      <CreateRegulationParam isCreateOpen={isCreateOpen} setIsCreateOpen={setIsCreateOpen} from="defaultparam" message={`Please give your new base sample name for ${titleName} `}/>
+    )}
+
     <div className="w-fit border-2 border-dark_green rounded-xl p-5 items-center justify-center">
       <p className="text-xs mb-3 opacity-70">Lists parameters of {bySample ? "sample" : "regulation"} {titleName} </p>
-        <div className="max-h-80 custom-scrollbar overflow-y-scroll">
+        <div className={`${bySample ? " max-h-[42rem]" : "max-h-80"} custom-scrollbar overflow-y-scroll`}>
           <Table className=" w-full ">
             <TableHeader>
               <TableRow>
@@ -130,7 +138,10 @@ const Parameter: React.FC<TableParameterProps> = ({ regulation, sample, bySample
       </div>
       {/* Button to create new one param */}
       {titleName !== ("" || undefined) && (
-        <div className="hover:bg-dark_green text-base  hover:text-white hover:cursor-pointer rounded-lg p-1 mt-1 font-semibold flex text-center justify-center bg-light_green"> 
+        <div 
+        className="hover:bg-dark_green text-base  hover:text-white hover:cursor-pointer rounded-lg p-1 mt-1 font-semibold flex text-center justify-center bg-light_green"
+        onClick={() => {setIsCreateOpen(true)}}
+        > 
           Add Parameter for 
           <br/> {titleName.toLowerCase()} 
           <br /> {bySample ? "base sample" : "regulation"} 

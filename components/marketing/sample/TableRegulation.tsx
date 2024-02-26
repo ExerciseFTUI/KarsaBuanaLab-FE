@@ -13,6 +13,7 @@ import { BaseSample } from "@/lib/models/baseSample.model";
 import { Input } from "@/components/ui/input";
 import { MdDelete } from "react-icons/md";
 import CancelPopup from "@/components/cancelPopup";
+import CreateRegulationParam from "./CreateRegulationParam";
 
 interface TableRegulationProps {
   sample: string;
@@ -25,6 +26,7 @@ const TableRegulation: React.FC<TableRegulationProps> = ({ sample, setRegulation
   const [editingId, setEditingId] = useState(-1); // Track which item is being edited (-1 means no item is being edited)
   const [editedValue, setEditedValue] = useState(""); // Track edited value
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
+  const [isCreateOpen, setIsCreateOpen] = useState(false);
   // const [regulationId, setRegulationId] = useState(-1);
   const [regulationName, setRegulationName] = useState("");
 
@@ -68,6 +70,10 @@ const TableRegulation: React.FC<TableRegulationProps> = ({ sample, setRegulation
         message={`Are you sure you want to delete regulation of ${regulationName.replace(/_/g, " ")}?`} // Concatenate sampleName in the message
         handleCancelledProject={handleCancelledProject}
       />
+    )}
+
+    {isCreateOpen && (
+      <CreateRegulationParam isCreateOpen={isCreateOpen} from="regulation" setIsCreateOpen={setIsCreateOpen} message={`Please give your new regulation name for ${sample} `}/>
     )}
     
     <div className="w-fit border-2 border-dark_green rounded-xl p-5 items-center justify-center">
@@ -126,8 +132,10 @@ const TableRegulation: React.FC<TableRegulationProps> = ({ sample, setRegulation
       </Table>
       </div>
       {sample !== "" && (
-        <div className="hover:bg-dark_green hover:text-white hover:cursor-pointer w-full rounded-lg p-2 mt-1 font-semibold flex justify-center bg-light_green"> 
-        Add Regulation 
+        <div 
+          className="hover:bg-dark_green hover:text-white hover:cursor-pointer w-full rounded-lg p-2 mt-1 font-semibold flex justify-center bg-light_green"
+          onClick={() => {setIsCreateOpen(true)}}> 
+          Add Regulation 
         </div>
       )}
     </div>
