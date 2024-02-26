@@ -19,16 +19,21 @@ interface TableParameterProps {
   regulation: number;
   sample: string;
   baseSample: BaseSample[];
+  bySample: boolean;
 }
 
-const Parameter: React.FC<TableParameterProps> = ({ regulation, sample, baseSample }) => {
+const Parameter: React.FC<TableParameterProps> = ({ regulation, sample, bySample, baseSample }) => {
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
   const [editingParam, setEditingParam] = useState("");
   const [editedValue, setEditedValue] = useState(""); // Set initial value to an empty string
   const allReg = baseSample.find(s => s.sample_name.toLowerCase() === sample.replace(/ /g, "_"));
   // Check if allReg exists before accessing its properties
   const fixReg: Regulation | undefined = allReg ? allReg.regulation.find(reg => reg._id === regulation) : undefined;
-  
+
+  const sampleOrReg = bySample ? allReg : fixReg;
+  const titleName = bySample ? allReg?.sample_name : fixReg?.regulation_name;
+  const paramMap = bySample ? allReg?.param : fixReg?.default_param;
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEditedValue(e.target.value);
   };
@@ -69,18 +74,16 @@ const Parameter: React.FC<TableParameterProps> = ({ regulation, sample, baseSamp
     )}
 
     <div className="w-fit border-2 border-dark_green rounded-xl p-5 items-center justify-center">
-      <p className="text-xs mb-3 opacity-70">Lists parameters of regulation {fixReg?.regulation_name} </p>
+      <p className="text-xs mb-3 opacity-70">Lists parameters of {bySample ? "sample" : "regulation"} {titleName} </p>
         <div className="max-h-80 custom-scrollbar overflow-y-scroll">
           <Table className=" w-full ">
-            {/* <TableCaption></TableCaption> */}
             <TableHeader>
               <TableRow>
                 <TableHead className="text-dark_green font-bold">Parameter Name</TableHead>
               </TableRow>
             </TableHeader>
-
-            <TableBody className="" style={{ maxHeight: "400px", overflowY: "auto" }}>
-              {fixReg && fixReg.default_param.map((param, index) => (
+            <TableBody>
+              {sampleOrReg && paramMap?.map((param, index) => (
                 <TableRow
                   // onClick={() => {setRegulation(regulationData._id); }}
                   className="hover:bg-light_green hover:cursor-pointer"
@@ -121,15 +124,19 @@ const Parameter: React.FC<TableParameterProps> = ({ regulation, sample, baseSamp
                     </div>
                   </TableCell>
                 </TableRow>
-              ))}
+                ))}
             </TableBody>
         </Table>
       </div>
-          {fixReg?.regulation_name !== undefined && (
-            <div className="hover:bg-dark_green text-base  hover:text-white hover:cursor-pointer rounded-lg p-1 mt-1 font-semibold flex text-center justify-center bg-light_green"> 
-                  Add Parameter for <br/> {fixReg?.regulation_name.toLowerCase()} 
-                  <br /> regulation</div>
-          )}
+      {/* Button to create new one param */}
+      {titleName !== ("" || undefined) && (
+        <div className="hover:bg-dark_green text-base  hover:text-white hover:cursor-pointer rounded-lg p-1 mt-1 font-semibold flex text-center justify-center bg-light_green"> 
+          Add Parameter for 
+          <br/> {titleName.toLowerCase()} 
+          <br /> {bySample ? "base sample" : "regulation"} 
+        </div>
+      )}
+      {/* End Button to create new one param */}
     </div>
     </>
   );

@@ -49,7 +49,7 @@ const CreateSamplePage = ({
                     <div className='flex flex-col mt-10'>
                         <h1 className='text-black font-semibold text-lg mb-3'>Parameter</h1>
                         <div className='flex flex-row justify-center'>
-                            <Parameter regulation={regulation} baseSample={baseSample} sample={sample} />
+                            <Parameter bySample={false} regulation={regulation} baseSample={baseSample} sample={sample} />
                         </div>
                     </div>
                     {/* End of Parameter */}
@@ -59,7 +59,10 @@ const CreateSamplePage = ({
                 {/* Information for Edit */}
                 <div className='border border-dark_green rounded-lg p-5 h-full'>
                     <h1 className='text-xl font-bold text-dark_green mb-10'>List All Parameter for {sample.toUpperCase()} Sample </h1>
-                    {/* <EditSample sample={sample} regulation={regulation} /> */}
+                        <div className=' flex flex-row justify-center'>
+                            <Parameter bySample={true} regulation={regulation} baseSample={baseSample} sample={sample} />
+                        {/* <EditSample sample={sample} regulation={regulation} /> */}
+                        </div>
                 </div>
                 {/* End Information for Parameter */}
             </div>
