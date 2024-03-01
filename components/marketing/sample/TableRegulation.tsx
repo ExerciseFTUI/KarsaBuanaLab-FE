@@ -63,14 +63,9 @@ const TableRegulation: React.FC<TableRegulationProps> = ({
     console.log("ID : ", id);
     console.log("New regulation name:", editedValue);
 
-    // Make an API call to update regulation name with editedValue
-    // After successful update, reset editing state
     setEditingId(-1);
-    // Make API call to update the value on the server
 
     console.log(regulations);
-
-    //Add Regulation Logic
 
     //Map all the regulation in specific sample
     const newRegulation = regulations.map((regulation) => {
@@ -126,17 +121,10 @@ const TableRegulation: React.FC<TableRegulationProps> = ({
   // TODO : INI BUAT HAPUS REGULATION DIT
   // OKE ONGOING
   const handleCancelledProject = async () => {
-    console.log("yang bakal dihapus : ", regulationName);
-
-    // CALL API
-    console.log(regulations);
-
     const newRegulation = regulations.filter((regulation) => {
       // For update regulation, check if the regulation id is not the same with the edited id
       return regulation.regulation_name !== regulationName;
     });
-
-    console.log(newRegulation);
 
     const body = {
       regulation: newRegulation,
@@ -152,14 +140,14 @@ const TableRegulation: React.FC<TableRegulationProps> = ({
     if (result) {
       router.refresh();
       toast({
-        title: "Edit Regulation Name Success",
-        description: "Regulation Name has been updated",
+        title: "Delete Regulation Success",
+        description: "Regulation has been deleted",
       });
     } else {
       toast({
-        title: "Edit Regulation Name Failed",
+        title: "Delete Regulation Failed",
         variant: "destructive",
-        description: "Regulation Name failed to update",
+        description: "Regulation failed to delete",
       });
     }
 
@@ -180,75 +168,92 @@ const TableRegulation: React.FC<TableRegulationProps> = ({
         />
       )}
 
+      {isCreateOpen && (
+        <CreateRegulationParam
+          isCreateOpen={isCreateOpen}
+          from="regulation"
+          setIsCreateOpen={setIsCreateOpen}
+          message={`Please give your new regulation name for ${sample} `}
+          baseSample={sampleData}
+        />
+      )}
+
       <div className="w-fit border-2 border-dark_green rounded-xl p-5 items-center justify-center">
         <p className="text-xs mb-3 opacity-70">
           Click on target regulation to see the detail of parameters
         </p>
-        <Table className="w-full">
-          <TableCaption>Lists regulation of sample {sample} </TableCaption>
-          <TableHeader>
-            <TableRow>
-              <TableHead className="text-dark_green font-bold">
-                Regulation Name
-              </TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {regulations.map((regulationData, index) => (
-              <TableRow
-                onClick={() => {
-                  setRegulation(regulationData._id);
-                }}
-                className="hover:bg-light_green hover:cursor-pointer"
-                key={regulationData._id}
-              >
-                <TableCell className="rounded-lg">
-                  <div className=" flex flex-row items-center">
-                    {editingId === regulationData._id ? (
-                      <Input
-                        type="text"
-                        value={editedValue}
-                        onChange={handleInputChange}
-                        placeholder={regulationData.regulation_name}
-                        onKeyDown={(e) => {
-                          if (e.key === "Enter") {
-                            handleEditSubmit(regulationData._id);
-                          }
-                        }}
-                        className="border-b border-gray-300 placeholder:text-slate-700 text-slate-700  font-medium focus:outline-none"
-                      />
-                    ) : (
-                      <Input
-                        type="text"
-                        defaultValue={regulationData.regulation_name}
-                        onClick={() =>
-                          handleEditClick(
-                            regulationData._id,
-                            regulationData.regulation_name
-                          )
-                        }
-                        className="border-b border-gray-300 placeholder:text-slate-700 text-slate-700  font-medium focus:outline-none"
-                      />
-                    )}
-                    <MdDelete
-                      className="h-7 w-7 mx-2 text-red-500 hover:text-white hover:cursor-pointer  hover:bg-red-500 hover:rounded-md"
-                      onClick={() => {
-                        setRegulationName(regulationData.regulation_name);
-                        setShowDeleteConfirmation(true);
-                      }}
-                    />
-                  </div>
-                </TableCell>
+        <div className="max-h-80 custom-scrollbar overflow-y-scroll">
+          <Table className="w-full">
+            <TableCaption>Lists regulation of sample {sample} </TableCaption>
+            <TableHeader>
+              <TableRow>
+                <TableHead className="text-dark_green font-bold">
+                  Regulation Name
+                </TableHead>
               </TableRow>
-            ))}
-            {sample !== "" && (
-              <div className="hover:bg-dark_green hover:text-white hover:cursor-pointer w-full rounded-lg p-2 mt-1 font-semibold flex justify-center bg-light_green">
-                {" "}
-                + Add Regulation{" "}
-              </div>
-            )}
-          </TableBody>
-        </Table>
+            </TableHeader>
+            <TableBody>
+              {regulations.map((regulationData, index) => (
+                <TableRow
+                  onClick={() => {
+                    setRegulation(regulationData._id);
+                  }}
+                  className="hover:bg-light_green hover:cursor-pointer"
+                  key={regulationData._id}
+                >
+                  <TableCell className="rounded-lg">
+                    <div className=" flex flex-row items-center">
+                      {editingId === regulationData._id ? (
+                        <Input
+                          type="text"
+                          value={editedValue}
+                          onChange={handleInputChange}
+                          placeholder={regulationData.regulation_name}
+                          onKeyDown={(e) => {
+                            if (e.key === "Enter") {
+                              handleEditSubmit(regulationData._id);
+                            }
+                          }}
+                          className="border-b border-gray-300 placeholder:text-slate-700 text-slate-700 font-medium focus:outline-none"
+                        />
+                      ) : (
+                        <Input
+                          type="text"
+                          value={regulationData.regulation_name}
+                          onChange={handleInputChange}
+                          onClick={() =>
+                            handleEditClick(
+                              regulationData._id,
+                              regulationData.regulation_name
+                            )
+                          }
+                          className="border-b border-gray-300 placeholder:text-slate-700 text-slate-700  font-medium focus:outline-none"
+                        />
+                      )}
+                      <MdDelete
+                        className="h-7 w-7 mx-2 text-red-500 hover:text-white hover:cursor-pointer  hover:bg-red-500 hover:rounded-md"
+                        onClick={() => {
+                          setRegulationName(regulationData.regulation_name);
+                          setShowDeleteConfirmation(true);
+                        }}
+                      />
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
+        {sample !== "" && (
+          <div
+            className="hover:bg-dark_green hover:text-white hover:cursor-pointer w-full rounded-lg p-2 mt-1 font-semibold flex justify-center bg-light_green"
+            onClick={() => {
+              setIsCreateOpen(true);
+            }}
+          >
+            Add Regulation
+          </div>
+        )}
       </div>
     </>
   );
