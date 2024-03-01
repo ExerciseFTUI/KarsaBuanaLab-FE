@@ -54,14 +54,6 @@ const Parameter: React.FC<TableParameterProps> = ({
   let currentSample: BaseSample | undefined = allReg;
   let currentRegulation: Regulation | undefined = fixReg;
 
-  // if (bySample) {
-  //   //Need Single Sample
-  //   currentSample = allReg;
-  // } else {
-  //   //NEed specific Regulation
-  //   currentRegulation = fixReg;
-  // }
-
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEditedValue(e.target.value);
   };
@@ -76,10 +68,6 @@ const Parameter: React.FC<TableParameterProps> = ({
     console.log("yang bakal dihapus : ", editingParam);
 
     if (bySample && currentSample?.param) {
-      alert("Delete Param by Sample");
-
-      console.log(editingParam);
-
       let newParam = currentSample.param.filter(
         (param) => param !== editingParam
       );
@@ -107,8 +95,6 @@ const Parameter: React.FC<TableParameterProps> = ({
 
       return;
     } else {
-      alert("Delete Param by specific Regulation");
-
       let newDefaultParam = currentRegulation?.default_param.filter(
         (param) => param !== editingParam
       );
@@ -164,7 +150,6 @@ const Parameter: React.FC<TableParameterProps> = ({
 
     //Update the param
     if (bySample && currentSample?.param) {
-      alert("Edit Param by Sample");
       console.log("Sample : ", currentSample);
 
       let newParam = currentSample.param.filter((param) => param !== name);
@@ -193,7 +178,6 @@ const Parameter: React.FC<TableParameterProps> = ({
       return;
       //Update the default param
     } else {
-      alert("Edit Param by specific Regulation");
       console.log("Regulation : ", currentRegulation);
 
       let newDefaultParam = currentRegulation?.default_param.filter(

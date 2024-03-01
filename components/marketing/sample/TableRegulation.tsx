@@ -82,12 +82,6 @@ const TableRegulation: React.FC<TableRegulationProps> = ({
       };
     });
 
-    //Add the new regulation
-    // newRegulation.push({
-    //   regulationName: editedValue,
-    //   default_param: [],
-    // });
-
     console.log(newRegulation);
 
     const body = {
