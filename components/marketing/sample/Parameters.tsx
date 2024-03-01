@@ -15,6 +15,9 @@ import CancelPopup from "@/components/cancelPopup";
 import { Input } from "@/components/ui/input";
 import { MdDelete } from "react-icons/md";
 import CreateRegulationParam from "./CreateRegulationParam";
+import { editBaseSample } from "@/lib/actions/marketing.actions";
+import { useRouter } from "next/navigation";
+import { useToast } from "@/components/ui/use-toast";
 
 interface TableParameterProps {
   regulation: number;
@@ -29,6 +32,9 @@ const Parameter: React.FC<TableParameterProps> = ({
   bySample,
   baseSample,
 }) => {
+  const router = useRouter();
+  const { toast } = useToast();
+
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
   const [editingParam, setEditingParam] = useState("");
   const [editedValue, setEditedValue] = useState(""); // Set initial value to an empty string
@@ -45,6 +51,17 @@ const Parameter: React.FC<TableParameterProps> = ({
   const titleName = bySample ? allReg?.sample_name : fixReg?.regulation_name;
   const paramMap = bySample ? allReg?.param : fixReg?.default_param;
 
+  let currentSample: BaseSample | undefined = allReg;
+  let currentRegulation: Regulation | undefined = fixReg;
+
+  // if (bySample) {
+  //   //Need Single Sample
+  //   currentSample = allReg;
+  // } else {
+  //   //NEed specific Regulation
+  //   currentRegulation = fixReg;
+  // }
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEditedValue(e.target.value);
   };
@@ -56,33 +73,173 @@ const Parameter: React.FC<TableParameterProps> = ({
 
   // TODO : INI BUAT HAPUS PARAM DIT
   const handleCancelledProject = async () => {
-    alert("Delete Param");
+    console.log("yang bakal dihapus : ", editingParam);
 
-    console.log("yang bakal dihapus : ", fixReg?.regulation_name);
+    if (bySample && currentSample?.param) {
+      alert("Delete Param by Sample");
 
-    alert(allReg?.param);
-    alert(fixReg?.regulation_name);
+      console.log(editingParam);
 
-    console.log(sampleOrReg);
+      let newParam = currentSample.param.filter(
+        (param) => param !== editingParam
+      );
+      console.log(newParam);
 
-    const newParam = allReg?.param.filter(
-      (param) => fixReg?.regulation_name !== param
-    );
+      const body = {
+        param: newParam,
+      };
 
-    console.log(newParam);
+      const result = await editBaseSample(body, currentSample._id);
 
-    // CALL API
+      if (result) {
+        router.refresh();
+        toast({
+          title: "Delete Param Success",
+          description: "Param has been deleted",
+        });
+      } else {
+        toast({
+          title: "Delete Param Failed",
+          variant: "destructive",
+          description: "Param failed to delete",
+        });
+      }
+
+      return;
+    } else {
+      alert("Delete Param by specific Regulation");
+
+      let newDefaultParam = currentRegulation?.default_param.filter(
+        (param) => param !== editingParam
+      );
+
+      const newRegulation = currentSample?.regulation.map((regulation) => {
+        //For update regulation just add check if the regulation id is the same with the edited id
+        if (regulation._id === currentRegulation?._id) {
+          return {
+            regulation_name: regulation.regulation_name,
+            default_param: newDefaultParam,
+          };
+        }
+        return {
+          regulation_name: regulation.regulation_name,
+          default_param: regulation.default_param,
+        };
+      });
+
+      const body = {
+        regulation: newRegulation,
+      };
+
+      if (currentSample?._id === undefined) {
+        alert("Sample ID not found");
+        return;
+      }
+
+      const result = await editBaseSample(body, currentSample._id);
+
+      if (result) {
+        router.refresh();
+        toast({
+          title: "Delete Param by specific regulation Success",
+          description: "Param has been deleted",
+        });
+      } else {
+        toast({
+          title: "Delete Param by specific regulation Failed",
+          variant: "destructive",
+          description: "Param failed to delete",
+        });
+      }
+    }
   };
 
   // TODO : INI BUAT EDIT NAME PARAM DIT
-  const handleEditSubmit = (name: string) => {
-    alert("Edit Param");
-
+  const handleEditSubmit = async (name: string) => {
     // Log the edited value
     console.log("name : ", name);
     console.log("New param name:", editedValue);
 
     setEditingParam("");
+
+    //Update the param
+    if (bySample && currentSample?.param) {
+      alert("Edit Param by Sample");
+      console.log("Sample : ", currentSample);
+
+      let newParam = currentSample.param.filter((param) => param !== name);
+      newParam.push(editedValue);
+
+      const body = {
+        param: newParam,
+      };
+
+      const result = await editBaseSample(body, currentSample._id);
+
+      if (result) {
+        router.refresh();
+        toast({
+          title: "Add Param Success",
+          description: "Param has been added",
+        });
+      } else {
+        toast({
+          title: "Add Param Failed",
+          variant: "destructive",
+          description: "Param failed to add",
+        });
+      }
+
+      return;
+      //Update the default param
+    } else {
+      alert("Edit Param by specific Regulation");
+      console.log("Regulation : ", currentRegulation);
+
+      let newDefaultParam = currentRegulation?.default_param.filter(
+        (param) => param !== name
+      );
+      newDefaultParam?.push(editedValue);
+
+      const newRegulation = currentSample?.regulation.map((regulation) => {
+        //For update regulation just add check if the regulation id is the same with the edited id
+        if (regulation._id === currentRegulation?._id) {
+          return {
+            regulation_name: regulation.regulation_name,
+            default_param: newDefaultParam,
+          };
+        }
+        return {
+          regulation_name: regulation.regulation_name,
+          default_param: regulation.default_param,
+        };
+      });
+
+      const body = {
+        regulation: newRegulation,
+      };
+
+      if (currentSample?._id === undefined) {
+        alert("Sample ID not found");
+        return;
+      }
+
+      const result = await editBaseSample(body, currentSample._id);
+
+      if (result) {
+        router.refresh();
+        toast({
+          title: "Delete Regulation Success",
+          description: "Regulation has been deleted",
+        });
+      } else {
+        toast({
+          title: "Delete Regulation Failed",
+          variant: "destructive",
+          description: "Regulation failed to delete",
+        });
+      }
+    }
   };
 
   return (
