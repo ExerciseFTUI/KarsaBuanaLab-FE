@@ -9,7 +9,7 @@ import { UserDataTable } from "../UserDataTable"
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table"
 import { groupUserStaffColumns } from "../sampleListDataTables/DataTableColumns"
 import { useRouter } from "next/navigation"
-import { verifySample } from "@/lib/actions/sampling.actions"
+import { changeDivision, verifySample } from "@/lib/actions/sampling.actions"
 import LoadingScreen from "@/components/LoadingScreen"
 import { SamplingRequestData } from "@/lib/type"
 import { cn } from "@/lib/utils"
@@ -78,7 +78,7 @@ export default function TabSampleAdmin({
     setIsLoading(true)
 
     project.sampling_list.forEach(async (s) => {
-      const response = await verifySample(project_id, "LAB STATUS", s._id)
+      const response = await verifySample(project_id, "SUBMIT", s._id)
 
       if (!response) {
         toast({
@@ -93,6 +93,20 @@ export default function TabSampleAdmin({
         })
       }
     })
+
+    const response = await changeDivision(project._id, division)
+
+    if (!response)
+      toast({
+        title: "Failed to Save Project",
+        description: "Please Try Again",
+        variant: "destructive",
+      })
+    else
+      toast({
+        title: "Project has been moved to PPLHP Division!",
+        // description: "Please check again if its correct",
+      })
 
     setIsLoading(false)
     router.refresh()
