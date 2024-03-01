@@ -13,6 +13,7 @@ import { BaseSample } from "@/lib/models/baseSample.model";
 import { Input } from "@/components/ui/input";
 import { MdDelete } from "react-icons/md";
 import CancelPopup from "@/components/cancelPopup";
+import CreateRegulationParam from "./CreateRegulationParam";
 import { useToast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
 import { editBaseSample } from "@/lib/actions/marketing.actions";
@@ -37,6 +38,7 @@ const TableRegulation: React.FC<TableRegulationProps> = ({
   const [editingId, setEditingId] = useState(-1); // Track which item is being edited (-1 means no item is being edited)
   const [editedValue, setEditedValue] = useState(""); // Track edited value
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
+  const [isCreateOpen, setIsCreateOpen] = useState(false);
   // const [regulationId, setRegulationId] = useState(-1);
   const [regulationName, setRegulationName] = useState("");
 
