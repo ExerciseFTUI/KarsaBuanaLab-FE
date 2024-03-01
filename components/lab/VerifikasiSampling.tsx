@@ -11,7 +11,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 import { useRouter } from "next/navigation"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import { useToast } from "@/components/ui/use-toast"
@@ -28,7 +28,13 @@ export default function VerifikasiSampling({
   const router = useRouter()
   const { toast } = useToast()
 
+  // console.log(data.project.sampling_list)
+
   const [isLoading, setIsLoading] = useState(false)
+
+  const canSave =
+    data.project.sampling_list.filter((s) => s.status == "ACCEPTED").length ==
+    data.project.sampling_list.length
 
   const submitSample = async (sample_id: string, status: string) => {
     setIsLoading(true)
@@ -62,26 +68,25 @@ export default function VerifikasiSampling({
       </h1>
 
       <div className="space-y-4">
-        {data.files.sampling_list.map((s: any, i: number) => (
+        {data.project.sampling_list.map((s: any, i: number) => (
           <div key={i} className="w-full flex items-center gap-4">
             <HyperLinkButton
               className="w-72"
-              title={s.name}
-              href={s.url || "/"}
+              title={s.sample_name}
+              href={data.files.sampling_list[i].url || "/"}
             />
 
             <div className="flex gap-2">
               <AlertDialog>
-                <AlertDialogTrigger>
-                  <Button
+                <AlertDialogTrigger title="Accept">
+                  <div
                     className={cn(
-                      "bg-light_brown hover:bg-dark_brown",
+                      "bg-light_brown hover:bg-dark_brown text-white px-8 pt-1 pb-2 rounded-lg",
                       s.status == "ACCEPTED" ? "hidden" : ""
                     )}
-                    title="Accept"
                   >
                     Accept
-                  </Button>
+                  </div>
                 </AlertDialogTrigger>
 
                 <AlertDialogContent>
@@ -94,7 +99,7 @@ export default function VerifikasiSampling({
                   <AlertDialogFooter>
                     <AlertDialogCancel>Cancel</AlertDialogCancel>
                     <AlertDialogAction
-                      onClick={(e) => submitSample(s._id, "ACCEPT")}
+                      onClick={(e) => submitSample(s._id, "ACCEPTED")}
                     >
                       Continue
                     </AlertDialogAction>
@@ -103,13 +108,11 @@ export default function VerifikasiSampling({
               </AlertDialog>
 
               <AlertDialog>
-                <AlertDialogTrigger>
-                  <Button
-                    className="border-light_brown border-2 bg-transparent text-dark_brown hover:bg-dark_brown hover:text-ghost_white"
-                    title="Revisi"
-                  >
-                    Reanalisa
-                  </Button>
+                <AlertDialogTrigger
+                  className="border-light_brown border-2 bg-transparent text-dark_brown hover:bg-dark_brown hover:text-ghost_white px-4 pt-1 pb-2 rounded-lg"
+                  title="Revisi"
+                >
+                  Reanalisa
                 </AlertDialogTrigger>
 
                 <AlertDialogContent>
@@ -122,7 +125,7 @@ export default function VerifikasiSampling({
                   <AlertDialogFooter>
                     <AlertDialogCancel>Cancel</AlertDialogCancel>
                     <AlertDialogAction
-                      onClick={(e) => submitSample(s._id, "REANALISA")}
+                      onClick={(e) => submitSample(s._id, "REVISION")}
                     >
                       Continue
                     </AlertDialogAction>
@@ -132,15 +135,34 @@ export default function VerifikasiSampling({
             </div>
           </div>
         ))}
-      </div>
 
-      <div className="flex flex-row w-full justify-end gap-4 mt-6">
-        <button className="text-dark_brown font-semibold px-3 pb-1 rounded-md border-2 border-dark_brown">
-          Cancel
-        </button>
-        <button className="text-white bg-dark_brown font-semibold px-3 pb-1 rounded-md border-2 border-dark_brown">
-          Save
-        </button>
+        {canSave && (
+          <AlertDialog>
+            <AlertDialogTrigger
+              className={cn(
+                "bg-light_brown hover:bg-dark_brown text-white px-8 pt-1 pb-2 rounded-lg"
+              )}
+              title="Save"
+            >
+              Save
+            </AlertDialogTrigger>
+
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>
+                  Are you sure to save this project?
+                </AlertDialogTitle>
+              </AlertDialogHeader>
+
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction onClick={(e) => console.log("saved")}>
+                  Save
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
+        )}
       </div>
     </div>
   )
