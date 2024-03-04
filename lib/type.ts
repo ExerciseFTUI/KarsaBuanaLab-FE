@@ -23,7 +23,9 @@ export type ProjectMarketingType = {
   contact_person: string
   created_at: string
   status: string
+  current_division: string
   valuasi_proyek: number
+  jadwal_sampling: {from : string, to : string, _id: string}
   desc_failed: string
 }
 
