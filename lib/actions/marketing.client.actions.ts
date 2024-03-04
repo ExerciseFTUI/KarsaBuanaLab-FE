@@ -7,6 +7,54 @@ import axios from "axios";
 const apiBaseUrl =
   process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:5000";
 
+//DITO : CREATE BASE SAMPLE API HERE
+
+export const addBaseSample = async (
+  sampleName: string,
+  file1: any,
+  file2: any
+) => {
+  var bodyFormData = new FormData();
+  bodyFormData.append("sample_name", sampleName);
+
+  // Append each file to the FormData object
+  // for (let i = 0; i < files.length; i++) {
+  //   bodyFormData.append("files", files[i]);
+  // }
+
+  //Add JSA File
+  bodyFormData.append("files", file1);
+  //Add template file
+  bodyFormData.append("files", file2);
+
+  try {
+    // throw new Error("Error update projectFile :");
+    //Call API
+    const response = await axios.post(
+      `${apiBaseUrl}/base-sample/addBaseSample`,
+      bodyFormData,
+      {
+        headers: { "Content-Type": "multipart/form-data" },
+      }
+    );
+    if (response.data.result) {
+      return response.data.result;
+    } else {
+      return null;
+    }
+  } catch (error: any) {
+    {
+      error.response.data
+        ? console.error(error.response.data)
+        : console.error(`Error update projectFile :`, error.message);
+    }
+    // throw new Error(error.message);
+    return null;
+  }
+};
+
+//=======
+
 export const getUser = async () => {
   try {
     const response = await axios.get(

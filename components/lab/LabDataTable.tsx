@@ -1,5 +1,5 @@
-"use client";
-import { useState, FC } from "react";
+"use client"
+import { useState, FC } from "react"
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -11,13 +11,13 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
-} from "@tanstack/react-table";
-import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { CiSearch } from "react-icons/ci";
+} from "@tanstack/react-table"
+import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react"
+import { useRouter } from "next/navigation"
+import { CiSearch } from "react-icons/ci"
 
-import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
+import { Button } from "@/components/ui/button"
+import { Checkbox } from "@/components/ui/checkbox"
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -26,8 +26,8 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Input } from "@/components/ui/input";
+} from "@/components/ui/dropdown-menu"
+import { Input } from "@/components/ui/input"
 import {
   Table,
   TableBody,
@@ -35,26 +35,26 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
+} from "@/components/ui/table"
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "../ui/select";
+} from "../ui/select"
 import {
   ChevronLeftIcon,
   ChevronRightIcon,
   DoubleArrowLeftIcon,
   DoubleArrowRightIcon,
-} from "@radix-ui/react-icons";
-import { LabDashboardPageColumns, columns } from "@/components/columns";
-import { LabDataType } from "@/lib/type";
+} from "@radix-ui/react-icons"
+import { LabDashboardPageColumns, columns } from "@/components/columns"
+import { LabDataType } from "@/lib/type"
 
 interface LabDataTableProps {
-  data: LabDataType[];
-  link: string;
+  data: LabDataType[]
+  link: string
 }
 
 const LabDataTable: FC<LabDataTableProps> = ({ data, link }) => {
@@ -83,7 +83,7 @@ const LabDataTable: FC<LabDataTableProps> = ({ data, link }) => {
       columnVisibility,
       rowSelection,
     },
-  });
+  })
 
   return (
     <div className="w-full">
@@ -94,7 +94,11 @@ const LabDataTable: FC<LabDataTableProps> = ({ data, link }) => {
           value={
             (table.getColumn("project_name")?.getFilterValue() as string) ?? ""
           }
+          value={
+            (table.getColumn("project_name")?.getFilterValue() as string) ?? ""
+          }
           onChange={(event) =>
+            table.getColumn("project_name")?.setFilterValue(event.target.value)
             table.getColumn("project_name")?.setFilterValue(event.target.value)
           }
           className="max-w-sm pl-10"
@@ -143,7 +147,7 @@ const LabDataTable: FC<LabDataTableProps> = ({ data, link }) => {
                             header.getContext()
                           )}
                     </TableHead>
-                  );
+                  )
                 })}
               </TableRow>
             ))}
@@ -190,7 +194,7 @@ const LabDataTable: FC<LabDataTableProps> = ({ data, link }) => {
           <Select
             value={`${table.getState().pagination.pageSize}`}
             onValueChange={(value) => {
-              table.setPageSize(Number(value));
+              table.setPageSize(Number(value))
             }}
           >
             <SelectTrigger className="h-8 w-[70px]">
@@ -250,7 +254,7 @@ const LabDataTable: FC<LabDataTableProps> = ({ data, link }) => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default LabDataTable;
+export default LabDataTable
