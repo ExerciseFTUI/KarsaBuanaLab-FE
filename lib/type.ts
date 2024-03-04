@@ -1,3 +1,5 @@
+import { File } from "./models/file.model";
+import { Project } from "./models/project.model";
 import { Regulation } from "./models/regulation.model";
 import { User } from "./models/user.model";
 
@@ -44,9 +46,10 @@ export type FileType = {
 };
 
 export type UserType = {
-  username: string;
-  email: string;
-  password: string;
+  id?: string;
+  name?: string;
+  email?: string;
+  // password: string;
   // phone: string
   role: string;
   division: string;
@@ -104,6 +107,12 @@ export type ProjectSamplingType = {
   sampling_list: SampleType[];
 
   file: { file_nama: string; file_id: string };
+};
+
+export type SamplingRequestData = {
+  project: Project;
+  user: User[];
+  files: any;
 };
 
 export const Sampling = {
@@ -203,13 +212,19 @@ export type ClientDataType = {
 };
 
 export type SurveySchema = {
+  _id: string;
   title: string;
-  question: QuestionType[];
+  questions: QuestionType[];
 };
 
 export type QuestionType = {
   _id: string;
   text: string;
-  type: string;
-  choices: string;
+  type: "rating" | "essay" | "multiple_choice";
+  choices: string[];
+};
+
+export type AnswerType = {
+  questionId: string;
+  value: string;
 };

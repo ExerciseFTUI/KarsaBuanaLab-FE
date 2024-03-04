@@ -11,7 +11,7 @@ import {
 import { cn } from "@/lib/utils"
 import { CalendarIcon } from "lucide-react"
 import { Calendar } from "@/components/ui/calendar"
-import { addDays, format } from "date-fns"
+import { format, differenceInCalendarDays } from "date-fns"
 import React, { useState } from "react"
 import SamplingTabsList from "../tab/SamplingTabsList"
 import { GroupUnassignedTable } from "./GroupUnassignedTable"
@@ -30,20 +30,45 @@ import { Project } from "@/lib/models/project.model"
 import { DateRange } from "react-day-picker"
 import { useRouter } from "next/navigation"
 import LoadingScreen from "@/components/LoadingScreen"
+import { SamplingRequestData } from "@/lib/type"
+import { useToast } from "@/components/ui/use-toast"
 
 interface Params {
-  data: Project
+  data: SamplingRequestData
 }
 
 export default function SampleProjectTab({ data }: Params) {
+  const { files, user, project } = data
+
+  const jadwal_sampling = project.jadwal_sampling
+
+  let from = jadwal_sampling.from
+    ? jadwal_sampling.from.split("-").reverse()
+    : null
+  let to = jadwal_sampling.to ? jadwal_sampling.to.split("-").reverse() : null
+
+  let initialState: RowSelectionState = {}
+
+  if (project.project_assigned_to.length)
+    user.forEach((u: User, i: number) => {
+      if (project.project_assigned_to.includes(u._id) == true)
+        initialState[`${i}`] = true
+    })
+
   const [date, setDate] = React.useState<DateRange | undefined>({
-    from: undefined,
-    to: undefined,
+    from: from
+      ? new Date(parseInt(from[0]), parseInt(from[1]) - 1, parseInt(from[2]))
+      : undefined,
+    to: to
+      ? new Date(parseInt(to[0]), parseInt(to[1]) - 1, parseInt(to[2]))
+      : undefined,
   })
-  const [rowSelection, setRowSelection] = React.useState<RowSelectionState>({})
+
+  const [rowSelection, setRowSelection] =
+    React.useState<RowSelectionState>(initialState)
 
   const table = useReactTable({
-    data: data.project_assigned_to,
+    data: !!user ? user : [],
     columns: groupUserSelectableColumns,
     getCoreRowModel: getCoreRowModel(),
     onRowSelectionChange: setRowSelection,
@@ -53,29 +78,43 @@ export default function SampleProjectTab({ data }: Params) {
   })
 
   const router = useRouter()
+  const { toast } = useToast()
+
   const [isLoading, setIsLoading] = useState(false)
 
   // prettier-ignore
-  async function addAssigned(e: any) {
+  async function addProjectDeadline(e: any) {
     const assigned = table
-      .getFilteredSelectedRowModel()
-      .rows.map((r) => data.project_assigned_to[r.index]._id)
+      .getSelectedRowModel()
+      .rows.map((r) => user[r.index]._id)
 
-    if (assigned.length == 0 || date == null) return
-    
+    if (assigned.length == 0 || !date || !date.from ) return
+
     setIsLoading(true)
 
-    const response = await assignProject(data._id, assigned, date?.toString() as string)
-
-    if (!response) {
-      alert("Failed to assign project!")
-      return
-    } else {
-      alert("Success")
-      router.push("/sampling/project/" + data._id)
-    }
+    const response = await assignProject(
+      data.project._id, 
+      assigned, 
+      { from: date?.from ? format(date.from, "dd-LL-y") : null, 
+        to: date?.to ? format(date.to, "dd-LL-y") : null }
+      )
 
     setIsLoading(false)
+
+    if (!response) {
+      toast({
+        title: "Failed to Assign Deadline and User",
+        description: "Please Try Again",
+        variant: "destructive",
+      });
+    } else {
+      toast({
+        title: "User and Deadline Has Been Assigned",
+        description: "Check again in the screen if its correct",
+      });
+    }
+    
+    router.refresh()
   }
 
   return (
@@ -86,20 +125,16 @@ export default function SampleProjectTab({ data }: Params) {
 
       <TabsContent className="py-4 w-full" value="dokumen">
         <div className="px-4 py-2 flex flex-col flex-1">
-          <DocumentList data={data} />
+          <DocumentList data={files} />
 
           <div className="flex flex-wrap flex-col max-w-xl">
-            <h1 className="text-xl font-semibold my-5">Assignment Letter</h1>
+            <h1 className="text-xl font-semibold my-5">Surat Tugas</h1>
 
-            <HyperLinkButton title="Assignment Letter" href="/" />
+            <HyperLinkButton
+              title="Surat Tugas"
+              href={files.file.find((f: any) => f.name == "Surat Tugas").url}
+            />
           </div>
-
-          <Button
-            className="w-48 py-4 self-center mt-4 bg-light_brown hover:bg-dark_brown disabled:bg-transparent disabled:text-dark_brown disabled:font-bold disabled:border-2 disabled:border-dark_brown"
-            onClick={(e) => e}
-          >
-            Save
-          </Button>
         </div>
       </TabsContent>
 
@@ -153,7 +188,7 @@ export default function SampleProjectTab({ data }: Params) {
 
           <Button
             className="w-48 py-4 self-center mt-4 bg-light_brown hover:bg-dark_brown disabled:bg-transparent disabled:text-dark_brown disabled:font-bold disabled:border-2 disabled:border-dark_brown"
-            onClick={(e) => addAssigned(e)}
+            onClick={(e) => addProjectDeadline(e)}
           >
             {date == null ? "Choose Deadline" : "Save"}
           </Button>

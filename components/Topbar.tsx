@@ -6,8 +6,24 @@ import Image from "next/image"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { usePathname } from "next/navigation"
 import { DeadlineNotification } from "./sampling/DeadlineNotification"
+import { useSession } from "next-auth/react"
+import { Project } from "@/lib/models/project.model"
+import { Button } from "./ui/button"
+import {
+  EnvelopeOpenIcon,
+  LockOpen1Icon,
+  LockClosedIcon,
+  PlusIcon,
+  PlusCircledIcon,
+} from "@radix-ui/react-icons"
+import { UserType } from "@/lib/type"
+import { DefaultSession } from "next-auth"
+import { Session } from "next-auth"
 
-interface TopbarProps {}
+interface TopbarProps {
+  projects: Project[]
+  data?: Session | null
+}
 
 function extractPageName(pathname: string) {
   const parts = pathname.split("/").filter((part) => part !== "")
@@ -27,8 +43,9 @@ function extractPageName(pathname: string) {
   return final
 }
 
-const Topbar: FC<TopbarProps> = ({}) => {
+const Topbar: FC<TopbarProps> = ({ projects, data }) => {
   const pathname = extractPageName(usePathname())
+  const { data: session } = useSession();
 
   const formattedPathname =
     pathname.split("-").length > 1
@@ -55,10 +72,56 @@ const Topbar: FC<TopbarProps> = ({}) => {
         </p>
       </div>
       <div className="flex items-center gap-8">
+        {/* ===========================Admin Button */}
+
+        {/* <div className="">
+          {session?.user.role.toLowerCase() == "admin" &&
+            pathname.split(" / ")[0] !== "Admin" && (
+              <Link href="/admin">
+                <Button variant={"outline"}>
+                  <LockClosedIcon className="mr-2 h-4 w-4" /> Go to Admin Page
+                </Button>
+              </Link>
+            )}
+        </div> */}
+
         <div className="">
-          {pathname.split(" / ")[0] == "Sampling" && <DeadlineNotification />}
+          {/* <!-- NOTE: NEED TO BE CHECKED            --> */}
+          {/* {pathname.split(" / ")[0] == "Sampling" && (
+            <DeadlineNotification projects={projects} />
+          )} */}
+
+          {data?.user.role.toLowerCase() == "admin" &&
+            pathname.split(" / ")[0] !== "Admin" && (
+              <Link href="/admin">
+                <Button variant={"outline"}>
+                  <LockClosedIcon className="mr-2 h-4 w-4" /> Go to Admin Page
+                </Button>
+              </Link>
+            )}
         </div>
+
         <div className="">
+          {pathname.split(" / ")[0] == "Admin" &&
+            pathname.split(" / ")[1] !== "Register" && (
+              <Link href="/admin/register">
+                <Button variant={"outline"}>
+                  <PlusIcon className="mr-2 h-4 w-4" /> Add New User
+                </Button>
+              </Link>
+            )}
+        </div>
+
+        {/* <!-- END NOTE: NEED TO BE CHECKED            --> */}
+        {/* =========================== End Admin Button */}
+
+        <div className="">
+          {pathname.split(" / ")[0] == "Sampling" && (
+            <DeadlineNotification projects={projects} />
+          )}
+        </div>
+
+        <div className="max-md:hidden">
           <Avatar>
             <AvatarImage src="/assets/avatar2.png" />
             <AvatarFallback>RD</AvatarFallback>

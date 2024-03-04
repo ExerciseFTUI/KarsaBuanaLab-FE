@@ -10,22 +10,28 @@ interface docParams {
 }
 
 export default function DocumentList({ data, className = "" }: docParams) {
+  const { file } = data
+
   return (
     <div className="">
       <h1 className="text-xl font-semibold mb-5">Dokumen</h1>
 
       <div className="flex flex-wrap gap-4">
         {[
-          { title: "Surat Penawaran", href: "/" },
-          { title: "Daftar Parameter", href: "/" },
-          { title: "Chain of Custody", href: "/" },
-          { title: "Sertifikat Akreditasi", href: "/" },
-          { title: "Form KUPTK", href: "/" },
+          { title: "Surat Penawaran" },
+          { title: "Daftar Parameter" },
+          { title: "DP Chain of Custody" },
+          // { title: "Sertifikat Akreditasi" },
+          { title: "Form Kaji Ulang" },
         ].map((o, i) => (
           <HyperLinkButton
             key={i}
             title={o.title}
-            href={o.href}
+            href={
+              file.find((f: any) => f.name == o.title) != null
+                ? file.find((f: any) => f.name == o.title).url
+                : "/"
+            }
             className={className}
           />
         ))}

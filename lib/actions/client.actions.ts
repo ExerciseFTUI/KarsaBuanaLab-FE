@@ -1,5 +1,6 @@
 "use server";
 import axios from "axios";
+import { AnswerType, SurveySchema } from "../type";
 
 const apiBaseUrl = process.env.API_BASE_URL;
 
@@ -11,18 +12,6 @@ export const getProjectDivision = async (
     const response = await axios.post(`${apiBaseUrl}/clients/login`, {
       projectId,
       password,
-    });
-    return response.data.result;
-  } catch (error: any) {
-    console.error("Error getting Project", error.message);
-    return null as unknown;
-  }
-};
-
-export const submitSurvey = async (projectId: string) => {
-  try {
-    const response = await axios.post(`${apiBaseUrl}/clients/fill-survey`, {
-      projectId,
     });
     return response.data.result;
   } catch (error: any) {
@@ -97,6 +86,24 @@ export const getReportById = async (projectId: string): Promise<any> => {
 export const getSurvey = async (): Promise<any> => {
   try {
     const response = await axios.get(`${apiBaseUrl}/survey/get-survey`);
+    return response.data.survey;
+  } catch (error: any) {
+    console.error(`Error getting survey}:`, error.message);
+    return null as unknown;
+  }
+};
+
+export const submitSurvey = async (
+  surveyId: string,
+  projectId: string,
+  answers: AnswerType[]
+): Promise<any> => {
+  try {
+    const response = await axios.post(`${apiBaseUrl}/survey/submit-survey`, {
+      surveyId,
+      projectId,
+      answers,
+    });
     return response.data.survey;
   } catch (error: any) {
     console.error(`Error getting survey}:`, error.message);

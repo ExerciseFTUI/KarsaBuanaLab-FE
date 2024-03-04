@@ -1,6 +1,6 @@
 "use client"
 
-import React from "react"
+import React, { useState } from "react"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import HyperLinkButton from "../HyperlinkButton"
 import { Button } from "@/components/ui/button"
@@ -8,18 +8,63 @@ import { Project } from "@/lib/models/project.model"
 import { UserDataTable } from "../UserDataTable"
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table"
 import { groupUserStaffColumns } from "../sampleListDataTables/DataTableColumns"
+import { useRouter } from "next/navigation"
+import { verifySample } from "@/lib/actions/sampling.actions"
+import LoadingScreen from "@/components/LoadingScreen"
+import { SamplingRequestData } from "@/lib/type"
+import { cn } from "@/lib/utils"
+import { useToast } from "@/components/ui/use-toast"
 
-const simpanDokumen = (e: any) => e.preventDefault()
+export default function TabSampleAdmin({
+  data,
+}: {
+  data: SamplingRequestData
+}) {
+  const { project, files, user } = data
+  const sampling_list = project.sampling_list.filter(
+    (s) =>
+      s.status == "WAITING" || s.status == "ACCEPTED" || s.status == "REVISION"
+  )
 
-export default function TabSampleAdmin({ data }: { data: Project }) {
   const table = useReactTable({
-    data: data.project_assigned_to,
+    data: user,
     columns: groupUserStaffColumns,
     getCoreRowModel: getCoreRowModel(),
   })
 
+  const router = useRouter()
+  const { toast } = useToast()
+
+  const [isLoading, setIsLoading] = useState(false)
+
+  const submitSample = async (sample_id: string, status: string) => {
+    setIsLoading(true)
+
+    const response = await verifySample(project._id, status, sample_id)
+
+    setIsLoading(false)
+
+    if (!response) {
+      toast({
+        title: "Failed to Verify Sampling",
+        description: "Please Try Again",
+        variant: "destructive",
+      })
+    } else {
+      toast({
+        title: "Sampling Has Been Verified",
+        description: "Please check again if its correct",
+      })
+    }
+
+    router.refresh()
+  }
+
+  // console.log(files)
+
   return (
     <Tabs defaultValue="buatDokumen" className="flex-1">
+      {isLoading && <LoadingScreen text="" />}
       <TabsList className="grid w-full grid-cols-2 shadow-none bg-transparent">
         <TabsTrigger
           className="rounded-none data-[state=active]:shadow-none border-b-2 data-[state=active]:border-b-light_brown data-[state=active]:bg-transparent data-[state=active]:text-dark_brown data-[state=active]:font-bold text-base data-[state=inactive]:text-moss_green data-[state=inactive]:opacity-50 data-[state=inactive]:border-b-moss_green"
@@ -37,36 +82,38 @@ export default function TabSampleAdmin({ data }: { data: Project }) {
 
       <TabsContent className="py-4" value="verifikasiSampel">
         <div className="flex flex-wrap gap-8">
-          {data.project_assigned_to.map((n, j) => (
-            <div key={j} className="">
-              <h1 className="text-xl font-semibold mb-5">{n.username}</h1>
+          <div className="flex gap-4 flex-wrap w-full">
+            {sampling_list.map((s, i) => (
+              <div key={i} className="w-full flex items-center gap-4">
+                <HyperLinkButton
+                  className="w-full"
+                  title={s.sample_name}
+                  href={files.sampling_list[i].url || "/"}
+                />
 
-              <div className="flex gap-4 flex-wrap">
-                {data.sampling_list.map((s, i) => (
-                  <div key={i} className="w-full flex items-center gap-4">
-                    <HyperLinkButton title={s.sample_name} href={""} />
+                <div className="flex gap-2">
+                  <Button
+                    className={cn(
+                      "bg-light_brown hover:bg-dark_brown",
+                      s.status == "ACCEPTED" ? "hidden" : ""
+                    )}
+                    title="Accept"
+                    onClick={(e) => submitSample(s._id, "ACCEPTED")}
+                  >
+                    Accept
+                  </Button>
 
-                    <div className="flex gap-2">
-                      <Button
-                        className="bg-light_brown hover:bg-dark_brown"
-                        title="Accept"
-                      >
-                        Accept
-                      </Button>
-
-                      <Button
-                        disabled
-                        className="bg-light_brown hover:bg-dark_brown"
-                        title="Revisi"
-                      >
-                        Revisi
-                      </Button>
-                    </div>
-                  </div>
-                ))}
+                  <Button
+                    className="bg-light_brown hover:bg-dark_brown"
+                    title="Revisi"
+                    onClick={(e) => submitSample(s._id, "REVISION")}
+                  >
+                    Revisi
+                  </Button>
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </TabsContent>
 
@@ -84,7 +131,11 @@ export default function TabSampleAdmin({ data }: { data: Project }) {
 
           <HyperLinkButton
             title="Logbook Rekaman Sampel"
-            href="/"
+            href={
+              files.file.find(
+                (f: any) => f.name == "Logbook Jadwal Sampling"
+              ) || "/"
+            }
             className=""
           />
         </div>
@@ -92,16 +143,20 @@ export default function TabSampleAdmin({ data }: { data: Project }) {
         <div className="w-full">
           <h1 className="text-xl font-semibold mb-5">Berita Acara</h1>
 
-          <HyperLinkButton title="Berita Acara" href="/" className="" />
+          <HyperLinkButton
+            title="Berita Acara"
+            href={files.file.find((f: any) => f.name == "berita-acara") || "/"}
+            className=""
+          />
         </div>
 
-        <Button
+        {/* <Button
           title="Simpan"
           className="bg-light_brown hover:bg-dark_brown"
           onClick={simpanDokumen}
         >
           Save
-        </Button>
+        </Button> */}
       </TabsContent>
     </Tabs>
   )

@@ -45,6 +45,7 @@ const SamplingTab: FC<SamplingTabProps> = ({
   const { control, watch, setValue, resetField } = form;
 
   const { fields: samples, append, remove, update } = arrayField;
+  
 
   //Add to the samples array
   // const onSubmit: SubmitHandler<FieldValues> = async (data) => {
@@ -95,6 +96,8 @@ const SamplingTab: FC<SamplingTabProps> = ({
   function deleteSample(index: number) {
     remove(index);
   }
+  // Job safety assurance
+  // Template sampling
 
   return (
     <>

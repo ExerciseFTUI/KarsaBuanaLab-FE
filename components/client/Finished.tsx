@@ -1,6 +1,8 @@
-import React, { useState, FC } from "react";
+import React, { useState, FC, useEffect } from "react";
 import { Button } from "../ui/button";
 import SurveyForm from "../forms/SurveyForm";
+import { QuestionType, SurveySchema } from "@/lib/type";
+import { getSurvey } from "@/lib/actions/client.actions";
 
 interface FinishedProps {
   data: any;
@@ -8,7 +10,25 @@ interface FinishedProps {
 }
 
 const Finished: FC<FinishedProps> = ({ data, resiNumber }) => {
+  const [survey, setSurvey] = useState<SurveySchema>();
+  const [loading, setLoading] = useState(false);
+
   const paymentStatus = data.is_paid ? "Sudah Terbayar" : "Belum Bayar";
+
+  const fetchData = async () => {
+    setLoading(true);
+    try {
+      const data = await getSurvey();
+      setSurvey(data);
+    } catch (error: any) {
+      console.error("Error fetching data:", error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   return (
     <section className="mt-4 m-10">
@@ -30,7 +50,18 @@ const Finished: FC<FinishedProps> = ({ data, resiNumber }) => {
           </Button>
         </a>
       )} */}
-      <SurveyForm data={data} resiNumber={resiNumber} />
+      {data.is_survey_filled ? (
+        <Button
+          // disabled={!data.is_paid}
+          className="flex bg-black_brown justify-center rounded-xl text-xl text-ghost_white py-2 w-full"
+        >
+          Laporan Hasil Penelitian
+        </Button>
+      ) : (
+        survey && (
+          <SurveyForm questions={survey} data={data} resiNumber={resiNumber} />
+        )
+      )}
 
       <div className="mt-2">
         <p className="m-2 text-charcoal_green italic">
