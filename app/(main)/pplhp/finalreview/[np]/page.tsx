@@ -9,6 +9,7 @@ import FNPrintPage from "@/components/pplhp/FNPrintPage";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { changeToFinished } from "@/lib/actions/pplhp.actions";
+import { revalidatePath } from "next/cache";
 
 const LaporanHasilPemeriksaanData = {
   value: "link1.",
@@ -19,6 +20,7 @@ export default async function Home({ params }: { params: { np: string } }) {
   const linkData = await getLinkFiles(params.np);
   console.log(linkData);
   console.log(params.np);
+  revalidatePath("/pplhp/finalreview");
   return (
     <>
       <main className="flex flex-col lg:flex-row gap-5 lg:gap-0 justify-between w-full">

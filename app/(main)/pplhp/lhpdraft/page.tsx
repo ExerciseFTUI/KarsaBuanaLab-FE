@@ -5,7 +5,6 @@ import { revalidatePath } from "next/cache";
 
 export default async function Home() {
   const projects = await getPplhpByStatus("draft");
-  revalidatePath("/pplhp/lhpdraft");
   return (
     <div className="flex justify-between w-full h-screen">
       <PPLHPDataTable data={projects ? projects : []} />

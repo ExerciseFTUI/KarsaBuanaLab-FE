@@ -8,7 +8,6 @@ import { revalidatePath } from "next/cache";
 
 export default async function Home() {
   const projects = await getPplhpByStatus("receive");
-  revalidatePath("/pplhp/receive");
   return (
     <div className="flex flex-col w-full ">
       <ReceiveDataTable data={projects ? projects : []} />

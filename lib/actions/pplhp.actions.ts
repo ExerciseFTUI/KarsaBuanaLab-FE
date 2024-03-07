@@ -1,7 +1,9 @@
+"use server";
 import axios from "axios";
 import { Project } from "../models/project.model";
 import { BaseApiResponse } from "../models/baseApiResponse.model";
 import { BaseSample } from "../models/baseSample.model";
+import { revalidatePath } from "next/cache";
 
 const apiBaseUrl = process.env.API_BASE_URL || "";
 
@@ -55,6 +57,8 @@ export const changeToDraft = async (id: string): Promise<string> => {
     const response = await axios.post(
       `https://karsalab.netlabdte.com/projects/change-to-draft/${id}`
     );
+
+    revalidatePath("/pplhp/receive");
     console.log(response.data.message);
     return response.data.message;
   } catch (error: any) {
@@ -71,6 +75,8 @@ export const changeToReview = async (id: string): Promise<String> => {
     const response = await axios.post(
       `https://karsalab.netlabdte.com/projects/change-to-review/${id}`
     );
+
+    revalidatePath("/pplhp/draft");
     console.log(response.data.message);
     return response.data.message;
   } catch (error: any) {
@@ -87,6 +93,7 @@ export const changeToFinished = async (id: string): Promise<String> => {
     const response = await axios.post(
       `https://karsalab.netlabdte.com/projects/change-to-finished/${id}`
     );
+    revalidatePath("/pplhp/review");
     console.log(response.data);
     return response.data;
   } catch (error: any) {

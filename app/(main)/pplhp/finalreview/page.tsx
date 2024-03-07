@@ -5,7 +5,6 @@ import { revalidatePath } from "next/cache";
 
 export default async function Home() {
   const projects = await getPplhpByStatus("review");
-  revalidatePath("/pplhp/finalreview");
   return (
     <div className="flex justify-between w-full h-screen">
       <FinalReviewDataTable data={projects ? projects : []} />
