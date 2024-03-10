@@ -104,19 +104,3 @@ export const changeToFinished = async (id: string): Promise<String> => {
     return null as unknown as string;
   }
 };
-
-export const getLinkFiles = async (projectId: string): Promise<any> => {
-  try {
-    const response = await axios.get(
-      `${apiBaseUrl}/projects/get-link-files/${projectId}`
-    );
-    console.log(response.data.result);
-    return response.data.result; // Access 'result' field
-  } catch (error: any) {
-    console.error(
-      `Error getting link files for project with ID ${projectId}:`,
-      error.message
-    );
-    return null;
-  }
-};
