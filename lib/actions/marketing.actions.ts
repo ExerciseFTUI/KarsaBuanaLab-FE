@@ -276,8 +276,6 @@ export const getDashboard = async (): Promise<
       },
     };
 
-    console.log(updatedResponse.result);
-
     return updatedResponse as BaseApiResponse<DashboardResult>;
   } catch (error: any) {
     console.error("Error getting api because : ", error.message);

@@ -50,7 +50,7 @@ import {
 } from "@radix-ui/react-icons";
 import { ProjectMarketingType, ProjectType } from "@/lib/type";
 import { Project } from "@/lib/models/project.model";
-import { columns } from "./columns";
+import { columns, columnsFinished } from "./columns";
 import { columnsCancelled } from "./columns";
 import Link from "next/link";
 
@@ -85,12 +85,9 @@ export function DataTable({ datas, status }: DataTableProps) {
     }
   }, []);
 
-  console.log(data);
-  
-
   const table = useReactTable({
     data: data,
-    columns: status === "CANCELLED" ? columnsCancelled : columns,
+    columns: status === "CANCELLED" ? columnsCancelled : status ==="FINISHED" ? columnsFinished : columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
