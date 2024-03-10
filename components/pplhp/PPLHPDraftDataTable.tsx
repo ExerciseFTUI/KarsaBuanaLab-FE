@@ -60,7 +60,9 @@ const PPLHPDataTable: FC<PPLHPDataTableProps> = ({ data }) => {
   const router = useRouter();
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({ _id: false });
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
+    _id: false,
+  });
   const [rowSelection, setRowSelection] = useState({});
 
   const table = useReactTable({
@@ -109,7 +111,7 @@ const PPLHPDataTable: FC<PPLHPDataTableProps> = ({ data }) => {
               .filter((column) => column.getCanHide())
               .map((column) => {
                 return (
-                  (column.id !== "_id" &&
+                  column.id !== "_id" && (
                     <DropdownMenuCheckboxItem
                       key={column.id}
                       className="capitalize"
@@ -145,9 +147,9 @@ const PPLHPDataTable: FC<PPLHPDataTableProps> = ({ data }) => {
                       {header.isPlaceholder
                         ? null
                         : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
                     </TableHead>
                   );
                 })}

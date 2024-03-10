@@ -227,6 +227,9 @@ export const getSample = async (): Promise<BaseApiResponse<[BaseSample]>> => {
   try {
     const response = await axios.get(`${apiBaseUrl}/marketing/getSample`);
 
+    console.log(response.data.result);
+    
+
     return response.data as BaseApiResponse<[BaseSample]>;
   } catch (error: any) {
     console.error("Error getting sample:", error.message);
@@ -234,9 +237,8 @@ export const getSample = async (): Promise<BaseApiResponse<[BaseSample]>> => {
   }
 };
 
-export const getDashboard = async (): Promise<
-  BaseApiResponse<DashboardResult>
-> => {
+
+export const getDashboard = async () : Promise<BaseApiResponse<DashboardResult>> => {
   try {
     const response = await axios.get(`${apiBaseUrl}/marketing/dashboard`);
 
