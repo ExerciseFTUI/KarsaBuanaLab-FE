@@ -1,33 +1,20 @@
-import React, { FC } from "react";
-import VerticalCheckbox from "../Checkbox/VerticalCheckbox";
+"use client";
+import React, { FC, useEffect, useState } from "react";
+import CustomCheckbox from "../Checkbox/CustomCheckbox";
+import axios from "axios";
+import { getSampleById } from "@/lib/actions/client.actions";
+import { ClientResponses } from "@/lib/type";
 
 interface SampleProps {
-
+  data: ClientResponses[];
 }
 
-const Sample: FC<SampleProps> = () => {
-    const items = [
-        {
-            id: "airLimbahDomestik",
-            label: "air limbah domestik",
-        },
-        {
-            id: "AMDK",
-            label: "air minum / AMDK",
-        },
-        {
-            id: "udaraAmbien",
-            label: "udara ambien",
-        },
-    ]
-
-    const initialValue = [
-        "airLimbahDomestik",
-        "AMDK"
-    ]
-    return (
-        <VerticalCheckbox formLabel="Schedule Logbook" items={items} defaultValue={initialValue}/>
-    );
+const Sample: FC<SampleProps> = ({ data }) => {
+  return (
+    <>
+      <CustomCheckbox formLabel="Schedule Logbook" items={data ? data : []} />
+    </>
+  );
 };
 
 export default Sample;

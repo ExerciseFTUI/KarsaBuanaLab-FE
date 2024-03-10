@@ -919,7 +919,7 @@ export const LabDashboardPageColumns: ColumnDef<LabDataType>[] = [
         <div className="capitalize pl-0.5">
           {row.getValue("alamat_sampling")}
         </div>
-      )
+      );
     },
   },
   {
@@ -930,7 +930,10 @@ export const LabDashboardPageColumns: ColumnDef<LabDataType>[] = [
         <div className="capitalize pl-0.5">
           {row.getValue("contact_person")}
         </div>
-      )
+      );
     },
   },
-]
+  {
+    accessorKey: "_id",
+  },
+];
