@@ -63,7 +63,9 @@ const ReceiveDataTable: FC<ReceiveDataTableProps> = ({ data }) => {
   const router = useRouter();
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({ _id: false });
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
+    _id: false,
+  });
   const [rowSelection, setRowSelection] = useState({});
 
   const table = useReactTable({
@@ -92,7 +94,7 @@ const ReceiveDataTable: FC<ReceiveDataTableProps> = ({ data }) => {
       <div className="flex items-center py-4">
         <BiFilterAlt className="text-xl translate-x-8" />
         <Input
-          placeholder="Filter By Project Title"
+          placeholder="Filter Projects on Receive Stage"
           value={
             (table.getColumn("project_name")?.getFilterValue() as string) ?? ""
           }
@@ -119,7 +121,7 @@ const ReceiveDataTable: FC<ReceiveDataTableProps> = ({ data }) => {
               .filter((column) => column.getCanHide())
               .map((column) => {
                 return (
-                  (column.id !== "_id" &&
+                  column.id !== "_id" && (
                     <DropdownMenuCheckboxItem
                       key={column.id}
                       className="capitalize"
@@ -139,10 +141,10 @@ const ReceiveDataTable: FC<ReceiveDataTableProps> = ({ data }) => {
 
       {/* Table Content */}
       <div className=" text-moss_green ">
-        <Table className="">
+        <Table className="font-dm-sans">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow className="hover:bg-transparent" key={headerGroup.id}>
+              <TableRow className="italic" key={headerGroup.id}>
                 {headerGroup.headers.map((header, index) => {
                   let className =
                     "text-center text-ghost_white italic bg-moss_green p-2";
@@ -153,13 +155,13 @@ const ReceiveDataTable: FC<ReceiveDataTableProps> = ({ data }) => {
                     className += " rounded-r-full"; // Add rounded corners to the right side
                   }
                   return (
-                    <TableHead className={className} key={header.id}>
+                    <TableHead key={header.id} className={className}>
                       {header.isPlaceholder
                         ? null
                         : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
                     </TableHead>
                   );
                 })}
