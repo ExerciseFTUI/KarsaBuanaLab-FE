@@ -759,13 +759,10 @@ export const LabDashboardPageColumns: ColumnDef<LabDataType>[] = [
   // No Penawaran
   {
     accessorKey: "no_penawaran",
-    accessorKey: "no_penawaran",
     header: "No Penawaran",
-    cell: ({ row }) => <div className="">{row.getValue("no_penawaran")}</div>,
     cell: ({ row }) => <div className="">{row.getValue("no_penawaran")}</div>,
   },
   {
-    accessorKey: "project_name",
     accessorKey: "project_name",
     header: ({ column }) => {
       return (
@@ -781,12 +778,10 @@ export const LabDashboardPageColumns: ColumnDef<LabDataType>[] = [
     },
     cell: ({ row }) => (
       <div className="capitalize pl-4">{row.getValue("project_name")}</div>
-      <div className="capitalize pl-4">{row.getValue("project_name")}</div>
     ),
   },
   //Lokasi
   {
-    accessorKey: "alamat_sampling",
     accessorKey: "alamat_sampling",
     header: "Lokasi",
     cell: ({ row }) => {
@@ -798,7 +793,6 @@ export const LabDashboardPageColumns: ColumnDef<LabDataType>[] = [
     },
   },
   {
-    accessorKey: "contact_person",
     accessorKey: "contact_person",
     header: "Contact Person",
     cell: ({ row }) => {

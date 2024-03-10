@@ -94,11 +94,7 @@ const LabDataTable: FC<LabDataTableProps> = ({ data, link }) => {
           value={
             (table.getColumn("project_name")?.getFilterValue() as string) ?? ""
           }
-          value={
-            (table.getColumn("project_name")?.getFilterValue() as string) ?? ""
-          }
           onChange={(event) =>
-            table.getColumn("project_name")?.setFilterValue(event.target.value)
             table.getColumn("project_name")?.setFilterValue(event.target.value)
           }
           className="max-w-sm pl-10"
