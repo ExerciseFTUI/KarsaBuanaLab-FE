@@ -47,6 +47,51 @@ interface DashboardResult {
   };
 }
 
+//=======================Base Sample Section ========================
+export const editBaseSample = async (body: any, id: string) => {
+  try {
+    console.log(body);
+
+    const response = await axios.put(
+      `${apiBaseUrl}/base-sample/editBaseSample/${id}`,
+      body
+    );
+
+    console.log(response.data.result);
+
+    return response.data.result;
+  } catch (error: any) {
+    {
+      error.response.data
+        ? console.error(error.response.data)
+        : console.error(`Error update projectFile :`, error.message);
+    }
+    return null;
+  }
+};
+
+export const deleteBaseSample = async (body: any) => {
+  try {
+    const response = await axios.delete(
+      `${apiBaseUrl}/base-sample/removeBaseSample`,
+      body
+    );
+
+    //DITO: responsenya apa belum di cek
+
+    return response;
+  } catch (error: any) {
+    {
+      error.response.data
+        ? console.error(error.response.data)
+        : console.error(`Error delete baseSample :`, error.message);
+    }
+    return null;
+  }
+};
+
+//=======================End Base Sample Section ========================
+
 export const createProject = async (
   body: any,
   files?: any // Assuming files is a File or an array of File objects
@@ -231,9 +276,6 @@ export const getDashboard = async (): Promise<
       },
     };
 
-    console.log(updatedResponse.result);
-    
-
     return updatedResponse as BaseApiResponse<DashboardResult>;
   } catch (error: any) {
     console.error("Error getting api because : ", error.message);
@@ -295,7 +337,7 @@ export const updateProjectInfo = async (body: any) => {
   try {
     //Call API
     console.log(body);
-    
+
     const response = await axios.put(`${apiBaseUrl}/projects/edit`, body);
     console.log(response.data.result);
 

@@ -149,6 +149,26 @@ export const assignProject = async (
   }
 }
 
+export const changeDivision = async (
+  projectId: string,
+  division: string
+): Promise<BaseApiResponse<Project>> => {
+  try {
+    const response = await axios.post(
+      `${apiBaseUrl}/projects/change-division`,
+      {
+        projectId,
+        division,
+      }
+    )
+
+    return response.data as BaseApiResponse<Project>
+  } catch (err: any) {
+    console.error(err.res)
+    return null as unknown as BaseApiResponse<Project>
+  }
+}
+
 export const getAllUser = async (
   division: string,
   role: string = "USER"

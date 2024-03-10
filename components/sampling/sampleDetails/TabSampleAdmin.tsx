@@ -9,11 +9,22 @@ import { UserDataTable } from "../UserDataTable"
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table"
 import { groupUserStaffColumns } from "../sampleListDataTables/DataTableColumns"
 import { useRouter } from "next/navigation"
-import { verifySample } from "@/lib/actions/sampling.actions"
+import { changeDivision, verifySample } from "@/lib/actions/sampling.actions"
 import LoadingScreen from "@/components/LoadingScreen"
 import { SamplingRequestData } from "@/lib/type"
 import { cn } from "@/lib/utils"
 import { useToast } from "@/components/ui/use-toast"
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
 
 export default function TabSampleAdmin({
   data,
@@ -21,10 +32,13 @@ export default function TabSampleAdmin({
   data: SamplingRequestData
 }) {
   const { project, files, user } = data
-  const sampling_list = project.sampling_list.filter(
+  const sampling_list = project.sampling_list /* .filter(
     (s) =>
       s.status == "WAITING" || s.status == "ACCEPTED" || s.status == "REVISION"
-  )
+  ) */
+  const canSave =
+    sampling_list.filter((s) => s.status == "ACCEPTED").length ==
+    sampling_list.length
 
   const table = useReactTable({
     data: user,
@@ -60,7 +74,43 @@ export default function TabSampleAdmin({
     router.refresh()
   }
 
-  // console.log(files)
+  const saveSample = async (project_id: string, division: string) => {
+    setIsLoading(true)
+
+    project.sampling_list.forEach(async (s) => {
+      const response = await verifySample(project_id, "SUBMIT", s._id)
+
+      if (!response) {
+        toast({
+          title: "Failed to Verify Sampling",
+          description: "Please Try Again",
+          variant: "destructive",
+        })
+      } else {
+        toast({
+          title: "Sampling Has Been Verified",
+          description: "Please check again if its correct",
+        })
+      }
+    })
+
+    const response = await changeDivision(project._id, division)
+
+    if (!response)
+      toast({
+        title: "Failed to Save Project",
+        description: "Please Try Again",
+        variant: "destructive",
+      })
+    else
+      toast({
+        title: "Project has been moved to PPLHP Division!",
+        // description: "Please check again if its correct",
+      })
+
+    setIsLoading(false)
+    router.refresh()
+  }
 
   return (
     <Tabs defaultValue="buatDokumen" className="flex-1">
@@ -92,28 +142,104 @@ export default function TabSampleAdmin({
                 />
 
                 <div className="flex gap-2">
-                  <Button
-                    className={cn(
-                      "bg-light_brown hover:bg-dark_brown",
-                      s.status == "ACCEPTED" ? "hidden" : ""
-                    )}
-                    title="Accept"
-                    onClick={(e) => submitSample(s._id, "ACCEPTED")}
-                  >
-                    Accept
-                  </Button>
+                  <AlertDialog>
+                    <AlertDialogTrigger>
+                      <Button
+                        className={cn(
+                          "bg-light_brown hover:bg-dark_brown",
+                          s.status == "ACCEPTED" ? "hidden" : ""
+                        )}
+                        title="Accept"
+                        disabled={s.status == "SUBMIT"}
+                      >
+                        {s.status == "SUBMIT" ? "Waiting" : "Accept"}
+                      </Button>
+                    </AlertDialogTrigger>
 
-                  <Button
-                    className="bg-light_brown hover:bg-dark_brown"
-                    title="Revisi"
-                    onClick={(e) => submitSample(s._id, "REVISION")}
-                  >
-                    Revisi
-                  </Button>
+                    <AlertDialogContent>
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>
+                          Are you sure to ACCEPT this sampling?
+                        </AlertDialogTitle>
+                      </AlertDialogHeader>
+
+                      <AlertDialogFooter>
+                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogAction
+                          onClick={(e) => submitSample(s._id, "ACCEPTED")}
+                        >
+                          Continue
+                        </AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
+
+                  <AlertDialog>
+                    <AlertDialogTrigger>
+                      <Button
+                        className={cn(
+                          "bg-light_brown hover:bg-dark_brown",
+                          s.status == "SUBMIT" ? "hidden" : ""
+                        )}
+                        title="Revisi"
+                      >
+                        Revisi
+                      </Button>
+                    </AlertDialogTrigger>
+
+                    <AlertDialogContent>
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>
+                          Are you sure to REVISE this sampling?
+                        </AlertDialogTitle>
+                      </AlertDialogHeader>
+
+                      <AlertDialogFooter>
+                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogAction
+                          onClick={(e) => submitSample(s._id, "REVISION")}
+                        >
+                          Continue
+                        </AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
                 </div>
               </div>
             ))}
           </div>
+
+          {canSave && (
+            <div className="">
+              <AlertDialog>
+                <AlertDialogTrigger>
+                  <Button
+                    className={cn("bg-light_brown hover:bg-dark_brown")}
+                    title="Save"
+                  >
+                    Save
+                  </Button>
+                </AlertDialogTrigger>
+
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>
+                      Are you sure to save this sampling?
+                    </AlertDialogTitle>
+                  </AlertDialogHeader>
+
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                    <AlertDialogAction
+                      onClick={(e) => saveSample(project._id, "PPLHP")}
+                    >
+                      Save
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
+            </div>
+          )}
         </div>
       </TabsContent>
 
