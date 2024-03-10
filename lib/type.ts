@@ -15,17 +15,19 @@ export type ProjectType = {
 };
 
 export type ProjectMarketingType = {
-  _id: string;
-  no_penawaran: string;
-  project_name: string;
-  client_name: string;
-  alamat_sampling: string;
-  contact_person: string;
-  created_at: string;
-  status: string;
-  valuasi_proyek: number;
-  desc_failed: string;
-};
+  _id: string
+  no_penawaran: string
+  project_name: string
+  client_name: string
+  alamat_sampling: string
+  contact_person: string
+  created_at: string
+  status: string
+  current_division: string
+  valuasi_proyek: number
+  jadwal_sampling: {from : string, to : string, _id: string}
+  desc_failed: string
+}
 
 export type BaseSampleType = {
   sample_name: string;
