@@ -23,6 +23,14 @@ ChartJS.register(
 );
 
 function LineChart( {detailGraph} ) {
+    let maxSalesValue = 0;
+    detailGraph.salesData.forEach(monthData => {
+        if (monthData.sales > maxSalesValue) {
+            maxSalesValue = monthData.sales;
+        }
+    });
+
+    maxSalesValue = Math.ceil(maxSalesValue * 1.1);
 
     const data = {
         labels: detailGraph.salesData.map((data) => data.month),
@@ -65,7 +73,7 @@ function LineChart( {detailGraph} ) {
                 },
                 },
                 min: 0,
-                max: 40
+                max: maxSalesValue
             },
 
             x: {
