@@ -241,7 +241,7 @@ const CreateProjectPage: FC<CreateProjectProps> = ({ baseSamples }) => {
   //=============================== End Document Section
 
   return (
-    <div className="flex max-md:flex-col max-md:items-center justify-evenly">
+    <div className="flex gap-6 max-md:flex-col max-md:items-center justify-evenly">
       {isLoading && <LoadingScreen />}
       <ProjectForm form={form} onSubmit={onSubmitForm2} status="CREATE"/>
       <Tabs
