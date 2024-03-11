@@ -57,6 +57,7 @@ const CreateRegulationParam: React.FC<createProps> = ({
     }
   };
 
+  // LIKE THIS ONE
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       const target = event.target as HTMLElement;
