@@ -7,6 +7,8 @@ import { cn } from "@/lib/utils";
 import { UserAuthForm } from "@/components/login/UserAuthForm";
 import { buttonVariants } from "@/components/ui/button";
 import LoginForm from "@/components/forms/LoginForm";
+import { Suspense } from "react";
+import LoadingScreen from "@/components/LoadingScreen";
 
 export const metadata: Metadata = {
   title: "Authentication",
@@ -121,6 +123,14 @@ export default function AuthenticationPage() {
             </p> */}
             {/* <LoginForm /> */}
           </div>
+        </div>
+      </div>
+      <div className="lg:p-8 flex w-full h-screen justify-center items-center">
+        <div className="mx-auto flex w-[300px] flex-col justify-center space-y-6 sm:w-[350px]">
+          {/* Wrap the component using useSearchParams in Suspense */}
+          <Suspense fallback={<LoadingScreen text="Wait a minutes . . ."/>}>
+            <UserAuthForm />
+          </Suspense>
         </div>
       </div>
     </div>
