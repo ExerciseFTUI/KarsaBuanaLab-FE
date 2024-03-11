@@ -6,11 +6,18 @@ import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from "@fullcalendar/interaction";
 
+const samplingTimeline = [
+  { title: 'XYZ Project - Subang', start: '2024-03-01', end : '2024-03-06' },
+  { title: 'Merbabu Project - Jateng', start: '2024-03-04', end : '2024-03-08' },
+  { title: 'Prau adalah gunung', start: '2024-03-06', end : '2024-03-12' },
+  { title: "Tanah Beracun Project", start : "2024-03-14"}
+]
+
 const CalendarSample = () => {
   const [projectTitle, setProjectTitle] = useState("");       // useState untuk project title detail yang dipilih
   const [detailProject, setDetailProject] = useState(false);  // useState untuk running modal detail project yang diclick
   const [timeline, setTimeline] = useState("");               // useState untuk set timeline yang ditentukan
-
+  
   // Function jika tanggal calendar di click
   const handleDateClick = (arg) => {
     alert(arg.dateStr);
@@ -21,13 +28,18 @@ const CalendarSample = () => {
     setProjectTitle(eventInfo.event.title);
     setDetailProject(true);
 
+    console.log(eventInfo.event);
+    
+
     // Set date to string
     const startDate = new Date(eventInfo.event.start);
     const formattedStartDate = startDate.toLocaleDateString();
 
     // Check if the event has both start and end dates
+    // Check if the event has both start and end dates
     if (eventInfo.event.end) {
       const endDate = new Date(eventInfo.event.end);
+      endDate.setDate(endDate.getDate() - 1); // Subtract 1 day from the end date karena database +1 day
       const formattedEndDate = endDate.toLocaleDateString();
       setTimeline(`${formattedStartDate} - ${formattedEndDate}`);
     } else {
@@ -37,13 +49,15 @@ const CalendarSample = () => {
 
   // Function untuk menampilkan event 
   function renderEventContent(eventInfo) {
+    const { title, start, end } = eventInfo.event;
+
     return (
       <div 
         className='hover:cursor-pointer bg-moss_green border-dark_green'    
         onClick={() => handleEventClick(eventInfo)}
       >
-        <b>{eventInfo.timeText}</b>       {/* Jujur ini gua gatau apa */}
-        <i>{eventInfo.event.title}</i>    {/* Nampilin title */}
+        <div><i>{title}</i></div>
+        {/* <div>{timeline}</div> */}
       </div>
     );
   }
@@ -85,12 +99,7 @@ const CalendarSample = () => {
           plugins={[dayGridPlugin, interactionPlugin]}
           initialView="dayGridMonth"
           weekends={false}
-          events={[
-            { title: 'XYZ Project - Subang', start: '2024-03-01', end: '2024-03-05' },
-            { title: 'Merbabu Project - Jateng', start: '2024-03-05', end: '2024-03-08' },
-            { title: 'Prau adalah gunung', start: '2024-03-06', end: '2024-03-09' },
-            { title: "Tanah Beracun Project", start : "2024-03-14"}
-          ]}
+          events={samplingTimeline}  
           dateClick={handleDateClick}
           eventContent={renderEventContent}
         />
