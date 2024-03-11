@@ -428,7 +428,7 @@ export default function EditProjectPage({
 
       {isLoading && <LoadingScreen />}
 
-      <div className="flex border-2 border-red-500 justify-evenly max-md:flex-col max-md:items-center">
+      <div className="flex gap-6 justify-evenly max-md:flex-col max-md:items-center">
         <ProjectForm
           form={form}
           onSubmit={onSubmit2}
