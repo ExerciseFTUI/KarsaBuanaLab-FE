@@ -241,12 +241,13 @@ const CreateProjectPage: FC<CreateProjectProps> = ({ baseSamples }) => {
   //=============================== End Document Section
 
   return (
-    <div className="flex gap-6 max-md:flex-col max-md:items-center">
+    <div className="flex max-md:flex-col max-md:items-center justify-evenly">
       {isLoading && <LoadingScreen />}
-      <ProjectForm form={form} onSubmit={onSubmitForm2} status="CREATE" />
+      <ProjectForm form={form} onSubmit={onSubmitForm2} status="CREATE"/>
       <Tabs
         defaultValue="sampling"
-        className="w-[40rem] max-sm:w-[420px] justify-center"
+        // w-[40rem] max-sm:w-[420px]
+        className=" w-[40rem] max-sm:w-[700px] justify-center"
       >
         <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="sampling">Sampling</TabsTrigger>
