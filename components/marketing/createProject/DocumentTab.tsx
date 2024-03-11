@@ -41,7 +41,7 @@ const DocumentTab: FC<DocumentTabProps> = ({
     <>
       {/* Right Card for Dropzone */}
       <Card
-        className={`max-w-[38rem] overflow-auto h-fit md:max-h-[26rem] custom-scrollbar flex flex-col justify-between`}
+        className={`max-w-[38rem] overflow-auto h-fit md:max-h-[70vh] custom-scrollbar flex flex-col justify-between`}
       >
         <div>
           <CardHeader>

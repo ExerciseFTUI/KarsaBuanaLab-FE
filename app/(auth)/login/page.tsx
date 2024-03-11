@@ -68,7 +68,6 @@ export default function AuthenticationPage() {
                 Enter your email and password below to login
               </p>
             </div>
-            {/* Place UserAuthForm inside Suspense */}
             <Suspense fallback={<LoadingScreen text="Wait a minutes . . ." />}>
               <UserAuthForm />
             </Suspense>
