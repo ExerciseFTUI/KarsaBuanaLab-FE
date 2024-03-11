@@ -7,8 +7,6 @@ import { redirect } from "next/navigation";
 
 export default async function Home() {
   const response = await getbyStatus("running");
-
-  console.log("Data : ", response);
   
   return (
     <div className="flex justify-between w-full h-screen">

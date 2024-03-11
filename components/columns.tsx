@@ -11,7 +11,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+} from "@/components/ui/dropdown-menu";
 import {
   ReceiveSamplingType,
   ProjectLHPType,
@@ -89,7 +89,7 @@ export const columns: ColumnDef<ProjectMarketingType>[] = [
     },
 
     cell: ({ row }) => {
-      const deadline = row.original.jadwal_sampling?.to || "Haven't set deadline yet";
+      const deadline = row.original.current_division === "SAMPLING" ? row.original.jadwal_sampling?.to || "Haven't set deadline yet" : row.original.deadline_lhp || "Haven't set deadline yet";
       return (
         <div className="capitalize text-center ">
           {deadline}
@@ -698,10 +698,9 @@ export const receiveSamplingColumns: ColumnDef<ReceiveSamplingType>[] = [
   //No Penawaran
   {
     accessorKey: "no_penawaran",
-    header: "No. Penawaran",
+    header: "No Penawaran",
     cell: ({ row }) => <div className="">{row.getValue("no_penawaran")}</div>,
   },
-  // Project Title
   {
     accessorKey: "project_name",
     header: ({ column }) => {
@@ -711,16 +710,16 @@ export const receiveSamplingColumns: ColumnDef<ReceiveSamplingType>[] = [
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Project Title
-          <ArrowUpDown strokeWidth={1.5} className="ml-2 h-4 w-4" />
+          Judul Project
+          <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
-      )
+      );
     },
     cell: ({ row }) => (
       <div className="capitalize pl-4">{row.getValue("project_name")}</div>
     ),
   },
-  //Lokasi Pengambilan Sampel
+  //Status
   {
     accessorKey: "alamat_sampling",
     header: "Lokasi Pengambilan Sampel",
@@ -742,7 +741,6 @@ export const receiveSamplingColumns: ColumnDef<ReceiveSamplingType>[] = [
       )
     },
   },
-  //Contact Person
   {
     accessorKey: "contact_person",
     header: "Contact Person",

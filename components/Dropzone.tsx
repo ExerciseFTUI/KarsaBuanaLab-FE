@@ -50,6 +50,7 @@ const Dropzone = ({ setUploadedFiles }) => {
       </span>
     </li>
   ));
+  
 
   return (
     <div className="py-3">
