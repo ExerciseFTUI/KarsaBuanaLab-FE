@@ -1,5 +1,5 @@
 "use client";
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -25,31 +25,78 @@ import {
 } from "@/components/ui/card";
 
 import { useForm, useFormContext } from "react-hook-form";
-import { clientValidation } from "@/lib/validations/ClientValidation";
+import {
+  clientValidation,
+  clientValidationType,
+} from "@/lib/validations/ClientValidation";
 import { Input } from "../ui/input";
+import {
+  getAnalysisById,
+  getProjectDivision,
+  getReportById,
+  getSampleById,
+} from "@/lib/actions/client.actions";
+import { useToast } from "@/components/ui/use-toast";
+import LoadingScreen from "../LoadingComp";
 
 interface IdCheckFormProps {
-  setResiNumber: (resiNumber: string) => void; // Menerima fungsi untuk menyimpan resi number
+  setResiNumber: (resiNumber: string) => void;
+  setStage: (stage: string) => void;
+  setClientData: (clientData: any) => void;
 }
 
-const IdCheckForm: FC<IdCheckFormProps> = ({ setResiNumber }) => {
-  // 1. Define your form.
+const IdCheckForm: FC<IdCheckFormProps> = ({
+  setResiNumber,
+  setStage,
+  setClientData,
+}) => {
   const form = useForm<z.infer<typeof clientValidation>>({
     resolver: zodResolver(clientValidation),
     defaultValues: {
-      resiNumber: "",
-      password: "",
+      resiNumber: "65afbd1e987cf82566e265bb",
+      password: "O4T9UM",
     },
   });
+  const [isLoading, setIsLoading] = useState(false);
+  const { toast } = useToast();
 
-  // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof clientValidation>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    setResiNumber(values.resiNumber);
+  async function onSubmit(values: z.infer<typeof clientValidation>) {
+    try {
+      setIsLoading(true);
+
+      const response = await getProjectDivision(
+        values.resiNumber,
+        values.password
+      );
+      const sample = await getSampleById(values.resiNumber);
+      const analysis = await getAnalysisById(values.resiNumber);
+      const finished = await getReportById(values.resiNumber);
+      const combinedData = {
+        sample: sample,
+        analysis: analysis,
+        finished: finished,
+      };
+
+      if (!response) {
+        toast({
+          title: "Failed to get the project",
+          description: "please resubmit the form",
+        });
+        setIsLoading(false);
+        return;
+      }
+      setResiNumber(values.resiNumber);
+      setStage(response.result);
+      setClientData(combinedData);
+    } catch (error) {
+      console.error("Error getting project :", error);
+    } finally {
+      setIsLoading(false);
+    }
   }
   return (
     <Card className="w-full sm:w-1/2 md:w-1/3 h-full md:h-fit flex flex-col justify-center px-0 lg:px-20 border-0 shadow-none">
+      {isLoading && <LoadingScreen />}
       <CardHeader>
         <CardTitle className="text-3xl mt-10">Check Your ID</CardTitle>
       </CardHeader>
@@ -63,7 +110,11 @@ const IdCheckForm: FC<IdCheckFormProps> = ({ setResiNumber }) => {
                 <FormItem>
                   <FormLabel>Resi Number</FormLabel>
                   <FormControl>
-                    <Input className="py-6" placeholder="Input your number here" {...field} />
+                    <Input
+                      className="py-6"
+                      placeholder="Input your number here"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -76,20 +127,25 @@ const IdCheckForm: FC<IdCheckFormProps> = ({ setResiNumber }) => {
                 <FormItem>
                   <FormLabel>Password</FormLabel>
                   <FormControl>
-                    <Input className="py-6" placeholder="Input your password here" {...field} />
+                    <Input
+                      className="py-6"
+                      type="password"
+                      placeholder="Input your password here"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
             <div className="flex flex-row space-x-7">
-                <Button
+              <Button
                 className="w-full mt-6 py-5 bg-[#656D4A] hover:bg-[#332D29] text-lg"
                 type="submit"
                 variant="default"
-                >
+              >
                 Check
-                </Button>
+              </Button>
             </div>
           </form>
         </Form>

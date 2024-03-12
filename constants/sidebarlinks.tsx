@@ -36,21 +36,6 @@ export const adminLinks: ISidebarLinks[] = [
     route: "/register",
     label: "Register",
   },
-  // {
-  //   icon: <GiPaper />,
-  //   route: "/sampling",
-  //   label: "Sampling Page",
-  // },
-  // {
-  //   icon: <BiSolidBox />,
-  //   route: "/pplhp",
-  //   label: "PPLHP Page",
-  // },
-  // {
-  //   icon: <Mail />,
-  //   route: "/lab",
-  //   label: "Lab Page",
-  // },
 ]
 
 export const marketingLink: ISidebarLinks[] = [
@@ -84,6 +69,11 @@ export const marketingLink: ISidebarLinks[] = [
 export const samplingSPVLinks: ISidebarLinks[] = [
   {
     icon: <AiFillHome />,
+    route: "",
+    label: "Dashboard",
+  },
+  {
+    icon: <FaRunning />,
     route: "/project",
     label: "Project",
   },
