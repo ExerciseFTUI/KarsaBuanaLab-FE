@@ -26,7 +26,7 @@ export type ProjectMarketingType = {
   current_division: string
   valuasi_proyek: number
   jadwal_sampling: {from : string, to : string, _id: string}
-  deadline_lhp: string
+  deadline_lhp: {from : string, to : string, _id: string}
   desc_failed: string
 }
 
