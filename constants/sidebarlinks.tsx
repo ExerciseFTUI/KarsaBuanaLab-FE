@@ -89,7 +89,7 @@ export const samplingSPVLinks: ISidebarLinks[] = [
   },
 ]
 
-export const samplingUSERLinks: ISidebarLinks[] = [samplingSPVLinks[1]]
+export const samplingUSERLinks: ISidebarLinks[] = [samplingSPVLinks[0], samplingSPVLinks[2]]
 
 export const pplhpLinks: ISidebarLinks[] = [
   {
