@@ -89,14 +89,22 @@ export const columns: ColumnDef<ProjectMarketingType>[] = [
     },
 
     cell: ({ row }) => {
-      const deadline = row.original.current_division === "SAMPLING" ? row.original.jadwal_sampling?.to || "Haven't set deadline yet" : row.original.deadline_lhp?.to || "Haven't set deadline yet";
+      // Check if jadwal_sampling and deadline_lhp exist and have 'from' and 'to' properties
+      const jadwalSampling = row.original.jadwal_sampling;
+      const deadlineLHP = row.original.deadline_lhp;
+      
+      const deadline = row.original.current_division === "SAMPLING" && jadwalSampling
+        ? `${jadwalSampling.to || "Haven't set deadline yet"}`
+        : `${deadlineLHP?.to || "Haven't set deadline yet"}`;
+      
+      console.log(row.original.project_name, " ",  deadline);
+      
       return (
-        <div className="capitalize text-center ">
+        <div className="capitalize text-center">
           {deadline}
         </div>
-
       )
-    },
+    },    
   },
   //createdAt
   {
