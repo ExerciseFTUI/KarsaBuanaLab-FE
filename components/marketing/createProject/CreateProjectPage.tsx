@@ -191,12 +191,12 @@ const CreateProjectPage: FC<CreateProjectProps> = ({ baseSamples }) => {
           description: "Continue to upload document please wait...",
         });
 
-        if (uploadedFiles.length > 0 && response?._id) {
-          const fileResponse = await updateProjectFile(
-            response?._id,
-            uploadedFiles
-          );
-        }
+        // if (uploadedFiles.length > 0 && response?._id) {
+        //   const fileResponse = await updateProjectFile(
+        //     response?._id,
+        //     uploadedFiles
+        //   );
+        // }
 
         // if (uploadedFiles.length > 0) {
         //   const fileResponse = await updateProjectFile(
@@ -205,12 +205,14 @@ const CreateProjectPage: FC<CreateProjectProps> = ({ baseSamples }) => {
         //   );
         // }
 
-        toast({
-          title: "Successfully Create project!",
-          description: "Good Job",
-        });
+        // toast({
+        //   title: "Successfully Create project!",
+        //   description: "Good Job",
+        // });
         setIsLoading(false);
+
         router.push("/marketing/running");
+        // router.push(`/marketing/project/RUNNING/${response?._id}`);
       } else {
         toast({
           title: "Oops, you forget something!",
@@ -221,6 +223,7 @@ const CreateProjectPage: FC<CreateProjectProps> = ({ baseSamples }) => {
       toast({
         title: "Oops, Create project failed!",
         description: "Please Try Again Later",
+        variant: "destructive",
       });
       console.error("Error creating project:", error.message);
     } finally {
