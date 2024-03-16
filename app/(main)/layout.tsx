@@ -23,7 +23,6 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   const session = await getSessionServer();
-  // if (session) console.log(session.user);
 
   const user = session?.user || "";
   const role = user ? user?.role.toUpperCase() : "";

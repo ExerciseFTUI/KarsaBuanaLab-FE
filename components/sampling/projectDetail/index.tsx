@@ -10,9 +10,14 @@ import { SamplingRequestData } from "@/lib/type"
 interface projectParams {
   className: string
   data: SamplingRequestData
+  projects: Project[]
 }
 
-export default function ProjectD({ className = "", data }: projectParams) {
+export default function ProjectD({
+  className = "",
+  data,
+  projects,
+}: projectParams) {
   if (data == null)
     return (
       <div className="w-full h-full flex justify-center items-center font-bold">
@@ -26,7 +31,7 @@ export default function ProjectD({ className = "", data }: projectParams) {
     <div className={cn("flex", className)}>
       <ProjectDetails data={project} />
 
-      <SampleProjectTab data={data} />
+      <SampleProjectTab data={data} projects={projects} />
     </div>
   )
 }

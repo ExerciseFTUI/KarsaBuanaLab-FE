@@ -101,7 +101,9 @@ export const columns: ColumnDef<ProjectMarketingType>[] = [
 
     cell: ({ row }) => {
       const deadline =
-        row.original.jadwal_sampling?.to || "Haven't set deadline yet";
+        row.original.current_division === "SAMPLING"
+          ? row.original.jadwal_sampling?.to || "Haven't set deadline yet"
+          : row.original.deadline_lhp || "Haven't set deadline yet";
       return <div className="capitalize text-center ">{deadline}</div>;
     },
   },

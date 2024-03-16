@@ -90,6 +90,11 @@ export const marketingLink: ISidebarLinks[] = [
 export const samplingSPVLinks: ISidebarLinks[] = [
   {
     icon: <AiFillHome />,
+    route: "",
+    label: "Dashboard",
+  },
+  {
+    icon: <FaRunning />,
     route: "/project",
     label: "Project",
   },

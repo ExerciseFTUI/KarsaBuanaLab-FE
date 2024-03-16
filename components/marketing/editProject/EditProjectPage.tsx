@@ -430,7 +430,7 @@ export default function EditProjectPage({
 
       {isLoading && <LoadingScreen />}
 
-      <div className="flex gap-6 max-md:flex-col max-md:items-center">
+      <div className="flex gap-6 justify-evenly max-md:flex-col max-md:items-center">
         <ProjectForm
           form={form}
           onSubmit={onSubmit2}
@@ -462,7 +462,7 @@ export default function EditProjectPage({
             {/* Right Card for Dropzone */}
 
             <Card
-              className={`overflow-y-auto md:max-h-[25rem] custom-scrollbar`}
+              className={`overflow-y-auto md:max-h-[70vh] custom-scrollbar`}
             >
               <div>
                 <CardHeader>
