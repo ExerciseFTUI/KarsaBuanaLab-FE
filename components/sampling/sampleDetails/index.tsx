@@ -1,32 +1,32 @@
-"use client"
+"use client";
 
-import React from "react"
-import ProjectDetails from "../ProjectDetails"
-import DocumentList from "../DokumentList"
-import TabSampleStaff from "./TabSampleStaff"
-import TabSampleAdmin from "./TabSampleAdmin"
-import { useSession } from "next-auth/react"
-import { Project } from "@/lib/models/project.model"
-import LoadingScreen from "@/components/LoadingScreen"
-import { SamplingRequestData } from "@/lib/type"
+import React from "react";
+import ProjectDetails from "../ProjectDetails";
+import DocumentList from "../DokumentList";
+import TabSampleStaff from "./TabSampleStaff";
+import TabSampleAdmin from "./TabSampleAdmin";
+import { useSession } from "next-auth/react";
+import { Project } from "@/lib/models/project.model";
+import LoadingScreen from "@/components/LoadingScreen";
+import { SamplingRequestData } from "@/lib/type";
 
 export default function Project({
   data,
   role,
 }: {
-  data: SamplingRequestData
-  role: string
+  data: SamplingRequestData;
+  role: string;
 }) {
-  const { project, files, user } = data
+  const { project, files, user } = data;
 
-  if (role == "") return
+  if (role == "") return;
 
   if (data == null)
     return (
       <div className="w-full h-full flex justify-center items-center font-bold">
         Sample not found!
       </div>
-    )
+    );
   return (
     <div className="flex gap-6 max-md:flex-col max-md:items-center">
       <div className="flex flex-col flex-1 sm:border-r-light_brown sm:border-r-2 border-b-2 border-b-light_brown sm:border-b-0">
@@ -41,5 +41,5 @@ export default function Project({
         <TabSampleAdmin data={data} />
       )}
     </div>
-  )
+  );
 }
