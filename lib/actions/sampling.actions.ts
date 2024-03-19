@@ -107,6 +107,22 @@ export const sampleAssignment = async (
   }
 }
 
+export const getDashboardSampling = async (
+): Promise<BaseApiResponse<Project>> => {
+  try {
+    const response = await axios.get(
+      `${apiBaseUrl}/sampling/get-dashboard-sampling/`
+    )
+
+    revalidatePath(`/sampling`) 
+    
+    return response.data as BaseApiResponse<Project>
+  } catch (error: any) {
+    console.error("Error getting sample", error.message)
+    return null as unknown as BaseApiResponse<Project>
+  }
+}
+
 export const verifySample = async (
   projectId: string,
   status: string,
