@@ -17,12 +17,14 @@ import { useState, useEffect } from 'react';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from "@fullcalendar/interaction";
+import { useRouter } from "next/navigation"
 
 interface dashboardSampling {
   data: CalendarSample[];
 }
 
 const CalendarSample : FC<dashboardSampling> = ({ data }) => {
+  const router = useRouter()
   const [projectTitle, setProjectTitle] = useState("");
   const [detailProject, setDetailProject] = useState(false);
   const [timeline, setTimeline] = useState("");
@@ -119,7 +121,13 @@ const CalendarSample : FC<dashboardSampling> = ({ data }) => {
                 </ul>
               </div>
             </div>
-            <div className='flex justify-center mt-10'>
+            <div className='flex justify-center gap-10 mt-10'>
+              <button
+                onClick={() => router.push("sampling/project/"+clickedEvent._id)}
+                className=' bg-moss_green text-white px-4 py-2 rounded hover:bg-dark_green'
+              >
+                See Project
+              </button>
               <button
                 onClick={() => setDetailProject(false)}
                 className='bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600'
