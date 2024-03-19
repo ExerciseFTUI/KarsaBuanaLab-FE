@@ -1,6 +1,8 @@
 //@ts-nocheck
 
 "use client"
+
+import { CalendarSample } from "@/lib/models/sampling.model"
 const samplingTimeline = [
   { title: 'XYZ Project - Subang', start: '2024-03-01', end : '2024-03-06', person : ["rizky", "firman", "alex"], location : "Subang" },
   { title: 'Merbabu Project - Jateng', start: '2024-03-06', end : '2024-03-08', person : ["teguh", "tegar", "saiful"], location : "Bumi Ayu" },
@@ -16,17 +18,15 @@ import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from "@fullcalendar/interaction";
 
-const CalendarSample = () => {
+interface dashboardSampling {
+  data: CalendarSample[];
+}
+
+const CalendarSample : FC<dashboardSampling> = ({ data }) => {
   const [projectTitle, setProjectTitle] = useState("");
   const [detailProject, setDetailProject] = useState(false);
   const [timeline, setTimeline] = useState("");
   const [clickedEvent, setClickedEvent] = useState(null);
-
-  let samplingTimelineNew = samplingTimeline;
-  samplingTimelineNew = samplingTimeline.map(event => ({
-    ...event,
-    end: event.end ? new Date(new Date(event.end).getTime() + 1).toISOString() : null
-  }));
 
   // // Sementara di off in dulu karena belum terlalu butuh
   // const handleDateClick = (arg) => {
@@ -108,9 +108,14 @@ const CalendarSample = () => {
                 <span className='font-bold w-24'>Who</span>
                 <span className='font-bold'>: </span>
                 <ul>
-                  {clickedEvent && clickedEvent.person && clickedEvent.person.map((person, index) => (
-                    <li key={person}> <span>&nbsp;</span> {index+1}. {person}</li>
-                  ))}
+                  {/* Check if there are people assigned to the project */}
+                  {clickedEvent && clickedEvent.person && clickedEvent.person.length > 0 ? (
+                    clickedEvent.person.map((person, index) => (
+                      <li key={person}> <span>&nbsp;</span> {index + 1}. {person}</li>
+                    ))
+                  ) : (
+                    <li><span>&nbsp;</span>No people assigned to this project yet</li>
+                  )}
                 </ul>
               </div>
             </div>
@@ -131,7 +136,7 @@ const CalendarSample = () => {
           plugins={[dayGridPlugin, interactionPlugin]}
           initialView="dayGridMonth"
           weekends={false}
-          events={samplingTimelineNew}  
+          events={data}  
           // dateClick={handleDateClick}
           eventContent={renderEventContent}
         />

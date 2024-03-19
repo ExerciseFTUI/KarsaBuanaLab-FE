@@ -13,3 +13,11 @@ export interface Sampling {
   jadwal: Date;
   _id: string;
 }
+
+export interface CalendarSample {
+  _id: string;
+  title: string;
+  start: string;
+  end: string;
+  person: string[];
+}

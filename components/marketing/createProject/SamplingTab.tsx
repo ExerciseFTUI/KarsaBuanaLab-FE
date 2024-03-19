@@ -45,7 +45,6 @@ const SamplingTab: FC<SamplingTabProps> = ({
   const { control, watch, setValue, resetField } = form;
 
   const { fields: samples, append, remove, update } = arrayField;
-
   //Remove Sample
   function deleteSample(index: number) {
     remove(index);

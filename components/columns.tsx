@@ -108,8 +108,6 @@ export const columns: ColumnDef<ProjectMarketingType>[] = [
         ? `${jadwalSampling.to || "Haven't set deadline yet"}`
         : `${deadlineLHP?.to || "Haven't set deadline yet"}`;
       
-      console.log(row.original.project_name, " ",  deadline);
-      
       return (
         <div className="capitalize text-center">
           {deadline}
