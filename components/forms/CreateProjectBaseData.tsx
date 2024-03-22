@@ -1,10 +1,10 @@
-"use client";
-import React, { FC } from "react";
+"use client"
+import React, { FC } from "react"
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
+import { zodResolver } from "@hookform/resolvers/zod"
+import * as z from "zod"
 
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/button"
 import {
   Form,
   FormControl,
@@ -13,7 +13,7 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
+} from "@/components/ui/form"
 
 import {
   Card,
@@ -22,27 +22,27 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
+} from "@/components/ui/card"
 
-import { UseFormReturn, useForm } from "react-hook-form";
-import { createProjectValidation } from "@/lib/validations/CreateProjectValidation";
-import { Input } from "../ui/input";
-import { signIn } from "next-auth/react";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useToast } from "../ui/use-toast";
+import { UseFormReturn, useForm } from "react-hook-form"
+import { createProjectValidation } from "@/lib/validations/CreateProjectValidation"
+import { Input } from "../ui/input"
+import { signIn } from "next-auth/react"
+import { useRouter, useSearchParams } from "next/navigation"
+import { useToast } from "../ui/use-toast"
 
 interface CreateProjectBaseDataProps {
-  form: UseFormReturn<z.infer<typeof createProjectValidation>>;
-  onSubmit(values: z.infer<typeof createProjectValidation>): Promise<void>;
+  form: UseFormReturn<z.infer<typeof createProjectValidation>>
+  onSubmit(values: z.infer<typeof createProjectValidation>): Promise<void>
 }
 
 const CreateProjectBaseData: FC<CreateProjectBaseDataProps> = ({
   form,
   onSubmit,
 }) => {
-  const router = useRouter();
-  const query = useSearchParams();
-  const { toast } = useToast();
+  const router = useRouter()
+  const query = useSearchParams()
+  const { toast } = useToast()
 
   // 1. Define your form.
   // const form = useForm<z.infer<typeof createProjectValidation>>({
@@ -58,7 +58,6 @@ const CreateProjectBaseData: FC<CreateProjectBaseDataProps> = ({
   // });
 
   // async function onSubmit(values: z.infer<typeof createProjectValidation>) {
-  //   console.log(values);
   // }
 
   return (
@@ -186,7 +185,7 @@ const CreateProjectBaseData: FC<CreateProjectBaseDataProps> = ({
         </Form>
       </CardContent>
     </Card>
-  );
-};
+  )
+}
 
-export default CreateProjectBaseData;
+export default CreateProjectBaseData

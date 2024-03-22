@@ -1,23 +1,23 @@
-"use client";
-import { FC, useEffect } from "react";
-import { useRouter } from "next/navigation";
-import { AiOutlineFile } from "react-icons/ai";
-import { BsArrowRight } from "react-icons/bs";
-import { SelectSeparator } from "@/components/ui/select";
-import { changeToFinished } from "@/lib/actions/pplhp.actions";
-import { changeToReview } from "@/lib/actions/pplhp.actions";
+"use client"
+import { FC, useEffect } from "react"
+import { useRouter } from "next/navigation"
+import { AiOutlineFile } from "react-icons/ai"
+import { BsArrowRight } from "react-icons/bs"
+import { SelectSeparator } from "@/components/ui/select"
+import { changeToFinished } from "@/lib/actions/pplhp.actions"
+import { changeToReview } from "@/lib/actions/pplhp.actions"
 
 interface LaporanHasilPemeriksaantLink {
-  url: string;
-  name: string;
+  url: string
+  name: string
 }
 
 interface LaporanHasilPemeriksaanProps {
-  title: string;
-  color: string;
-  link: LaporanHasilPemeriksaantLink;
-  np: string; // Change from params to np
-  context: "lhpdraft" | "finalreview"; // New prop
+  title: string
+  color: string
+  link: LaporanHasilPemeriksaantLink
+  np: string // Change from params to np
+  context: "lhpdraft" | "finalreview" // New prop
 }
 
 const LaporanHasilPemeriksaan: FC<LaporanHasilPemeriksaanProps> = ({
@@ -27,27 +27,26 @@ const LaporanHasilPemeriksaan: FC<LaporanHasilPemeriksaanProps> = ({
   np,
   context, // Receive the new prop
 }) => {
-  const router = useRouter();
+  const router = useRouter()
 
   const handleSubmitDraft = async () => {
     try {
-      let message;
+      let message
       if (context === "lhpdraft") {
-        message = await changeToReview(np);
-        router.push(`/pplhp/lhpdraft`);
+        message = await changeToReview(np)
+        router.push(`/pplhp/lhpdraft`)
       } else if (context === "finalreview") {
-        message = await changeToFinished(np);
-        router.push(`/pplhp/finalreview`);
+        message = await changeToFinished(np)
+        router.push(`/pplhp/finalreview`)
       }
-      console.log(message);
     } catch (error) {
-      console.error("Failed to submit draft:", error);
+      console.error("Failed to submit draft:", error)
     }
-  };
+  }
 
   // Determine the button text based on the context
   const buttonText =
-    context === "lhpdraft" ? "SUBMIT FOR FINAL REVIEW" : "FINISH REVIEW";
+    context === "lhpdraft" ? "SUBMIT FOR FINAL REVIEW" : "FINISH REVIEW"
 
   return (
     <div className="h-screen px-16 space-y-14">
@@ -85,6 +84,6 @@ const LaporanHasilPemeriksaan: FC<LaporanHasilPemeriksaanProps> = ({
         </button>
       </div>
     </div>
-  );
-};
-export default LaporanHasilPemeriksaan;
+  )
+}
+export default LaporanHasilPemeriksaan

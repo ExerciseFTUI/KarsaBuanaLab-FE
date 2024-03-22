@@ -28,8 +28,6 @@ export default function VerifikasiSampling({
   const router = useRouter()
   const { toast } = useToast()
 
-  // console.log(data.project.sampling_list)
-
   const [isLoading, setIsLoading] = useState(false)
 
   const canSave =
@@ -156,9 +154,7 @@ export default function VerifikasiSampling({
 
               <AlertDialogFooter>
                 <AlertDialogCancel>Cancel</AlertDialogCancel>
-                <AlertDialogAction onClick={(e) => console.log("saved")}>
-                  Save
-                </AlertDialogAction>
+                <AlertDialogAction>Save</AlertDialogAction>
               </AlertDialogFooter>
             </AlertDialogContent>
           </AlertDialog>

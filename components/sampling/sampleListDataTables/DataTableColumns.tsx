@@ -120,8 +120,6 @@ export const groupUserSelectableColumns = (
         )
         .filter((p) => p != null)
 
-      // console.log(projectsThisUserOn)
-
       return (
         <AlertDialog>
           <AlertDialogTrigger asChild>
