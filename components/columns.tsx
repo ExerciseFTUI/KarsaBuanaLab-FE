@@ -1078,13 +1078,33 @@ export const LabDashboardPageColumns: ColumnDef<LabDataType>[] = [
       );
     },
   },
+  // {
+  //   accessorKey: "contact_person",
+  //   header: "Contact Person",
+  //   cell: ({ row }) => {
+  //     return (
+  //       <div className="capitalize pl-0.5">
+  //         {row.getValue("contact_person")}
+  //       </div>
+  //     );
+  //   },
+  // },
   {
-    accessorKey: "contact_person",
-    header: "Contact Person",
-    cell: ({ row }) => {
+    accessorKey: "lab_status",
+    header: "Status",
+    cell: ({ row }) => { 
+      var color = "bg-moss_green"
+      if (row.getValue("lab_status") === "RECEIVE") {
+        color = "bg-yellow-700";
+      } else if (row.getValue("lab_status") === "IN REVIEW BY ADMIN") {
+        color = "bg-blue-900";
+      } else if (row.getValue("lab_status") === "REVISION") {
+        color = "bg-red-400";
+      }
+      
       return (
-        <div className="capitalize pl-0.5">
-          {row.getValue("contact_person")}
+        <div className={`capitalize  text-white rounded-md w-fit px-2 text-center flex font-semibold ${color}`}>
+          {row.getValue("lab_status")}
         </div>
       );
     },

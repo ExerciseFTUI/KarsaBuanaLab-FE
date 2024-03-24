@@ -89,6 +89,7 @@ export type LabDataType = {
   alamat_sampling: string;
   alamat_kantor: string;
   contact_person: string;
+  lab_status: string;
 };
 
 export type ProjectSamplingType = {
