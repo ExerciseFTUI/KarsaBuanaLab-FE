@@ -1,7 +1,10 @@
+import { ProjectAdminPplhpType } from "@/lib/type";
 import { FC } from "react";
 import { AiOutlineArrowRight, AiOutlineFile } from "react-icons/ai";
 
-interface PplhpSampleProps {}
+interface PplhpSampleProps {
+  project: ProjectAdminPplhpType;
+}
 
 const data = [
   {

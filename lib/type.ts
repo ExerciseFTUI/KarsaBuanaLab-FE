@@ -15,20 +15,33 @@ export type ProjectType = {
 };
 
 export type ProjectMarketingType = {
-  _id: string
-  no_penawaran: string
-  project_name: string
-  client_name: string
-  alamat_sampling: string
-  contact_person: string
-  created_at: string
-  status: string
-  current_division: string
-  valuasi_proyek: number
-  jadwal_sampling: {from : string, to : string, _id: string}
-  deadline_lhp: string
-  desc_failed: string
-}
+  _id: string;
+  no_penawaran: string;
+  project_name: string;
+  client_name: string;
+  alamat_sampling: string;
+  contact_person: string;
+  created_at: string;
+  status: string;
+  current_division: string;
+  valuasi_proyek: number;
+  jadwal_sampling: { from: string; to: string; _id: string };
+  deadline_lhp: string;
+  desc_failed: string;
+};
+
+export type ProjectAdminPplhpType = {
+  project_name: string;
+  lab_files: LabFileType[];
+};
+
+export type LabFileType = {
+  _id: string;
+  file_name: string;
+  file_id: string;
+  file_type: string;
+  file_extension: string;
+};
 
 export type BaseSampleType = {
   sample_name: string;
