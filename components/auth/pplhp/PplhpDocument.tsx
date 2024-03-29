@@ -1,7 +1,10 @@
+import { ProjectAdminPplhpType } from "@/lib/type";
 import { FC } from "react";
 import { AiOutlineArrowRight, AiOutlineFile } from "react-icons/ai";
 
-interface PplhpDocumentProps {}
+interface PplhpDocumentProps {
+  project: ProjectAdminPplhpType;
+}
 
 const data = [
   {
@@ -50,7 +53,7 @@ const PplhpDocument: FC<PplhpDocumentProps> = () => {
   return (
     <div className="w-full">
       <div className={`w-full text-light_brown space-y-6 px-10`}>
-        <h2 className="text-xl text-center md:text-left">Document </h2>
+        <h2 className="text-xl text-center md:text-left">Document</h2>
         <div className="space-y-2">
           {data
             ? data.map((item) => (
