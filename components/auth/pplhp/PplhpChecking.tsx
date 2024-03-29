@@ -69,7 +69,7 @@ export const PplhpChecking: FC<PplhpCheckingProps> = ({ title, color, id }) => {
 
       <div className="w-full flex justify-around items-center gap-5">
         <Button
-          className="w-full hover:bg-dark_green bg-light_brown"
+          className="w-full hover:bg-dark_brown bg-light_brown"
           onClick={handleRevisi}
         >
           Revisi
