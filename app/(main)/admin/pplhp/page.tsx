@@ -10,7 +10,7 @@ export const metadata = {
 export default async function PPLHPPage() {
   const response = await getProjectAdminPplhp();
 
-  console.log(response);
+  // console.log(response);
 
   return (
     <div className="">

@@ -17,7 +17,7 @@ export const NewSample = ({setNewSample} : {setNewSample : React.Dispatch<React.
     const [sampleName, setSampleName] = useState("")
     
     const onSubmit = () => {
-        console.log("Sample new name: ", sampleName);
+        // console.log("Sample new name: ", sampleName);
 
         // Check if the sample name already avail or not 
 

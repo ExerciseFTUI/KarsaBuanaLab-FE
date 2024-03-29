@@ -39,7 +39,7 @@ const LaporanHasilPemeriksaan: FC<LaporanHasilPemeriksaanProps> = ({
         message = await changeToFinished(np);
         router.push(`/pplhp/finalreview`);
       }
-      console.log(message);
+      // console.log(message);
     } catch (error) {
       console.error("Failed to submit draft:", error);
     }

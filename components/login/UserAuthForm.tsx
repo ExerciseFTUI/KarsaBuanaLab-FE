@@ -57,7 +57,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
       redirect: false, //Add redirect to data object
     })
       .then((callback) => {
-        console.log(callback);
+        // console.log(callback);
         if (callback?.error) {
           toast({
             description: "Invalid username or password",

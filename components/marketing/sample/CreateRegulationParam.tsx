@@ -40,13 +40,13 @@ const CreateRegulationParam: React.FC<createProps> = ({
   const handleConfirm = async () => {
     try {
       if (from === "regulation") {
-        console.log("New Regulation : ", editedValue);
+        // console.log("New Regulation : ", editedValue);
         handleAddRegulation(); //DONE
       } else if (from === "param") {
-        console.log("New param based on sample : ", editedValue);
+        // console.log("New param based on sample : ", editedValue);
         handleAddParam(); //
       } else if (from === "defaultparam") {
-        console.log("New param based on regulation : ", editedValue);
+        // console.log("New param based on regulation : ", editedValue);
         handleAddDefaultParam(); //
       }
 
@@ -78,7 +78,7 @@ const CreateRegulationParam: React.FC<createProps> = ({
   }, [isCreateOpen, setIsCreateOpen]);
 
   const handleAddRegulation = async () => {
-    console.log(regulations);
+    // console.log(regulations);
 
     //Map all the regulation in specific sample
     const newRegulation = regulations.map((regulation) => {
@@ -94,7 +94,7 @@ const CreateRegulationParam: React.FC<createProps> = ({
       default_param: [],
     });
 
-    console.log(newRegulation);
+    // console.log(newRegulation);
 
     const body = {
       regulation: newRegulation,
@@ -123,12 +123,12 @@ const CreateRegulationParam: React.FC<createProps> = ({
   };
 
   const handleAddParam = async () => {
-    console.log(baseSample?.param);
+    // console.log(baseSample?.param);
 
     const newParam = baseSample?.param || [];
     newParam.push(editedValue);
 
-    console.log(newParam);
+    // console.log(newParam);
 
     const body = {
       param: newParam,
@@ -181,7 +181,7 @@ const CreateRegulationParam: React.FC<createProps> = ({
       };
     });
 
-    console.log(newRegulation);
+    // console.log(newRegulation);
 
     const body = {
       regulation: newRegulation,

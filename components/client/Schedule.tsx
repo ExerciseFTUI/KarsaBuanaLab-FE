@@ -36,7 +36,7 @@ const Schedule: FC<ScheduleProps> = () => {
   function onSubmit(values: z.infer<typeof scheduleValidation>) {
     // Do something with the form values.
       // ✅ This will be type-safe and validated.
-      console.log(values.comment);
+    //   console.log(values.comment);
   }
     return (
         <section className="mt-4 m-10">

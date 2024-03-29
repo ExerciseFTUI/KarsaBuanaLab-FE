@@ -32,7 +32,7 @@ export default async function Home({ params }: { params: { np: string } }) {
     label: file.name,
   }));
 
-  console.log(RangkaianPengamananSampelData);
+  // console.log(RangkaianPengamananSampelData);
   return (
     <>
       <main className="flex flex-col lg:flex-row gap-5 lg:gap-0 w-full">

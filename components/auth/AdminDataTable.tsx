@@ -84,7 +84,7 @@ export function AdminDataTable({ datas }: AdminDataTableProps) {
     }
   }, []);
 
-  console.log(data);
+  // console.log(data);
 
   const table = useReactTable({
     data: datas,

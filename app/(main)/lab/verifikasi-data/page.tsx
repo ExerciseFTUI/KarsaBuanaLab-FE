@@ -5,7 +5,7 @@ import { getProjectByDivision } from "@/lib/actions/sampling.actions"
 export default async function Home() {
   const res = await getProjectByDivision("Lab")
 
-  const data = res ? (res as any).projects.filter((item: any) => item.lab_status === "NEED ANALYZE") : []
+  const data = res ? (res as any).filter((item: any) => item.lab_status === "NEED ANALYZE") : []
   // console.log("verifikasi-data", data);
   
   return (
