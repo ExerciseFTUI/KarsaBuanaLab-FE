@@ -53,7 +53,7 @@ const Dropzone = ({ setUploadedFiles }) => {
   
 
   return (
-    <div>
+    <div className="py-3">
       {/* Drag and drop files area */}
       <div
         className={`mx-5 h-48 rounded-lg grid place-items-center border-2 border-dashed border-black bg-light_green ${
@@ -68,9 +68,11 @@ const Dropzone = ({ setUploadedFiles }) => {
       </div>
 
       <aside className="m-5">
-        <h4>Files Uploaded :  </h4>
+        <h4>Files Uploaded : </h4>
         {uploadedFilesList.length === 0 && (
-          <p className=" text-sm flex flex-row justify-center">Nothing files uploaded</p>
+          <p className=" text-sm flex flex-row justify-center py-3">
+            Nothing files uploaded
+          </p>
         )}
         <ul>{uploadedFilesList}</ul>
       </aside>

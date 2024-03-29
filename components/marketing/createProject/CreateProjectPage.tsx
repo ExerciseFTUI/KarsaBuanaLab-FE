@@ -22,71 +22,29 @@ import { BaseApiResponse } from "@/lib/models/baseApiResponse.model";
 import { BaseSample } from "@/lib/models/baseSample.model";
 import {
   createProject,
-  updateProjectFile,
+  createProjectJson,
 } from "@/lib/actions/marketing.actions";
 
 import { useRouter } from "next/navigation";
 import { set } from "date-fns";
 import LoadingScreen from "@/components/LoadingComp";
+import {
+  getProjectClient,
+  getUser,
+  updateProjectFile,
+} from "@/lib/actions/marketing.client.actions";
 
-// const createProject = async (
-//   body: any,
-//   files?: any // Assuming files is a File or an array of File objects
-// ) => {
-//   try {
-//     if (
-//       !body.client_name ||
-//       !body.project_name ||
-//       !body.alamat_kantor ||
-//       !body.alamat_sampling ||
-//       !body.surel ||
-//       !body.contact_person ||
-//       !body.regulation ||
-//       !body.sampling_list
-//       //      || !body.assigned_to
-//     ) {
-//       throw new Error("Please provide all required fields");
-//     }
-
-//     var bodyFormData = new FormData();
-
-//     // Append all fields from the body object to bodyFormData
-//     Object.keys(body).forEach((key) => {
-//       bodyFormData.append(key, body[key]);
-//     });
-
-//     // Append files to bodyFormData
-//     if (files || files.length > 0) {
-//       if (Array.isArray(files)) {
-//         files.forEach((file, index) => {
-//           bodyFormData.append(`files${index}`, file);
-//         });
-//       } else {
-//         bodyFormData.append("files", files);
-//       }
-//     }
-
-//     console.log("Masuk sini");
-
-//     console.log(`http://localhost:5000/projects/create`);
-
-//     const response = await axios.post(
-//       `http://localhost:5000/projects/create`,
-//       bodyFormData,
-//       {
-//         headers: { "Content-Type": "multipart/form-data" },
-//       }
-//     );
-
-//     console.log("Success");
-
-//     // return response.data as BaseApiResponse<ProjectResult>;
-//     return "Success";
-//   } catch (error: any) {
-//     console.error("Error creating project:", error.message);
-//     return null as unknown as BaseApiResponse<PromiseRejectedResult>;
-//   }
-// };
+const getProject = async () => {
+  //Add try catch
+  try {
+    const response = await axios.get(
+      `https://karsalab.netlabdte.com//marketing/getSample`
+    );
+    console.log(response.data);
+  } catch (error: any) {
+    console.error(`Error get project :`, error.message);
+  }
+};
 
 interface CreateProjectProps {
   baseSamples: BaseSample[];
@@ -108,7 +66,7 @@ const CreateProjectPage: FC<CreateProjectProps> = ({ baseSamples }) => {
     defaultValues: {
       sampling: "",
       regulation: "",
-      parameters: [""],
+      parameters: [],
     },
   });
 
@@ -119,9 +77,10 @@ const CreateProjectPage: FC<CreateProjectProps> = ({ baseSamples }) => {
     name: "samples",
   });
 
-  // useEffect(() => {
-  //   console.log(arrayField.fields);
-  // }, [arrayField.fields]);
+  useEffect(() => {
+    // getUser();
+    getProjectClient("12");
+  }, []);
 
   //All the samples get save in here
   const { fields: samples, append, remove } = arrayField;
@@ -188,58 +147,87 @@ const CreateProjectPage: FC<CreateProjectProps> = ({ baseSamples }) => {
   });
 
   // 2. Define a submit handler.
-  async function onSubmitForm(values: z.infer<typeof createProjectValidation>) {
-    if (samples.length > 0) {
-      //@ts-ignore
-      const sampling_list = samples.map((sample) => sample.sampleName);
-      //@ts-ignore
-      const regulation_list = samples.map((sample) => sample.regulation);
+  async function onSubmitForm2(
+    values: z.infer<typeof createProjectValidation>
+  ) {
+    try {
+      setIsLoading(true); // Set loading to true before making API call
 
-      console.log("Sampling List: ", sampling_list);
-      console.log("Regulation List: ", regulation_list);
+      if (samples.length > 0) {
+        const sampling_list = samples.map((sample) => {
+          return {
+            //@ts-ignore
+            sample_name: sample.sampleName,
+            //@ts-ignore
+            regulation_name: sample.regulation,
+            //@ts-ignore
+            param: sample.parameters,
+          };
+        });
 
-      const body = {
-        client_name: values.custName,
-        project_name: values.title,
-        alamat_kantor: values.alamatKantor,
-        alamat_sampling: values.alamatSampling,
-        surel: values.surel,
-        contact_person: values.contactPerson,
-        regulation_list: regulation_list,
-        sampling_list: sampling_list,
-      };
+        const body = {
+          client_name: values.custName,
+          project_name: values.title,
+          alamat_kantor: values.alamatKantor,
+          alamat_sampling: values.alamatSampling,
+          surel: values.surel,
+          contact_person: values.contactPerson,
+          sampling_list: sampling_list,
+        };
 
-      //Create Project Function
-      setIsLoading(true);
-      // const response = null;
+        const response = await createProjectJson(body);
 
-      const response = await createProject(body, uploadedFiles);
-
-
-      if (!response) {
-        alert("Failed to create project");
-        setIsLoading(false);
-        return
-      }
-
-      if (uploadedFiles.length > 0) {
-        const fileResponse = await updateProjectFile(
-          "65afbd8c987cf82566e265d0",
-          uploadedFiles
-        );
-
-        if (!fileResponse) {
-          alert("Failed to upload file, You can add file in update page");
+        if (!response) {
+          toast({
+            title: "Failed to create project",
+            description: "please resubmit the form",
+          });
           setIsLoading(false);
           return;
         }
-      }
 
-      setIsLoading(false);
-      alert("Success creating project");
-      router.push("/marketing/running");
-    } else {
-      alert("Please add at least one sample");
+        toast({
+          title: "Create Project Success",
+          description: "Continue to upload document please wait...",
+        });
+
+        // if (uploadedFiles.length > 0 && response?._id) {
+        //   const fileResponse = await updateProjectFile(
+        //     response?._id,
+        //     uploadedFiles
+        //   );
+        // }
+
+        // if (uploadedFiles.length > 0) {
+        //   const fileResponse = await updateProjectFile(
+        //     "65b79328c0bdd92b29e84f43",
+        //     uploadedFiles
+        //   );
+        // }
+
+        // toast({
+        //   title: "Successfully Create project!",
+        //   description: "Good Job",
+        // });
+        setIsLoading(false);
+
+        router.push("/marketing/running");
+        // router.push(`/marketing/project/RUNNING/${response?._id}`);
+      } else {
+        toast({
+          title: "Oops, you forget something!",
+          description: "Please add at least one sample",
+        });
+      }
+    } catch (error: any) {
+      toast({
+        title: "Oops, Create project failed!",
+        description: "Please Try Again Later",
+        variant: "destructive",
+      });
+      console.error("Error creating project:", error.message);
+    } finally {
+      setIsLoading(false); // Set loading to false after API call is finished
     }
   }
 
@@ -256,12 +244,13 @@ const CreateProjectPage: FC<CreateProjectProps> = ({ baseSamples }) => {
   //=============================== End Document Section
 
   return (
-    <div className="flex gap-6 max-md:flex-col max-md:items-center">
+    <div className="flex gap-6 max-md:flex-col max-md:items-center justify-evenly">
       {isLoading && <LoadingScreen />}
-      <ProjectForm form={form} onSubmit={onSubmitForm} status="CREATE" />
+      <ProjectForm form={form} onSubmit={onSubmitForm2} status="CREATE"/>
       <Tabs
         defaultValue="sampling"
-        className="w-[40rem] max-sm:w-[420px] justify-center"
+        // w-[40rem] max-sm:w-[420px]
+        className=" w-[40rem] max-sm:w-[700px] justify-center"
       >
         <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="sampling">Sampling</TabsTrigger>
@@ -290,9 +279,13 @@ const CreateProjectPage: FC<CreateProjectProps> = ({ baseSamples }) => {
         </TabsContent>
         {/* End Document Section */}
 
-
         <div className="flex flex-row justify-center items-center mt-5 w-full">
-          <button onClick={form.handleSubmit(onSubmitForm)} className=" text-white w-1/3 rounded-lg py-4 hover:bg-dark_green text-base font-medium hover:cursor-pointer bg-moss_green">Submit</button>
+          <button
+            onClick={form.handleSubmit(onSubmitForm2)}
+            className=" text-white w-1/3 rounded-lg py-4 hover:bg-dark_green text-base font-medium hover:cursor-pointer bg-moss_green"
+          >
+            Submit
+          </button>
         </div>
       </Tabs>
     </div>

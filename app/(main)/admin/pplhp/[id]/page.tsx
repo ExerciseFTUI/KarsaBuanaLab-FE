@@ -1,0 +1,35 @@
+import { PplhpChecking } from "@/components/auth/pplhp/PplhpChecking";
+import PplhpTab from "@/components/auth/pplhp/PplhpTab";
+
+const PPLHPDetailPage = async ({ params }: { params: { id: string } }) => {
+  return (
+    <>
+      <main className="flex flex-col lg:flex-row gap-5 lg:gap-0 justify-between w-full">
+        <div className="lg:w-2/5">
+          {/* <FNPrintPage linkData={linkData ? linkData : []} /> */}
+
+          <PplhpTab />
+        </div>
+
+        <div className="lg:w-3/5 py-24 lg:py-0">
+          {/* <LaporanHasilPemeriksaan
+            title="Pengisian LHP"
+            color="dark_brown"
+            link={linkData ? linkData.lhp : []}
+            np={params.np} // Pass params.np directly
+            context="finalreview"
+          /> */}
+          <div className="flex flex-1 justify-center items-center">
+            <PplhpChecking
+              title="Pengisian LHP"
+              color="dark_brown"
+              id={params.id}
+            />
+          </div>
+        </div>
+      </main>
+    </>
+  );
+};
+
+export default PPLHPDetailPage;

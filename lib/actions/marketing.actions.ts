@@ -44,8 +44,50 @@ interface DashboardResult {
     totalForCancelled: number;
     totalForFinished: number;
     totalProjectReal: number;
-  }
+  };
 }
+
+//=======================Base Sample Section ========================
+export const editBaseSample = async (body: any, id: string) => {
+  try {
+
+    const response = await axios.put(
+      `${apiBaseUrl}/base-sample/editBaseSample/${id}`,
+      body
+    );
+
+    return response.data.result;
+  } catch (error: any) {
+    {
+      error.response.data
+        ? console.error(error.response.data)
+        : console.error(`Error update projectFile :`, error.message);
+    }
+    return null;
+  }
+};
+
+export const deleteBaseSample = async (body: any) => {
+  try {
+    const response = await axios.delete(
+      `${apiBaseUrl}/base-sample/removeBaseSample`,
+      body
+    );
+
+    //DITO: responsenya apa belum di cek
+
+    return response;
+  } catch (error: any) {
+    {
+      error.response.data
+        ? console.error(error.response.data)
+        : console.error(`Error delete baseSample :`, error.message);
+    }
+    return null;
+  }
+};
+
+//=======================End Base Sample Section ========================
 
 export const createProject = async (
   body: any,
@@ -93,7 +135,6 @@ export const createProject = async (
       }
     }
 
-
     const response = await axios.post(
       `${apiBaseUrl}/projects/create`,
       bodyFormData,
@@ -102,15 +143,31 @@ export const createProject = async (
       }
     );
 
-    
-
     revalidatePath("/marketing/running");
 
     // return response.data as BaseApiResponse<ProjectResult>;
     return "Success";
   } catch (error: any) {
+    console.error(error.response?.data?.message);
     console.error("Error creating project:", error.message);
     return null as unknown as BaseApiResponse<ProjectResult>;
+  }
+};
+
+export const createProjectJson = async (body: any) => {
+  try {
+    const response = await axios.post(
+      `${apiBaseUrl}/projects/createJSON`,
+      body
+    );
+    revalidatePath("/marketing/running");
+
+    return response.data.result.project as Project;
+  } catch (error: any) {
+    console.error(error.response?.data?.message);
+    console.error("Error creating project:", error.message);
+    throw new error("Error creating project:", error.message);
+    // return null;
   }
 };
 
@@ -167,9 +224,6 @@ export const getSample = async (): Promise<BaseApiResponse<[BaseSample]>> => {
   try {
     const response = await axios.get(`${apiBaseUrl}/marketing/getSample`);
 
-    console.log(response.data.result);
-    
-
     return response.data as BaseApiResponse<[BaseSample]>;
   } catch (error: any) {
     console.error("Error getting sample:", error.message);
@@ -182,37 +236,46 @@ export const getDashboard = async () : Promise<BaseApiResponse<DashboardResult>>
   try {
     const response = await axios.get(`${apiBaseUrl}/marketing/dashboard`);
 
-
     // Calculate total sales for projectRunning
-    const totalForRunning = response.data.result.projectRunning.reduce((totalMonth: any, monthData: any) => totalMonth + monthData.sales, 0);
+    const totalForRunning = response.data.result.projectRunning.reduce(
+      (totalMonth: any, monthData: any) => totalMonth + monthData.sales,
+      0
+    );
 
     // Calculate total sales for projectFinished
-    const totalForFinished = response.data.result.projectFinished.reduce((totalMonth: any, monthData: any) => totalMonth + monthData.sales, 0);
+    const totalForFinished = response.data.result.projectFinished.reduce(
+      (totalMonth: any, monthData: any) => totalMonth + monthData.sales,
+      0
+    );
 
     // Calculate total sales for projectCancelled
-    const totalForCancelled = response.data.result.projectCancelled.reduce((totalMonth: any, monthData: any) => totalMonth + monthData.sales, 0);
+    const totalForCancelled = response.data.result.projectCancelled.reduce(
+      (totalMonth: any, monthData: any) => totalMonth + monthData.sales,
+      0
+    );
 
     // Calculate total project real
-    const totalProjectReal = totalForCancelled + totalForFinished + totalForRunning;
+    const totalProjectReal =
+      totalForCancelled + totalForFinished + totalForRunning;
 
     // Add the calculated totals to the response
     const updatedResponse = {
       ...response.data,
       result: {
         ...response.data.result,
-        forPie : {
+        forPie: {
           totalForRunning,
           totalForFinished,
           totalForCancelled,
-          totalProjectReal
-        }
+          totalProjectReal,
+        },
       },
     };
-    
+
     return updatedResponse as BaseApiResponse<DashboardResult>;
-  } catch (error:any) {
-    console.error('Error getting api because : ', error.message);
-    return null as unknown as BaseApiResponse<DashboardResult>
+  } catch (error: any) {
+    console.error("Error getting api because : ", error.message);
+    return null as unknown as BaseApiResponse<DashboardResult>;
   }
 };
 
@@ -245,12 +308,16 @@ export const getbyStatus = async (
 ): Promise<BaseApiResponse<[ProjectMarketingType]>> => {
   try {
     const response = await axios.get(`${apiBaseUrl}/marketing/${status}`);
-    
+
     // Sort the data by the newest createdAt
-    const sortedData = response.data.result.sort((a : ProjectMarketingType, b:ProjectMarketingType) => {
-      return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
-    });
-    
+    const sortedData = response.data.result.sort(
+      (a: ProjectMarketingType, b: ProjectMarketingType) => {
+        return (
+          new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+        );
+      }
+    );
+
     return {
       ...response.data,
       result: sortedData,
@@ -263,13 +330,13 @@ export const getbyStatus = async (
 
 //Update Project Info
 export const updateProjectInfo = async (body: any) => {
-
   try {
-    //Call API
     const response = await axios.put(`${apiBaseUrl}/projects/edit`, body);
+
     if (response.data.result) {
       //Refetch
       revalidatePath("/marketing/running");
+      revalidatePath("/marketing");
       return true;
     } else {
       return false;
@@ -281,11 +348,11 @@ export const updateProjectInfo = async (body: any) => {
 };
 
 //Update Project Sample
-export const updateProjectSample = async (body: any) => {
+export const updateProjectSample = async (body: any, projectId: string) => {
   try {
     //Call API
     const response = await axios.put(
-      `${apiBaseUrl}/projects/editSamples`,
+      `${apiBaseUrl}/projects/editSamples/${projectId}`,
       body
     );
     if (response.data.result) {
@@ -297,38 +364,6 @@ export const updateProjectSample = async (body: any) => {
     }
   } catch (error: any) {
     console.error(`Error update projectSample :`, error.message);
-    return false;
-  }
-};
-
-//Update Project file
-export const updateProjectFile = async (id: string, files: any) => {
-  var bodyFormData = new FormData();
-  bodyFormData.append("_id", id);
-
-  // Append each file to the FormData object
-  for (let i = 0; i < files.length; i++) {
-    bodyFormData.append("files", files[i]);
-  }
-
-  try {
-    //Call API
-    const response = await axios.put(
-      `${apiBaseUrl}/projects/editFiles`,
-      bodyFormData,
-      {
-        headers: { "Content-Type": "multipart/form-data" },
-      }
-    );
-    if (response.data.result) {
-      //Refetch
-      revalidatePath("/marketing/running");
-      return true;
-    } else {
-      return false;
-    }
-  } catch (error: any) {
-    console.error(`Error update projectFile :`, error.message);
     return false;
   }
 };

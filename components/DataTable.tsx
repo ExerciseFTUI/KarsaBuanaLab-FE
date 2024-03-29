@@ -50,7 +50,8 @@ import {
 } from "@radix-ui/react-icons";
 import { ProjectMarketingType, ProjectType } from "@/lib/type";
 import { Project } from "@/lib/models/project.model";
-import { columns } from "./columns";
+import { columns, columnsFinished } from "./columns";
+import { columnsCancelled } from "./columns";
 import Link from "next/link";
 
 // interface DataTableProps<TData, TValue> {
@@ -60,9 +61,10 @@ import Link from "next/link";
 
 interface DataTableProps {
   datas: ProjectMarketingType[];
+  status: string;
 }
 
-export function DataTable({ datas }: DataTableProps) {
+export function DataTable({ datas, status }: DataTableProps) {
   const router = useRouter();
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -85,7 +87,7 @@ export function DataTable({ datas }: DataTableProps) {
 
   const table = useReactTable({
     data: data,
-    columns,
+    columns: status === "CANCELLED" ? columnsCancelled : status ==="FINISHED" ? columnsFinished : columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),

@@ -45,60 +45,17 @@ const SamplingTab: FC<SamplingTabProps> = ({
   const { control, watch, setValue, resetField } = form;
 
   const { fields: samples, append, remove, update } = arrayField;
-
-  //Add to the samples array
-  // const onSubmit: SubmitHandler<FieldValues> = async (data) => {
-  //   console.log(data.parameters);
-
-  //   //Handle Missing Data
-  //   if (
-  //     data.sampling === "" ||
-  //     data.regulation === "" ||
-  //     data.parameters.length === 0 ||
-  //     data.parameters[0] === ""
-  //   ) {
-  //     alert("Please fill the data");
-  //     return;
-  //   }
-
-  //   //Get the parameter only value
-  //   const parametersValue = data.parameters.map(
-  //     (parameter: any) => parameter.value
-  //   );
-
-  //   //Get the needed data
-  //   const finalSample = {
-  //     sampleName: data.sampling,
-  //     regulation: data.regulation,
-  //     parameters: parametersValue,
-  //   };
-
-  //   //Add to samples array
-  //   append(finalSample);
-
-  //   //Reset all the form
-  //   setValue("parameters", [""], { shouldValidate: true });
-  //   resetField("sampling");
-  //   resetField("parameters");
-
-  //   //Close Modal
-  //   setOpenModal(false);
-
-  //   //Display Toast
-  //   toast({
-  //     title: "Successfully adding new sample",
-  //     description: "Good Job",
-  //   });
-  // };
-
   //Remove Sample
   function deleteSample(index: number) {
     remove(index);
   }
+  // Job safety assurance
+  // Template sampling
 
   return (
     <>
-      <Card className="overflow-y-auto max-h-[90vh] custom-scrollbar">
+    {/* max-h-[90vh] md:max-h-[25rem] */}
+      <Card className="overflow-y-auto md:max-h-[70vh] custom-scrollbar">
         <CardHeader>
           <CardTitle>Sampling</CardTitle>
           <CardDescription>
@@ -147,6 +104,7 @@ const SamplingTab: FC<SamplingTabProps> = ({
         form={form}
         onSubmit={onSubmit}
         baseSamples={baseSamples}
+        change={false}
       />
     </>
   );

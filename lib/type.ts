@@ -1,33 +1,39 @@
-import { Regulation } from "./models/regulation.model"
-import { User } from "./models/user.model"
+import { File } from "./models/file.model";
+import { Project } from "./models/project.model";
+import { Regulation } from "./models/regulation.model";
+import { User } from "./models/user.model";
 
 export type ProjectType = {
-  id: string
-  noPenawaran: string
-  judul: string
-  namaCustomer: string
-  lokasi: string
-  cp: string
-  nilaiPenawaran: number
-  createdAt: string
-}
-
-export type ProjectMarketingType = {
-  _id: string;
-  no_penawaran: string;
-  project_name: string;
-  client_name: string;
-  alamat_sampling: string;
-  contact_person: string;
-  created_at: string;
-  status: string;
-  valuasi_proyek: number;
+  id: string;
+  noPenawaran: string;
+  judul: string;
+  namaCustomer: string;
+  lokasi: string;
+  cp: string;
+  nilaiPenawaran: number;
+  createdAt: string;
 };
 
-export type BaseSampleType = {
-  sample_name: string
-  amount: number
+export type ProjectMarketingType = {
+  _id: string
+  no_penawaran: string
+  project_name: string
+  client_name: string
+  alamat_sampling: string
+  contact_person: string
+  created_at: string
+  status: string
+  current_division: string
+  valuasi_proyek: number
+  jadwal_sampling: {from : string, to : string, _id: string}
+  deadline_lhp: {from : string, to : string, _id: string}
+  desc_failed: string
 }
+
+export type BaseSampleType = {
+  sample_name: string;
+  amount: number;
+};
 
 export type SampleType = {
   sample_name: string;
@@ -38,27 +44,28 @@ export type SampleType = {
 };
 
 export type FileType = {
-  file_name: string
-  file_id: string
-}
+  file_name: string;
+  file_id: string;
+};
 
 export type UserType = {
-  username: string
-  email: string
-  password: string
-  phone: string
-  role: string
-  division: string
-}
+  id?: string;
+  name?: string;
+  email?: string;
+  // password: string;
+  // phone: string
+  role: string;
+  division: string;
+};
 
 export type RegulationType = {
-  regulation_name: string
-  file: FileType[]
-  param: string[]
-}
+  regulation_name: string;
+  file: FileType[];
+  param: string[];
+};
 
 export type ReceiveSamplingType = {
-  _id: string
+  _id: string;
   no_penawaran: string;
   project_name: string;
   alamat_sampling: string;
@@ -67,7 +74,7 @@ export type ReceiveSamplingType = {
 };
 
 export type ProjectLHPType = {
-  _id: string
+  _id: string;
   no_penawaran: string;
   project_name: string;
   alamat_sampling: string;
@@ -76,7 +83,7 @@ export type ProjectLHPType = {
 };
 
 export type LabDataType = {
-  _id: string
+  _id: string;
   no_penawaran: string;
   project_name: string;
   alamat_sampling: string;
@@ -103,6 +110,12 @@ export type ProjectSamplingType = {
   sampling_list: SampleType[];
 
   file: { file_nama: string; file_id: string };
+};
+
+export type SamplingRequestData = {
+  project: Project;
+  user: User[];
+  files: any;
 };
 
 export const Sampling = {
@@ -182,4 +195,39 @@ export const Sampling = {
       ],
     },
   ],
-}
+};
+
+export type ClientResponses = {
+  sample_name: string;
+  status: boolean;
+};
+
+export type FinishedData = {
+  is_paid: boolean;
+  report: string;
+  is_survey_filled: boolean;
+};
+
+export type ClientDataType = {
+  sample: ClientResponses[];
+  analysis: ClientResponses[];
+  finished: FinishedData;
+};
+
+export type SurveySchema = {
+  _id: string;
+  title: string;
+  questions: QuestionType[];
+};
+
+export type QuestionType = {
+  _id: string;
+  text: string;
+  type: "rating" | "essay" | "multiple_choice";
+  choices: string[];
+};
+
+export type AnswerType = {
+  questionId: string;
+  value: string;
+};

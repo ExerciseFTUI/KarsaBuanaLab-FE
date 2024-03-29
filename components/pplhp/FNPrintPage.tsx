@@ -88,29 +88,33 @@ export default function FNPrintPage({ linkData }: { linkData: any }) {
   // Get Document data
   // Get Laporan Hasil Pemeriksaan data
   return (
-    <div className="flex flex-col md:flex-row justify-between w-full h-screen gap-36 md:gap-0">
+    <div className="flex flex-col md:flex-row justify-between w-full md:gap-0 pb-5">
       <div className="w-full h-fit px-16 space-y-6">
         <div className="flex flex-row text-2xl font-medium space-x-0 cursor-pointer">
           <div
-            className={`flex flex-col items-end ${selectedTab === "Sampel" ? "text-dark_brown" : "text-ghost_brown"
-              } w-1/2`}
+            className={`flex flex-col items-end ${
+              selectedTab === "Sampel" ? "text-dark_brown" : "text-ghost_brown"
+            } w-1/2`}
             onClick={() => setSelectedTab("Sampel")}
           >
             <h1 className="m-4 mx-5">Sampel</h1>
             <div
-              className={`w-4/5 h-1 rounded-l-full ${selectedTab === "Sampel" ? "bg-dark_brown" : "bg-ghost_brown"
-                }`}
+              className={`w-4/5 h-1 rounded-l-full ${
+                selectedTab === "Sampel" ? "bg-dark_brown" : "bg-ghost_brown"
+              }`}
             />
           </div>
           <div
-            className={`w-1/2 cursor-pointer ${selectedTab === "Dokumen" ? "text-dark_brown" : "text-ghost_brown"
-              }`}
+            className={`w-1/2 cursor-pointer ${
+              selectedTab === "Dokumen" ? "text-dark_brown" : "text-ghost_brown"
+            }`}
             onClick={() => setSelectedTab("Dokumen")}
           >
             <h1 className="m-4 mx-5">Dokumen</h1>
             <div
-              className={`w-4/5 h-1 rounded-r-full ${selectedTab === "Dokumen" ? "bg-dark_brown" : "bg-ghost_brown"
-                }`}
+              className={`w-4/5 h-1 rounded-r-full ${
+                selectedTab === "Dokumen" ? "bg-dark_brown" : "bg-ghost_brown"
+              }`}
             />
           </div>
         </div>

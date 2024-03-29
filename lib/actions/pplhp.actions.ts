@@ -15,7 +15,7 @@ type ChangeStatusResponse = {
 export const getProject = async (projectId: string): Promise<Project[]> => {
   try {
     const response = await axios.get(`${apiBaseUrl}/marketing/running`);
-    console.log(response.data.result);
+    // console.log(response.data.result);
     return response.data.result; // Access 'result' field
   } catch (error: any) {
     console.error(`Error getting project with ID ${projectId}:`, error.message);
@@ -28,7 +28,7 @@ export const getLinkFiles = async (projectId: string): Promise<any> => {
     const response = await axios.get(
       `${apiBaseUrl}/projects/get-link-files/${projectId}`
     );
-    console.log(response.data.result);
+    // console.log(response.data.result);
     return response.data.result; // Access 'result' field
   } catch (error: any) {
     console.error(
@@ -44,7 +44,7 @@ export const getPplhpByStatus = async (status: string): Promise<Project[]> => {
     const response = await axios.get(
       `${apiBaseUrl}/projects/get-pplhp-by-status/${status}`
     );
-    console.log(response.data);
+    // console.log(response.data);
     return response.data.data;
   } catch (error: any) {
     console.error(`Error getting PPLHP by status ${status}:`, error.message);
@@ -94,13 +94,54 @@ export const changeToFinished = async (id: string): Promise<String> => {
       `https://karsalab.netlabdte.com/projects/change-to-finished/${id}`
     );
     revalidatePath("/pplhp/review");
-    console.log(response.data);
-    return response.data;
+    console.log(response.data.message);
+    return response.data.message;
   } catch (error: any) {
     console.error(
       `Error changing to finished for project with ID ${id}:`,
       error.message
     );
     return null as unknown as string;
+  }
+};
+
+export const setDeadlineLHP = async (
+  projectId: string,
+  deadline: { from: string; to: string } // Specify type of deadline
+): Promise<Project> => {
+  try {
+    const response = await axios.post(
+      `https://karsalab.netlabdte.com/projects/set-deadline-lhp`,
+      {
+        projectId,
+        deadline, // Pass the deadline object directly
+      }
+    );
+
+    // Assuming the response contains the updated project object
+    return response.data.message;
+    console.log(response.data.message);
+    console.log("Deadline set successfully.");
+  } catch (error: any) {
+    console.error(
+      `Error setting deadline for project with ID ${projectId}:`,
+      error.message
+    );
+    throw new Error(error.message);
+  }
+};
+
+export const getProjectDetails = async (projectId: string): Promise<any> => {
+  try {
+    const response = await axios.get(
+      `https://karsalab.netlabdte.com/projects/get-lhp/${projectId}`
+    );
+    return response.data;
+  } catch (error: any) {
+    console.error(
+      `Error fetching project details for ID ${projectId}:`,
+      error.message
+    );
+    throw new Error(error.message);
   }
 };

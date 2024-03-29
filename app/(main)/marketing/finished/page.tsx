@@ -6,7 +6,7 @@ export default async function Home() {
 
   return (
     <div className="flex justify-between w-full h-screen">
-      <DataTable datas={response ? response.result : []} />
+      <DataTable datas={response ? response.result : []} status="FINISHED"/>
     </div>
   );
 }

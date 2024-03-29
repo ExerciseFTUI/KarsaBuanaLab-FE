@@ -65,7 +65,7 @@ const Sampling: FC<SamplingProps> = ({
     defaultValues: {
       sampling: sampleName,
       regulation: regulation,
-      parameters: [""],
+      parameters: parameters,
     },
   });
 
@@ -116,18 +116,22 @@ const Sampling: FC<SamplingProps> = ({
         form={form}
         onSubmit={onSubmit}
         baseSamples={baseSamples}
+        change={false}
       />
       <Collapsible open={isOpen} onOpenChange={setIsOpen}>
         <CollapsibleTrigger asChild>
           <Button
             className={cn(
-              "flex w-full justify-between p-6 bg-moss_green hover:bg-dark_green",
+              "flex w-full justify-between p-6 flex-row bg-moss_green hover:bg-dark_green",
               isOpen && "rounded-b-none"
             )}
           >
             <span className="text-white font-bold">{sampleName}</span>
-            {!isOpen && <CaretDownIcon className="h-6 w-6" />}
-            {isOpen && <CaretUpIcon className="h-6 w-6" />}
+            <div className=" flex flex-row">
+              
+              {!isOpen && <CaretDownIcon className="h-6 w-6" />}
+              {isOpen && <CaretUpIcon className="h-6 w-6" />}
+            </div>
           </Button>
         </CollapsibleTrigger>
         <CollapsibleContent className="flex rounded-b-md flex-col dark:bg-neutral-900 shadow-lg ">

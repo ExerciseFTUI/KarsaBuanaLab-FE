@@ -1,11 +1,48 @@
 "use client";
-import { FC, useEffect } from "react";
+import { FC, useState } from "react";
 import { useRouter } from "next/navigation";
 import { AiOutlineFile } from "react-icons/ai";
 import { BsArrowRight } from "react-icons/bs";
 import { SelectSeparator } from "@/components/ui/select";
-import { changeToFinished } from "@/lib/actions/pplhp.actions";
-import { changeToReview } from "@/lib/actions/pplhp.actions";
+
+import { DateRange } from "react-day-picker";
+import {
+  changeToReview,
+  changeToFinished,
+  setDeadlineLHP,
+} from "@/lib/actions/pplhp.actions";
+
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { Button } from "../ui/button";
+import { cn } from "@/lib/utils";
+import {
+  RowSelectionState,
+  getCoreRowModel,
+  useReactTable,
+} from "@tanstack/react-table";
+import { Project } from "@/lib/models/project.model";
+import LoadingScreen from "@/components/LoadingScreen";
+import { useToast } from "@/components/ui/use-toast";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+
+import { Calendar } from "@/components/ui/calendar";
+import { format } from "date-fns"; // Ensure you have date-fns installed and imported
+import { CalendarIcon } from "lucide-react"; // Ensure you have lucide-react installed and imported
+import React from "react";
 
 interface LaporanHasilPemeriksaantLink {
   url: string;
@@ -25,29 +62,58 @@ const LaporanHasilPemeriksaan: FC<LaporanHasilPemeriksaanProps> = ({
   color,
   link,
   np,
-  context, // Receive the new prop
+  context,
 }) => {
   const router = useRouter();
 
+  // Initialize date state with undefined values
+  const [date, setDate] = useState<DateRange | undefined>();
+
   const handleSubmitDraft = async () => {
     try {
-      let message;
+      // Check if both from and to dates are selected
+      if (!date?.from || !date?.to) {
+        console.error("Both from and to dates must be selected.");
+        return;
+      }
+
+      // Format the from and to dates into separate strings
+      const formattedFrom = format(date.from, "dd-LL-y");
+      const formattedTo = format(date.to, "dd-LL-y");
+
+      // Prepare the deadline object with formatted dates
+      const deadline = {
+        from: formattedFrom,
+        to: formattedTo,
+      };
+
+      console.log(deadline);
+
+      // Call setDeadlineLHP with the project ID (np) and the deadline string
+      const response = await setDeadlineLHP(np, deadline);
+
+      // Handle the response as needed
+      console.log(response);
+      console.log("Deadline set successfully.");
+
       if (context === "lhpdraft") {
-        message = await changeToReview(np);
+        // Assuming changeToReview is the function to change the project status to "Change to Review"
+        const message = await changeToReview(np);
+        console.log(message);
         router.push(`/pplhp/lhpdraft`);
       } else if (context === "finalreview") {
-        message = await changeToFinished(np);
+        // Assuming changeToFinished is the function to change the project status to "Change to Finish"
+        const message = await changeToFinished(np);
+        console.log(message);
         router.push(`/pplhp/finalreview`);
       }
-      console.log(message);
     } catch (error) {
       console.error("Failed to submit draft:", error);
     }
   };
 
   // Determine the button text based on the context
-  const buttonText =
-    context === "lhpdraft" ? "SUBMIT FOR FINAL REVIEW" : "FINISH REVIEW";
+  const buttonText = context === "lhpdraft" ? "SUBMIT TO LAB" : "FINISH REVIEW";
 
   return (
     <div className="h-screen px-16 space-y-14">
@@ -77,9 +143,55 @@ const LaporanHasilPemeriksaan: FC<LaporanHasilPemeriksaanProps> = ({
         </div>
       </div>
       <div>
+        <h2
+          className={`text-${color} text-lg text-semibold text-center md:text-left`}
+        >
+          Deadline LHP
+        </h2>
+        <Popover>
+          <PopoverTrigger asChild>
+            <Button
+              variant={"outline"}
+              className={cn(
+                "w-full justify-start text-left text-base font-medium mt-3",
+                `border-${color} border-2 py-6`,
+                `hover:bg-gray-100`,
+                !date && "text-muted-foreground",
+                `text-${color} hover:text-${color}`
+              )}
+            >
+              <CalendarIcon className={`mr-2 h-6 w-6 text-${color}`} />
+              {date?.from ? (
+                date.to ? (
+                  <>
+                    {format(date.from, "LLL dd, y")} -{" "}
+                    {format(date.to, "LLL dd, y")}
+                  </>
+                ) : (
+                  format(date.from, "LLL dd, y")
+                )
+              ) : (
+                <span className={`text-${color}`}>Pilih tanggal</span>
+              )}
+            </Button>
+          </PopoverTrigger>
+
+          <PopoverContent className="w-auto p-0">
+            <Calendar
+              initialFocus
+              mode="range"
+              defaultMonth={date?.from}
+              selected={date}
+              onSelect={setDate}
+              numberOfMonths={1}
+            />
+          </PopoverContent>
+        </Popover>
+      </div>
+      <div>
         <button
           onClick={handleSubmitDraft}
-          className={`w-full bg-${color} text-lg text-ghost_white p-3 rounded-2xl`}
+          className={`w-full bg-${color} text-lg text-ghost_white p-3 rounded-2xl mb-5`}
         >
           {buttonText}
         </button>

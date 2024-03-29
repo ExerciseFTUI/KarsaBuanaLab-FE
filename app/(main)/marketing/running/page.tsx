@@ -7,11 +7,11 @@ import { redirect } from "next/navigation";
 
 export default async function Home() {
   const response = await getbyStatus("running");
-
+  
   return (
     <div className="flex justify-between w-full h-screen">
       {/* <RunningTable projects={projects.result} /> */}
-      <DataTable datas={response ? response.result : []} />
+      <DataTable datas={response ? response.result : []}  status="RUNNING"/>
     </div>
   );
 }

@@ -1,5 +1,5 @@
 "use client";
-import React, { FC, useState } from "react";
+import React, { FC, useState, useEffect } from "react";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -37,6 +37,9 @@ interface ProjectFormProps {
   onSubmit(values: z.infer<typeof createProjectValidation>): Promise<void>;
   status?: string;
   note?: string;
+  updatePayment?(
+    values: z.infer<typeof createProjectValidation>
+  ): Promise<void>;
 }
 
 const ProjectForm: FC<ProjectFormProps> = ({
@@ -44,15 +47,16 @@ const ProjectForm: FC<ProjectFormProps> = ({
   onSubmit,
   status,
   note,
+  updatePayment,
 }) => {
   const router = useRouter();
   const query = useSearchParams();
   const { toast } = useToast();
-  const [paidStatus, setPaidStatus] = useState(form.watch('isPaid'))
-  
+  const [paidStatus, setPaidStatus] = useState(form.getValues("is_paid"));
 
   return (
-    <Card className="w-[450px] max-sm:w-[400px] max-h-screen md:max-h-[520px] overflow-auto custom-scrollbar ">
+    // w-[450px] max-sm:w-[400px] md:max-h-[33rem]
+    <Card className=" overflow-y-auto md:max-h-[80vh] custom-scrollbar w-2/5">
       <CardHeader>
         <CardTitle className="text-base font-bold ">
           Project Information
@@ -60,21 +64,36 @@ const ProjectForm: FC<ProjectFormProps> = ({
         {status?.toLowerCase() === "cancelled" && (
           <div className="text-sm">
             <h1>
-              Status  :{" "}
+              Status :{" "}
               <span className="text-red-600 font-semibold">Cancelled</span>
-            </h1> 
+            </h1>
           </div>
         )}
         {status?.toLocaleLowerCase() === "running" && (
           <div>
             <h1 className="text-sm mb-3">
               Status Pembayaran:{" "}
-              <span className="font-bold">{paidStatus ? "Lunas" : "Belum lunas"}</span>
+              <span className="font-bold">
+                {paidStatus ? "Lunas" : "Belum lunas"}
+              </span>
             </h1>
             <div className=" flex flex-row w-full h-fit justify-center">
-              <button 
-              onClick={()=>{setPaidStatus(!paidStatus)}}
-              className={` ${paidStatus ? "bg-red-400 hover:bg-red-700" : "bg-moss_green hover:bg-dark_green"} h-2/3 text-white py-2 px-5 rounded-lg `}>
+              <button
+                onClick={async () => {
+                  setPaidStatus(!paidStatus);
+                  form.setValue("is_paid", !paidStatus, {
+                    shouldValidate: true,
+                  });
+                  if (updatePayment) {
+                    await updatePayment(form.getValues()); // Pass the latest form values to updatePayment
+                  }
+                }}
+                className={` ${
+                  paidStatus
+                    ? "bg-red-400 hover:bg-red-700"
+                    : "bg-moss_green hover:bg-dark_green"
+                } h-2/3 text-white py-2 px-5 rounded-lg `}
+              >
                 {paidStatus ? "Batalkan Pelunasan" : "Verifikasi Pelunasan"}
               </button>
             </div>
@@ -153,67 +172,71 @@ const ProjectForm: FC<ProjectFormProps> = ({
             {status?.toLocaleLowerCase() !== "create" && (
               <div>
                 <FormField
-                control={form.control}
-                name="numPenawaran"
-                render={({ field }) => (
-                  <FormItem>
-                        <FormLabel>Nomor Penawaran</FormLabel>
-                        <FormControl>
-                            <Input
-                            disabled={true}
-                            type="string"
-                            className=""
-                            placeholder=""
-                            {...field}
-                            />
-                        </FormControl>
-    
-                        <FormMessage />
-                        </FormItem>
-                    )}
-                    />
-                    <FormField
-                    control={form.control}
-                    name="numRevisi"
-                    render={({ field }) => (
-                        <FormItem>
-                        <FormLabel>Nomor Revisi</FormLabel>
-                        <FormControl>
-                            <Input
-                            disabled={true}
-                            type="number"
-                            className=""
-                            placeholder=""
-                            {...field}
-                            />
-                        </FormControl>
-    
-                        <FormMessage />
-                        </FormItem>
-                    )}
-                    />
-                <FormField
-                    control={form.control}
-                    name="valuasiProject"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Valuasi Project</FormLabel>
-                        <FormControl>
-                            <Input
-                            disabled={status?.toLocaleLowerCase() === "finished" ? true : false}
-                            type="text"
-                            className=""
-                            placeholder=""
-                            {...field}
-                            />
-                        </FormControl>
-    
-                        <FormMessage />
-                        </FormItem>
-                    )}
-                    />
-                  </div>
+                  control={form.control}
+                  name="numPenawaran"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Nomor Penawaran</FormLabel>
+                      <FormControl>
+                        <Input
+                          disabled={true}
+                          type="string"
+                          className=""
+                          placeholder=""
+                          {...field}
+                        />
+                      </FormControl>
+
+                      <FormMessage />
+                    </FormItem>
                   )}
+                />
+                <FormField
+                  control={form.control}
+                  name="numRevisi"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Nomor Revisi</FormLabel>
+                      <FormControl>
+                        <Input
+                          disabled={true}
+                          type="number"
+                          className=""
+                          placeholder=""
+                          {...field}
+                        />
+                      </FormControl>
+
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="valuasiProject"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Valuasi Project</FormLabel>
+                      <FormControl>
+                        <Input
+                          disabled={
+                            status?.toLocaleLowerCase() === "finished"
+                              ? true
+                              : false
+                          }
+                          type="text"
+                          className=""
+                          placeholder=""
+                          {...field}
+                        />
+                      </FormControl>
+
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+            )}
             <FormField
               control={form.control}
               name="alamatKantor"
