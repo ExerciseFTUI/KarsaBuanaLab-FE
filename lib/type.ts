@@ -245,3 +245,22 @@ export type AnswerType = {
   questionId: string;
   value: string;
 };
+
+export type InventoryType = {
+  _id: string;
+  tools_name: string;
+  description: string;
+  last_maintenance: Date;
+  maintenance_history: Date[];
+  maintenance_every: string;
+  file_id: string;
+  assigned_user: string;
+  category: string;
+};
+
+export type InventoryPICType = {
+  _id: string;
+  name: string;
+  role: string;
+  phone: string;
+};

@@ -12,7 +12,14 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react";
+import {
+  ArrowUpDown,
+  ChevronDown,
+  Mail,
+  MoreHorizontal,
+  Plus,
+  PlusCircleIcon,
+} from "lucide-react";
 import { useRouter } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
@@ -41,7 +48,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "../ui/select";
+} from "@/components/ui/select";
 import {
   ChevronLeftIcon,
   ChevronRightIcon,
@@ -49,26 +56,26 @@ import {
   DoubleArrowRightIcon,
 } from "@radix-ui/react-icons";
 import {
-  ProjectAdminPplhpType,
+  InventoryType,
   ProjectMarketingType,
   ProjectType,
   UserType,
 } from "@/lib/type";
 import { Project } from "@/lib/models/project.model";
-import { adminColumns, pplhpColumns } from "../columns";
-import { columnsCancelled } from "../columns";
 import Link from "next/link";
+import { inventoryColumns } from "./InventoryColumn";
+import { AiFillFolderAdd } from "react-icons/ai";
 
-// interface PPLHPDataTableProps<TData, TValue> {
+// interface InventoryDataTableProps<TData, TValue> {
 //   columns: ColumnDef<TData, TValue>[];
 //   datas?: TData[];
 // }
 
-interface PPLHPDataTableProps {
-  datas: ProjectAdminPplhpType[];
+interface InventoryDataTableProps {
+  datas: InventoryType[];
 }
 
-export function PPLHPDataTable({ datas }: PPLHPDataTableProps) {
+export function InventoryDataTable({ datas }: InventoryDataTableProps) {
   const router = useRouter();
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -93,7 +100,7 @@ export function PPLHPDataTable({ datas }: PPLHPDataTableProps) {
 
   const table = useReactTable({
     data: datas,
-    columns: pplhpColumns,
+    columns: inventoryColumns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
@@ -117,12 +124,24 @@ export function PPLHPDataTable({ datas }: PPLHPDataTableProps) {
         {/* Seach Input */}
         <Input
           placeholder="Filter By Name"
-          value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
+          value={
+            (table.getColumn("tools_name")?.getFilterValue() as string) ?? ""
+          }
           onChange={(event) =>
-            table.getColumn("name")?.setFilterValue(event.target.value)
+            table.getColumn("tools_name")?.setFilterValue(event.target.value)
           }
           className="max-w-sm border-pastel_moss_green rounded-full focus-visible:ring-0 bg-pastel_moss_green pl-5 placeholder:text-moss_green"
         />
+
+        <Link className="ml-8" href="/admin/inventory/create">
+          <Button
+            className="rounded-full bg-light_green hover:bg-dark_green hover:text-white text-dark_green "
+            variant={"outline"}
+          >
+            <Plus className="mr-2 h-4 w-4" />
+            <p className="text-sm">Create New Tool</p>
+          </Button>
+        </Link>
 
         {/* Column Visibility */}
         <DropdownMenu>
@@ -202,7 +221,7 @@ export function PPLHPDataTable({ datas }: PPLHPDataTableProps) {
             ) : (
               <TableRow>
                 <TableCell
-                  colSpan={pplhpColumns.length}
+                  colSpan={inventoryColumns.length}
                   className="h-24 text-center"
                 >
                   No results.
