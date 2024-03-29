@@ -48,7 +48,12 @@ import {
   DoubleArrowLeftIcon,
   DoubleArrowRightIcon,
 } from "@radix-ui/react-icons";
-import { ProjectMarketingType, ProjectType, UserType } from "@/lib/type";
+import {
+  ProjectAdminPplhpType,
+  ProjectMarketingType,
+  ProjectType,
+  UserType,
+} from "@/lib/type";
 import { Project } from "@/lib/models/project.model";
 import { adminColumns, pplhpColumns } from "../columns";
 import { columnsCancelled } from "../columns";
@@ -60,7 +65,7 @@ import Link from "next/link";
 // }
 
 interface PPLHPDataTableProps {
-  datas: ProjectMarketingType[];
+  datas: ProjectAdminPplhpType[];
 }
 
 export function PPLHPDataTable({ datas }: PPLHPDataTableProps) {

@@ -60,12 +60,12 @@ const TableRegulation: React.FC<TableRegulationProps> = ({
   // DONE
   const handleEditSubmit = async (id: number) => {
     // Log the edited value
-    console.log("ID : ", id);
-    console.log("New regulation name:", editedValue);
+    // console.log("ID : ", id);
+    // console.log("New regulation name:", editedValue);
 
     setEditingId(-1);
 
-    console.log(regulations);
+    // console.log(regulations);
 
     //Map all the regulation in specific sample
     const newRegulation = regulations.map((regulation) => {
@@ -82,7 +82,7 @@ const TableRegulation: React.FC<TableRegulationProps> = ({
       };
     });
 
-    console.log(newRegulation);
+    // console.log(newRegulation);
 
     const body = {
       regulation: newRegulation,

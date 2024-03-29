@@ -35,7 +35,7 @@ export const options: NextAuthOptions = {
           }
         )
 
-        console.log(response.data)
+        // console.log(response.data)
 
         if (response.data.result) {
           const user2 = {

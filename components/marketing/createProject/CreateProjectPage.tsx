@@ -40,7 +40,7 @@ const getProject = async () => {
     const response = await axios.get(
       `https://karsalab.netlabdte.com//marketing/getSample`
     );
-    console.log(response.data);
+    // console.log(response.data);
   } catch (error: any) {
     console.error(`Error get project :`, error.message);
   }
@@ -87,7 +87,7 @@ const CreateProjectPage: FC<CreateProjectProps> = ({ baseSamples }) => {
 
   //Add to the samples array
   const onSubmitSample: SubmitHandler<FieldValues> = async (data) => {
-    console.log(data.parameters);
+    // console.log(data.parameters);
 
     //Handle Missing Data
     if (
@@ -238,7 +238,7 @@ const CreateProjectPage: FC<CreateProjectProps> = ({ baseSamples }) => {
   const [uploadedFiles, setUploadedFiles] = useState([]);
 
   useEffect(() => {
-    console.log(uploadedFiles);
+    // console.log(uploadedFiles);
   }, [uploadedFiles]);
 
   //=============================== End Document Section

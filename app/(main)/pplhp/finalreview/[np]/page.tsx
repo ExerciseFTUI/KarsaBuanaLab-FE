@@ -18,8 +18,8 @@ const LaporanHasilPemeriksaanData = {
 
 export default async function Home({ params }: { params: { np: string } }) {
   const linkData = await getLinkFiles(params.np);
-  console.log(linkData);
-  console.log(params.np);
+  // console.log(linkData);
+  // console.log(params.np);
   revalidatePath("/pplhp/finalreview");
   return (
     <>

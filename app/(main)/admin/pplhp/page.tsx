@@ -1,4 +1,5 @@
 import { PPLHPDataTable } from "@/components/auth/PplhpDataTable";
+import { getProjectAdminPplhp } from "@/lib/actions/adminPplhp.action";
 import { getbyStatus } from "@/lib/actions/marketing.actions";
 
 export const metadata = {
@@ -7,11 +8,13 @@ export const metadata = {
 };
 
 export default async function PPLHPPage() {
-  const response = await getbyStatus("running");
+  const response = await getProjectAdminPplhp();
+
+  // console.log(response);
 
   return (
     <div className="">
-      <PPLHPDataTable datas={response ? response.result : []} />
+      <PPLHPDataTable datas={response ? response : []} />
     </div>
   );
 }

@@ -43,7 +43,7 @@ export const getProjectByDivision = async (
 
     // console.log(response)
 
-    return response.data as BaseApiResponse<[Project]>
+    return response.data.projects as BaseApiResponse<[Project]>
   } catch (error: any) {
     console.error("Error getting sample", error.message)
     return null as unknown as BaseApiResponse<[Project]>

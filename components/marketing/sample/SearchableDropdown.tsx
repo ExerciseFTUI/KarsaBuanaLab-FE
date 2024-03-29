@@ -94,8 +94,8 @@ const SearchableDropdown: React.FC<SearchableDropdownProps> = ({
 
   // TODO: DIT TOLONG INTEGRASI KE API INI BUAT EDIT SAMPLE NAME
   const handleEditSubmit = async (id: string) => {
-    console.log("New value:", editedValue);
-    console.log("ID: ", id);
+    // console.log("New value:", editedValue);
+    // console.log("ID: ", id);
 
     // Make an API call to update data.sample_name with editedValue
     // After successful update, reset editing state

@@ -37,7 +37,7 @@ const Document: FC<DocumentProps> = ({ data, color }) => {
 
   const typesToGroup = ['Result', 'Preparation'];
   const groupedData = groupDataByType(data, typesToGroup);
-  console.log(groupedData)
+  // console.log(groupedData)
 
   return (
     <div className="space-y-14">

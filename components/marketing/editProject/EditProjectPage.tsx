@@ -295,7 +295,7 @@ export default function EditProjectPage({
         desc_failed: reason,
         status: "CANCELLED",
       };
-      console.log("desc failed : ", body);
+      // console.log("desc failed : ", body);
 
       //Connect to API
       const responseInfo = await updateProjectInfo(body);
@@ -349,7 +349,7 @@ export default function EditProjectPage({
         return;
       }
 
-      console.log("Success updated");
+      // console.log("Success updated");
     } catch (error: any) {
       const errorMsg = error?.response?.data?.message || error;
       toast({
@@ -376,7 +376,7 @@ export default function EditProjectPage({
 
   const handleSubmitDocs = () => {
     // Log the uploaded files to the console
-    console.log("Uploaded Files:", uploadedFiles);
+    // console.log("Uploaded Files:", uploadedFiles);
 
     // TODO: Implement the logic to submit uploadedFiles to the server
     if (uploadedFiles.length > 0) {
