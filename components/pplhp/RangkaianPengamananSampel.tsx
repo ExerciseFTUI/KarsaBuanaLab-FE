@@ -29,7 +29,7 @@ const RangkaianPengamananSampel: FC<RangkaianPengamananSampelProps> = ({
   const handleSubmitDraft = async () => {
     try {
       const message = await changeToDraft(params.np);
-      console.log(message); // Log the message here
+      // console.log(message); // Log the message here
       router.push(`/pplhp/lhpdraft/`);
     } catch (error) {
       console.error("Failed to submit draft:", error);

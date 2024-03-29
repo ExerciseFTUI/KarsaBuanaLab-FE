@@ -75,7 +75,7 @@ const ClientCard: FC<ClientCardProps> = ({ resiNumber, stage, clientData }) => {
 
   const handleRefreshClick = () => {
     setRefreshed(true);
-    console.log("refreshed");
+    // console.log("refreshed");
     fetchData();
   };
   const handleStepClick = (step: number) => {

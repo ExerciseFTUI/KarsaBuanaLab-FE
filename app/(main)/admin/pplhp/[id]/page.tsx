@@ -20,7 +20,7 @@ const tempProject: ProjectAdminPplhpType = {
 const PPLHPDetailPage = async ({ params }: { params: { id: string } }) => {
   const project = await getSingleProjectAdminPplhp(params.id);
 
-  console.log(project);
+  // console.log(project);
 
   return (
     <>

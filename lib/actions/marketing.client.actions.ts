@@ -84,7 +84,7 @@ export const getProjectClient = async (projectId: string) => {
       response.data.valuasi_proyek = valuasiProyekAsString;
     }
 
-    console.log("CORS SUKSES");
+    // console.log("CORS SUKSES");
 
     return response.data;
   } catch (error: any) {
@@ -107,7 +107,7 @@ export const updateProjectFile = async (id: string, files: any) => {
     // throw new Error("Error update projectFile :");
     //Call API
 
-    console.log(id);
+    // console.log(id);
 
     const response = await axios.put(
       `${apiBaseUrl}/projects/addFiles`,
