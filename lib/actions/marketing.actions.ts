@@ -51,10 +51,12 @@ interface DashboardResult {
 export const editBaseSample = async (body: any, id: string) => {
   try {
 
+    console.log("body sample", body);
     const response = await axios.put(
       `${apiBaseUrl}/base-sample/editBaseSample/${id}`,
       body
     );
+    
 
     return response.data.result;
   } catch (error: any) {

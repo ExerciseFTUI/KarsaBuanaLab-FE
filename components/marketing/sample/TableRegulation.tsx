@@ -43,8 +43,9 @@ const TableRegulation: React.FC<TableRegulationProps> = ({
   const [regulationName, setRegulationName] = useState("");
 
   const sampleData = baseSample.find(
-    (s) => s.sample_name.toLowerCase() === sample.replace(/ /g, "_")
+    (s) => s.sample_name.toLowerCase() === sample
   );
+  
   const regulations = sampleData ? sampleData.regulation : [];
 
   const handleEditClick = (id: number, regulation_name: string) => {
