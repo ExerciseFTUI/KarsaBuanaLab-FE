@@ -50,7 +50,6 @@ interface DashboardResult {
 //=======================Base Sample Section ========================
 export const editBaseSample = async (body: any, id: string) => {
   try {
-
     const response = await axios.put(
       `${apiBaseUrl}/base-sample/editBaseSample/${id}`,
       body
@@ -166,7 +165,7 @@ export const createProjectJson = async (body: any) => {
   } catch (error: any) {
     console.error(error.response?.data?.message);
     console.error("Error creating project:", error.message);
-    throw new error("Error creating project:", error.message);
+    // throw new Error("Error creating project:", error.message);
     // return null;
   }
 };
@@ -231,8 +230,9 @@ export const getSample = async (): Promise<BaseApiResponse<[BaseSample]>> => {
   }
 };
 
-
-export const getDashboard = async () : Promise<BaseApiResponse<DashboardResult>> => {
+export const getDashboard = async (): Promise<
+  BaseApiResponse<DashboardResult>
+> => {
   try {
     const response = await axios.get(`${apiBaseUrl}/marketing/dashboard`);
 

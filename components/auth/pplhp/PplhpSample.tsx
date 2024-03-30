@@ -1,7 +1,10 @@
 import { FC } from "react";
 import { AiOutlineArrowRight, AiOutlineFile } from "react-icons/ai";
+import { SamplingPplhp } from "./PplhpType";
 
-interface PplhpSampleProps {}
+interface PplhpSampleProps {
+  samples: SamplingPplhp[];
+}
 
 const data = [
   {
@@ -46,18 +49,18 @@ const data = [
   },
 ];
 
-const PplhpSample: FC<PplhpSampleProps> = () => {
+const PplhpSample: FC<PplhpSampleProps> = ({ samples }) => {
   return (
     <div className="w-full">
       <div className={`w-full text-light_brown space-y-6 px-10`}>
         <h2 className="text-xl text-center md:text-left">Samples</h2>
         <div className="space-y-2">
-          {data
-            ? data.map((item) => (
+          {samples.length > 0
+            ? samples.map((item) => (
                 <a
-                  key={item.name}
+                  key={item.fileId}
                   className={`grid grid-rows-12 items-center bg-white text-dark_brown px-3 md:px-5 p-2 rounded-xl max-w-3xl`}
-                  href={item.url}
+                  href={item.fileId} //TODO: Change to actual URL
                   target="_blank"
                 >
                   <div
@@ -66,14 +69,14 @@ const PplhpSample: FC<PplhpSampleProps> = () => {
                     <AiOutlineFile className="text-2xl text-ghost_white" />
                   </div>
                   <p className="col-start-2 col-span-6 mx-5 md:mx-0 text-sm md:text-base">
-                    {item.name}
+                    {item.sample_name}
                   </p>
                   <div className="col-start-8">
                     <AiOutlineArrowRight className="text-4xl" />
                   </div>
                 </a>
               ))
-            : "Please refresh the page"}
+            : "Sample not found"}
         </div>
       </div>
     </div>

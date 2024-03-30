@@ -34,17 +34,17 @@ import {
   updateProjectFile,
 } from "@/lib/actions/marketing.client.actions";
 
-const getProject = async () => {
-  //Add try catch
-  try {
-    const response = await axios.get(
-      `https://karsalab.netlabdte.com//marketing/getSample`
-    );
-    console.log(response.data);
-  } catch (error: any) {
-    console.error(`Error get project :`, error.message);
-  }
-};
+// const getProject = async () => {
+//   //Add try catch
+//   try {
+//     const response = await axios.get(
+//       `https://karsalab.netlabdte.com//marketing/getSample`
+//     );
+//     console.log(response.data);
+//   } catch (error: any) {
+//     console.error(`Error get project :`, error.message);
+//   }
+// };
 
 interface CreateProjectProps {
   baseSamples: BaseSample[];
@@ -77,10 +77,10 @@ const CreateProjectPage: FC<CreateProjectProps> = ({ baseSamples }) => {
     name: "samples",
   });
 
-  useEffect(() => {
-    // getUser();
-    getProjectClient("12");
-  }, []);
+  // useEffect(() => {
+  //   getUser();
+  //   getProjectClient("12");
+  // }, []);
 
   //All the samples get save in here
   const { fields: samples, append, remove } = arrayField;
@@ -153,6 +153,8 @@ const CreateProjectPage: FC<CreateProjectProps> = ({ baseSamples }) => {
     try {
       setIsLoading(true); // Set loading to true before making API call
 
+      console.log(samples);
+
       if (samples.length > 0) {
         const sampling_list = samples.map((sample) => {
           return {
@@ -174,6 +176,8 @@ const CreateProjectPage: FC<CreateProjectProps> = ({ baseSamples }) => {
           contact_person: values.contactPerson,
           sampling_list: sampling_list,
         };
+
+        console.log(body);
 
         const response = await createProjectJson(body);
 
@@ -237,16 +241,16 @@ const CreateProjectPage: FC<CreateProjectProps> = ({ baseSamples }) => {
 
   const [uploadedFiles, setUploadedFiles] = useState([]);
 
-  useEffect(() => {
-    console.log(uploadedFiles);
-  }, [uploadedFiles]);
+  // useEffect(() => {
+  //   console.log(uploadedFiles);
+  // }, [uploadedFiles]);
 
   //=============================== End Document Section
 
   return (
     <div className="flex gap-6 max-md:flex-col max-md:items-center justify-evenly">
       {isLoading && <LoadingScreen />}
-      <ProjectForm form={form} onSubmit={onSubmitForm2} status="CREATE"/>
+      <ProjectForm form={form} onSubmit={onSubmitForm2} status="CREATE" />
       <Tabs
         defaultValue="sampling"
         // w-[40rem] max-sm:w-[420px]

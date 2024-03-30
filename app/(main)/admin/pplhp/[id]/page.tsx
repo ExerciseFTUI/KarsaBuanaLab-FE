@@ -1,14 +1,21 @@
 import { PplhpChecking } from "@/components/auth/pplhp/PplhpChecking";
 import PplhpTab from "@/components/auth/pplhp/PplhpTab";
+import { getPplhpDetail } from "@/lib/actions/admin.action";
 
 const PPLHPDetailPage = async ({ params }: { params: { id: string } }) => {
+  const tempParam = "65b75751c0bdd92b29e8154d";
+
+  const pplhp = await getPplhpDetail(tempParam);
+
+  console.log(pplhp);
+
   return (
     <>
       <main className="flex flex-col lg:flex-row gap-5 lg:gap-0 justify-between w-full">
         <div className="lg:w-2/5">
           {/* <FNPrintPage linkData={linkData ? linkData : []} /> */}
 
-          <PplhpTab />
+          <PplhpTab pplhp={pplhp} />
         </div>
 
         <div className="lg:w-3/5 py-24 lg:py-0">
@@ -23,7 +30,8 @@ const PPLHPDetailPage = async ({ params }: { params: { id: string } }) => {
             <PplhpChecking
               title="Pengisian LHP"
               color="dark_brown"
-              id={params.id}
+              lhp={pplhp.lhp}
+              id={tempParam}
             />
           </div>
         </div>
