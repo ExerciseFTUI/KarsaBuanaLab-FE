@@ -50,6 +50,9 @@ const Parameter: React.FC<TableParameterProps> = ({
   const sampleOrReg = bySample ? allReg : fixReg;
   const titleName = bySample ? allReg?.sample_name : fixReg?.regulation_name;
   const paramMap = bySample ? allReg?.param : fixReg?.default_param;
+  bySample ? console.log("paramMap Sample : ", paramMap) : console.log("paramMap Reg : ", paramMap);
+  
+  
 
   let currentSample: BaseSample | undefined = allReg;
   let currentRegulation: Regulation | undefined = fixReg;
@@ -69,7 +72,7 @@ const Parameter: React.FC<TableParameterProps> = ({
 
     if (bySample && currentSample?.param) {
       let newParam = currentSample.param.filter(
-        (param) => param !== editingParam
+        (param) => param.param !== editingParam
       );
       // console.log(newParam);
 
@@ -152,8 +155,8 @@ const Parameter: React.FC<TableParameterProps> = ({
     if (bySample && currentSample?.param) {
       console.log("Sample : ", currentSample);
 
-      let newParam = currentSample.param.filter((param) => param !== name);
-      newParam.push(editedValue);
+      let newParam = currentSample.param.filter((param) => param.param !== name);
+      newParam.push({ param: editedValue, method: [], unit: '', operator: '', baku_mutu: 0, _id: '' });
 
       const body = {
         param: newParam,
@@ -282,7 +285,7 @@ const Parameter: React.FC<TableParameterProps> = ({
                   <TableRow
                     // onClick={() => {setRegulation(regulationData._id); }}
                     className="hover:bg-light_green hover:cursor-pointer"
-                    key={param}
+                    key={typeof param === 'object' ? param.param : param}
                   >
                     <TableCell className="rounded-lg">
                       <div className=" flex flex-row items-center">
@@ -302,16 +305,16 @@ const Parameter: React.FC<TableParameterProps> = ({
                         ) : (
                           <Input
                             type="text"
-                            value={param} // Ensure that the value prop is always controlled by editedValue
+                            value={typeof param === 'object' ? param.param : param} // Ensure that the value prop is always controlled by editedValue
                             onChange={handleInputChange} // Add onChange handler to handle changes
-                            onClick={() => handleEditClick(param)}
+                            onClick={() => handleEditClick(typeof param === 'object' ? param.param : param)}
                             className="border-b border-gray-300 placeholder:text-slate-700 text-slate-700  font-medium focus:outline-none"
                           />
                         )}
                         <MdDelete
                           className="h-7 w-7 mx-2 text-red-500 hover:text-white hover:cursor-pointer  hover:bg-red-500 hover:rounded-md"
                           onClick={() => {
-                            setEditingParam(param);
+                            setEditingParam(typeof param === 'object' ? param.param : param);
                             setShowDeleteConfirmation(true);
                           }}
                         />
