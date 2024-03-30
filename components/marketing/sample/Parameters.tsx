@@ -143,14 +143,14 @@ const Parameter: React.FC<TableParameterProps> = ({
   // TODO : INI BUAT EDIT NAME PARAM DIT
   const handleEditSubmit = async (name: string) => {
     // Log the edited value
-    // console.log("name : ", name);
-    // console.log("New param name:", editedValue);
+    console.log("name : ", name);
+    console.log("New param name:", editedValue);
 
     setEditingParam("");
 
     //Update the param
     if (bySample && currentSample?.param) {
-      // console.log("Sample : ", currentSample);
+      console.log("Sample : ", currentSample);
 
       let newParam = currentSample.param.filter((param) => param !== name);
       newParam.push(editedValue);
@@ -178,7 +178,7 @@ const Parameter: React.FC<TableParameterProps> = ({
       return;
       //Update the default param
     } else {
-      // console.log("Regulation : ", currentRegulation);
+      console.log("Regulation : ", currentRegulation);
 
       let newDefaultParam = currentRegulation?.default_param.filter(
         (param) => param !== name

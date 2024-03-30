@@ -136,7 +136,8 @@ export const createProject = async (
     }
 
     const response = await axios.post(
-      `http://localhost:6666/projects/create`,
+      `${apiBaseUrl}/projects/create`,
+      // `http://localhost:6666/projects/create`,
       bodyFormData,
       {
         headers: { "Content-Type": "multipart/form-data" },
@@ -157,8 +158,8 @@ export const createProject = async (
 export const createProjectJson = async (body: any) => {
   try {
     const response = await axios.post(
-      // `${apiBaseUrl}/projects/createJSON`,
-      `http://localhost:6666/projects/createJSON`,
+      `${apiBaseUrl}/projects/createJSON`,
+      // `http://localhost:6666/projects/createJSON`,
       body
     );
     revalidatePath("/marketing/running");

@@ -126,7 +126,7 @@ const CreateRegulationParam: React.FC<createProps> = ({
     // console.log(baseSample?.param);
 
     const newParam = baseSample?.param || [];
-    newParam.push(editedValue);
+    newParam.push(editedValue as any);
 
     // console.log(newParam);
 
