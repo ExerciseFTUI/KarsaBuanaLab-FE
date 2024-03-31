@@ -117,7 +117,7 @@ const CreateRegulationParam: React.FC<createProps> = ({
 
   const handleAddParam = async () => {
     const newParam = baseSample?.param || []
-    newParam.push(editedValue)
+    newParam.push(editedValue as any)
 
     const body = {
       param: newParam,

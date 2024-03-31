@@ -50,6 +50,9 @@ const Parameter: React.FC<TableParameterProps> = ({
   const sampleOrReg = bySample ? allReg : fixReg
   const titleName = bySample ? allReg?.sample_name : fixReg?.regulation_name
   const paramMap = bySample ? allReg?.param : fixReg?.default_param
+  bySample
+    ? console.log("paramMap Sample : ", paramMap)
+    : console.log("paramMap Reg : ", paramMap)
 
   let currentSample: BaseSample | undefined = allReg
   let currentRegulation: Regulation | undefined = fixReg
@@ -65,10 +68,13 @@ const Parameter: React.FC<TableParameterProps> = ({
 
   // TODO : INI BUAT HAPUS PARAM DIT
   const handleCancelledProject = async () => {
+    // console.log("yang bakal dihapus : ", editingParam);
+
     if (bySample && currentSample?.param) {
       let newParam = currentSample.param.filter(
-        (param) => param !== editingParam
+        (param) => param.param !== editingParam
       )
+      // console.log(newParam);
 
       const body = {
         param: newParam,
@@ -140,11 +146,15 @@ const Parameter: React.FC<TableParameterProps> = ({
   // TODO : INI BUAT EDIT NAME PARAM DIT
   const handleEditSubmit = async (name: string) => {
     // Log the edited value
+    console.log("name : ", name)
+    console.log("New param name:", editedValue)
 
     setEditingParam("")
 
     //Update the param
     if (bySample && currentSample?.param) {
+      console.log("Sample : ", currentSample)
+
       let newParam = currentSample.param.filter((param) => param.param !== name)
       newParam.push({
         param: editedValue,
@@ -178,6 +188,8 @@ const Parameter: React.FC<TableParameterProps> = ({
       return
       //Update the default param
     } else {
+      console.log("Regulation : ", currentRegulation)
+
       let newDefaultParam = currentRegulation?.default_param.filter(
         (param) => param !== name
       )
