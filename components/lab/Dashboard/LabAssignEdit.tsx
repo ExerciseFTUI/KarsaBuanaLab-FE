@@ -95,7 +95,9 @@ export function LabAssignEdit({
       })
     }
 
-    router.replace(`/lab/dashboard/${project._id}`)
+    setOpen(false)
+
+    router.push(`/lab/dashboard/${project._id}`)
   }
 
   return (
@@ -111,7 +113,7 @@ export function LabAssignEdit({
         <DialogHeader>
           <DialogTitle>Edit Sample</DialogTitle>
           <DialogDescription>
-            Edit sample's deadline and assigned staffs.
+            Edit sample deadline and assigned staffs.
           </DialogDescription>
         </DialogHeader>
 

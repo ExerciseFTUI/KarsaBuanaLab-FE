@@ -88,6 +88,8 @@ export function LabAssignSelect({
       })
     }
 
+    setOpen(false)
+
     router.replace(`/lab/dashboard/${project._id}`)
   }
 
