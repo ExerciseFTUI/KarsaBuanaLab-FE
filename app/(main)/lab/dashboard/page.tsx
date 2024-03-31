@@ -1,16 +1,15 @@
-import LabDataTable from "@/components/lab/LabDataTable";
-import { getProjectLab } from "@/lib/actions/lab.action";
-import { getProject } from "@/lib/actions/pplhp.actions";
-import { getProjectByDivision } from "@/lib/actions/sampling.actions";
+import LabDataTable from "@/components/lab/LabDataTable"
+import { getLabProjects } from "@/lib/actions/lab.actions"
 
 export default async function Home() {
-  const res = await getProjectByDivision("Lab")
-
-  const result = res ? (res as any) : []  
+  const projects = await getLabProjects()
 
   return (
     <div className="flex justify-between w-full h-screen">
-      <LabDataTable data={result} link="dashboard/" />
+      <LabDataTable
+        data={projects.result ? projects.result : []}
+        link="dashboard/"
+      />
     </div>
-  );
+  )
 }

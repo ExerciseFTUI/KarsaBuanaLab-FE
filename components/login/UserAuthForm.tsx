@@ -1,19 +1,19 @@
-"use client";
+"use client"
 
-import * as React from "react";
+import * as React from "react"
 
-import { cn } from "@/lib/utils";
-import { Label } from "../ui/label";
-import { Input } from "../ui/input";
-import { ReloadIcon } from "@radix-ui/react-icons";
-import { Button } from "../ui/button";
-import { useToast } from "../ui/use-toast";
-import { useRouter, useSearchParams } from "next/navigation";
-import { loginValidation } from "@/lib/validations/LoginValidation";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { signIn } from "next-auth/react";
+import { cn } from "@/lib/utils"
+import { Label } from "../ui/label"
+import { Input } from "../ui/input"
+import { ReloadIcon } from "@radix-ui/react-icons"
+import { Button } from "../ui/button"
+import { useToast } from "../ui/use-toast"
+import { useRouter, useSearchParams } from "next/navigation"
+import { loginValidation } from "@/lib/validations/LoginValidation"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useForm } from "react-hook-form"
+import { z } from "zod"
+import { signIn } from "next-auth/react"
 
 import {
   Form,
@@ -23,15 +23,15 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
+} from "@/components/ui/form"
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
-  const router = useRouter();
-  const query = useSearchParams();
-  const { toast } = useToast();
-  const [isLoading, setIsLoading] = React.useState<boolean>(false);
+  const router = useRouter()
+  const query = useSearchParams()
+  const { toast } = useToast()
+  const [isLoading, setIsLoading] = React.useState<boolean>(false)
 
   // 1. Define your form.
   const form = useForm<z.infer<typeof loginValidation>>({
@@ -40,7 +40,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
       email: "",
       password: "",
     },
-  });
+  })
 
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof loginValidation>) {
@@ -48,44 +48,42 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
 
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
-    // console.log(result);
 
-    setIsLoading(true);
+    setIsLoading(true)
     //NextAuth SignIn
     signIn("credentials", {
       ...values,
       redirect: false, //Add redirect to data object
     })
       .then((callback) => {
-        // console.log(callback);
         if (callback?.error) {
           toast({
             description: "Invalid username or password",
             variant: "destructive",
             title: "Uh oh! Something went wrong.",
-          });
+          })
         }
         if (callback?.ok && !callback?.error) {
           toast({
             title: "Successfully logged in",
             description: "Welcome back",
-          });
-          const callbackUrl = query.get("callbackUrl");
-          router.push(callbackUrl || "/gateway");
+          })
+          const callbackUrl = query.get("callbackUrl")
+          router.push(callbackUrl || "/gateway")
         }
       })
       .finally(() => {
-        setIsLoading(false);
-      });
+        setIsLoading(false)
+      })
   }
 
   async function onSubmitDemo(event: React.SyntheticEvent) {
-    event.preventDefault();
-    setIsLoading(true);
+    event.preventDefault()
+    setIsLoading(true)
 
     setTimeout(() => {
-      setIsLoading(false);
-    }, 3000);
+      setIsLoading(false)
+    }, 3000)
   }
 
   return (
@@ -188,5 +186,5 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
         )}{" "}
       </Button>
     </div>
-  );
+  )
 }

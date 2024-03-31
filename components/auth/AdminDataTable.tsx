@@ -1,5 +1,5 @@
-"use client";
-import * as React from "react";
+"use client"
+import * as React from "react"
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -11,12 +11,12 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
-} from "@tanstack/react-table";
-import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react";
-import { useRouter } from "next/navigation";
+} from "@tanstack/react-table"
+import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react"
+import { useRouter } from "next/navigation"
 
-import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
+import { Button } from "@/components/ui/button"
+import { Checkbox } from "@/components/ui/checkbox"
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -25,8 +25,8 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Input } from "@/components/ui/input";
+} from "@/components/ui/dropdown-menu"
+import { Input } from "@/components/ui/input"
 import {
   Table,
   TableBody,
@@ -34,25 +34,25 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
+} from "@/components/ui/table"
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "../ui/select";
+} from "../ui/select"
 import {
   ChevronLeftIcon,
   ChevronRightIcon,
   DoubleArrowLeftIcon,
   DoubleArrowRightIcon,
-} from "@radix-ui/react-icons";
-import { ProjectMarketingType, ProjectType, UserType } from "@/lib/type";
-import { Project } from "@/lib/models/project.model";
-import { adminColumns, columns } from "../columns";
-import { columnsCancelled } from "../columns";
-import Link from "next/link";
+} from "@radix-ui/react-icons"
+import { ProjectMarketingType, ProjectType, UserType } from "@/lib/type"
+import { Project } from "@/lib/models/project.model"
+import { adminColumns, columns } from "../columns"
+import { columnsCancelled } from "../columns"
+import Link from "next/link"
 
 // interface AdminDataTableProps<TData, TValue> {
 //   columns: ColumnDef<TData, TValue>[];
@@ -60,31 +60,29 @@ import Link from "next/link";
 // }
 
 interface AdminDataTableProps {
-  datas: UserType[];
+  datas: UserType[]
 }
 
 export function AdminDataTable({ datas }: AdminDataTableProps) {
-  const router = useRouter();
-  const [sorting, setSorting] = React.useState<SortingState>([]);
+  const router = useRouter()
+  const [sorting, setSorting] = React.useState<SortingState>([])
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
-  );
+  )
   const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({});
-  const [rowSelection, setRowSelection] = React.useState({});
+    React.useState<VisibilityState>({})
+  const [rowSelection, setRowSelection] = React.useState({})
 
-  const [data, setData] = React.useState<any>([]);
+  const [data, setData] = React.useState<any>([])
 
   React.useEffect(() => {
     // if datas is not empty then push the data to the data array
     if (datas && datas.length > 0) {
-      setData(datas);
+      setData(datas)
     } else {
-      setData([]);
+      setData([])
     }
-  }, []);
-
-  // console.log(data);
+  }, [])
 
   const table = useReactTable({
     data: datas,
@@ -103,7 +101,7 @@ export function AdminDataTable({ datas }: AdminDataTableProps) {
       columnVisibility,
       rowSelection,
     },
-  });
+  })
 
   return (
     <div className="w-full">
@@ -146,7 +144,7 @@ export function AdminDataTable({ datas }: AdminDataTableProps) {
                   >
                     {column.id}
                   </DropdownMenuCheckboxItem>
-                );
+                )
               })}
           </DropdownMenuContent>
         </DropdownMenu>
@@ -168,7 +166,7 @@ export function AdminDataTable({ datas }: AdminDataTableProps) {
                             header.getContext()
                           )}
                     </TableHead>
-                  );
+                  )
                 })}
               </TableRow>
             ))}
@@ -220,7 +218,7 @@ export function AdminDataTable({ datas }: AdminDataTableProps) {
           <Select
             value={`${table.getState().pagination.pageSize}`}
             onValueChange={(value) => {
-              table.setPageSize(Number(value));
+              table.setPageSize(Number(value))
             }}
           >
             <SelectTrigger className="h-8 w-[70px] text-moss_green border-pastel_moss_green border-2 shadow-none focus:ring-0">
@@ -285,5 +283,5 @@ export function AdminDataTable({ datas }: AdminDataTableProps) {
         </div>
       </div>
     </div>
-  );
+  )
 }

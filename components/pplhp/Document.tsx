@@ -1,6 +1,6 @@
-"use client";
+"use client"
 
-import { useState, FC } from "react";
+import { useState, FC } from "react"
 
 import {
   Select,
@@ -10,34 +10,33 @@ import {
   SelectLabel,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { RiShareBoxLine } from "react-icons/ri";
+} from "@/components/ui/select"
+import { RiShareBoxLine } from "react-icons/ri"
 
 interface DocumentData {
-  url: string;
-  name: string;
-  type: string;
+  url: string
+  name: string
+  type: string
 }
 
 interface DocumentProps {
-  data: DocumentData[];
-  color: String;
+  data: DocumentData[]
+  color: String
 }
 
 const Document: FC<DocumentProps> = ({ data, color }) => {
   const groupDataByType = (data: DocumentData[], typesToGroup: string[]) => {
     return typesToGroup.reduce((acc, type) => {
-      const filteredData = data?data.filter(item => item.type === type):[];
+      const filteredData = data ? data.filter((item) => item.type === type) : []
       if (filteredData.length > 0) {
-        acc[type] = filteredData;
+        acc[type] = filteredData
       }
-      return acc;
-    }, {} as Record<string, DocumentData[]>);
-  };
+      return acc
+    }, {} as Record<string, DocumentData[]>)
+  }
 
-  const typesToGroup = ['Result', 'Preparation'];
-  const groupedData = groupDataByType(data, typesToGroup);
-  // console.log(groupedData)
+  const typesToGroup = ["Result", "Preparation"]
+  const groupedData = groupDataByType(data, typesToGroup)
 
   return (
     <div className="space-y-14">
@@ -60,7 +59,7 @@ const Document: FC<DocumentProps> = ({ data, color }) => {
         </div>
       ))}
     </div>
-  );
-};
+  )
+}
 
-export default Document;
+export default Document

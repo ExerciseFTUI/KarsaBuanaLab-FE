@@ -1,8 +1,8 @@
-"use client";
-import React, { useState, useEffect, FC } from "react";
-import dynamic from "next/dynamic";
+"use client"
+import React, { useState, useEffect, FC } from "react"
+import dynamic from "next/dynamic"
 
-import { FiRefreshCw } from "react-icons/fi";
+import { FiRefreshCw } from "react-icons/fi"
 
 import {
   Card,
@@ -11,89 +11,88 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import Sample from "../client/Sample";
-import Analysis from "../client/Analysis";
-import Finished from "../client/Finished";
-import { Button } from "../ui/button";
-import { ClientDataType } from "@/lib/type";
-import { getReportById } from "@/lib/actions/client.actions";
+} from "@/components/ui/card"
+import Sample from "../client/Sample"
+import Analysis from "../client/Analysis"
+import Finished from "../client/Finished"
+import { Button } from "../ui/button"
+import { ClientDataType } from "@/lib/type"
+import { getReportById } from "@/lib/actions/client.actions"
 
 const ClientStepper = dynamic(() => import("../Stepper/ClientStepper"), {
   ssr: false,
-});
+})
 
 interface ClientCardProps {
-  resiNumber: string;
-  stage: string;
-  clientData: ClientDataType | null;
+  resiNumber: string
+  stage: string
+  clientData: ClientDataType | null
 }
 
 const ClientCard: FC<ClientCardProps> = ({ resiNumber, stage, clientData }) => {
-  const [activeStep, setActiveStep] = useState(0);
-  const [step, setStep] = useState(0);
-  const [refreshed, setRefreshed] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [activeStep, setActiveStep] = useState(0)
+  const [step, setStep] = useState(0)
+  const [refreshed, setRefreshed] = useState(false)
+  const [loading, setLoading] = useState(false)
   const [localClientData, setLocalClientData] = useState<ClientDataType | null>(
     null
-  );
+  )
 
   useEffect(() => {
     const convertStageToStep = () => {
       switch (stage) {
         case "sample":
-          setStep(0);
-          break;
+          setStep(0)
+          break
         case "analysis":
-          setStep(1);
-          break;
+          setStep(1)
+          break
         case "finished":
-          setStep(2);
-          break;
+          setStep(2)
+          break
         default:
-          setStep(0);
+          setStep(0)
       }
-    };
-    convertStageToStep();
-  }, [stage]);
+    }
+    convertStageToStep()
+  }, [stage])
   const fetchData = async () => {
-    setLoading(true);
+    setLoading(true)
     try {
       // Ganti dengan panggilan fungsi fetch yang sesuai
-      const newClientData = await getReportById(resiNumber);
+      const newClientData = await getReportById(resiNumber)
       // Update state dengan data yang baru diambil
-      setLocalClientData(newClientData);
+      setLocalClientData(newClientData)
     } catch (error: any) {
-      console.error("Error fetching data:", error.message);
+      console.error("Error fetching data:", error.message)
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
   useEffect(() => {
-    fetchData();
-  }, [resiNumber, stage]);
+    fetchData()
+  }, [resiNumber, stage])
 
   const handleRefreshClick = () => {
-    setRefreshed(true);
-    // console.log("refreshed");
-    fetchData();
-  };
+    setRefreshed(true)
+    fetchData()
+  }
   const handleStepClick = (step: number) => {
-    setActiveStep(step);
-  };
+    setActiveStep(step)
+  }
 
   const steps = [
     { label: "Sample", onClick: () => handleStepClick(0) },
     { label: "Analysis", onClick: () => handleStepClick(1) },
     { label: "Finished", onClick: () => handleStepClick(2) },
-  ];
+  ]
 
   function getSectionComponent() {
     switch (activeStep) {
       case 0:
-        return clientData?.sample && <Sample data={clientData.sample} />;
+        return clientData?.sample && <Sample data={clientData.sample} />
       case 1:
-        return clientData?.analysis && <Analysis data={clientData.analysis} />;
+        return clientData?.analysis && <Analysis data={clientData.analysis} />
       case 2:
         return refreshed ? (
           <Finished data={localClientData} resiNumber={resiNumber} />
@@ -101,9 +100,9 @@ const ClientCard: FC<ClientCardProps> = ({ resiNumber, stage, clientData }) => {
           clientData?.finished && (
             <Finished data={clientData.finished} resiNumber={resiNumber} />
           )
-        );
+        )
       default:
-        return null;
+        return null
     }
   }
 
@@ -145,7 +144,7 @@ const ClientCard: FC<ClientCardProps> = ({ resiNumber, stage, clientData }) => {
         </Button>
       </CardFooter>
     </Card>
-  );
-};
+  )
+}
 
-export default ClientCard;
+export default ClientCard

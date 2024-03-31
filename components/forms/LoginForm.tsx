@@ -1,10 +1,10 @@
-"use client";
-import React, { FC, useState } from "react";
+"use client"
+import React, { FC, useState } from "react"
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
+import { zodResolver } from "@hookform/resolvers/zod"
+import * as z from "zod"
 
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/button"
 import {
   Form,
   FormControl,
@@ -13,7 +13,7 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
+} from "@/components/ui/form"
 
 import {
   Card,
@@ -22,20 +22,20 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
+} from "@/components/ui/card"
 
-import { useForm } from "react-hook-form";
+import { useForm } from "react-hook-form"
 import {
   loginValidation,
   loginValidationType,
-} from "@/lib/validations/LoginValidation";
-import { Input } from "../ui/input";
-import { signIn } from "next-auth/react";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useToast } from "../ui/use-toast";
-import axios from "axios";
-import { access } from "fs";
-import { ReloadIcon, TrashIcon } from "@radix-ui/react-icons";
+} from "@/lib/validations/LoginValidation"
+import { Input } from "../ui/input"
+import { signIn } from "next-auth/react"
+import { useRouter, useSearchParams } from "next/navigation"
+import { useToast } from "../ui/use-toast"
+import axios from "axios"
+import { access } from "fs"
+import { ReloadIcon, TrashIcon } from "@radix-ui/react-icons"
 
 interface LoginFormProps {}
 
@@ -53,19 +53,17 @@ interface LoginFormProps {}
 //     };
 
 //     const response = await axios.request(config);
-//     // console.log(JSON.stringify(response.data));
 //     return (response.data.accessToken, response.data.refreshToken)
 //   } catch (error : any) {
-//     // console.log(error);
 //     return (error)
 //   }
 // }
 
 const LoginForm: FC<LoginFormProps> = ({}) => {
-  const router = useRouter();
-  const query = useSearchParams();
-  const { toast } = useToast();
-  const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter()
+  const query = useSearchParams()
+  const { toast } = useToast()
+  const [isLoading, setIsLoading] = useState(false)
 
   // 1. Define your form.
   const form = useForm<z.infer<typeof loginValidation>>({
@@ -74,7 +72,7 @@ const LoginForm: FC<LoginFormProps> = ({}) => {
       email: "",
       password: "",
     },
-  });
+  })
 
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof loginValidation>) {
@@ -82,35 +80,33 @@ const LoginForm: FC<LoginFormProps> = ({}) => {
 
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
-    // console.log(result);
 
-    setIsLoading(true);
+    setIsLoading(true)
     //NextAuth SignIn
     signIn("credentials", {
       ...values,
       redirect: false, //Add redirect to data object
     })
       .then((callback) => {
-        console.log(callback);
         if (callback?.error) {
           toast({
             description: "Invalid username or password",
             variant: "destructive",
             title: "Uh oh! Something went wrong.",
-          });
+          })
         }
         if (callback?.ok && !callback?.error) {
           toast({
             title: "Successfully logged in",
             description: "Welcome back",
-          });
-          const callbackUrl = query.get("callbackUrl");
-          router.push(callbackUrl || "/admin");
+          })
+          const callbackUrl = query.get("callbackUrl")
+          router.push(callbackUrl || "/admin")
         }
       })
       .finally(() => {
-        setIsLoading(false);
-      });
+        setIsLoading(false)
+      })
   }
 
   return (
@@ -173,7 +169,7 @@ const LoginForm: FC<LoginFormProps> = ({}) => {
         </Form>
       </CardContent>
     </Card>
-  );
-};
+  )
+}
 
-export default LoginForm;
+export default LoginForm

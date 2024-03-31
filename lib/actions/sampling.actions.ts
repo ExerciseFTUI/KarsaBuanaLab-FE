@@ -41,9 +41,7 @@ export const getProjectByDivision = async (
       }
     )
 
-    // console.log(response)
-
-    return response.data.projects as BaseApiResponse<[Project]>
+    return response.data as BaseApiResponse<[Project]>
   } catch (error: any) {
     console.error("Error getting sample", error.message)
     return null as unknown as BaseApiResponse<[Project]>
@@ -107,15 +105,16 @@ export const sampleAssignment = async (
   }
 }
 
-export const getDashboardSampling = async (
-): Promise<BaseApiResponse<Project>> => {
+export const getDashboardSampling = async (): Promise<
+  BaseApiResponse<Project>
+> => {
   try {
     const response = await axios.get(
       `${apiBaseUrl}/sampling/get-dashboard-sampling/`
     )
 
-    revalidatePath(`/sampling`) 
-    
+    revalidatePath(`/sampling`)
+
     return response.data as BaseApiResponse<Project>
   } catch (error: any) {
     console.error("Error getting sample", error.message)

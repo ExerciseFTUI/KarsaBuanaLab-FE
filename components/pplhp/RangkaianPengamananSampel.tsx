@@ -1,21 +1,21 @@
-"use client";
-import { FC } from "react";
-import { useRouter } from "next/navigation";
-import { AiOutlineFile } from "react-icons/ai";
-import { BsArrowRight } from "react-icons/bs";
-import { SelectSeparator } from "@/components/ui/select";
-import { changeToDraft } from "@/lib/actions/pplhp.actions";
+"use client"
+import { FC } from "react"
+import { useRouter } from "next/navigation"
+import { AiOutlineFile } from "react-icons/ai"
+import { BsArrowRight } from "react-icons/bs"
+import { SelectSeparator } from "@/components/ui/select"
+import { changeToDraft } from "@/lib/actions/pplhp.actions"
 
 interface RangkaianPengamananSampelLink {
-  value: string;
-  label: string;
+  value: string
+  label: string
 }
 
 interface RangkaianPengamananSampelProps {
-  title: string;
-  color: string;
-  link: RangkaianPengamananSampelLink[];
-  params: { np: string };
+  title: string
+  color: string
+  link: RangkaianPengamananSampelLink[]
+  params: { np: string }
 }
 
 const RangkaianPengamananSampel: FC<RangkaianPengamananSampelProps> = ({
@@ -24,17 +24,16 @@ const RangkaianPengamananSampel: FC<RangkaianPengamananSampelProps> = ({
   link,
   params,
 }) => {
-  const router = useRouter();
+  const router = useRouter()
 
   const handleSubmitDraft = async () => {
     try {
-      const message = await changeToDraft(params.np);
-      // console.log(message); // Log the message here
-      router.push(`/pplhp/lhpdraft/`);
+      const message = await changeToDraft(params.np)
+      router.push(`/pplhp/lhpdraft/`)
     } catch (error) {
-      console.error("Failed to submit draft:", error);
+      console.error("Failed to submit draft:", error)
     }
-  };
+  }
 
   return (
     <div className="h-screen px-16 space-y-14 lg:space-y-10">
@@ -77,7 +76,7 @@ const RangkaianPengamananSampel: FC<RangkaianPengamananSampelProps> = ({
         </button>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default RangkaianPengamananSampel;
+export default RangkaianPengamananSampel
