@@ -1,22 +1,23 @@
+import LabAssignStaff from "@/components/lab/Dashboard/LabAssignStaff"
 import ListDokumen from "@/components/lab/ListDokumen"
-import DocumentList from "@/components/sampling/DokumentList"
-import HyperLinkButton from "@/components/sampling/HyperlinkButton"
-import SamplingTabsList from "@/components/sampling/tab/SamplingTabsList"
 import { Separator } from "@/components/ui/separator"
-import { Tabs, TabsContent } from "@/components/ui/tabs"
+import { getLabProjects } from "@/lib/actions/lab.actions"
 import { getLinkFiles } from "@/lib/actions/pplhp.actions"
-import {
-  getAllUser,
-  getProjectByDivision,
-} from "@/lib/actions/sampling.actions"
+import { getAllUser } from "@/lib/actions/sampling.actions"
 import { SamplingRequestData } from "@/lib/type"
+
+const dokumenData = [
+  { title: "Log Penerimaan Sample", link: "/link1" },
+  { title: "Akomodasi Lingkungan", link: "/link2" },
+  // { title: "Judul Dokumen 3", link: "/link3" },
+]
 
 export default async function LabDetails({
   params,
 }: {
   params: { np: string }
 }) {
-  const resProjects = await getProjectByDivision("Lab")
+  const projects = await getLabProjects()
   const resFiles = await getLinkFiles(params.np)
   const resUser = await getAllUser("USER")
 
@@ -26,14 +27,10 @@ export default async function LabDetails({
 
   const data: SamplingRequestData = {
     project:
-      ((resProjects as any).projects.find(
-        (p: any) => p._id === params.np
-      ) as any) || null,
+      (projects.result.find((p: any) => p._id === params.np) as any) || null,
     user: samplingUser || [],
-    files: resFiles.result || null,
+    files: resFiles ? (!resFiles.result ? dokumenData : resFiles.result) : [],
   }
-
-  console.log(data.files)
 
   return (
     <div className="flex flex-row justify-between m-5 mx-10 h-full">
@@ -53,32 +50,9 @@ export default async function LabDetails({
         </div>
       </div>
 
-      <Separator orientation="vertical" className="bg-light_brown" />
+      <Separator orientation="vertical" className="bg-light_brown mx-12" />
 
-      <Tabs defaultValue="dokumen" className="flex-1">
-        {/* {isLoading && <LoadingScreen text="" />} */}
-
-        <SamplingTabsList value1="dokumen" value2="grup" />
-
-        <TabsContent className="py-4 w-full" value="dokumen">
-          <div className="px-4 py-2 flex flex-col flex-1">
-            <DocumentList data={data.files} />
-
-            <div className="flex flex-wrap flex-col max-w-xl">
-              <h1 className="text-xl font-semibold my-5">Surat Tugas</h1>
-
-              <HyperLinkButton
-                title="Surat Tugas"
-                href={
-                  data.files.file.find((f: any) => f.name == "Surat Tugas").url
-                }
-              />
-            </div>
-          </div>
-        </TabsContent>
-
-        <TabsContent className="p-4 w-full" value="grup"></TabsContent>
-      </Tabs>
+      <LabAssignStaff data={data} projects={projects.result} />
     </div>
   )
 }

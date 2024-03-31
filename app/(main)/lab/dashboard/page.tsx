@@ -1,13 +1,15 @@
 import LabDataTable from "@/components/lab/LabDataTable"
-import { getProjectByDivision } from "@/lib/actions/sampling.actions"
+import { getLabProjects } from "@/lib/actions/lab.actions"
 
 export default async function Home() {
-  const resProjects = await getProjectByDivision("Lab")
-  const projects = resProjects ? (resProjects as any).projects : []
+  const projects = await getLabProjects()
 
   return (
     <div className="flex justify-between w-full h-screen">
-      <LabDataTable data={projects ? projects : []} link="dashboard/" />
+      <LabDataTable
+        data={projects.result ? projects.result : []}
+        link="dashboard/"
+      />
     </div>
   )
 }
