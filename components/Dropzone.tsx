@@ -1,13 +1,20 @@
 //@ts-nocheck
 
 "use client";
+import { File } from "lucide-react";
 import React from "react";
 import { useDropzone } from "react-dropzone";
 import { GiCancel } from "react-icons/gi";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const Dropzone = ({ setUploadedFiles }) => {
+interface DropzoneProps {
+  setUploadedFiles: any;
+  bgColor?: string;
+  txtColor?: string;
+}
+
+const Dropzone = ({ setUploadedFiles, bgColor, txtColor }: DropzoneProps) => {
   const [acceptedFiles, setAcceptedFiles] = React.useState([]);
   const [isDraggedOver, setIsDraggedOver] = React.useState(false);
 
@@ -50,13 +57,14 @@ const Dropzone = ({ setUploadedFiles }) => {
       </span>
     </li>
   ));
-  
 
   return (
     <div className="py-3">
       {/* Drag and drop files area */}
       <div
-        className={`mx-5 h-48 rounded-lg grid place-items-center border-2 border-dashed border-black bg-light_green ${
+        className={`mx-5 h-48 rounded-lg grid place-items-center border-2 border-dashed border-black ${
+          bgColor?.length > 0 ? bgColor : "bg-light_green"
+        } ${
           isDraggedOver
             ? "border-4 border-dark_green opacity-100 "
             : "opacity-80"
@@ -64,10 +72,15 @@ const Dropzone = ({ setUploadedFiles }) => {
         {...getRootProps()}
       >
         <input name="files" type="" {...getInputProps()} />
-        <p>Drag &apos;n&apos; drop some files here, or click to select files</p>
+        <div className="flex flex-col items-center justify-center gap-3">
+          <File />
+          <p className={``}>
+            Drag &apos;n&apos; drop some files here, or click to select files
+          </p>
+        </div>
       </div>
 
-      <aside className="m-5">
+      <aside className={`m-5 ${txtColor?.length > 0 && txtColor}`}>
         <h4>Files Uploaded : </h4>
         {uploadedFilesList.length === 0 && (
           <p className=" text-sm flex flex-row justify-center py-3">

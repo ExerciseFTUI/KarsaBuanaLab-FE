@@ -30,7 +30,6 @@ import { set } from "date-fns"
 import LoadingScreen from "@/components/LoadingComp"
 import {
   getProjectClient,
-  getUser,
   updateProjectFile,
 } from "@/lib/actions/marketing.client.actions"
 

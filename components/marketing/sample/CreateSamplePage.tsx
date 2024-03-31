@@ -19,7 +19,6 @@ const CreateSamplePage = ({ baseSample }: SamplingMarketingProps) => {
   const [sample, setSample] = useState<string>("");
   const [regulation, setRegulation] = useState<number>(-1);
   const [listRegulation, setListRegulation] = useState([]);
-  const [newSample, setNewSample] = useState(false);
 
   return (
     <>

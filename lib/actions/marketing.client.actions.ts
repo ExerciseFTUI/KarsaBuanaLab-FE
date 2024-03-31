@@ -1,13 +1,8 @@
 "use client"
-
 import axios from "axios"
 
-// const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || "https://karsalab.netlabdte.com";
-//Ganti ke NEXT_PUBLIC_API_BASE_URL
 const apiBaseUrl =
   process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:5000"
-
-//DITO : CREATE BASE SAMPLE API HERE
 
 export const addBaseSample = async (
   sampleName: string,
@@ -16,11 +11,6 @@ export const addBaseSample = async (
 ) => {
   var bodyFormData = new FormData()
   bodyFormData.append("sample_name", sampleName)
-
-  // Append each file to the FormData object
-  // for (let i = 0; i < files.length; i++) {
-  //   bodyFormData.append("files", files[i]);
-  // }
 
   //Add JSA File
   bodyFormData.append("files", file1)
@@ -50,24 +40,6 @@ export const addBaseSample = async (
     }
     // throw new Error(error.message);
     return null
-  }
-}
-
-//=======
-
-export const getUser = async () => {
-  try {
-    const response = await axios.get(
-      `https://jsonplaceholder.typicode.com/users`
-    )
-    if (response.data) {
-      return response.data
-    } else {
-      return false
-    }
-  } catch (error: any) {
-    console.error(`Error get user :`, error.message)
-    return false
   }
 }
 
@@ -102,9 +74,6 @@ export const updateProjectFile = async (id: string, files: any) => {
   }
 
   try {
-    // throw new Error("Error update projectFile :");
-    //Call API
-
     const response = await axios.put(
       `${apiBaseUrl}/projects/addFiles`,
       bodyFormData,
@@ -132,8 +101,6 @@ export const deleteProjectFile = async (id: string, file_id: string) => {
   }
 
   try {
-    // throw new Error("Error update projectFile :");
-    //Call API
     const response = await axios.put(`${apiBaseUrl}/projects/removeFile`, body)
     if (response.data.result) {
       return true

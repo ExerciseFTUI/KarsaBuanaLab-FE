@@ -15,20 +15,33 @@ export type ProjectType = {
 };
 
 export type ProjectMarketingType = {
-  _id: string
-  no_penawaran: string
-  project_name: string
-  client_name: string
-  alamat_sampling: string
-  contact_person: string
-  created_at: string
-  status: string
-  current_division: string
-  valuasi_proyek: number
-  jadwal_sampling: {from : string, to : string, _id: string}
-  deadline_lhp: {from : string, to : string, _id: string}
-  desc_failed: string
-}
+  _id: string;
+  no_penawaran: string;
+  project_name: string;
+  client_name: string;
+  alamat_sampling: string;
+  contact_person: string;
+  created_at: string;
+  status: string;
+  current_division: string;
+  valuasi_proyek: number;
+  jadwal_sampling: { from: string; to: string; _id: string };
+  deadline_lhp: { from: string; to: string; _id: string };
+  desc_failed: string;
+};
+
+export type ProjectAdminPplhpType = {
+  project_name: string;
+  lab_files: LabFileType[];
+};
+
+export type LabFileType = {
+  _id: string;
+  file_name: string;
+  file_id: string;
+  file_type: string;
+  file_extension: string;
+};
 
 export type BaseSampleType = {
   sample_name: string;
@@ -89,6 +102,7 @@ export type LabDataType = {
   alamat_sampling: string;
   alamat_kantor: string;
   contact_person: string;
+  lab_status: string;
 };
 
 export type ProjectSamplingType = {
@@ -230,4 +244,23 @@ export type QuestionType = {
 export type AnswerType = {
   questionId: string;
   value: string;
+};
+
+export type InventoryType = {
+  _id: string;
+  tools_name: string;
+  description: string;
+  last_maintenance: Date;
+  maintenance_history: Date[];
+  maintenance_every: string;
+  file_id: string;
+  assigned_user: string;
+  category: string;
+};
+
+export type InventoryPICType = {
+  _id: string;
+  name: string;
+  role: string;
+  phone: string;
 };

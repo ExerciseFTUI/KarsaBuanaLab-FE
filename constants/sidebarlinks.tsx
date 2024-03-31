@@ -41,22 +41,11 @@ export const adminLinks: ISidebarLinks[] = [
     route: "/pplhp",
     label: "PPLHP",
   },
-
-  // {
-  //   icon: <GiPaper />,
-  //   route: "/sampling",
-  //   label: "Sampling Page",
-  // },
-  // {
-  //   icon: <BiSolidBox />,
-  //   route: "/pplhp",
-  //   label: "PPLHP Page",
-  // },
-  // {
-  //   icon: <Mail />,
-  //   route: "/lab",
-  //   label: "Lab Page",
-  // },
+  {
+    icon: <Archive />,
+    route: "/inventory",
+    label: "Inventory",
+  },
 ];
 
 export const marketingLink: ISidebarLinks[] = [
@@ -110,7 +99,10 @@ export const samplingSPVLinks: ISidebarLinks[] = [
   },
 ];
 
-export const samplingUSERLinks: ISidebarLinks[] = [samplingSPVLinks[0], samplingSPVLinks[2]]
+export const samplingUSERLinks: ISidebarLinks[] = [
+  samplingSPVLinks[0],
+  samplingSPVLinks[2],
+];
 
 export const pplhpLinks: ISidebarLinks[] = [
   {
@@ -141,11 +133,11 @@ export const labLinks: ISidebarLinks[] = [
     route: "/verifikasi-data",
     label: "Verifikasi Data",
   },
-  {
-    icon: <FiArchive />,
-    route: "/final-review",
-    label: "Final Review",
-  },
+  // {
+  //   icon: <FiArchive />,
+  //   route: "/final-review",
+  //   label: "Final Review",
+  // },
 ];
 
 export const sampleReceiveLinks: ISidebarLinks[] = [

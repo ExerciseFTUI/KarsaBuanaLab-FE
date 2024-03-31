@@ -19,6 +19,7 @@ import {
   ProjectType,
   ProjectMarketingType,
   UserType,
+  ProjectAdminPplhpType,
 } from "@/lib/type";
 import Link from "next/link";
 import { ProjectSamplingType } from "@/lib/type";
@@ -447,13 +448,13 @@ export const adminColumns: ColumnDef<UserType>[] = [
 ];
 
 //Table Column for PPLHP Admin Page
-export const pplhpColumns: ColumnDef<ProjectMarketingType>[] = [
+export const pplhpColumns: ColumnDef<ProjectAdminPplhpType>[] = [
   //No Penawaran
-  {
-    accessorKey: "no_penawaran",
-    header: "No Penawaran",
-    cell: ({ row }) => <div className="">{row.getValue("no_penawaran")}</div>,
-  },
+  // {
+  //   accessorKey: "no_penawaran",
+  //   header: "No Penawaran",
+  //   cell: ({ row }) => <div className="">{row.getValue("no_penawaran")}</div>,
+  // },
   {
     accessorKey: "project_name",
     header: ({ column }) => {
@@ -489,10 +490,10 @@ export const pplhpColumns: ColumnDef<ProjectMarketingType>[] = [
     },
 
     cell: ({ row }) => {
-      const status =
-        row.original.current_division !== "SAMPLING"
-          ? "ANALYSIS"
-          : row.original.current_division;
+      const status = "SAMPLING";
+      // row.original.current_division !== "SAMPLING"
+      //   ? "ANALYSIS"
+      //   : row.original.current_division;
 
       return (
         <div className="flex justify-center items-center w-full">
@@ -523,8 +524,8 @@ export const pplhpColumns: ColumnDef<ProjectMarketingType>[] = [
     },
 
     cell: ({ row }) => {
-      const deadline =
-        row.original.jadwal_sampling?.to || "Haven't set deadline yet";
+      const deadline = "Haven't set deadline yet";
+      // row.original.jadwal_sampling?.to || "Haven't set deadline yet";
       return <div className="capitalize text-center ">{deadline}</div>;
     },
   },
@@ -545,8 +546,9 @@ export const pplhpColumns: ColumnDef<ProjectMarketingType>[] = [
 
     cell: ({ row }) => {
       const date = new Date(row.getValue("created_at"));
+      const documents = row.original.lab_files.length;
 
-      return <div className={`font-medium pl-4`}>5</div>;
+      return <div className={`font-medium pl-4`}>{documents}</div>;
     },
   },
 
@@ -555,7 +557,7 @@ export const pplhpColumns: ColumnDef<ProjectMarketingType>[] = [
     id: "actions",
     enableHiding: false,
     cell: ({ row }) => {
-      const project = row.original._id;
+      const project = "65bcdbd1276d90f427c6ea4e";
 
       return (
         <DropdownMenu>
@@ -1078,13 +1080,33 @@ export const LabDashboardPageColumns: ColumnDef<LabDataType>[] = [
       );
     },
   },
+  // {
+  //   accessorKey: "contact_person",
+  //   header: "Contact Person",
+  //   cell: ({ row }) => {
+  //     return (
+  //       <div className="capitalize pl-0.5">
+  //         {row.getValue("contact_person")}
+  //       </div>
+  //     );
+  //   },
+  // },
   {
-    accessorKey: "contact_person",
-    header: "Contact Person",
-    cell: ({ row }) => {
+    accessorKey: "lab_status",
+    header: "Status",
+    cell: ({ row }) => { 
+      var color = "bg-moss_green"
+      if (row.getValue("lab_status") === "RECEIVE") {
+        color = "bg-yellow-700";
+      } else if (row.getValue("lab_status") === "IN REVIEW BY ADMIN") {
+        color = "bg-blue-900";
+      } else if (row.getValue("lab_status") === "REVISION") {
+        color = "bg-red-400";
+      }
+      
       return (
-        <div className="capitalize pl-0.5">
-          {row.getValue("contact_person")}
+        <div className={`capitalize  text-white rounded-md w-fit px-2 text-center flex font-semibold ${color}`}>
+          {row.getValue("lab_status")}
         </div>
       );
     },

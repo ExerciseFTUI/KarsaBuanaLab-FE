@@ -21,6 +21,8 @@ export const NewSample = ({
   const [sampleName, setSampleName] = useState("")
 
   const onSubmit = () => {
+    // console.log("Sample new name: ", sampleName);
+
     // Check if the sample name already avail or not
 
     // Toast to notify already avail
