@@ -159,7 +159,7 @@ const Parameter: React.FC<TableParameterProps> = ({
       newParam.push({
         param: editedValue,
         method: [],
-        unit: "",
+        unit: [],
         operator: "",
         baku_mutu: 0,
         _id: "",
