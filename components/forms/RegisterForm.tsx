@@ -1,10 +1,10 @@
-"use client";
-import React, { FC, useState } from "react";
-import axios from "axios";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
+"use client"
+import React, { FC, useState } from "react"
+import axios from "axios"
+import { zodResolver } from "@hookform/resolvers/zod"
+import * as z from "zod"
 
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/button"
 import {
   Form,
   FormControl,
@@ -13,7 +13,7 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
+} from "@/components/ui/form"
 
 import {
   DropdownMenu,
@@ -22,7 +22,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+} from "@/components/ui/dropdown-menu"
 
 import {
   Card,
@@ -31,18 +31,18 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
+} from "@/components/ui/card"
 
-import { useForm } from "react-hook-form";
+import { useForm } from "react-hook-form"
 import {
   registerValidation,
   registerValidationType,
-} from "@/lib/validations/RegisterValidation";
-import { Input } from "../ui/input";
-import { register } from "@/lib/actions/auth.action";
-import { useToast } from "../ui/use-toast";
-import { useRouter } from "next/navigation";
-import { ReloadIcon } from "@radix-ui/react-icons";
+} from "@/lib/validations/RegisterValidation"
+import { Input } from "../ui/input"
+import { register } from "@/lib/actions/auth.action"
+import { useToast } from "../ui/use-toast"
+import { useRouter } from "next/navigation"
+import { ReloadIcon } from "@radix-ui/react-icons"
 
 interface RegisterFormProps {}
 
@@ -61,15 +61,14 @@ interface RegisterFormProps {}
 //     const response = await axios.request(config);
 //     return response.data.message;
 //   } catch (error: any) {
-//     console.log(error.response.data.message);
 //     return error.response.data.message;
 //   }
 // }
 
 const RegisterForm: FC<RegisterFormProps> = ({}) => {
-  const { toast } = useToast();
-  const router = useRouter();
-  const [isLoading, setIsLoading] = useState(false);
+  const { toast } = useToast()
+  const router = useRouter()
+  const [isLoading, setIsLoading] = useState(false)
 
   const form = useForm<z.infer<typeof registerValidation>>({
     resolver: zodResolver(registerValidation),
@@ -81,7 +80,7 @@ const RegisterForm: FC<RegisterFormProps> = ({}) => {
       role: "", // Added role field
       division: "", // Added title fiels
     },
-  });
+  })
 
   async function onSubmit(values: z.infer<typeof registerValidation>) {
     // const result = await postRegister(values);
@@ -93,26 +92,26 @@ const RegisterForm: FC<RegisterFormProps> = ({}) => {
     //   window.alert(result);
     // }
 
-    setIsLoading(true);
+    setIsLoading(true)
 
-    const result = await register(values);
+    const result = await register(values)
 
     if (result) {
       toast({
         title: "Successfully Register New User",
         description: "Login to continue",
-      });
+      })
 
-      router.push("/login");
+      router.push("/login")
     } else {
       toast({
         title: "Register New User Failed",
         description: "Please Try Again",
         variant: "destructive",
-      });
+      })
     }
 
-    setIsLoading(false);
+    setIsLoading(false)
   }
 
   return (
@@ -300,7 +299,7 @@ const RegisterForm: FC<RegisterFormProps> = ({}) => {
         </Form>
       </CardContent>
     </Card>
-  );
-};
+  )
+}
 
-export default RegisterForm;
+export default RegisterForm

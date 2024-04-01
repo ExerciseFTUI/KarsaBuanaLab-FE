@@ -30,6 +30,19 @@ export type ProjectMarketingType = {
   desc_failed: string;
 };
 
+export type ProjectAdminPplhpType = {
+  project_name: string;
+  lab_files: LabFileType[];
+};
+
+export type LabFileType = {
+  _id: string;
+  file_name: string;
+  file_id: string;
+  file_type: string;
+  file_extension: string;
+};
+
 export type BaseSampleType = {
   sample_name: string;
   amount: number;

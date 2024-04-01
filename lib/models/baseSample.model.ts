@@ -10,8 +10,8 @@ export interface BaseSample {
 
 export interface Regulation {
   regulation_name: string;
-  _id: number;
   default_param: string[];
+  _id: number;
 }
 
 export interface Param {

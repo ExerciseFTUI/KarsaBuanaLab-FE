@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { FC, useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import SamplingTabsList from "@/components/sampling/tab/SamplingTabsList";
 import PplhpSample from "./PplhpSample";
@@ -17,6 +17,7 @@ export default function PplhpTab({ pplhp }: PplhpTabProps) {
   return (
     <Tabs defaultValue="Sample" className="flex-1">
       <SamplingTabsList value1="Sample" value2="Document" />
+
       <TabsContent className="py-4" value="Sample">
         <PplhpSample samples={pplhp.sampling_list} />
       </TabsContent>
@@ -26,4 +27,6 @@ export default function PplhpTab({ pplhp }: PplhpTabProps) {
       </TabsContent>
     </Tabs>
   );
-}
+};
+
+export default PplhpTab;

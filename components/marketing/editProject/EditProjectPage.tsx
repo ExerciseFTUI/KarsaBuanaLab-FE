@@ -1,18 +1,18 @@
-"use client";
+"use client"
 
-import CreateProjectBaseData from "@/components/forms/CreateProjectBaseData";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import SamplingTab from "@/components/marketing/createProject/SamplingTab";
-import Dropzone from "@/components/Dropzone";
-import { useEffect, useState } from "react";
-import { MdOpenInNew, MdRestoreFromTrash } from "react-icons/md";
-import { ReloadIcon, TrashIcon } from "@radix-ui/react-icons";
+import CreateProjectBaseData from "@/components/forms/CreateProjectBaseData"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import SamplingTab from "@/components/marketing/createProject/SamplingTab"
+import Dropzone from "@/components/Dropzone"
+import { useEffect, useState } from "react"
+import { MdOpenInNew, MdRestoreFromTrash } from "react-icons/md"
+import { ReloadIcon, TrashIcon } from "@radix-ui/react-icons"
 import {
   FieldValues,
   SubmitHandler,
   useFieldArray,
   useForm,
-} from "react-hook-form";
+} from "react-hook-form"
 import {
   Card,
   CardContent,
@@ -20,38 +20,38 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { createProjectValidation } from "@/lib/validations/CreateProjectValidation";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import EditProjectForm from "./EditProjectForm";
-import ProjectForm from "../forms/ProjectForm";
-import { Project } from "@/lib/models/project.model";
-import { useToast } from "@/components/ui/use-toast";
+} from "@/components/ui/card"
+import { createProjectValidation } from "@/lib/validations/CreateProjectValidation"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { z } from "zod"
+import EditProjectForm from "./EditProjectForm"
+import ProjectForm from "../forms/ProjectForm"
+import { Project } from "@/lib/models/project.model"
+import { useToast } from "@/components/ui/use-toast"
 import {
   updateProject,
   updateProjectInfo,
   updateProjectSample,
-} from "@/lib/actions/marketing.actions";
-import { useRouter } from "next/navigation";
-import { set } from "date-fns";
-import { BaseSample } from "@/lib/models/baseSample.model";
-import LoadingScreen from "@/components/LoadingComp";
-import { Textarea } from "@/components/ui/textarea";
+} from "@/lib/actions/marketing.actions"
+import { useRouter } from "next/navigation"
+import { set } from "date-fns"
+import { BaseSample } from "@/lib/models/baseSample.model"
+import LoadingScreen from "@/components/LoadingComp"
+import { Textarea } from "@/components/ui/textarea"
 import {
   deleteProjectFile,
   updateProjectFile,
-} from "@/lib/actions/marketing.client.actions";
-import { Button } from "@/components/ui/button";
-import DeleteDialog from "@/components/DeleteDialog";
-import { AlertDialog } from "@/components/ui/alert-dialog";
-import { AlertDialogTrigger } from "@radix-ui/react-alert-dialog";
-import CancelPopup from "@/components/cancelPopup";
+} from "@/lib/actions/marketing.client.actions"
+import { Button } from "@/components/ui/button"
+import DeleteDialog from "@/components/DeleteDialog"
+import { AlertDialog } from "@/components/ui/alert-dialog"
+import { AlertDialogTrigger } from "@radix-ui/react-alert-dialog"
+import CancelPopup from "@/components/cancelPopup"
 
 interface EditProjectPageProps {
-  project: Project;
-  baseSamples: BaseSample[];
-  status?: string;
+  project: Project
+  baseSamples: BaseSample[]
+  status?: string
 }
 
 export default function EditProjectPage({
@@ -60,14 +60,14 @@ export default function EditProjectPage({
   status,
 }: EditProjectPageProps) {
   //General
-  const { toast } = useToast();
+  const { toast } = useToast()
 
-  const router = useRouter();
-  const [showCancelConfirmation, setShowCancelConfirmation] = useState(false); // State to control the cancellation confirmation popup
-  const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter()
+  const [showCancelConfirmation, setShowCancelConfirmation] = useState(false) // State to control the cancellation confirmation popup
+  const [isLoading, setIsLoading] = useState(false)
 
   //=============================== Sample Section
-  const [openModal, setOpenModal] = useState(false);
+  const [openModal, setOpenModal] = useState(false)
 
   const sampleForm = useForm<FieldValues>({
     defaultValues: {
@@ -75,25 +75,24 @@ export default function EditProjectPage({
       regulation: "",
       parameters: [],
     },
-  });
+  })
 
-  const { control, watch, setValue, resetField } = sampleForm;
+  const { control, watch, setValue, resetField } = sampleForm
 
   const arrayField = useFieldArray({
     control,
     name: "samples",
-  });
+  })
 
   //All the samples get save in here
-  const { fields: samples, append, remove } = arrayField;
+  const { fields: samples, append, remove } = arrayField
 
   //Checker
-  const [change, setChange] = useState(false);
+  const [change, setChange] = useState(false)
 
   //Append all the samples from API to the samples array
   if (project.sampling_list && project.sampling_list.length > samples.length) {
     const newSamples = project.sampling_list.map((sample) => {
-      // console.log(sample);
       return {
         sampleName: sample.sample_name ? sample.sample_name : "Empty",
         regulation: sample.regulation_name[0]?.regulation_name
@@ -106,12 +105,12 @@ export default function EditProjectPage({
         // parameters: sample.regulation_name[0]?.param
         //   ? sample.regulation_name[0].param
         //   : [""],
-      };
-    });
+      }
+    })
 
     if (!change) {
-      setChange(true);
-      append(newSamples);
+      setChange(true)
+      append(newSamples)
     }
   }
 
@@ -124,42 +123,42 @@ export default function EditProjectPage({
       data.parameters.length === 0 ||
       data.parameters[0] === ""
     ) {
-      alert("Please fill the data");
-      return;
+      alert("Please fill the data")
+      return
     }
 
     //Get the parameter only value
     const parametersValue = data.parameters.map(
       (parameter: any) => parameter.value
-    );
+    )
 
     //Get the needed data
     const finalSample = {
       sampleName: data.sampling, // string
       regulation: data.regulation, // string
       parameters: parametersValue, // array
-    };
+    }
 
     //Add to samples array
-    append(finalSample);
+    append(finalSample)
 
     //Reset all the form
-    setValue("parameters", [""], { shouldValidate: true });
-    resetField("sampling");
-    resetField("parameters");
+    setValue("parameters", [""], { shouldValidate: true })
+    resetField("sampling")
+    resetField("parameters")
 
     //Close Modal
-    setOpenModal(false);
+    setOpenModal(false)
 
     //Display Toast
     toast({
       title: "Successfully adding new sample",
       description: "Good Job",
-    });
+    })
 
     //Checker
-    setChange(true);
-  };
+    setChange(true)
+  }
   //================================= End Sample Section
 
   //================================= Project Information Section
@@ -180,11 +179,11 @@ export default function EditProjectPage({
       desc_failed: project.desc_failed || "",
       status: project.status || "",
     },
-  });
+  })
 
   async function onSubmit2(values: z.infer<typeof createProjectValidation>) {
     try {
-      setIsLoading(true); // Set loading to true before making API calls
+      setIsLoading(true) // Set loading to true before making API calls
 
       const body = {
         _id: project._id,
@@ -198,7 +197,7 @@ export default function EditProjectPage({
         jumlah_revisi: values.numRevisi,
         valuasi_proyek: values.valuasiProject,
         desc_failed: values.desc_failed,
-      };
+      }
 
       // // Check if all properties same exclude the is_paid will increase jumlahRevisi
       // const propertiesMatch = Object.keys(body).every(
@@ -210,15 +209,15 @@ export default function EditProjectPage({
       // }
 
       // Edit Project Function
-      const responseInfo = await updateProjectInfo(body);
+      const responseInfo = await updateProjectInfo(body)
 
       if (!responseInfo) {
         toast({
           title: "Oops, Failed!",
           description: "Failed Updating Project Info",
           variant: "destructive",
-        });
-        return;
+        })
+        return
       }
 
       if (samples.length > 0) {
@@ -230,63 +229,60 @@ export default function EditProjectPage({
             regulation_name: sample.regulation,
             //@ts-ignore
             param: sample.parameters,
-          };
-        });
+          }
+        })
 
         const responseSampling = await updateProjectSample(
           samplingBody,
           project._id
-        );
+        )
 
         if (!responseSampling) {
           toast({
             title: "Ooops, Failed!",
             description: "Failed Updating Project Samples",
             variant: "destructive",
-          });
-          router.refresh();
-          return;
+          })
+          router.refresh()
+          return
         }
       }
 
       if (uploadedFiles.length > 0) {
         // Perform file upload logic here if needed
-        const responseFile = await updateProjectFile(
-          project._id,
-          uploadedFiles
-        );
-        router.refresh();
+        const responseFile = await updateProjectFile(project._id, uploadedFiles)
+        router.refresh()
       }
 
       //Display Toast
       toast({
         title: "Successfully updating the project",
         description: "Good Job",
-      });
+      })
 
       if (status === "RUNNING") {
         // router.push("/marketing/running")
       } else if (status === "FINISHED") {
-        router.push("/marketing/finished");
+        router.push("/marketing/finished")
       } else if (status === "CANCELLED") {
-        router.push("/marketing/cancelled");
+        router.push("/marketing/cancelled")
       }
     } catch (error: any) {
-      const errorMsg = error?.response?.data?.message || error.message;
+      const errorMsg = error?.response?.data?.message || error.message
       toast({
         title: "Oops, Failed!",
         description: errorMsg,
         variant: "destructive",
-      });
-      console.error("Error from backend", errorMsg);
-      console.error("Error during project update:", errorMsg);
+      })
+      console.error("Error from backend", errorMsg)
+      console.error("Error during project update:", errorMsg)
     } finally {
-      setIsLoading(false); // Set loading to false after API calls are finished
+      setIsLoading(false) // Set loading to false after API calls are finished
     }
   }
 
   // =============== Action to update reason why project cancelled =================================== //
-  const [reason, setReason] = useState("");
+  const [reason, setReason] = useState("")
 
   async function handleCancelledProject() {
     try {
@@ -298,31 +294,31 @@ export default function EditProjectPage({
       // console.log("desc failed : ", body);
 
       //Connect to API
-      const responseInfo = await updateProjectInfo(body);
+      const responseInfo = await updateProjectInfo(body)
       if (!responseInfo) {
         toast({
           title: "Oops, Failed!",
           description: "Failed to cancel the project, please try again",
-        });
+        })
 
-        return;
+        return
       }
 
       toast({
         title: "Project success cancelled!",
         description: "The project has been cancelled",
-      });
+      })
 
-      router.push("/marketing/cancelled");
+      router.push("/marketing/cancelled")
     } catch (error: any) {
-      const errorMsg = error?.response?.data?.message || error;
+      const errorMsg = error?.response?.data?.message || error
       toast({
         title: "Oops, Failed!",
         description: errorMsg,
         variant: "destructive",
-      });
-      console.error("Error from backend", errorMsg);
-      console.error("Error during project update:", errorMsg);
+      })
+      console.error("Error from backend", errorMsg)
+      console.error("Error during project update:", errorMsg)
     }
   }
   // =============== End of Action to update reason why project cancelled =================================== //
@@ -336,31 +332,29 @@ export default function EditProjectPage({
       const body = {
         _id: project._id,
         is_paid: values.is_paid,
-      };
+      }
 
       //Connect to API
-      const responseInfo = await updateProjectInfo(body);
+      const responseInfo = await updateProjectInfo(body)
       if (!responseInfo) {
         toast({
           title: "Oops, Failed!",
           description: "Failed to update payment",
-        });
+        })
 
-        return;
+        return
       }
-
-      // console.log("Success updated");
     } catch (error: any) {
-      const errorMsg = error?.response?.data?.message || error;
+      const errorMsg = error?.response?.data?.message || error
       toast({
         title: "Oops, Failed!",
         description: errorMsg,
         variant: "destructive",
-      });
-      console.error("Error from backend", errorMsg);
-      console.error("Error during project update:", errorMsg);
+      })
+      console.error("Error from backend", errorMsg)
+      console.error("Error during project update:", errorMsg)
     } finally {
-      router.refresh();
+      router.refresh()
     }
   }
 
@@ -370,13 +364,12 @@ export default function EditProjectPage({
 
   //=============================== Document Section
 
-  const [uploadedFiles, setUploadedFiles] = useState([]);
-  const [fileIdToDelete, setFileIdToDelete] = useState("");
-  const [dialogOpen, setDialogOpen] = useState(false);
+  const [uploadedFiles, setUploadedFiles] = useState([])
+  const [fileIdToDelete, setFileIdToDelete] = useState("")
+  const [dialogOpen, setDialogOpen] = useState(false)
 
   const handleSubmitDocs = () => {
     // Log the uploaded files to the console
-    // console.log("Uploaded Files:", uploadedFiles);
 
     // TODO: Implement the logic to submit uploadedFiles to the server
     if (uploadedFiles.length > 0) {
@@ -384,34 +377,34 @@ export default function EditProjectPage({
       toast({
         title: "Submitted!",
         description: "Files Submitted Successfully!",
-      });
+      })
     } else {
       // If no files are uploaded, show an error message
       toast({
         title: "Oops, Something Wrong",
         description: "Please upload files before submitting",
-      });
+      })
     }
-  };
+  }
 
   const handleDeleteFile = async (id: string, file_id: string) => {
-    const response = await deleteProjectFile(id, file_id);
+    const response = await deleteProjectFile(id, file_id)
     if (response) {
       //send toast
       toast({
         title: "Success",
         description: "File deleted successfully",
-      });
-      router.refresh();
+      })
+      router.refresh()
     } else {
       //send toast
       toast({
         title: "Failed",
         description: "File failed to delete",
         variant: "destructive",
-      });
+      })
     }
-  };
+  }
 
   //=============================== End Document Section
 
@@ -542,8 +535,8 @@ export default function EditProjectPage({
                           size="icon"
                           className="delay-150"
                           onClick={() => {
-                            setDialogOpen(true);
-                            setFileIdToDelete(file._id);
+                            setDialogOpen(true)
+                            setFileIdToDelete(file._id)
                           }}
                         >
                           <TrashIcon className="h-5 w-5 " />
@@ -615,5 +608,5 @@ export default function EditProjectPage({
         description="This action cannot be undone. This will be permanently delete your file "
       />
     </>
-  );
+  )
 }

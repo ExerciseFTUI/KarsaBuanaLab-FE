@@ -7,22 +7,22 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import { FC, useState } from "react";
-import { BaseSample } from "@/lib/models/baseSample.model";
-import { Input } from "@/components/ui/input";
-import { MdDelete } from "react-icons/md";
-import CancelPopup from "@/components/cancelPopup";
-import CreateRegulationParam from "./CreateRegulationParam";
-import { useToast } from "@/components/ui/use-toast";
-import { useRouter } from "next/navigation";
-import { editBaseSample } from "@/lib/actions/marketing.actions";
+} from "@/components/ui/table"
+import { FC, useState } from "react"
+import { BaseSample } from "@/lib/models/baseSample.model"
+import { Input } from "@/components/ui/input"
+import { MdDelete } from "react-icons/md"
+import CancelPopup from "@/components/cancelPopup"
+import CreateRegulationParam from "./CreateRegulationParam"
+import { useToast } from "@/components/ui/use-toast"
+import { useRouter } from "next/navigation"
+import { editBaseSample } from "@/lib/actions/marketing.actions"
 
 interface TableRegulationProps {
-  sample: string;
-  setRegulation: React.Dispatch<React.SetStateAction<number>>;
-  baseSample: BaseSample[];
-  setListRegulation: React.Dispatch<React.SetStateAction<never[]>>;
+  sample: string
+  setRegulation: React.Dispatch<React.SetStateAction<number>>
+  baseSample: BaseSample[]
+  setListRegulation: React.Dispatch<React.SetStateAction<never[]>>
 }
 
 const TableRegulation: React.FC<TableRegulationProps> = ({
@@ -31,41 +31,38 @@ const TableRegulation: React.FC<TableRegulationProps> = ({
   setListRegulation,
   baseSample,
 }) => {
-  const router = useRouter();
+  const router = useRouter()
 
-  const { toast } = useToast();
+  const { toast } = useToast()
 
-  const [editingId, setEditingId] = useState(-1); // Track which item is being edited (-1 means no item is being edited)
-  const [editedValue, setEditedValue] = useState(""); // Track edited value
-  const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
-  const [isCreateOpen, setIsCreateOpen] = useState(false);
+  const [editingId, setEditingId] = useState(-1) // Track which item is being edited (-1 means no item is being edited)
+  const [editedValue, setEditedValue] = useState("") // Track edited value
+  const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false)
+  const [isCreateOpen, setIsCreateOpen] = useState(false)
   // const [regulationId, setRegulationId] = useState(-1);
-  const [regulationName, setRegulationName] = useState("");
+  const [regulationName, setRegulationName] = useState("")
 
   const sampleData = baseSample.find(
-    (s) => s.sample_name.toLowerCase() === sample.replace(/ /g, "_")
-  );
-  const regulations = sampleData ? sampleData.regulation : [];
+    (s) => s.sample_name.toLowerCase() === sample
+  )
+
+  const regulations = sampleData ? sampleData.regulation : []
 
   const handleEditClick = (id: number, regulation_name: string) => {
-    setEditingId(id);
-    setEditedValue(regulation_name);
-  };
+    setEditingId(id)
+    setEditedValue(regulation_name)
+  }
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEditedValue(e.target.value);
-  };
+    setEditedValue(e.target.value)
+  }
 
   // TODO : INI BUAT EDIT NAME REGULATION DIT
   // DONE
   const handleEditSubmit = async (id: number) => {
     // Log the edited value
-    console.log("ID : ", id);
-    console.log("New regulation name:", editedValue);
 
-    setEditingId(-1);
-
-    console.log(regulations);
+    setEditingId(-1)
 
     //Map all the regulation in specific sample
     const newRegulation = regulations.map((regulation) => {
@@ -74,79 +71,77 @@ const TableRegulation: React.FC<TableRegulationProps> = ({
         return {
           regulation_name: editedValue,
           default_param: regulation.default_param,
-        };
+        }
       }
       return {
         regulation_name: regulation.regulation_name,
         default_param: regulation.default_param,
-      };
-    });
-
-    console.log(newRegulation);
+      }
+    })
 
     const body = {
       regulation: newRegulation,
-    };
-
-    if (sampleData?._id === undefined) {
-      alert("Sample ID not found");
-      return;
     }
 
-    const result = await editBaseSample(body, sampleData._id);
+    if (sampleData?._id === undefined) {
+      alert("Sample ID not found")
+      return
+    }
+
+    const result = await editBaseSample(body, sampleData._id)
 
     if (result) {
-      router.refresh();
+      router.refresh()
       toast({
         title: "Delete Regulation Success",
         description: "Regulation has been deleted",
-      });
+      })
     } else {
       toast({
         title: "Delete Regulation Failed",
         variant: "destructive",
         description: "Regulation failed to delete",
-      });
+      })
     }
 
     // alert("Regulation name updated successfully");
-  };
+  }
 
   // TODO : INI BUAT HAPUS REGULATION DIT
   // OKE ONGOING
   const handleCancelledProject = async () => {
     const newRegulation = regulations.filter((regulation) => {
       // For update regulation, check if the regulation id is not the same with the edited id
-      return regulation.regulation_name !== regulationName;
-    });
+      return regulation.regulation_name !== regulationName
+    })
 
     const body = {
       regulation: newRegulation,
-    };
-
-    if (sampleData?._id === undefined) {
-      alert("Sample ID not found");
-      return;
     }
 
-    const result = await editBaseSample(body, sampleData._id);
+    if (sampleData?._id === undefined) {
+      alert("Sample ID not found")
+      return
+    }
+
+    const result = await editBaseSample(body, sampleData._id)
 
     if (result) {
-      router.refresh();
+      router.refresh()
       toast({
         title: "Delete Regulation Success",
         description: "Regulation has been deleted",
-      });
+      })
     } else {
       toast({
         title: "Delete Regulation Failed",
         variant: "destructive",
         description: "Regulation failed to delete",
-      });
+      })
     }
 
     // alert("Regulation deleted successfully");
-  };
+  }
 
   return (
     <>
@@ -190,7 +185,7 @@ const TableRegulation: React.FC<TableRegulationProps> = ({
               {regulations.map((regulationData, index) => (
                 <TableRow
                   onClick={() => {
-                    setRegulation(regulationData._id);
+                    setRegulation(regulationData._id)
                   }}
                   className="hover:bg-light_green hover:cursor-pointer"
                   key={regulationData._id}
@@ -205,7 +200,7 @@ const TableRegulation: React.FC<TableRegulationProps> = ({
                           placeholder={regulationData.regulation_name}
                           onKeyDown={(e) => {
                             if (e.key === "Enter") {
-                              handleEditSubmit(regulationData._id);
+                              handleEditSubmit(regulationData._id)
                             }
                           }}
                           className="border-b border-gray-300 placeholder:text-slate-700 text-slate-700 font-medium focus:outline-none"
@@ -227,8 +222,8 @@ const TableRegulation: React.FC<TableRegulationProps> = ({
                       <MdDelete
                         className="h-7 w-7 mx-2 text-red-500 hover:text-white hover:cursor-pointer  hover:bg-red-500 hover:rounded-md"
                         onClick={() => {
-                          setRegulationName(regulationData.regulation_name);
-                          setShowDeleteConfirmation(true);
+                          setRegulationName(regulationData.regulation_name)
+                          setShowDeleteConfirmation(true)
                         }}
                       />
                     </div>
@@ -242,7 +237,7 @@ const TableRegulation: React.FC<TableRegulationProps> = ({
           <div
             className="hover:bg-dark_green hover:text-white hover:cursor-pointer w-full rounded-lg p-2 mt-1 font-semibold flex justify-center bg-light_green"
             onClick={() => {
-              setIsCreateOpen(true);
+              setIsCreateOpen(true)
             }}
           >
             Add Regulation
@@ -250,7 +245,7 @@ const TableRegulation: React.FC<TableRegulationProps> = ({
         )}
       </div>
     </>
-  );
-};
+  )
+}
 
-export default TableRegulation;
+export default TableRegulation

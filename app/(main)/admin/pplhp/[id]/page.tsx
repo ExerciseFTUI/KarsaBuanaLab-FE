@@ -9,12 +9,16 @@ const PPLHPDetailPage = async ({ params }: { params: { id: string } }) => {
 
   console.log(pplhp);
 
+const PPLHPDetailPage = async ({ params }: { params: { id: string } }) => {
+  const project = await getSingleProjectAdminPplhp(params.id);
+
+  // console.log(project);
+
   return (
     <>
       <main className="flex flex-col lg:flex-row gap-5 lg:gap-0 justify-between w-full">
         <div className="lg:w-2/5">
           {/* <FNPrintPage linkData={linkData ? linkData : []} /> */}
-
           <PplhpTab pplhp={pplhp} />
         </div>
 

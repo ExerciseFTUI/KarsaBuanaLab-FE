@@ -1,10 +1,10 @@
-"use client";
-import React, { FC } from "react";
+"use client"
+import React, { FC } from "react"
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
+import { zodResolver } from "@hookform/resolvers/zod"
+import * as z from "zod"
 
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/button"
 import {
   Form,
   FormControl,
@@ -13,7 +13,7 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
+} from "@/components/ui/form"
 
 import {
   Card,
@@ -22,24 +22,24 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
+} from "@/components/ui/card"
 
-import { UseFormReturn, useForm } from "react-hook-form";
-import { createProjectValidation } from "@/lib/validations/CreateProjectValidation";
-import { signIn } from "next-auth/react";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useToast } from "@/components/ui/use-toast";
-import { Input } from "@/components/ui/input";
+import { UseFormReturn, useForm } from "react-hook-form"
+import { createProjectValidation } from "@/lib/validations/CreateProjectValidation"
+import { signIn } from "next-auth/react"
+import { useRouter, useSearchParams } from "next/navigation"
+import { useToast } from "@/components/ui/use-toast"
+import { Input } from "@/components/ui/input"
 
 interface EditProjectFormProps {
-  form: UseFormReturn<z.infer<typeof createProjectValidation>>;
-  onSubmit?: (values: z.infer<typeof createProjectValidation>) => any;
+  form: UseFormReturn<z.infer<typeof createProjectValidation>>
+  onSubmit?: (values: z.infer<typeof createProjectValidation>) => any
 }
 
 const EditProjectForm: FC<EditProjectFormProps> = ({ form }) => {
-  const router = useRouter();
-  const query = useSearchParams();
-  const { toast } = useToast();
+  const router = useRouter()
+  const query = useSearchParams()
+  const { toast } = useToast()
 
   // 1. Define your form.
   // const form = useForm<z.infer<typeof createProjectValidation>>({
@@ -54,9 +54,7 @@ const EditProjectForm: FC<EditProjectFormProps> = ({ form }) => {
   //   },
   // });
 
-  async function onSubmit(values: z.infer<typeof createProjectValidation>) {
-    // console.log(values);
-  }
+  async function onSubmit(values: z.infer<typeof createProjectValidation>) {}
 
   return (
     <Card className="w-[450px] max-sm:w-[400px] max-h-screen overflow-auto custom-scrollbar ">
@@ -193,7 +191,7 @@ const EditProjectForm: FC<EditProjectFormProps> = ({ form }) => {
         </Form>
       </CardContent>
     </Card>
-  );
-};
+  )
+}
 
-export default EditProjectForm;
+export default EditProjectForm

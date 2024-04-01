@@ -1,17 +1,17 @@
-import { Input } from "@/components/ui/input";
-import { useToast } from "@/components/ui/use-toast";
-import { editBaseSample } from "@/lib/actions/marketing.actions";
-import { BaseSample, Regulation } from "@/lib/models/baseSample.model";
-import { useRouter } from "next/navigation";
-import React, { useState, useEffect } from "react";
+import { Input } from "@/components/ui/input"
+import { useToast } from "@/components/ui/use-toast"
+import { editBaseSample } from "@/lib/actions/marketing.actions"
+import { BaseSample, Regulation } from "@/lib/models/baseSample.model"
+import { useRouter } from "next/navigation"
+import React, { useState, useEffect } from "react"
 
 interface createProps {
-  message: string;
-  isCreateOpen: boolean;
-  setIsCreateOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  from: string;
-  baseSample: BaseSample | undefined;
-  specificRegulation?: Regulation | undefined;
+  message: string
+  isCreateOpen: boolean
+  setIsCreateOpen: React.Dispatch<React.SetStateAction<boolean>>
+  from: string
+  baseSample: BaseSample | undefined
+  specificRegulation?: Regulation | undefined
 }
 
 const CreateRegulationParam: React.FC<createProps> = ({
@@ -22,149 +22,138 @@ const CreateRegulationParam: React.FC<createProps> = ({
   baseSample,
   specificRegulation,
 }) => {
-  const router = useRouter();
-  const { toast } = useToast();
+  const router = useRouter()
+  const { toast } = useToast()
 
-  const [editedValue, setEditedValue] = useState("");
-  const regulations = baseSample?.regulation || [];
+  const [editedValue, setEditedValue] = useState("")
+  const regulations = baseSample?.regulation || []
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEditedValue(e.target.value);
-  };
+    setEditedValue(e.target.value)
+  }
 
   const handleCancel = () => {
-    setIsCreateOpen(false);
-  };
+    setIsCreateOpen(false)
+  }
 
   // TODO : LAST DIT INI BUAT CREATE NEW REGULATION, PARAM DAN DEFAULT PARAM
   const handleConfirm = async () => {
     try {
       if (from === "regulation") {
-        console.log("New Regulation : ", editedValue);
-        handleAddRegulation(); //DONE
+        handleAddRegulation() //DONE
       } else if (from === "param") {
-        console.log("New param based on sample : ", editedValue);
-        handleAddParam(); //
+        handleAddParam() //
       } else if (from === "defaultparam") {
-        console.log("New param based on regulation : ", editedValue);
-        handleAddDefaultParam(); //
+        handleAddDefaultParam() //
       }
 
-      setIsCreateOpen(false); // Close the modal after successful confirmation
+      setIsCreateOpen(false) // Close the modal after successful confirmation
     } catch (error) {
-      console.error("Error creating new regulation:", error);
+      console.error("Error creating new regulation:", error)
       // Handle error, display error message, etc.
     }
-  };
+  }
 
   // LIKE THIS ONE
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      const target = event.target as HTMLElement;
+      const target = event.target as HTMLElement
       if (!target.closest(".modal-content")) {
-        setIsCreateOpen(false);
+        setIsCreateOpen(false)
       }
-    };
+    }
 
     if (isCreateOpen) {
-      document.addEventListener("mousedown", handleClickOutside);
+      document.addEventListener("mousedown", handleClickOutside)
     } else {
-      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside)
     }
 
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [isCreateOpen, setIsCreateOpen]);
+      document.removeEventListener("mousedown", handleClickOutside)
+    }
+  }, [isCreateOpen, setIsCreateOpen])
 
   const handleAddRegulation = async () => {
-    console.log(regulations);
-
     //Map all the regulation in specific sample
     const newRegulation = regulations.map((regulation) => {
       return {
         regulation_name: regulation.regulation_name,
         default_param: regulation.default_param,
-      };
-    });
+      }
+    })
 
     //Add the new regulation
     newRegulation.push({
       regulation_name: editedValue,
       default_param: [],
-    });
-
-    console.log(newRegulation);
+    })
 
     const body = {
       regulation: newRegulation,
-    };
-
-    if (baseSample?._id === undefined) {
-      alert("Sample ID not found");
-      return;
     }
 
-    const result = await editBaseSample(body, baseSample._id);
+    if (baseSample?._id === undefined) {
+      alert("Sample ID not found")
+      return
+    }
+
+    const result = await editBaseSample(body, baseSample._id)
 
     if (result) {
-      router.refresh();
+      router.refresh()
       toast({
         title: "Add Regulation Success",
         description: "Regulation has been added",
-      });
+      })
     } else {
       toast({
         title: "Add Regulation Failed",
         variant: "destructive",
         description: "Regulation failed to add",
-      });
+      })
     }
-  };
+  }
 
   const handleAddParam = async () => {
-    console.log(baseSample?.param);
-
-    const newParam = baseSample?.param || [];
-    newParam.push(editedValue);
-
-    console.log(newParam);
+    const newParam = baseSample?.param || []
+    newParam.push(editedValue as any)
 
     const body = {
       param: newParam,
-    };
-
-    if (baseSample?._id === undefined) {
-      alert("Sample ID not found");
-      return;
     }
 
-    const result = await editBaseSample(body, baseSample?._id);
+    if (baseSample?._id === undefined) {
+      alert("Sample ID not found")
+      return
+    }
+
+    const result = await editBaseSample(body, baseSample?._id)
 
     if (result) {
-      router.refresh();
+      router.refresh()
       toast({
         title: "Add Param Success",
         description: "Param has been added",
-      });
+      })
     } else {
       toast({
         title: "Add Param Failed",
         variant: "destructive",
         description: "Param failed to add",
-      });
+      })
     }
-  };
+  }
 
   const handleAddDefaultParam = async () => {
     if (!specificRegulation) {
-      alert("Regulation not found");
-      return;
+      alert("Regulation not found")
+      return
     }
 
     //Add the new Default Param
-    const newDefaultParam = specificRegulation.default_param;
-    newDefaultParam.push(editedValue);
+    const newDefaultParam = specificRegulation.default_param
+    newDefaultParam.push(editedValue)
 
     //Create newRegulation
     const newRegulation = regulations.map((regulation) => {
@@ -173,41 +162,39 @@ const CreateRegulationParam: React.FC<createProps> = ({
         return {
           regulation_name: regulation.regulation_name,
           default_param: newDefaultParam,
-        };
+        }
       }
       return {
         regulation_name: regulation.regulation_name,
         default_param: regulation.default_param,
-      };
-    });
-
-    console.log(newRegulation);
+      }
+    })
 
     const body = {
       regulation: newRegulation,
-    };
-
-    if (baseSample?._id === undefined) {
-      alert("Sample ID not found");
-      return;
     }
 
-    const result = await editBaseSample(body, baseSample._id);
+    if (baseSample?._id === undefined) {
+      alert("Sample ID not found")
+      return
+    }
+
+    const result = await editBaseSample(body, baseSample._id)
 
     if (result) {
-      router.refresh();
+      router.refresh()
       toast({
         title: "Add Default Param Success",
         description: "Default Param has been added",
-      });
+      })
     } else {
       toast({
         title: "Add Default Param Failed",
         variant: "destructive",
         description: "Default Param failed to add",
-      });
+      })
     }
-  };
+  }
 
   return (
     <>
@@ -245,7 +232,7 @@ const CreateRegulationParam: React.FC<createProps> = ({
         </div>
       )}
     </>
-  );
-};
+  )
+}
 
-export default CreateRegulationParam;
+export default CreateRegulationParam

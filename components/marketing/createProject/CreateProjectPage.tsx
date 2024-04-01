@@ -1,38 +1,37 @@
-"use client";
+"use client"
 
-import CreateProjectBaseData from "@/components/forms/CreateProjectBaseData";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import SamplingTab from "@/components/marketing/createProject/SamplingTab";
-import { FC, useEffect, useState } from "react";
+import CreateProjectBaseData from "@/components/forms/CreateProjectBaseData"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import SamplingTab from "@/components/marketing/createProject/SamplingTab"
+import { FC, useEffect, useState } from "react"
 import {
   FieldValues,
   SubmitHandler,
   useFieldArray,
   useForm,
-} from "react-hook-form";
-import DocumentTab from "./DocumentTab";
-import { createProjectValidation } from "@/lib/validations/CreateProjectValidation";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import ProjectForm from "../forms/ProjectForm";
-import { useToast } from "@/components/ui/use-toast";
-import { useSession } from "next-auth/react";
-import axios from "axios";
-import { BaseApiResponse } from "@/lib/models/baseApiResponse.model";
-import { BaseSample } from "@/lib/models/baseSample.model";
+} from "react-hook-form"
+import DocumentTab from "./DocumentTab"
+import { createProjectValidation } from "@/lib/validations/CreateProjectValidation"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { z } from "zod"
+import ProjectForm from "../forms/ProjectForm"
+import { useToast } from "@/components/ui/use-toast"
+import { useSession } from "next-auth/react"
+import axios from "axios"
+import { BaseApiResponse } from "@/lib/models/baseApiResponse.model"
+import { BaseSample } from "@/lib/models/baseSample.model"
 import {
   createProject,
   createProjectJson,
-} from "@/lib/actions/marketing.actions";
+} from "@/lib/actions/marketing.actions"
 
-import { useRouter } from "next/navigation";
-import { set } from "date-fns";
-import LoadingScreen from "@/components/LoadingComp";
+import { useRouter } from "next/navigation"
+import { set } from "date-fns"
+import LoadingScreen from "@/components/LoadingComp"
 import {
   getProjectClient,
-  getUser,
   updateProjectFile,
-} from "@/lib/actions/marketing.client.actions";
+} from "@/lib/actions/marketing.client.actions"
 
 // const getProject = async () => {
 //   //Add try catch
@@ -47,20 +46,20 @@ import {
 // };
 
 interface CreateProjectProps {
-  baseSamples: BaseSample[];
+  baseSamples: BaseSample[]
 }
 
 const CreateProjectPage: FC<CreateProjectProps> = ({ baseSamples }) => {
-  const { toast } = useToast();
+  const { toast } = useToast()
 
-  const { data } = useSession();
+  const { data } = useSession()
 
-  const router = useRouter();
+  const router = useRouter()
 
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false)
 
   //=============================== Sample Section
-  const [openModal, setOpenModal] = useState(false);
+  const [openModal, setOpenModal] = useState(false)
 
   const sampleForm = useForm<FieldValues>({
     defaultValues: {
@@ -68,14 +67,14 @@ const CreateProjectPage: FC<CreateProjectProps> = ({ baseSamples }) => {
       regulation: "",
       parameters: [],
     },
-  });
+  })
 
-  const { control, watch, setValue, resetField } = sampleForm;
+  const { control, watch, setValue, resetField } = sampleForm
 
   const arrayField = useFieldArray({
     control,
     name: "samples",
-  });
+  })
 
   // useEffect(() => {
   //   getUser();
@@ -83,12 +82,10 @@ const CreateProjectPage: FC<CreateProjectProps> = ({ baseSamples }) => {
   // }, []);
 
   //All the samples get save in here
-  const { fields: samples, append, remove } = arrayField;
+  const { fields: samples, append, remove } = arrayField
 
   //Add to the samples array
   const onSubmitSample: SubmitHandler<FieldValues> = async (data) => {
-    console.log(data.parameters);
-
     //Handle Missing Data
     if (
       data.sampling === "" ||
@@ -96,39 +93,39 @@ const CreateProjectPage: FC<CreateProjectProps> = ({ baseSamples }) => {
       data.parameters.length === 0 ||
       data.parameters[0] === ""
     ) {
-      alert("Please fill the data");
-      return;
+      alert("Please fill the data")
+      return
     }
 
     //Get the parameter only value
     const parametersValue = data.parameters.map(
       (parameter: any) => parameter.value
-    );
+    )
 
     //Get the needed data
     const finalSample = {
       sampleName: data.sampling,
       regulation: data.regulation,
       parameters: parametersValue,
-    };
+    }
 
     //Add to samples array
-    append(finalSample);
+    append(finalSample)
 
     //Reset all the form
-    setValue("parameters", [""], { shouldValidate: true });
-    resetField("sampling");
-    resetField("parameters");
+    setValue("parameters", [""], { shouldValidate: true })
+    resetField("sampling")
+    resetField("parameters")
 
     //Close Modal
-    setOpenModal(false);
+    setOpenModal(false)
 
     //Display Toast
     toast({
       title: "Successfully adding new sample",
       description: "Good Job",
-    });
-  };
+    })
+  }
 
   //================================= End Sample Section
 
@@ -144,14 +141,14 @@ const CreateProjectPage: FC<CreateProjectProps> = ({ baseSamples }) => {
       surel: "",
       contactPerson: "",
     },
-  });
+  })
 
   // 2. Define a submit handler.
   async function onSubmitForm2(
     values: z.infer<typeof createProjectValidation>
   ) {
     try {
-      setIsLoading(true); // Set loading to true before making API call
+      setIsLoading(true) // Set loading to true before making API call
 
       console.log(samples);
 
@@ -164,8 +161,8 @@ const CreateProjectPage: FC<CreateProjectProps> = ({ baseSamples }) => {
             regulation_name: sample.regulation,
             //@ts-ignore
             param: sample.parameters,
-          };
-        });
+          }
+        })
 
         const body = {
           client_name: values.custName,
@@ -175,7 +172,7 @@ const CreateProjectPage: FC<CreateProjectProps> = ({ baseSamples }) => {
           surel: values.surel,
           contact_person: values.contactPerson,
           sampling_list: sampling_list,
-        };
+        }
 
         console.log(body);
 
@@ -185,15 +182,15 @@ const CreateProjectPage: FC<CreateProjectProps> = ({ baseSamples }) => {
           toast({
             title: "Failed to create project",
             description: "please resubmit the form",
-          });
-          setIsLoading(false);
-          return;
+          })
+          setIsLoading(false)
+          return
         }
 
         toast({
           title: "Create Project Success",
           description: "Continue to upload document please wait...",
-        });
+        })
 
         // if (uploadedFiles.length > 0 && response?._id) {
         //   const fileResponse = await updateProjectFile(
@@ -213,25 +210,25 @@ const CreateProjectPage: FC<CreateProjectProps> = ({ baseSamples }) => {
         //   title: "Successfully Create project!",
         //   description: "Good Job",
         // });
-        setIsLoading(false);
+        setIsLoading(false)
 
-        router.push("/marketing/running");
+        router.push("/marketing/running")
         // router.push(`/marketing/project/RUNNING/${response?._id}`);
       } else {
         toast({
           title: "Oops, you forget something!",
           description: "Please add at least one sample",
-        });
+        })
       }
     } catch (error: any) {
       toast({
         title: "Oops, Create project failed!",
         description: "Please Try Again Later",
         variant: "destructive",
-      });
-      console.error("Error creating project:", error.message);
+      })
+      console.error("Error creating project:", error.message)
     } finally {
-      setIsLoading(false); // Set loading to false after API call is finished
+      setIsLoading(false) // Set loading to false after API call is finished
     }
   }
 
@@ -239,7 +236,7 @@ const CreateProjectPage: FC<CreateProjectProps> = ({ baseSamples }) => {
 
   //=============================== Document Section
 
-  const [uploadedFiles, setUploadedFiles] = useState([]);
+  const [uploadedFiles, setUploadedFiles] = useState([])
 
   // useEffect(() => {
   //   console.log(uploadedFiles);
@@ -293,7 +290,7 @@ const CreateProjectPage: FC<CreateProjectProps> = ({ baseSamples }) => {
         </div>
       </Tabs>
     </div>
-  );
-};
+  )
+}
 
-export default CreateProjectPage;
+export default CreateProjectPage
