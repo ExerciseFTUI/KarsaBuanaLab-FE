@@ -5,6 +5,7 @@ import { SamplingPplhp } from "./PplhpType";
 
 interface PplhpSampleProps {
   samples: SamplingPplhp[];
+}
 
 const data = [
   {
