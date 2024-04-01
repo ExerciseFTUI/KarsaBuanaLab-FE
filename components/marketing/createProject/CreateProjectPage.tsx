@@ -33,16 +33,17 @@ import {
   updateProjectFile,
 } from "@/lib/actions/marketing.client.actions"
 
-const getProject = async () => {
-  //Add try catch
-  try {
-    const response = await axios.get(
-      `https://karsalab.netlabdte.com//marketing/getSample`
-    )
-  } catch (error: any) {
-    console.error(`Error get project :`, error.message)
-  }
-}
+// const getProject = async () => {
+//   //Add try catch
+//   try {
+//     const response = await axios.get(
+//       `https://karsalab.netlabdte.com//marketing/getSample`
+//     );
+//     console.log(response.data);
+//   } catch (error: any) {
+//     console.error(`Error get project :`, error.message);
+//   }
+// };
 
 interface CreateProjectProps {
   baseSamples: BaseSample[]
@@ -75,10 +76,10 @@ const CreateProjectPage: FC<CreateProjectProps> = ({ baseSamples }) => {
     name: "samples",
   })
 
-  useEffect(() => {
-    // getUser();
-    getProjectClient("12")
-  }, [])
+  // useEffect(() => {
+  //   getUser();
+  //   getProjectClient("12");
+  // }, []);
 
   //All the samples get save in here
   const { fields: samples, append, remove } = arrayField
@@ -149,6 +150,8 @@ const CreateProjectPage: FC<CreateProjectProps> = ({ baseSamples }) => {
     try {
       setIsLoading(true) // Set loading to true before making API call
 
+      console.log(samples);
+
       if (samples.length > 0) {
         const sampling_list = samples.map((sample) => {
           return {
@@ -171,7 +174,9 @@ const CreateProjectPage: FC<CreateProjectProps> = ({ baseSamples }) => {
           sampling_list: sampling_list,
         }
 
-        const response = await createProjectJson(body)
+        console.log(body);
+
+        const response = await createProjectJson(body);
 
         if (!response) {
           toast({
@@ -233,7 +238,9 @@ const CreateProjectPage: FC<CreateProjectProps> = ({ baseSamples }) => {
 
   const [uploadedFiles, setUploadedFiles] = useState([])
 
-  useEffect(() => {}, [uploadedFiles])
+  // useEffect(() => {
+  //   console.log(uploadedFiles);
+  // }, [uploadedFiles]);
 
   //=============================== End Document Section
 

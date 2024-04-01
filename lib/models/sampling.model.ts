@@ -14,10 +14,19 @@ export interface Sampling {
   _id: string
 }
 
+// export interface Param {
+//   param: string;
+//   method: string[];
+//   unit: string[];
+//   operator: string;
+//   baku_mutu: number;
+//   _id: string;
+// }
+
 export interface CalendarSample {
-  _id: string
-  title: string
-  start: string
-  end: string
-  person: string[]
+  _id: string;
+  title: string;
+  start: string;
+  end: string;
+  person: string[];
 }

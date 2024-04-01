@@ -7,24 +7,55 @@ import { Textarea } from "@/components/ui/textarea";
 import { FC, useState } from "react";
 import { AiOutlineFile } from "react-icons/ai";
 import { BsArrowRight } from "react-icons/bs";
+import { Lhp } from "./PplhpType";
+import { lhpAccept, lhpRevision } from "@/lib/actions/admin.action";
 
 interface PplhpCheckingProps {
   title: string;
   color: string;
+  lhp: Lhp;
   id: string;
 }
 
-export const PplhpChecking: FC<PplhpCheckingProps> = ({ title, color, id }) => {
+export const PplhpChecking: FC<PplhpCheckingProps> = ({
+  title,
+  color,
+  lhp,
+  id,
+}) => {
   const [note, setNote] = useState("");
 
   const handleAccept = async () => {
     //TODO:
-    alert(`Accept ${note}`);
+    // alert(`Accept ${note}`);
+
+    const body = {
+      note: note,
+    };
+
+    const response = await lhpAccept(body, id);
+
+    if (response) {
+      alert("Success");
+    } else {
+      alert("Failed");
+    }
   };
 
   const handleRevisi = async () => {
     //TODO:
-    alert(`Revisi ${note}`);
+    // alert(`Revisi ${note}`);
+    const body = {
+      note: note,
+    };
+
+    const response = await lhpRevision(body, id);
+
+    if (response) {
+      alert("Success");
+    } else {
+      alert("Failed");
+    }
   };
 
   return (
@@ -47,8 +78,8 @@ export const PplhpChecking: FC<PplhpCheckingProps> = ({ title, color, id }) => {
             <SelectSeparator className="bg-pastel_moss_green" />
           </div>
           <div className="flex items-center justify-between text-ghost_white italic">
-            <p>Name</p>
-            <a href="#" target="_blank">
+            <p>{lhp.name}</p>
+            <a href={lhp.url} target="_blank">
               <BsArrowRight className="text-4xl" />
             </a>
           </div>

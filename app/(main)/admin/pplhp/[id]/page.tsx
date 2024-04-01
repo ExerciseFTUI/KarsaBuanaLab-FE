@@ -1,21 +1,13 @@
 import { PplhpChecking } from "@/components/auth/pplhp/PplhpChecking";
 import PplhpTab from "@/components/auth/pplhp/PplhpTab";
-import { getSingleProjectAdminPplhp } from "@/lib/actions/adminPplhp.action";
-import { ProjectAdminPplhpType } from "@/lib/type";
+import { getPplhpDetail } from "@/lib/actions/admin.action";
 
-const tempProject: ProjectAdminPplhpType = {
-  project_name: "Test API 2",
-  lab_files: [
-    {
-      file_name: "Surat Penawaran",
-      file_type:
-        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-      file_id: "15K7eD32iRtxUT4xEHMcXzLp0w2UIXKZS",
-      file_extension: "xlsx",
-      _id: "65b89e5ab6b128d5e4e88c78",
-    },
-  ],
-};
+const PPLHPDetailPage = async ({ params }: { params: { id: string } }) => {
+  const tempParam = "65b75751c0bdd92b29e8154d";
+
+  const pplhp = await getPplhpDetail(tempParam);
+
+  console.log(pplhp);
 
 const PPLHPDetailPage = async ({ params }: { params: { id: string } }) => {
   const project = await getSingleProjectAdminPplhp(params.id);
@@ -27,7 +19,7 @@ const PPLHPDetailPage = async ({ params }: { params: { id: string } }) => {
       <main className="flex flex-col lg:flex-row gap-5 lg:gap-0 justify-between w-full">
         <div className="lg:w-2/5">
           {/* <FNPrintPage linkData={linkData ? linkData : []} /> */}
-          <PplhpTab project={tempProject} />
+          <PplhpTab pplhp={pplhp} />
         </div>
 
         <div className="lg:w-3/5 py-24 lg:py-0">
@@ -42,7 +34,8 @@ const PPLHPDetailPage = async ({ params }: { params: { id: string } }) => {
             <PplhpChecking
               title="Pengisian LHP"
               color="dark_brown"
-              id={params.id}
+              lhp={pplhp.lhp}
+              id={tempParam}
             />
           </div>
         </div>

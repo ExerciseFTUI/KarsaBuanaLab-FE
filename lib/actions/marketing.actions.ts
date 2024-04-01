@@ -230,7 +230,7 @@ export const getSample = async (): Promise<BaseApiResponse<[BaseSample]>> => {
     console.error("Error getting sample:", error.message)
     return null as unknown as BaseApiResponse<[BaseSample]>
   }
-}
+};
 
 export const getDashboard = async (): Promise<
   BaseApiResponse<DashboardResult>

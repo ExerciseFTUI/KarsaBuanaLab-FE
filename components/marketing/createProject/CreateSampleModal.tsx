@@ -109,8 +109,10 @@ const CreateSampleModal: FC<CreateSampleModalProps> = ({
 
     if (temp) {
       const parameters = temp.param || [];
-      
-      return parameters.map((param) => ({ value: param.param, label: param.param }));
+      return parameters.map((param) => ({
+        value: param.param,
+        label: param.param,
+      }));
     }
 
     return [{ value: "", label: "" }];
@@ -251,9 +253,7 @@ const CreateSampleModal: FC<CreateSampleModalProps> = ({
                     <MultipleSelect
                       disabled={!watch("regulation")}
                       label="Parameters"
-                      options={
-                        getParameter()
-                      }
+                      options={getParameter()}
                       onChange={(value) => {
                         setValue("parameters", value, {
                           shouldValidate: true,
