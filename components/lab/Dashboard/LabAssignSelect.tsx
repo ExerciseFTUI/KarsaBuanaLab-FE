@@ -73,6 +73,8 @@ export function LabAssignSelect({
       project._id
     )
 
+    console.log(response)
+
     setIsLoading(false)
 
     if (!response) {

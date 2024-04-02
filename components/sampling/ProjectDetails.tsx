@@ -32,7 +32,9 @@ export default function ProjectDetails({ data, className = "" }: pdType) {
         ].map((d, i) => {
           const key = d.acc as keyof typeof object
 
-          const jadwal_sampling = data["jadwal_sampling"]
+          const jadwal_sampling = !!data["jadwal_sampling"]
+            ? data["jadwal_sampling"]
+            : { from: "", to: "" }
 
           const from = jadwal_sampling.from
             ? jadwal_sampling.from.split("-")
