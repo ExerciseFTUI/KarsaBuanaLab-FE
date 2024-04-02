@@ -28,6 +28,7 @@ import { useRouter } from "next/navigation"
 import LoadingScreen from "../../LoadingScreen"
 import { Project } from "@/lib/models/project.model"
 import { User } from "@/lib/models/user.model"
+import { DateRange } from "react-day-picker"
 
 export function LabAssignEdit({
   sampling,
@@ -51,20 +52,21 @@ export function LabAssignEdit({
   )
 
   // DATE
-  const jadwal_sampling =
-    !!sampling && !!sampling.deadline
-      ? sampling.deadline.split("-").reverse()
-      : []
+  const deadline = !!sampling.deadline
+    ? sampling.deadline
+    : { from: "", to: "" }
 
-  const [date, setDate] = React.useState<Date | undefined>(
-    jadwal_sampling.length
-      ? new Date(
-          parseInt(jadwal_sampling[0]),
-          parseInt(jadwal_sampling[1]) - 1,
-          parseInt(jadwal_sampling[2])
-        )
-      : undefined
-  )
+  let from = deadline.from ? deadline.from.split("-").reverse() : null
+  let to = deadline.to ? deadline.to.split("-").reverse() : null
+
+  const [date, setDate] = React.useState<DateRange | undefined>({
+    from: from
+      ? new Date(parseInt(from[0]), parseInt(from[1]) - 1, parseInt(from[2]))
+      : undefined,
+    to: to
+      ? new Date(parseInt(to[0]), parseInt(to[1]) - 1, parseInt(to[2]))
+      : undefined,
+  })
 
   async function editSampling() {
     if (selectedUser.length == 0)
@@ -76,7 +78,10 @@ export function LabAssignEdit({
     const response = await assignStaffDeadline(
       sampling._id,
       selectedUser.map((u) => u._id),
-      format(date, "dd-LL-y"),
+      {
+        from: date?.from ? format(date.from, "dd-LL-y") : null,
+        to: date?.to ? format(date.to, "dd-LL-y") : null,
+      },
       project._id
     )
 
@@ -200,10 +205,17 @@ export function LabAssignEdit({
                 )}
               >
                 <CalendarIcon className="mr-2 h-6 w-6 text-black" />
-                {date ? (
-                  format(date, "LLL dd, y")
+                {!!date?.from ? (
+                  !!date.to ? (
+                    <>
+                      {format(date.from, "LLL dd, y")} -{" "}
+                      {format(date.to, "LLL dd, y")}
+                    </>
+                  ) : (
+                    format(date.from, "LLL dd, y")
+                  )
                 ) : (
-                  <span className="text-black">Pilih tanggal</span>
+                  <h1 className="">Pilih tanggal</h1>
                 )}
               </Button>
             </PopoverTrigger>
@@ -211,8 +223,8 @@ export function LabAssignEdit({
             <PopoverContent className="w-auto p-0">
               <Calendar
                 initialFocus
-                mode="single"
-                defaultMonth={date}
+                mode="range"
+                defaultMonth={date?.from}
                 selected={date}
                 onSelect={setDate}
                 weekStartsOn={1}

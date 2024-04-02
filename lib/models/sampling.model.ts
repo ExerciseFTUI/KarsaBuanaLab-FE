@@ -10,7 +10,7 @@ export interface Sampling {
   location: string
   lab_assigned_to: string[]
   status: string // "SUBMIT" | "WAITING" | "ACCEPTED" | "REVISION"
-  deadline: string
+  deadline: { from: string; to: string }
   _id: string
 }
 
@@ -24,9 +24,9 @@ export interface Sampling {
 // }
 
 export interface CalendarSample {
-  _id: string;
-  title: string;
-  start: string;
-  end: string;
-  person: string[];
+  _id: string
+  title: string
+  start: string
+  end: string
+  person: string[]
 }

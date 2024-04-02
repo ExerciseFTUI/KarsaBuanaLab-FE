@@ -52,7 +52,9 @@ interface Params {
 export default function SampleProjectTab({ data, projects }: Params) {
   const { files, user, project } = data
 
-  const jadwal_sampling = project.jadwal_sampling
+  const jadwal_sampling = !!project.jadwal_sampling
+    ? project.jadwal_sampling
+    : { from: "", to: "" }
 
   let from = jadwal_sampling.from
     ? jadwal_sampling.from.split("-").reverse()
@@ -105,9 +107,9 @@ export default function SampleProjectTab({ data, projects }: Params) {
     setIsLoading(true)
 
     const response = await assignProject(
-      data.project._id, 
-      assigned, 
-      { from: date?.from ? format(date.from, "dd-LL-y") : null, 
+      data.project._id,
+      assigned,
+      { from: date?.from ? format(date.from, "dd-LL-y") : null,
         to: date?.to ? format(date.to, "dd-LL-y") : null }
       )
 
@@ -125,7 +127,7 @@ export default function SampleProjectTab({ data, projects }: Params) {
         description: "Check again in the screen if its correct",
       });
     }
-    
+
     // router.refresh()
     router.push("/sampling/project")
   }
