@@ -7,6 +7,7 @@ import { SamplingRequestData } from "@/lib/type"
 import { LabAssignSelect } from "./LabAssignSelect"
 import { useRouter } from "next/navigation"
 import { LabAssignEdit } from "./LabAssignEdit"
+import { format } from "date-fns"
 
 interface params {
   data: SamplingRequestData
@@ -73,18 +74,58 @@ export default function LabAssignStaff({ data, projects }: params) {
             <h1 className="font-bold text-lg">Edit</h1>
           </div>
 
-          {samplingAssigned.map((u, i) => (
-            <div
-              key={i}
-              className="grid grid-cols-3 grid-flow-row gap-2 text-center"
-            >
-              <h1 className="">{u.sample_name}</h1>
+          {samplingAssigned.map((u, i) => {
+            const jadwal_sampling = !!u.deadline
+              ? u.deadline
+              : { from: "", to: "" }
 
-              <h1 className="">{u.deadline}</h1>
+            const from = !!jadwal_sampling.from
+              ? jadwal_sampling.from.split("-")
+              : ""
+            const to = !!jadwal_sampling.to ? jadwal_sampling.to.split("-") : ""
 
-              <LabAssignEdit project={project} sampling={u} users={user} />
-            </div>
-          ))}
+            return (
+              <div
+                key={i}
+                className="grid grid-cols-3 grid-flow-row gap-2 text-center"
+              >
+                <h1 className="">{u.sample_name}</h1>
+
+                <h1 className="">
+                  {!!u.deadline
+                    ? !!to
+                      ? format(
+                          new Date(
+                            parseInt(from[2]),
+                            parseInt(from[1]) - 1,
+                            parseInt(from[0])
+                          ),
+                          "LLL dd, y"
+                        ) +
+                        " - " +
+                        format(
+                          new Date(
+                            parseInt(to[2]),
+                            parseInt(to[1]) - 1,
+                            parseInt(to[0])
+                          ),
+                          "LLL dd, y"
+                        )
+                      : format(
+                          new Date(
+                            parseInt(from[2]),
+                            parseInt(from[1]) - 1,
+                            parseInt(from[0])
+                          ),
+                          "LLL dd, y"
+                        )
+                    : "Jadwal belum ada."}
+                </h1>
+
+                <LabAssignEdit project={project} sampling={u} users={user} />
+              </div>
+            )
+          })}
         </div>
       </div>
     </div>
