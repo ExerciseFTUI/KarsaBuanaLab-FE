@@ -58,13 +58,13 @@ interface LabDataTableProps {
 }
 
 const LabDataTable: FC<LabDataTableProps> = ({ data, link }) => {
-  const router = useRouter();
-  const [sorting, setSorting] = useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const router = useRouter()
+  const [sorting, setSorting] = useState<SortingState>([])
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
     _id: false,
-  });
-  const [rowSelection, setRowSelection] = useState({});
+  })
+  const [rowSelection, setRowSelection] = useState({})
 
   const table = useReactTable({
     data,
@@ -123,7 +123,7 @@ const LabDataTable: FC<LabDataTableProps> = ({ data, link }) => {
                       {column.id}
                     </DropdownMenuCheckboxItem>
                   )
-                );
+                )
               })}
           </DropdownMenuContent>
         </DropdownMenu>
