@@ -10,8 +10,6 @@ const PPLHPDetailPage = async ({ params }: { params: { id: string } }) => {
 
   console.log(pplhp);
 
-  // console.log(project);
-
   return (
     <>
       <main className="flex flex-col lg:flex-row gap-5 lg:gap-0 justify-between w-full">
