@@ -3,16 +3,6 @@
 "use client"
 
 import { CalendarSample } from "@/lib/models/sampling.model"
-const samplingTimeline = [
-  { title: 'XYZ Project - Subang', start: '2024-03-01', end : '2024-03-06', person : ["rizky", "firman", "alex"], location : "Subang" },
-  { title: 'Merbabu Project - Jateng', start: '2024-03-06', end : '2024-03-08', person : ["teguh", "tegar", "saiful"], location : "Bumi Ayu" },
-  { title: 'Testing 2', start: '2024-03-06', end : '2024-03-08', person : ["teguh", "tegar", "saiful"], location : "Bumi Ayu" },
-  { title: 'Testing 3', start: '2024-03-06', end : '2024-03-08', person : ["teguh", "tegar", "saiful"], location : "Bumi Ayu" },
-  { title: 'Testing 4', start: '2024-03-06', end : '2024-03-08', person : ["teguh", "tegar", "saiful"], location : "Bumi Ayu" },
-  { title: 'Prau adalah gunung', start: '2024-03-06', end : '2024-03-12', person : ["rizky", "jauhari"], location : "Samarinda" },
-  { title: "Tanah Beracun Project", start : "2024-03-14", person : ["dito"], location : "Jakarta"}
-]
-
 import { useState, useEffect } from 'react';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
@@ -29,6 +19,22 @@ const CalendarSample : FC<dashboardSampling> = ({ data }) => {
   const [detailProject, setDetailProject] = useState(false);
   const [timeline, setTimeline] = useState("");
   const [clickedEvent, setClickedEvent] = useState(null);
+  const [updatedData, setUpdatedData] = useState<CalendarSample[]>([]);
+
+  useEffect(() => {
+    const updatedData = data.map((item) => {
+      const endDate = new Date(item.end);
+      endDate.setDate(endDate.getDate() + 1);
+      const updatedItem = { ...item, end: endDate.toISOString().split('T')[0] };
+      return updatedItem;
+    });
+    setUpdatedData(updatedData);
+
+
+  console.log("updatedData", updatedData);
+  }, [data]);
+
+  
 
   // // Sementara di off in dulu karena belum terlalu butuh
   // const handleDateClick = (arg) => {
@@ -45,6 +51,7 @@ const CalendarSample : FC<dashboardSampling> = ({ data }) => {
 
     if (eventInfo.event.end) {
       const endDate = new Date(eventInfo.event.end);
+      endDate.setDate(endDate.getDate() - 1); 
       const formattedEndDate = endDate.toLocaleDateString();
       setTimeline(`${formattedStartDate} - ${formattedEndDate}`);
     } else {
@@ -144,7 +151,7 @@ const CalendarSample : FC<dashboardSampling> = ({ data }) => {
           plugins={[dayGridPlugin, interactionPlugin]}
           initialView="dayGridMonth"
           weekends={false}
-          events={data}  
+          events={updatedData}  
           // dateClick={handleDateClick}
           eventContent={renderEventContent}
         />
