@@ -9,9 +9,6 @@ const PPLHPDetailPage = async ({ params }: { params: { id: string } }) => {
 
   console.log(pplhp);
 
-const PPLHPDetailPage = async ({ params }: { params: { id: string } }) => {
-  const project = await getSingleProjectAdminPplhp(params.id);
-
   // console.log(project);
 
   return (
