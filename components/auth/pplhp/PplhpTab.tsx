@@ -29,4 +29,3 @@ export default function PplhpTab({ pplhp }: PplhpTabProps) {
   );
 };
 
-export default PplhpTab;

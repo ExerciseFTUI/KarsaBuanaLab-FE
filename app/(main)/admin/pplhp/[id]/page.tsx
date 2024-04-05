@@ -1,6 +1,7 @@
 import { PplhpChecking } from "@/components/auth/pplhp/PplhpChecking";
 import PplhpTab from "@/components/auth/pplhp/PplhpTab";
 import { getPplhpDetail } from "@/lib/actions/admin.action";
+import { getSingleProjectAdminPplhp } from "@/lib/actions/adminPplhp.action";
 
 const PPLHPDetailPage = async ({ params }: { params: { id: string } }) => {
   const tempParam = "65b75751c0bdd92b29e8154d";

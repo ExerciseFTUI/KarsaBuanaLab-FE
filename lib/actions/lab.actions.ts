@@ -21,7 +21,7 @@ export async function getLabProjects(): Promise<BaseApiResponse<Project[]>> {
 export async function assignStaffDeadline(
   sample_id: string,
   user_id: string[],
-  deadline: string,
+  deadline: any,
   projectId: string
 ): Promise<BaseApiResponse<Project>> {
   try {
