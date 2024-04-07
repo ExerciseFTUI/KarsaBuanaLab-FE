@@ -61,7 +61,7 @@ const PplhpDocument: FC<PplhpDocumentProps> = ({ document }) => {
                 <a
                   key={item._id}
                   className={`grid grid-rows-12 items-center bg-white text-dark_brown px-3 md:px-5 p-2 rounded-xl max-w-3xl`}
-                  href={item.file_id} //TODO: change to actual url
+                  href={`https://drive.google.com/file/d/${item.file_id}`}
                   target="_blank"
                 >
                   <div

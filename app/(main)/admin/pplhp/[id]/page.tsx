@@ -2,14 +2,14 @@ import { PplhpChecking } from "@/components/auth/pplhp/PplhpChecking";
 import PplhpTab from "@/components/auth/pplhp/PplhpTab";
 import { getPplhpDetail } from "@/lib/actions/admin.action";
 import { getSingleProjectAdminPplhp } from "@/lib/actions/adminPplhp.action";
+import { redirect, useRouter } from "next/navigation";
 
 const PPLHPDetailPage = async ({ params }: { params: { id: string } }) => {
-  const tempParam = "65b75751c0bdd92b29e8154d";
+  const pplhp = await getPplhpDetail(params.id);
 
-  const pplhp = await getPplhpDetail(tempParam);
-
-  console.log(pplhp);
-  // console.log(project);
+  if (!pplhp?.projectID) {
+    redirect("/admin/pplhp");
+  }
 
   return (
     <>
@@ -32,7 +32,7 @@ const PPLHPDetailPage = async ({ params }: { params: { id: string } }) => {
               title="Pengisian LHP"
               color="dark_brown"
               lhp={pplhp.lhp}
-              id={tempParam}
+              id={params.id}
             />
           </div>
         </div>

@@ -61,7 +61,7 @@ const PplhpSample: FC<PplhpSampleProps> = ({ samples }) => {
                 <a
                   key={item.fileId}
                   className={`grid grid-rows-12 items-center bg-white text-dark_brown px-3 md:px-5 p-2 rounded-xl max-w-3xl`}
-                  href={item.fileId} //TODO: Change to actual URL
+                  href={`https://drive.google.com/file/d/${item.fileId}`}
                   target="_blank"
                 >
                   <div

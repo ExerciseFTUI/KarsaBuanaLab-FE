@@ -23,6 +23,7 @@ import {
 } from "@/lib/type";
 import Link from "next/link";
 import { ProjectSamplingType } from "@/lib/type";
+import { PplhpDetail } from "./auth/pplhp/PplhpType";
 
 // Table Column for Marketing OnDiscuss
 export const columns: ColumnDef<ProjectMarketingType>[] = [
@@ -104,17 +105,14 @@ export const columns: ColumnDef<ProjectMarketingType>[] = [
       // Check if jadwal_sampling and deadline_lhp exist and have 'from' and 'to' properties
       const jadwalSampling = row.original.jadwal_sampling;
       const deadlineLHP = row.original.deadline_lhp;
-      
-      const deadline = row.original.current_division === "SAMPLING" && jadwalSampling
-        ? `${jadwalSampling.to || "Haven't set deadline yet"}`
-        : `${deadlineLHP?.to || "Haven't set deadline yet"}`;
-      
-      return (
-        <div className="capitalize text-center">
-          {deadline}
-        </div>
-      )
-    },    
+
+      const deadline =
+        row.original.current_division === "SAMPLING" && jadwalSampling
+          ? `${jadwalSampling.to || "Haven't set deadline yet"}`
+          : `${deadlineLHP?.to || "Haven't set deadline yet"}`;
+
+      return <div className="capitalize text-center">{deadline}</div>;
+    },
   },
   //createdAt
   {
@@ -448,7 +446,7 @@ export const adminColumns: ColumnDef<UserType>[] = [
 ];
 
 //Table Column for PPLHP Admin Page
-export const pplhpColumns: ColumnDef<ProjectAdminPplhpType>[] = [
+export const pplhpColumns: ColumnDef<PplhpDetail>[] = [
   //No Penawaran
   // {
   //   accessorKey: "no_penawaran",
@@ -557,7 +555,7 @@ export const pplhpColumns: ColumnDef<ProjectAdminPplhpType>[] = [
     id: "actions",
     enableHiding: false,
     cell: ({ row }) => {
-      const project = "65bcdbd1276d90f427c6ea4e";
+      const project = row.original.projectID;
 
       return (
         <DropdownMenu>
@@ -1094,8 +1092,8 @@ export const LabDashboardPageColumns: ColumnDef<LabDataType>[] = [
   {
     accessorKey: "lab_status",
     header: "Status",
-    cell: ({ row }) => { 
-      var color = "bg-moss_green"
+    cell: ({ row }) => {
+      var color = "bg-moss_green";
       if (row.getValue("lab_status") === "RECEIVE") {
         color = "bg-yellow-700";
       } else if (row.getValue("lab_status") === "IN REVIEW BY ADMIN") {
@@ -1103,9 +1101,11 @@ export const LabDashboardPageColumns: ColumnDef<LabDataType>[] = [
       } else if (row.getValue("lab_status") === "REVISION") {
         color = "bg-red-400";
       }
-      
+
       return (
-        <div className={`capitalize  text-white rounded-md w-fit px-2 text-center flex font-semibold ${color}`}>
+        <div
+          className={`capitalize  text-white rounded-md w-fit px-2 text-center flex font-semibold ${color}`}
+        >
           {row.getValue("lab_status")}
         </div>
       );
