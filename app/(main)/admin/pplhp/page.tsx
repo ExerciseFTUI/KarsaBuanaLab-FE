@@ -1,6 +1,5 @@
 import { PPLHPDataTable } from "@/components/auth/PplhpDataTable";
-import { getProjectAdminPplhp } from "@/lib/actions/adminPplhp.action";
-import { getbyStatus } from "@/lib/actions/marketing.actions";
+import { getAllPplhp } from "@/lib/actions/admin.action";
 
 export const metadata = {
   title: "PPLHP",
@@ -8,9 +7,7 @@ export const metadata = {
 };
 
 export default async function PPLHPPage() {
-  const response = await getProjectAdminPplhp();
-
-  // console.log(response);
+  const response = await getAllPplhp();
 
   return (
     <div className="">
