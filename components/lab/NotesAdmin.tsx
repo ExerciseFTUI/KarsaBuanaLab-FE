@@ -1,11 +1,7 @@
+import { NotesFromAdmin } from '@/lib/models/project.model';
 import React from 'react';
 
-interface Note {
-    date: string;
-    content: string;
-}
-
-const NotesAdmin = ({ notes }: { notes: Note[] }) => {
+const NotesAdmin = ({ notes }: { notes: NotesFromAdmin[] }) => {
 
     const sortedNotes = notes.sort((a, b) => {
         // Convert the dates to Date objects for comparison
@@ -24,7 +20,8 @@ const NotesAdmin = ({ notes }: { notes: Note[] }) => {
             <div className="md:max-h-[55vh] overflow-y-scroll custom-scrollbar">
                 {sortedNotes.map((note, index) => (
                     <div key={index} className="h-fit w-full border-2 border-dark_green rounded-lg p-2 mb-2">
-                        <p className="font-light text-sm">{note.date}</p>
+                        {/* Print date with DD MONTH YEAR like 20 Febuary 2025 */}
+                        <p className="font-light text-sm">{new Date(note.date).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
                         <p className="font-normal text-base">{note.content}</p>
                     </div>
                 ))}

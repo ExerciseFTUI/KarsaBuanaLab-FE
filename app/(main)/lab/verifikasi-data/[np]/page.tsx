@@ -73,7 +73,7 @@ export default async function Home({ params }: { params: { np: string } }) {
         {/* END DOCUMENT */}
 
         {/* NOTES FROM ADMIN */}
-        <NotesAdmin notes={notesFromAdmin} />
+        <NotesAdmin notes={resProject.result.notes} />
         {/* END OF NOTES FROM ADMIN */}
       </div>
 
