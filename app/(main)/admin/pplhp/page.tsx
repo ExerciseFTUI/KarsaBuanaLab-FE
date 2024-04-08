@@ -8,6 +8,8 @@ export const metadata = {
 
 export default async function PPLHPPage() {
   const response = await getAllPplhp();
+  console.log("response: ", response);
+  
 
   return (
     <div className="">
