@@ -25,7 +25,7 @@ const CustomCheckbox: FC<CustomCheckboxProps> = ({ formLabel, items }) => {
               <div>
                 <Checkbox
                   className="h-6 w-6 bg-ghost_white cursor-default"
-                  checked={item.status}
+                  checked={item.status == "ACCEPTED" ? true : false}
                 />
               </div>
               <div

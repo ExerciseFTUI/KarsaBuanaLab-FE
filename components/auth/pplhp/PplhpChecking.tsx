@@ -9,6 +9,8 @@ import { AiOutlineFile } from "react-icons/ai";
 import { BsArrowRight } from "react-icons/bs";
 import { Lhp } from "./PplhpType";
 import { lhpAccept, lhpRevision } from "@/lib/actions/admin.action";
+import { useRouter } from "next/navigation";
+import { useToast } from "@/components/ui/use-toast";
 
 interface PplhpCheckingProps {
   title: string;
@@ -23,6 +25,8 @@ export const PplhpChecking: FC<PplhpCheckingProps> = ({
   lhp,
   id,
 }) => {
+  const router = useRouter();
+  const { toast } = useToast();
   const [note, setNote] = useState("");
 
   const handleAccept = async () => {
@@ -30,32 +34,60 @@ export const PplhpChecking: FC<PplhpCheckingProps> = ({
     // alert(`Accept ${note}`);
 
     const body = {
-      note: note,
+      notes: {
+        date: new Date().toISOString(),
+        content: note,
+      },
+      from: "ADMIN",
     };
 
     const response = await lhpAccept(body, id);
 
-    if (response) {
-      alert("Success");
-    } else {
-      alert("Failed");
+    router.push("/admin/pplhp");
+
+    if (!response) {
+      toast({
+        title: "Failed to update the project",
+        description: "please resubmit the form.",
+      });
+      setIsLoading(false);
+      return;
     }
+
+    toast({
+      title: "Update project success",
+      description: "You already set it up.",
+    });
   };
 
   const handleRevisi = async () => {
     //TODO:
     // alert(`Revisi ${note}`);
     const body = {
-      note: note,
+      notes: {
+        date: new Date().toISOString(),
+        content: note,
+      },
+      from: "ADMIN",
     };
 
     const response = await lhpRevision(body, id);
 
-    if (response) {
-      alert("Success");
-    } else {
-      alert("Failed");
+    router.push("/admin/pplhp");
+
+    if (!response) {
+      toast({
+        title: "Failed to update the project",
+        description: "please resubmit the form.",
+      });
+      setIsLoading(false);
+      return;
     }
+
+    toast({
+      title: "Update project success",
+      description: "You already set it up.",
+    });
   };
 
   return (
@@ -115,3 +147,7 @@ export const PplhpChecking: FC<PplhpCheckingProps> = ({
     </div>
   );
 };
+function setIsLoading(arg0: boolean) {
+  throw new Error("Function not implemented.");
+}
+
