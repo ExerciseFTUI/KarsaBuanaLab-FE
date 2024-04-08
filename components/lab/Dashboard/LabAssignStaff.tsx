@@ -72,7 +72,7 @@ export default function LabAssignStaff({ data, projects }: LabAssignStaffProps) 
           {samplingAssigned.map((u, i) => {
             const deadlineFrom = u.deadline?.from
             const deadlineTo = u.deadline?.to
-            const deadline = deadlineFrom ? (deadlineTo ? `${deadlineFrom} - ${deadlineTo}` : `${deadlineFrom}`) : "Haven't set deadline yet"
+            const deadline = deadlineFrom ? (deadlineTo ? `${deadlineTo}` : `${deadlineFrom}`) : "Haven't set deadline yet"
 
             return (
               <div
