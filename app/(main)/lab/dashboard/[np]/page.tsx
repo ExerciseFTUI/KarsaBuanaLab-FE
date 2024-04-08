@@ -20,10 +20,11 @@ export default async function LabDetails({
   params: { np: string }
 }) {
   const projects = await getLabProjects()
+  
   const resFiles = await getLinkFiles(params.np)
   const resUser = await getAllUser("USER")
   const resProject = await getProject(params.np)
-  // const notes = resProject.result.notes
+  const notes = resProject.result.notes
   // console.log("resProject", resProject.result.sampling_list);
   
 
