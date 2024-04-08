@@ -19,12 +19,12 @@ export default async function LabDetails({
 }: {
   params: { np: string }
 }) {
-  // const projects = await getLabProjects()
+  const projects = await getLabProjects()
   
   const resFiles = await getLinkFiles(params.np)
   const resUser = await getAllUser("USER")
-  // const resProject = await getProject(params.np)
-  // const notes = resProject.result.notes
+  const resProject = await getProject(params.np)
+  const notes = resProject.result.notes
   // console.log("resProject", resProject.result.sampling_list);
   
 
@@ -32,12 +32,12 @@ export default async function LabDetails({
     (u) => u.division == null || u.division == "Lab"
   )
 
-  // const data: SamplingRequestData = {
-  //   project:
-  //     (projects.result.find((p: any) => p._id === params.np) as any) || null,
-  //   user: samplingUser || [],
-  //   files: resFiles ? (!resFiles.result ? dokumenData : resFiles.result) : [],
-  // }
+  const data: SamplingRequestData = {
+    project:
+      (projects.result.find((p: any) => p._id === params.np) as any) || null,
+    user: samplingUser || [],
+    files: resFiles ? (!resFiles.result ? dokumenData : resFiles.result) : [],
+  }
 
   return (
     <div className="flex flex-row justify-between mx-10 h-full gap-4">
@@ -48,19 +48,19 @@ export default async function LabDetails({
             Lihat Dokumen
           </h1>
         <div className="space-y-5">
-          {/* {data.files.map((data: any, index: number) => (
+          {data.files.map((data: any, index: number) => (
             <ListDokumen
               key={index}
               title={data.title}
               link={data.link}
               color="light_brown"
             />
-          ))} */}
+          ))}
         </div>
       </div>
 
       {/* NOTES FROM ADMIN */}
-      {/* <NotesAdmin notes={resProject.result.notes} /> */}
+      <NotesAdmin notes={resProject.result.notes} />
         {/* END OF NOTES FROM ADMIN */}
       </div>
 
