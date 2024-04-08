@@ -19,6 +19,9 @@ interface params {
 export default function LabAssignStaff({ data, projects }: params) {
   const { files, project, user } = data
 
+  console.log("data", data);
+  
+
   const samplingNotAssigned = project.sampling_list.filter(
     (s) => s.lab_assigned_to.length === 0
   )

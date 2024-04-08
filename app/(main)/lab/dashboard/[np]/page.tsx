@@ -65,7 +65,7 @@ export default async function LabDetails({
 
       <Separator orientation="vertical" className="bg-light_brown mx-12" />
 
-      <LabAssignStaff data={data} projects={projects.result} />
+      {/* <LabAssignStaff data={data} projects={projects.result} /> */}
     </div>
   )
 }
