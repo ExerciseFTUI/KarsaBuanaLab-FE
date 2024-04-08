@@ -1,25 +1,53 @@
-"use client";
-import { FC } from "react";
-import { AiOutlineFile } from "react-icons/ai";
-import { BsArrowRight } from "react-icons/bs";
-import { SelectSeparator } from "@/components/ui/select";
+"use client"
+import { FC, useEffect } from "react"
+import { useRouter } from "next/navigation"
+import { AiOutlineFile } from "react-icons/ai"
+import { BsArrowRight } from "react-icons/bs"
+import { SelectSeparator } from "@/components/ui/select"
+import { changeToFinished } from "@/lib/actions/pplhp.actions"
+import { changeToReview } from "@/lib/actions/pplhp.actions"
 
 interface LaporanHasilPemeriksaantLink {
-  url: string;
-  name: string;
+  url: string
+  name: string
 }
 
 interface LaporanHasilPemeriksaanProps {
-  title: string;
-  color: string;
-  link: LaporanHasilPemeriksaantLink;
+  title: string
+  color: string
+  link: LaporanHasilPemeriksaantLink
+  np: string // Change from params to np
+  context: "lhpdraft" | "finalreview" // New prop
 }
 
 const LaporanHasilPemeriksaan: FC<LaporanHasilPemeriksaanProps> = ({
   title,
   color,
   link,
+  np,
+  context, // Receive the new prop
 }) => {
+  const router = useRouter()
+
+  const handleSubmitDraft = async () => {
+    try {
+      let message
+      if (context === "lhpdraft") {
+        message = await changeToReview(np)
+        router.push(`/pplhp/lhpdraft`)
+      } else if (context === "finalreview") {
+        message = await changeToFinished(np)
+        router.push(`/pplhp/finalreview`)
+      }
+    } catch (error) {
+      console.error("Failed to submit draft:", error)
+    }
+  }
+
+  // Determine the button text based on the context
+  const buttonText =
+    context === "lhpdraft" ? "SUBMIT FOR FINAL REVIEW" : "FINISH REVIEW"
+
   return (
     <div className="h-screen px-16 space-y-14">
       <h1 className={`text-center text-2xl font-semibold text-${color}`}>
@@ -49,12 +77,13 @@ const LaporanHasilPemeriksaan: FC<LaporanHasilPemeriksaanProps> = ({
       </div>
       <div>
         <button
+          onClick={handleSubmitDraft}
           className={`w-full bg-${color} text-lg text-ghost_white p-3 rounded-2xl`}
         >
-          SUBMIT DRAFT
+          {buttonText}
         </button>
       </div>
     </div>
-  );
-};
-export default LaporanHasilPemeriksaan;
+  )
+}
+export default LaporanHasilPemeriksaan

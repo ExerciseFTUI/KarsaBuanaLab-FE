@@ -1,8 +1,8 @@
 // "use client"
-import React, { useState } from "react";
-import { Check, ChevronsUpDown } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
+import React, { useState } from "react"
+import { Check, ChevronsUpDown } from "lucide-react"
+import { cn } from "@/lib/utils"
+import { Button } from "@/components/ui/button"
 import {
   Command,
   CommandEmpty,
@@ -11,12 +11,12 @@ import {
   CommandItem,
   CommandList,
   CommandSeparator,
-} from "@/components/ui/command";
+} from "@/components/ui/command"
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover";
+} from "@/components/ui/popover"
 import {
   Dialog,
   DialogContent,
@@ -25,42 +25,42 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
+} from "@/components/ui/dialog"
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
+} from "@/components/ui/select"
 import {
   CaretSortIcon,
   CheckIcon,
   PlusCircledIcon,
-} from "@radix-ui/react-icons";
-import { Sampling } from "@/lib/type";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import Dropzone from "@/components/Dropzone";
-import DropzoneSample from "@/components/DropzoneSample";
-import { useToast } from "@/components/ui/use-toast";
-import { BaseSample } from "@/lib/models/baseSample.model";
-import { FiEdit } from "react-icons/fi";
-import { MdDelete } from "react-icons/md";
-import CancelPopup from "@/components/cancelPopup";
+} from "@radix-ui/react-icons"
+import { Sampling } from "@/lib/type"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import Dropzone from "@/components/Dropzone"
+import DropzoneSample from "@/components/DropzoneSample"
+import { useToast } from "@/components/ui/use-toast"
+import { BaseSample } from "@/lib/models/baseSample.model"
+import { FiEdit } from "react-icons/fi"
+import { MdDelete } from "react-icons/md"
+import CancelPopup from "@/components/cancelPopup"
 import {
   deleteBaseSample,
   editBaseSample,
-} from "@/lib/actions/marketing.actions";
-import { useRouter } from "next/navigation";
-import { addBaseSample } from "@/lib/actions/marketing.client.actions";
-import LoadingScreen from "@/components/LoadingScreen";
+} from "@/lib/actions/marketing.actions"
+import { useRouter } from "next/navigation"
+import { addBaseSample } from "@/lib/actions/marketing.client.actions"
+import LoadingScreen from "@/components/LoadingScreen"
 
 // Define the SearchableDropdownProps interface
 interface SearchableDropdownProps {
-  sample: string;
-  setSample: React.Dispatch<React.SetStateAction<string>>;
-  baseSample: BaseSample[];
+  sample: string
+  setSample: React.Dispatch<React.SetStateAction<string>>
+  baseSample: BaseSample[]
 }
 
 const SearchableDropdown: React.FC<SearchableDropdownProps> = ({
@@ -68,59 +68,56 @@ const SearchableDropdown: React.FC<SearchableDropdownProps> = ({
   setSample,
   baseSample,
 }: SearchableDropdownProps) => {
-  const router = useRouter();
-  const { toast } = useToast();
-  const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter()
+  const { toast } = useToast()
+  const [isLoading, setIsLoading] = useState(false)
 
-  const [open, setOpen] = useState(false);
-  const [showNewTeamDialog, setShowNewTeamDialog] = React.useState(false);
-  const [JSAFile, setJSAFile] = useState([]);
-  const [templateSampleForm, setTemplateSampleForm] = useState([]);
-  const [sampleName, setSampleName] = useState("");
-  const [editingId, setEditingId] = useState("");
-  const [editedValue, setEditedValue] = useState(""); // Track edited value
-  const [edit, setEdit] = useState(false);
-  const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
-  const [hoveredSample, setHoveredSample] = useState("");
+  const [open, setOpen] = useState(false)
+  const [showNewTeamDialog, setShowNewTeamDialog] = React.useState(false)
+  const [JSAFile, setJSAFile] = useState([])
+  const [templateSampleForm, setTemplateSampleForm] = useState([])
+  const [sampleName, setSampleName] = useState("")
+  const [editingId, setEditingId] = useState("")
+  const [editedValue, setEditedValue] = useState("") // Track edited value
+  const [edit, setEdit] = useState(false)
+  const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false)
+  const [hoveredSample, setHoveredSample] = useState("")
 
   const handleEditClick = (id: string, currentValue: any) => {
-    setEditingId(id);
-    setEditedValue(currentValue);
-  };
+    setEditingId(id)
+    setEditedValue(currentValue)
+  }
 
   const handleInputChange = (e: any) => {
-    setEditedValue(e.target.value);
-  };
+    setEditedValue(e.target.value)
+  }
 
   // TODO: DIT TOLONG INTEGRASI KE API INI BUAT EDIT SAMPLE NAME
   const handleEditSubmit = async (id: string) => {
-    console.log("New value:", editedValue);
-    console.log("ID: ", id);
-
     // Make an API call to update data.sample_name with editedValue
     // After successful update, reset editing state
-    setEditingId("");
+    setEditingId("")
     // Make API call to update the value on the server
     const body = {
       sample_name: editedValue,
-    };
+    }
 
-    const result = await editBaseSample(body, id);
+    const result = await editBaseSample(body, id)
 
     if (result) {
-      router.refresh();
+      router.refresh()
       toast({
         title: "Edit Sample Name Success",
         description: "Sample name has been updated",
-      });
+      })
     } else {
       toast({
         title: "Edit Sample Name Failed",
         variant: "destructive",
         description: "Sample name failed to update",
-      });
+      })
     }
-  };
+  }
 
   // TODO: create new sample with 2 files :JSA and template
   // DONE
@@ -135,40 +132,37 @@ const SearchableDropdown: React.FC<SearchableDropdownProps> = ({
         title: "You forgot something!",
         variant: "destructive",
         description: "Make sure all input name and files have been uploaded",
-      });
+      })
     } else {
       // Log the values if all fields have valid values
-      // console.log("Name of the sample:", sampleName);
-      // console.log("JSA File:", JSAFile);
-      // console.log("Template Sample Form:", templateSampleForm);
 
-      setIsLoading(true);
+      setIsLoading(true)
 
       const result = await addBaseSample(
         sampleName,
         JSAFile[0],
         templateSampleForm[0]
-      );
+      )
 
-      setIsLoading(false);
+      setIsLoading(false)
 
       if (result) {
-        router.refresh();
+        router.refresh()
         toast({
           title: "Add New Base Sample Success",
           description: "Base sample has been added",
-        });
+        })
       } else {
         toast({
           title: "Add New Base Sample Failed",
           variant: "destructive",
           description: "Base sample failed to add",
-        });
+        })
       }
 
-      setShowNewTeamDialog(false);
+      setShowNewTeamDialog(false)
     }
-  };
+  }
 
   // TODO : INI JUGA DIT Call API for delete sample
   const handleCancelledProject = async () => {
@@ -180,24 +174,24 @@ const SearchableDropdown: React.FC<SearchableDropdownProps> = ({
 
     const body = {
       _id: "Id nya belum ada",
-    };
+    }
 
-    const result = await deleteBaseSample(body);
+    const result = await deleteBaseSample(body)
 
     if (result) {
-      router.refresh();
+      router.refresh()
       toast({
         title: "Delete Sample Name Success",
         description: "Sample name has been deleted",
-      });
+      })
     } else {
       toast({
         title: "Delete Sample Name Failed",
         variant: "destructive",
         description: "Sample name failed to delete",
-      });
+      })
     }
-  };
+  }
 
   return (
     <>
@@ -234,8 +228,8 @@ const SearchableDropdown: React.FC<SearchableDropdownProps> = ({
               <CommandEmpty
                 className=" p-2 m-1 rounded-md bg-light_green hover:bg-dark_green hover:text-white hover:cursor-pointer flex flex-row items-center "
                 onSelect={() => {
-                  setOpen(false);
-                  setShowNewTeamDialog(true);
+                  setOpen(false)
+                  setShowNewTeamDialog(true)
                 }}
               >
                 <CommandSeparator />
@@ -249,8 +243,8 @@ const SearchableDropdown: React.FC<SearchableDropdownProps> = ({
                   <CommandItem
                     key={data._id}
                     onSelect={(currentValue: any) => {
-                      setSample(currentValue === sample ? "" : currentValue);
-                      if (!edit) setOpen(false);
+                      setSample(currentValue === sample ? "" : currentValue)
+                      if (!edit) setOpen(false)
                     }}
                     className=" -mx-4 flex justify-between items-center relative" // Add relative class for positioning
                     onMouseEnter={() => setHoveredSample(data._id)} // Set the hovered sample when mouse enters
@@ -272,8 +266,8 @@ const SearchableDropdown: React.FC<SearchableDropdownProps> = ({
                           onChange={(e) => handleInputChange(e)}
                           onKeyDown={(e) => {
                             if (e.key === "Enter") {
-                              handleEditSubmit(data._id);
-                              setEdit(false);
+                              handleEditSubmit(data._id)
+                              setEdit(false)
                             }
                           }}
                           className="ml-2 border-b border-gray-300 text-slate-700 font-medium focus:outline-none"
@@ -293,17 +287,17 @@ const SearchableDropdown: React.FC<SearchableDropdownProps> = ({
                         <MdDelete
                           className="h-5 w-5 mr-2 text-red-500 hover:cursor-pointer hover:text-white hover:bg-red-500 hover:rounded-md"
                           onClick={() => {
-                            setEdit(false);
-                            setSampleName(data.sample_name);
-                            setShowDeleteConfirmation(true);
+                            setEdit(false)
+                            setSampleName(data.sample_name)
+                            setShowDeleteConfirmation(true)
                           }}
                         />
                         <FiEdit
                           className="h-5 w-5 mr-4 hover:cursor-pointer hover:text-white hover:bg-dark_green hover:rounded-md"
                           onClick={(e: any) => {
-                            handleEditClick(data._id, data.sample_name);
-                            setEdit(true);
-                            e.stopPropagation(); // Prevent the onClick event from bubbling up
+                            handleEditClick(data._id, data.sample_name)
+                            setEdit(true)
+                            e.stopPropagation() // Prevent the onClick event from bubbling up
                           }}
                         />
                       </div>
@@ -318,8 +312,8 @@ const SearchableDropdown: React.FC<SearchableDropdownProps> = ({
                     <CommandItem
                       className=" bg-light_green hover:bg-dark_green hover:text-white hover:cursor-pointer flex flex-row items-center "
                       onSelect={() => {
-                        setOpen(false);
-                        setShowNewTeamDialog(true);
+                        setOpen(false)
+                        setShowNewTeamDialog(true)
                       }}
                     >
                       <PlusCircledIcon className="h-5 w-5" />
@@ -397,7 +391,7 @@ const SearchableDropdown: React.FC<SearchableDropdownProps> = ({
         </DialogContent>
       </Dialog>
     </>
-  );
-};
+  )
+}
 
-export default SearchableDropdown;
+export default SearchableDropdown

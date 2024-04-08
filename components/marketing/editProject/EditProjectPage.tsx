@@ -63,7 +63,7 @@ export default function EditProjectPage({
   const { toast } = useToast()
 
   const router = useRouter()
-  const [showCancelConfirmation, setShowCancelConfirmation] = useState(false); // State to control the cancellation confirmation popup
+  const [showCancelConfirmation, setShowCancelConfirmation] = useState(false) // State to control the cancellation confirmation popup
   const [isLoading, setIsLoading] = useState(false)
 
   //=============================== Sample Section
@@ -86,14 +86,13 @@ export default function EditProjectPage({
 
   //All the samples get save in here
   const { fields: samples, append, remove } = arrayField
-  
+
   //Checker
   const [change, setChange] = useState(false)
 
   //Append all the samples from API to the samples array
   if (project.sampling_list && project.sampling_list.length > samples.length) {
     const newSamples = project.sampling_list.map((sample) => {
-      // console.log(sample);
       return {
         sampleName: sample.sample_name ? sample.sample_name : "Empty",
         regulation: sample.regulation_name[0]?.regulation_name
@@ -262,7 +261,7 @@ export default function EditProjectPage({
       })
 
       if (status === "RUNNING") {
-        router.push("/marketing/running")
+        // router.push("/marketing/running")
       } else if (status === "FINISHED") {
         router.push("/marketing/finished")
       } else if (status === "CANCELLED") {
@@ -285,15 +284,14 @@ export default function EditProjectPage({
   // =============== Action to update reason why project cancelled =================================== //
   const [reason, setReason] = useState("")
 
-  async function handleCancelledProject(
-  ) {
+  async function handleCancelledProject() {
     try {
       const body = {
         _id: project._id,
         desc_failed: reason,
         status: "CANCELLED",
-      }
-      console.log("desc failed : ", body)
+      };
+      // console.log("desc failed : ", body);
 
       //Connect to API
       const responseInfo = await updateProjectInfo(body)
@@ -346,8 +344,6 @@ export default function EditProjectPage({
 
         return
       }
-
-      console.log("Success updated")
     } catch (error: any) {
       const errorMsg = error?.response?.data?.message || error
       toast({
@@ -374,7 +370,6 @@ export default function EditProjectPage({
 
   const handleSubmitDocs = () => {
     // Log the uploaded files to the console
-    console.log("Uploaded Files:", uploadedFiles)
 
     // TODO: Implement the logic to submit uploadedFiles to the server
     if (uploadedFiles.length > 0) {
@@ -428,7 +423,7 @@ export default function EditProjectPage({
 
       {isLoading && <LoadingScreen />}
 
-      <div className="flex gap-6 max-md:flex-col max-md:items-center">
+      <div className="flex gap-6 justify-evenly max-md:flex-col max-md:items-center">
         <ProjectForm
           form={form}
           onSubmit={onSubmit2}
@@ -460,7 +455,7 @@ export default function EditProjectPage({
             {/* Right Card for Dropzone */}
 
             <Card
-              className={`overflow-y-auto md:max-h-[25rem] custom-scrollbar`}
+              className={`overflow-y-auto md:max-h-[70vh] custom-scrollbar`}
             >
               <div>
                 <CardHeader>

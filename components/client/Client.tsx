@@ -9,6 +9,9 @@ export default function Client() {
   const [stage, setStage] = useState("");
   const [clientData, setClientData] = useState();
 
+  console.log("clientData", clientData);
+  
+
   const { data } = useSession();
 
   return (

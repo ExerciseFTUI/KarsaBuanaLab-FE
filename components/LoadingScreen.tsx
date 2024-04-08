@@ -1,6 +1,6 @@
 "use client"
 
-function LoadingScreen({ text = "Loading..." }: { text: string }) {
+function LoadingScreen({ text = "Loading..." }: { text?: string }) {
   return (
     <div
       id="loading-screen"

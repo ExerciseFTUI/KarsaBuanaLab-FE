@@ -30,21 +30,20 @@ import { set } from "date-fns";
 import LoadingScreen from "@/components/LoadingComp";
 import {
   getProjectClient,
-  getUser,
   updateProjectFile,
 } from "@/lib/actions/marketing.client.actions";
 
-const getProject = async () => {
-  //Add try catch
-  try {
-    const response = await axios.get(
-      `https://karsalab.netlabdte.com//marketing/getSample`
-    );
-    console.log(response.data);
-  } catch (error: any) {
-    console.error(`Error get project :`, error.message);
-  }
-};
+// const getProject = async () => {
+//   //Add try catch
+//   try {
+//     const response = await axios.get(
+//       `https://karsalab.netlabdte.com//marketing/getSample`
+//     );
+//     console.log(response.data);
+//   } catch (error: any) {
+//     console.error(`Error get project :`, error.message);
+//   }
+// };
 
 interface CreateProjectProps {
   baseSamples: BaseSample[];
@@ -77,18 +76,16 @@ const CreateProjectPage: FC<CreateProjectProps> = ({ baseSamples }) => {
     name: "samples",
   });
 
-  useEffect(() => {
-    // getUser();
-    getProjectClient("12");
-  }, []);
+  // useEffect(() => {
+  //   getUser();
+  //   getProjectClient("12");
+  // }, []);
 
   //All the samples get save in here
   const { fields: samples, append, remove } = arrayField;
 
   //Add to the samples array
   const onSubmitSample: SubmitHandler<FieldValues> = async (data) => {
-    console.log(data.parameters);
-
     //Handle Missing Data
     if (
       data.sampling === "" ||
@@ -175,9 +172,11 @@ const CreateProjectPage: FC<CreateProjectProps> = ({ baseSamples }) => {
           sampling_list: sampling_list,
         };
 
+        console.log(body);
+
         const response = await createProjectJson(body);
 
-        if (!response) {
+        if (!response._id) {
           toast({
             title: "Failed to create project",
             description: "please resubmit the form",
@@ -191,12 +190,12 @@ const CreateProjectPage: FC<CreateProjectProps> = ({ baseSamples }) => {
           description: "Continue to upload document please wait...",
         });
 
-        if (uploadedFiles.length > 0 && response?._id) {
-          const fileResponse = await updateProjectFile(
-            response?._id,
-            uploadedFiles
-          );
-        }
+        // if (uploadedFiles.length > 0 && response?._id) {
+        //   const fileResponse = await updateProjectFile(
+        //     response?._id,
+        //     uploadedFiles
+        //   );
+        // }
 
         // if (uploadedFiles.length > 0) {
         //   const fileResponse = await updateProjectFile(
@@ -205,12 +204,13 @@ const CreateProjectPage: FC<CreateProjectProps> = ({ baseSamples }) => {
         //   );
         // }
 
-        toast({
-          title: "Successfully Create project!",
-          description: "Good Job",
-        });
+        // toast({
+        //   title: "Successfully Create project!",
+        //   description: "Good Job",
+        // });
         setIsLoading(false);
         router.push("/marketing/running");
+        // router.push(`/marketing/project/RUNNING/${response?._id}`);
       } else {
         toast({
           title: "Oops, you forget something!",
@@ -221,6 +221,7 @@ const CreateProjectPage: FC<CreateProjectProps> = ({ baseSamples }) => {
       toast({
         title: "Oops, Create project failed!",
         description: "Please Try Again Later",
+        variant: "destructive",
       });
       console.error("Error creating project:", error.message);
     } finally {
@@ -234,23 +235,24 @@ const CreateProjectPage: FC<CreateProjectProps> = ({ baseSamples }) => {
 
   const [uploadedFiles, setUploadedFiles] = useState([]);
 
-  useEffect(() => {
-    console.log(uploadedFiles);
-  }, [uploadedFiles]);
+  // useEffect(() => {
+  //   console.log(uploadedFiles);
+  // }, [uploadedFiles]);
 
   //=============================== End Document Section
 
   return (
-    <div className="flex gap-6 max-md:flex-col max-md:items-center">
+    <div className="flex gap-6 max-md:flex-col max-md:items-center justify-evenly">
       {isLoading && <LoadingScreen />}
       <ProjectForm form={form} onSubmit={onSubmitForm2} status="CREATE" />
       <Tabs
         defaultValue="sampling"
-        className="w-[40rem] max-sm:w-[420px] justify-center"
+        // w-[40rem] max-sm:w-[420px]
+        className=" w-[40rem] max-sm:w-[700px] justify-center"
       >
-        <TabsList className="grid w-full grid-cols-2">
+        <TabsList className="grid w-full grid-cols-1">
           <TabsTrigger value="sampling">Sampling</TabsTrigger>
-          <TabsTrigger value="document">Document</TabsTrigger>
+          {/* <TabsTrigger value="document">Document</TabsTrigger> */}
         </TabsList>
 
         {/* Sample Section */}
@@ -267,12 +269,12 @@ const CreateProjectPage: FC<CreateProjectProps> = ({ baseSamples }) => {
         {/* End Sample Section */}
 
         {/* Document Section */}
-        <TabsContent value="document">
+        {/* <TabsContent value="document">
           <DocumentTab
             uploadedFiles={uploadedFiles}
             setUploadedFiles={setUploadedFiles}
           />
-        </TabsContent>
+        </TabsContent> */}
         {/* End Document Section */}
 
         <div className="flex flex-row justify-center items-center mt-5 w-full">

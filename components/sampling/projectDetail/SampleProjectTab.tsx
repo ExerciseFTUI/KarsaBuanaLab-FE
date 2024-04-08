@@ -46,12 +46,15 @@ import {
 
 interface Params {
   data: SamplingRequestData
+  projects: Project[]
 }
 
-export default function SampleProjectTab({ data }: Params) {
+export default function SampleProjectTab({ data, projects }: Params) {
   const { files, user, project } = data
 
-  const jadwal_sampling = project.jadwal_sampling
+  const jadwal_sampling = !!project.jadwal_sampling
+    ? project.jadwal_sampling
+    : { from: "", to: "" }
 
   let from = jadwal_sampling.from
     ? jadwal_sampling.from.split("-").reverse()
@@ -80,7 +83,7 @@ export default function SampleProjectTab({ data }: Params) {
 
   const table = useReactTable({
     data: !!user ? user : [],
-    columns: groupUserSelectableColumns,
+    columns: groupUserSelectableColumns(projects),
     getCoreRowModel: getCoreRowModel(),
     onRowSelectionChange: setRowSelection,
     state: {
@@ -104,9 +107,9 @@ export default function SampleProjectTab({ data }: Params) {
     setIsLoading(true)
 
     const response = await assignProject(
-      data.project._id, 
-      assigned, 
-      { from: date?.from ? format(date.from, "dd-LL-y") : null, 
+      data.project._id,
+      assigned,
+      { from: date?.from ? format(date.from, "dd-LL-y") : null,
         to: date?.to ? format(date.to, "dd-LL-y") : null }
       )
 
@@ -124,7 +127,7 @@ export default function SampleProjectTab({ data }: Params) {
         description: "Check again in the screen if its correct",
       });
     }
-    
+
     // router.refresh()
     router.push("/sampling/project")
   }
@@ -199,7 +202,7 @@ export default function SampleProjectTab({ data }: Params) {
           </Popover>
 
           <AlertDialog>
-            <AlertDialogTrigger>
+            <AlertDialogTrigger asChild>
               <Button className="w-48 py-4 self-center mt-4 bg-light_brown hover:bg-dark_brown disabled:bg-transparent disabled:text-dark_brown disabled:font-bold disabled:border-2 disabled:border-dark_brown">
                 {date == null ? "Choose Deadline" : "Save"}
               </Button>

@@ -1,10 +1,10 @@
-"use client";
-import React, { FC } from "react";
+"use client"
+import React, { FC } from "react"
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
+import { zodResolver } from "@hookform/resolvers/zod"
+import * as z from "zod"
 
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/button"
 import {
   Form,
   FormControl,
@@ -13,7 +13,7 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
+} from "@/components/ui/form"
 
 import {
   Card,
@@ -22,22 +22,22 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
+} from "@/components/ui/card"
 
-import { useForm } from "react-hook-form";
-import { createProjectValidation } from "@/lib/validations/CreateProjectValidation";
+import { useForm } from "react-hook-form"
+import { createProjectValidation } from "@/lib/validations/CreateProjectValidation"
 
-import { signIn } from "next-auth/react";
-import { useRouter, useSearchParams } from "next/navigation";
-import { Input } from "@/components/ui/input";
-import { useToast } from "@/components/ui/use-toast";
+import { signIn } from "next-auth/react"
+import { useRouter, useSearchParams } from "next/navigation"
+import { Input } from "@/components/ui/input"
+import { useToast } from "@/components/ui/use-toast"
 
 interface CreateProjectBaseDataProps {}
 
 const CreateProjectBaseData: FC<CreateProjectBaseDataProps> = ({}) => {
-  const router = useRouter();
-  const query = useSearchParams();
-  const { toast } = useToast();
+  const router = useRouter()
+  const query = useSearchParams()
+  const { toast } = useToast()
 
   // 1. Define your form.
   const form = useForm<z.infer<typeof createProjectValidation>>({
@@ -53,7 +53,7 @@ const CreateProjectBaseData: FC<CreateProjectBaseDataProps> = ({}) => {
       contactPerson: "Adelia",
       valuasiProject: "3000000",
     },
-  });
+  })
 
   // 2. Define a submit handler.
   function onSubmit(values: z.infer<typeof createProjectValidation>) {
@@ -65,20 +65,19 @@ const CreateProjectBaseData: FC<CreateProjectBaseDataProps> = ({}) => {
       ...values,
       redirect: false, //Add redirect to data object
     }).then((callback) => {
-      console.log(callback);
       if (callback?.error) {
         toast({
           description: "Invalid username or password",
           variant: "destructive",
           title: "Uh oh! Something went wrong.",
-        });
+        })
       }
       if (callback?.ok && !callback?.error) {
-        toast({ title: "Successfully logged in", description: "Welcome back" });
-        const callbackUrl = query.get("callbackUrl");
-        router.push(callbackUrl || "/");
+        toast({ title: "Successfully logged in", description: "Welcome back" })
+        const callbackUrl = query.get("callbackUrl")
+        router.push(callbackUrl || "/")
       }
-    });
+    })
     // .finally(() => setIsLoading(false));
   }
 
@@ -270,7 +269,7 @@ const CreateProjectBaseData: FC<CreateProjectBaseDataProps> = ({}) => {
         </Form>
       </CardContent>
     </Card>
-  );
-};
+  )
+}
 
-export default CreateProjectBaseData;
+export default CreateProjectBaseData

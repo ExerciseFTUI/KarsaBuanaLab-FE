@@ -13,7 +13,10 @@ export default async function Home() {
 
   return (
     <div className="flex justify-between w-full h-screen">
-      <LabDataTable data={projects ? projects : []} link="dashboard/" />
+      <LabDataTable
+        data={projects.result ? projects.result : []}
+        link="dashboard/"
+      />
     </div>
-  );
+  )
 }

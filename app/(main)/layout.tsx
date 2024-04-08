@@ -23,7 +23,6 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   const session = await getSessionServer();
-  // if (session) console.log(session.user);
 
   const user = session?.user || "";
   const role = user ? user?.role.toUpperCase() : "";
@@ -31,17 +30,17 @@ export default async function RootLayout({
   let res = null;
   let data: Project[] = [];
 
-  if (role == "USER") {
-    res = await getProjectsByAcc(user ? user?.id : "");
-    data = (res as any).projectList;
-  } else {
-    res = await getProjectByDivision("sampling");
-    data = (res as any).projects;
-  }
+  // if (role == "USER") {
+  //   res = await getProjectsByAcc(user ? user?.id : "");
+  //   data = (res as any).projectList;
+  // } else {
+  //   res = await getProjectByDivision("sampling");
+  //   data = (res as any).projects;
+  // }
 
-  data = data.filter(
-    (p) => p.jadwal_sampling != null && p.current_division == "SAMPLING"
-  );
+  // data = data.filter(
+  //   (p) => p.jadwal_sampling != null && p.current_division == "SAMPLING"
+  // );
 
   return (
     <>

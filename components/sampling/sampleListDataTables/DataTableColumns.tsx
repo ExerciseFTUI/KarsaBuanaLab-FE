@@ -7,6 +7,18 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { User } from "@/lib/models/user.model"
 import { Project } from "@/lib/models/project.model"
 import { Sampling } from "@/lib/models/sampling.model"
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
+import { format } from "date-fns"
 
 // Table Column for Sampling Project
 export const samplingProjectPageColumns: ColumnDef<Project>[] = [
@@ -71,7 +83,9 @@ export const samplingLetterPageColumns: ColumnDef<Project>[] = [
   },
 ]
 
-export const groupUserSelectableColumns: ColumnDef<User>[] = [
+export const groupUserSelectableColumns = (
+  projects: Project[]
+): ColumnDef<User>[] => [
   {
     id: "select",
     header: ({ table }) => (
@@ -99,9 +113,53 @@ export const groupUserSelectableColumns: ColumnDef<User>[] = [
   {
     accessorKey: "username",
     header: "Name",
-    cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("username")}</div>
-    ),
+    cell: ({ row }) => {
+      const projectsThisUserOn = projects
+        .map((p) =>
+          p.project_assigned_to.includes(row.original._id) ? p : null
+        )
+        .filter((p) => p != null)
+
+      return (
+        <AlertDialog>
+          <AlertDialogTrigger asChild>
+            <div className="capitalize cursor-pointer hover:underline">
+              {row.getValue("username")}
+            </div>
+          </AlertDialogTrigger>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>
+                {row.original.username} is working in these project(s).
+              </AlertDialogTitle>
+              <div className="!mt-8">
+                {!projectsThisUserOn
+                  ? "This user is not working in any projects."
+                  : projectsThisUserOn.map((p, i) => (
+                      <div
+                        key={i}
+                        className="border-b-2 border-l-black_brown mb-3"
+                      >
+                        <h1 className="font-bold text-base">
+                          {p?.project_name}
+                        </h1>
+                        <p>
+                          Deadline :{" "}
+                          {p?.jadwal_sampling.to != null
+                            ? p.jadwal_sampling.to.toString()
+                            : p?.jadwal_sampling.from.toString()}
+                        </p>
+                      </div>
+                    ))}
+              </div>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>OK</AlertDialogCancel>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+      )
+    },
   },
   {
     accessorKey: "role",
@@ -111,7 +169,7 @@ export const groupUserSelectableColumns: ColumnDef<User>[] = [
 ]
 
 export const groupUserStaffColumns: ColumnDef<User>[] =
-  groupUserSelectableColumns.slice(1, groupUserSelectableColumns.length)
+  groupUserSelectableColumns([]).slice(1, groupUserSelectableColumns.length)
 
 export const staffGroupListColumns: ColumnDef<User>[] = [
   {

@@ -30,4 +30,11 @@ export interface Project {
   desc_failed: string
   _id: string
   __v: number
+  lab_status: string
+  notes: NotesFromAdmin[]
+}
+
+export interface NotesFromAdmin {
+  date: Date
+  content: string
 }

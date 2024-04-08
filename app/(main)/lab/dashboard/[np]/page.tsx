@@ -112,5 +112,5 @@ export default async function Home({ params }: { params: { np: string } }) {
         </div>
       </div> */}
     </div>
-  );
+  )
 }

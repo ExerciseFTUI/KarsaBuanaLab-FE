@@ -50,14 +50,10 @@ interface DashboardResult {
 //=======================Base Sample Section ========================
 export const editBaseSample = async (body: any, id: string) => {
   try {
-    console.log(body);
-
     const response = await axios.put(
       `${apiBaseUrl}/base-sample/editBaseSample/${id}`,
       body
     );
-
-    console.log(response.data.result);
 
     return response.data.result;
   } catch (error: any) {
@@ -140,6 +136,7 @@ export const createProject = async (
 
     const response = await axios.post(
       `${apiBaseUrl}/projects/create`,
+      // `http://localhost:6666/projects/create`,
       bodyFormData,
       {
         headers: { "Content-Type": "multipart/form-data" },
@@ -163,6 +160,7 @@ export const createProjectJson = async (body: any) => {
       `${apiBaseUrl}/projects/createJSON`,
       body
     );
+
     revalidatePath("/marketing/running");
 
     return response.data.result.project as Project;
@@ -327,6 +325,7 @@ export const getbyStatus = async (
       result: sortedData,
     } as BaseApiResponse<[ProjectMarketingType]>;
   } catch (error: any) {
+    console.error(error?.response?.data);
     console.error(`Error getting project ${status}:`, error.message);
     return null as unknown as BaseApiResponse<[ProjectMarketingType]>;
   }
@@ -335,11 +334,7 @@ export const getbyStatus = async (
 //Update Project Info
 export const updateProjectInfo = async (body: any) => {
   try {
-    //Call API
-    console.log(body);
-
     const response = await axios.put(`${apiBaseUrl}/projects/edit`, body);
-    console.log(response.data.result);
 
     if (response.data.result) {
       //Refetch
@@ -389,7 +384,6 @@ export const updateProjectSample = async (body: any, projectId: string) => {
 //       body
 //     );
 
-//     // console.log(response.data);
 //     revalidatePath("/marketing/running");
 //     return body;
 //   } catch (error: any) {
