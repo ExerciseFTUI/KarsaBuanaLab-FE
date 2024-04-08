@@ -44,8 +44,8 @@ export const getPplhpDetail = async (id: string): Promise<any> => {
 export const lhpRevision = async (body: any, id: string) => {
   try {
     const response = await axios.post(
-      `${apiBaseUrl}/projects/lhp-revision/${id}`,
-      // `http://localhost:6666/projects/lhp-revision/${id}`,
+      // `${apiBaseUrl}/projects/lhp-revision/${id}`,
+      `http://localhost:6666/projects/lhp-revision/${id}`,
       body
     );
 
@@ -63,6 +63,7 @@ export const lhpRevision = async (body: any, id: string) => {
 export const lhpAccept = async (body: any, id: string) => {
   try {
     const response = await axios.post(
+      // `http://localhost:6666/projects/lhp-accept/${id}`,
       `${apiBaseUrl}/projects/lhp-accept/${id}`,
       body
     );

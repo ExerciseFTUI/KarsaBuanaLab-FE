@@ -22,7 +22,10 @@ export default async function LabDetails({
   const projects = await getLabProjects()
   const resFiles = await getLinkFiles(params.np)
   const resUser = await getAllUser("USER")
-  const resProject = await getProject(params.np)
+  // const resProject = await getProject(params.np)
+  // const notes = resProject.result.notes
+  // console.log("resProject", resProject.result.sampling_list);
+  
 
   const samplingUser = resUser.result.filter(
     (u) => u.division == null || u.division == "Lab"
@@ -56,7 +59,7 @@ export default async function LabDetails({
       </div>
 
       {/* NOTES FROM ADMIN */}
-      <NotesAdmin notes={resProject.result.notes} />
+      {/* <NotesAdmin notes={resProject.result.notes} /> */}
         {/* END OF NOTES FROM ADMIN */}
       </div>
 
