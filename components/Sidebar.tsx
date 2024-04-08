@@ -1,42 +1,44 @@
-"use client"
+"use client";
 
-import Link from "next/link"
-import React, { FC } from "react"
-import Image from "next/image"
-import { usePathname, useRouter } from "next/navigation"
+import Link from "next/link";
+import React, { FC } from "react";
+import Image from "next/image";
+import { usePathname, useRouter } from "next/navigation";
 // import { marketingLink } from "@/constants";
-import { BiLogOut } from "react-icons/bi"
+import { BiLogOut } from "react-icons/bi";
 import {
   marketingLink,
   samplingSPVLinks,
   labLinks,
+  labUSERLinks,
   pplhpLinks,
   sampleReceiveLinks,
   samplingUSERLinks,
   adminLinks,
-} from "@/constants/sidebarlinks"
-import { signOut, useSession } from "next-auth/react"
-import DeleteDialog from "./DeleteDialog"
+} from "@/constants/sidebarlinks";
+import { signOut, useSession } from "next-auth/react";
+import DeleteDialog from "./DeleteDialog";
 
 function extractFirstPathSegment(path: string) {
   // Remove leading and trailing slashes and split the path by "/"
-  const segments = path.replace(/^\/|\/$/g, "").split("/")
+  const segments = path.replace(/^\/|\/$/g, "").split("/");
   // Return the first segment
-  return segments[0]
+  return segments[0];
 }
 
 interface LeftSidebarProps {}
 
 const Sidebar: FC<LeftSidebarProps> = ({}) => {
-  const [showDeleteDialog, setShowDeleteDialog] = React.useState<boolean>(false)
+  const [showDeleteDialog, setShowDeleteDialog] =
+    React.useState<boolean>(false);
 
-  const router = useRouter()
-  const pathname = usePathname()
-  const routeSection = "/" + extractFirstPathSegment(pathname)
+  const router = useRouter();
+  const pathname = usePathname();
+  const routeSection = "/" + extractFirstPathSegment(pathname);
 
-  const currentUser = useSession().data?.user
+  const currentUser = useSession().data?.user;
 
-  const role = currentUser?.role.toUpperCase()
+  const role = currentUser?.role.toUpperCase();
 
   const links = pathname.includes("marketing")
     ? marketingLink
@@ -45,10 +47,12 @@ const Sidebar: FC<LeftSidebarProps> = ({}) => {
       ? samplingSPVLinks
       : samplingUSERLinks
     : pathname.includes("lab")
-    ? labLinks
+    ? role == "USER"
+      ? labUSERLinks
+      : labLinks
     : pathname.includes("admin")
     ? adminLinks
-    : pplhpLinks
+    : pplhpLinks;
 
   //Receive
 
@@ -70,7 +74,7 @@ const Sidebar: FC<LeftSidebarProps> = ({}) => {
         {links.map((link) => {
           const isActive =
             (pathname.includes(link.route) && link.route.length > 1) ||
-            pathname === routeSection + link.route
+            pathname === routeSection + link.route;
           //   if (link.route === "/profile") link.route = `/profile/${userId}`;
 
           return (
@@ -105,7 +109,7 @@ const Sidebar: FC<LeftSidebarProps> = ({}) => {
                 {link.label}
               </p>
             </Link>
-          )
+          );
         })}
       </div>
       <div className="mt-10 px-2">
@@ -131,7 +135,7 @@ const Sidebar: FC<LeftSidebarProps> = ({}) => {
         description="You will be logged out of the system and redirected to the login page. Are you sure you want to continue?"
       />
     </section>
-  )
-}
+  );
+};
 
-export default Sidebar
+export default Sidebar;

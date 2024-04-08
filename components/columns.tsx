@@ -1,8 +1,8 @@
-"use client"
-import { ColumnDef } from "@tanstack/react-table"
-import { ArrowUpDown, MoreHorizontal } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Checkbox } from "@/components/ui/checkbox"
+"use client";
+import { ColumnDef } from "@tanstack/react-table";
+import { ArrowUpDown, MoreHorizontal } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -11,7 +11,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+} from "@/components/ui/dropdown-menu";
 import {
   ReceiveSamplingType,
   ProjectLHPType,
@@ -19,9 +19,9 @@ import {
   ProjectType,
   ProjectMarketingType,
   UserType,
-} from "@/lib/type"
-import Link from "next/link"
-import { ProjectSamplingType } from "@/lib/type"
+} from "@/lib/type";
+import Link from "next/link";
+import { ProjectSamplingType } from "@/lib/type";
 
 // Table Column for Marketing OnDiscuss
 export const columns: ColumnDef<ProjectMarketingType>[] = [
@@ -43,7 +43,7 @@ export const columns: ColumnDef<ProjectMarketingType>[] = [
           Project Name
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
-      )
+      );
     },
     cell: ({ row }) => (
       <div className="capitalize pl-4">{row.getValue("project_name")}</div>
@@ -57,11 +57,11 @@ export const columns: ColumnDef<ProjectMarketingType>[] = [
         <Button className="pl-6" variant="ghost">
           Status
         </Button>
-      )
+      );
     },
 
     cell: ({ row }) => {
-      const status = true
+      const status = true;
 
       return (
         <div className="">
@@ -73,7 +73,7 @@ export const columns: ColumnDef<ProjectMarketingType>[] = [
             {row.getValue("status")}
           </div>
         </div>
-      )
+      );
     },
   },
   //Lokasi
@@ -85,7 +85,7 @@ export const columns: ColumnDef<ProjectMarketingType>[] = [
         <div className="capitalize pl-0.5">
           {row.getValue("alamat_sampling")}
         </div>
-      )
+      );
     },
   },
   //createdAt
@@ -100,18 +100,18 @@ export const columns: ColumnDef<ProjectMarketingType>[] = [
           Created At
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
-      )
+      );
     },
 
     cell: ({ row }) => {
-      const date = new Date(row.getValue("created_at"))
+      const date = new Date(row.getValue("created_at"));
 
-      let month = (date.getMonth() + 1).toString().padStart(2, "0") // Months are zero-based
-      let day = date.getDate().toString().padStart(2, "0")
-      let year = date.getFullYear()
+      let month = (date.getMonth() + 1).toString().padStart(2, "0"); // Months are zero-based
+      let day = date.getDate().toString().padStart(2, "0");
+      let year = date.getFullYear();
 
-      let formattedDate = month + "/" + day + "/" + year
-      return <div className={`font-medium pl-4`}>{formattedDate}</div>
+      let formattedDate = month + "/" + day + "/" + year;
+      return <div className={`font-medium pl-4`}>{formattedDate}</div>;
     },
   },
   //Last Update
@@ -130,7 +130,7 @@ export const columns: ColumnDef<ProjectMarketingType>[] = [
     id: "actions",
     enableHiding: false,
     cell: ({ row }) => {
-      const project = row.original._id
+      const project = row.original._id;
 
       return (
         <DropdownMenu>
@@ -159,10 +159,10 @@ export const columns: ColumnDef<ProjectMarketingType>[] = [
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
-      )
+      );
     },
   },
-]
+];
 
 // Table Column for Admin Page
 export const adminColumns: ColumnDef<UserType>[] = [
@@ -184,7 +184,7 @@ export const adminColumns: ColumnDef<UserType>[] = [
           Email
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
-      )
+      );
     },
     cell: ({ row }) => (
       <div className="capitalize pl-4">{row.getValue("email")}</div>
@@ -198,11 +198,11 @@ export const adminColumns: ColumnDef<UserType>[] = [
         <Button className="pl-6" variant="ghost">
           Role
         </Button>
-      )
+      );
     },
 
     cell: ({ row }) => {
-      const status = true
+      const status = true;
 
       return (
         <div className="">
@@ -214,7 +214,7 @@ export const adminColumns: ColumnDef<UserType>[] = [
             {row.getValue("role")}
           </div>
         </div>
-      )
+      );
     },
   },
   //Lokasi
@@ -222,7 +222,9 @@ export const adminColumns: ColumnDef<UserType>[] = [
     accessorKey: "division",
     header: "Division",
     cell: ({ row }) => {
-      return <div className="capitalize pl-0.5">{row.getValue("division")}</div>
+      return (
+        <div className="capitalize pl-0.5">{row.getValue("division")}</div>
+      );
     },
   },
   //createdAt
@@ -267,7 +269,7 @@ export const adminColumns: ColumnDef<UserType>[] = [
     id: "actions",
     enableHiding: false,
     cell: ({ row }) => {
-      const userId = row.original.id
+      const userId = row.original.id;
 
       return (
         <DropdownMenu>
@@ -292,10 +294,10 @@ export const adminColumns: ColumnDef<UserType>[] = [
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
-      )
+      );
     },
   },
-]
+];
 
 // Table for cancelled project
 export const columnsCancelled: ColumnDef<ProjectMarketingType>[] = [
@@ -317,7 +319,7 @@ export const columnsCancelled: ColumnDef<ProjectMarketingType>[] = [
           Project Name
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
-      )
+      );
     },
     cell: ({ row }) => (
       <div className="capitalize pl-4">{row.getValue("project_name")}</div>
@@ -331,11 +333,11 @@ export const columnsCancelled: ColumnDef<ProjectMarketingType>[] = [
         <Button className="pl-6" variant="ghost">
           Status
         </Button>
-      )
+      );
     },
 
     cell: ({ row }) => {
-      const status = true
+      const status = true;
 
       return (
         <div className="">
@@ -347,7 +349,7 @@ export const columnsCancelled: ColumnDef<ProjectMarketingType>[] = [
             {row.getValue("status")}
           </div>
         </div>
-      )
+      );
     },
   },
 
@@ -359,14 +361,14 @@ export const columnsCancelled: ColumnDef<ProjectMarketingType>[] = [
         <Button className="flex flex-row w-full justify-center" variant="ghost">
           Cancelled Description
         </Button>
-      )
+      );
     },
     cell: ({ row }) => {
       return (
         <div className="capitalize pl-0.5 overflow-x-clip">
           {row.getValue("desc_failed")}
         </div>
-      )
+      );
     },
   },
 
@@ -375,7 +377,7 @@ export const columnsCancelled: ColumnDef<ProjectMarketingType>[] = [
     id: "actions",
     enableHiding: false,
     cell: ({ row }) => {
-      const project = row.original._id
+      const project = row.original._id;
 
       return (
         <DropdownMenu>
@@ -404,10 +406,10 @@ export const columnsCancelled: ColumnDef<ProjectMarketingType>[] = [
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
-      )
+      );
     },
   },
-]
+];
 
 //Table Column for Penerima Sampling
 export const receiveProjectPageColumns: ColumnDef<ProjectType>[] = [
@@ -430,7 +432,7 @@ export const receiveProjectPageColumns: ColumnDef<ProjectType>[] = [
           Project Title
           <ArrowUpDown strokeWidth={1.5} className="ml-2 h-4 w-4" />
         </Button>
-      )
+      );
     },
     cell: ({ row }) => (
       <div className="capitalize pl-4">{row.getValue("project_name")}</div>
@@ -443,7 +445,7 @@ export const receiveProjectPageColumns: ColumnDef<ProjectType>[] = [
     cell: ({ row }) => {
       return (
         <div className="capitalize pl-0.5">{row.getValue("alamat_kantor")}</div>
-      )
+      );
     },
   },
   //Contact Person
@@ -455,7 +457,7 @@ export const receiveProjectPageColumns: ColumnDef<ProjectType>[] = [
         <div className="capitalize pl-0.5">
           {row.getValue("contact_person")}
         </div>
-      )
+      );
     },
   },
   // Status
@@ -463,14 +465,14 @@ export const receiveProjectPageColumns: ColumnDef<ProjectType>[] = [
     accessorKey: "status",
     header: "Status",
     cell: ({ row }) => {
-      const stat = row.getValue("status")
+      const stat = row.getValue("status");
 
       const color =
         stat == "Need Schedule" || stat == "Get Sample"
           ? "bg-moss_green"
           : stat == "On Discuss" || stat == "Verifying"
           ? "bg-light_brown"
-          : "bg-brick_red"
+          : "bg-brick_red";
 
       return (
         <div
@@ -481,10 +483,10 @@ export const receiveProjectPageColumns: ColumnDef<ProjectType>[] = [
         >
           {row.getValue("status")}
         </div>
-      )
+      );
     },
   },
-]
+];
 
 // Table Column for Sampling Project
 export const samplingProjectPageColumns: ColumnDef<ProjectSamplingType>[] = [
@@ -507,7 +509,7 @@ export const samplingProjectPageColumns: ColumnDef<ProjectSamplingType>[] = [
           Project Title
           <ArrowUpDown strokeWidth={1.5} className="ml-2 h-4 w-4" />
         </Button>
-      )
+      );
     },
     cell: ({ row }) => (
       <div className="capitalize pl-4">{row.getValue("project_name")}</div>
@@ -520,7 +522,7 @@ export const samplingProjectPageColumns: ColumnDef<ProjectSamplingType>[] = [
     cell: ({ row }) => {
       return (
         <div className="capitalize pl-0.5">{row.getValue("alamat_kantor")}</div>
-      )
+      );
     },
   },
   //Contact Person
@@ -532,7 +534,7 @@ export const samplingProjectPageColumns: ColumnDef<ProjectSamplingType>[] = [
         <div className="capitalize pl-0.5">
           {row.getValue("contact_person")}
         </div>
-      )
+      );
     },
   },
   // Status
@@ -540,14 +542,14 @@ export const samplingProjectPageColumns: ColumnDef<ProjectSamplingType>[] = [
     accessorKey: "status",
     header: "Status",
     cell: ({ row }) => {
-      const status: any = row.getValue("status")
+      const status: any = row.getValue("status");
 
       const color =
         status == "Need Schedule" || status == "Get Sample"
           ? "bg-moss_green"
           : status == "On Discuss" || status == "Verifying"
           ? "bg-light_brown"
-          : "bg-brick_red"
+          : "bg-brick_red";
 
       return (
         <div
@@ -558,10 +560,10 @@ export const samplingProjectPageColumns: ColumnDef<ProjectSamplingType>[] = [
         >
           {status}
         </div>
-      )
+      );
     },
   },
-]
+];
 
 // Table Column for Receive Project
 export const receiveSamplingColumns: ColumnDef<ReceiveSamplingType>[] = [
@@ -584,7 +586,7 @@ export const receiveSamplingColumns: ColumnDef<ReceiveSamplingType>[] = [
           Project Title
           <ArrowUpDown strokeWidth={1.5} className="ml-2 h-4 w-4" />
         </Button>
-      )
+      );
     },
     cell: ({ row }) => (
       <div className="capitalize pl-4">{row.getValue("project_name")}</div>
@@ -599,7 +601,7 @@ export const receiveSamplingColumns: ColumnDef<ReceiveSamplingType>[] = [
         <div className="capitalize pl-0.5">
           {row.getValue("alamat_sampling")}
         </div>
-      )
+      );
     },
   },
   //Lokasi
@@ -609,7 +611,7 @@ export const receiveSamplingColumns: ColumnDef<ReceiveSamplingType>[] = [
     cell: ({ row }) => {
       return (
         <div className="capitalize pl-0.5">{row.getValue("alamat_kantor")}</div>
-      )
+      );
     },
   },
   //Contact Person
@@ -621,13 +623,13 @@ export const receiveSamplingColumns: ColumnDef<ReceiveSamplingType>[] = [
         <div className="capitalize pl-0.5">
           {row.getValue("contact_person")}
         </div>
-      )
+      );
     },
   },
   {
     accessorKey: "_id",
   },
-]
+];
 
 export const LHPDraftPageColumns: ColumnDef<ProjectLHPType>[] = [
   //No Penawaran
@@ -648,7 +650,7 @@ export const LHPDraftPageColumns: ColumnDef<ProjectLHPType>[] = [
           Judul Project
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
-      )
+      );
     },
     cell: ({ row }) => (
       <div className="capitalize pl-4">{row.getValue("project_name")}</div>
@@ -663,7 +665,7 @@ export const LHPDraftPageColumns: ColumnDef<ProjectLHPType>[] = [
         <div className="capitalize pl-0.5">
           {row.getValue("alamat_sampling")}
         </div>
-      )
+      );
     },
   },
   //Lokasi
@@ -673,7 +675,7 @@ export const LHPDraftPageColumns: ColumnDef<ProjectLHPType>[] = [
     cell: ({ row }) => {
       return (
         <div className="capitalize pl-0.5">{row.getValue("alamat_kantor")}</div>
-      )
+      );
     },
   },
   {
@@ -684,13 +686,13 @@ export const LHPDraftPageColumns: ColumnDef<ProjectLHPType>[] = [
         <div className="capitalize pl-0.5">
           {row.getValue("contact_person")}
         </div>
-      )
+      );
     },
   },
   {
     accessorKey: "_id",
   },
-]
+];
 
 export const PPLHPFinalReviewPageColumns: ColumnDef<ProjectLHPType>[] = [
   //No Penawaran
@@ -711,7 +713,7 @@ export const PPLHPFinalReviewPageColumns: ColumnDef<ProjectLHPType>[] = [
           Judul Project
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
-      )
+      );
     },
     cell: ({ row }) => (
       <div className="capitalize pl-4">{row.getValue("project_name")}</div>
@@ -726,7 +728,7 @@ export const PPLHPFinalReviewPageColumns: ColumnDef<ProjectLHPType>[] = [
         <div className="capitalize pl-0.5">
           {row.getValue("alamat_sampling")}
         </div>
-      )
+      );
     },
   },
   //Lokasi
@@ -736,7 +738,7 @@ export const PPLHPFinalReviewPageColumns: ColumnDef<ProjectLHPType>[] = [
     cell: ({ row }) => {
       return (
         <div className="capitalize pl-0.5">{row.getValue("alamat_kantor")}</div>
-      )
+      );
     },
   },
   {
@@ -747,25 +749,22 @@ export const PPLHPFinalReviewPageColumns: ColumnDef<ProjectLHPType>[] = [
         <div className="capitalize pl-0.5">
           {row.getValue("contact_person")}
         </div>
-      )
+      );
     },
   },
   {
     accessorKey: "_id",
   },
-]
+];
 
 export const LabDashboardPageColumns: ColumnDef<LabDataType>[] = [
   // No Penawaran
   {
     accessorKey: "no_penawaran",
-    accessorKey: "no_penawaran",
     header: "No Penawaran",
-    cell: ({ row }) => <div className="">{row.getValue("no_penawaran")}</div>,
     cell: ({ row }) => <div className="">{row.getValue("no_penawaran")}</div>,
   },
   {
-    accessorKey: "project_name",
     accessorKey: "project_name",
     header: ({ column }) => {
       return (
@@ -777,16 +776,14 @@ export const LabDashboardPageColumns: ColumnDef<LabDataType>[] = [
           Judul Project
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
-      )
+      );
     },
     cell: ({ row }) => (
-      <div className="capitalize pl-4">{row.getValue("project_name")}</div>
       <div className="capitalize pl-4">{row.getValue("project_name")}</div>
     ),
   },
   //Lokasi
   {
-    accessorKey: "alamat_sampling",
     accessorKey: "alamat_sampling",
     header: "Lokasi",
     cell: ({ row }) => {
@@ -798,7 +795,6 @@ export const LabDashboardPageColumns: ColumnDef<LabDataType>[] = [
     },
   },
   {
-    accessorKey: "contact_person",
     accessorKey: "contact_person",
     header: "Contact Person",
     cell: ({ row }) => {

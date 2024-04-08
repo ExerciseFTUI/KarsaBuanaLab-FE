@@ -194,6 +194,7 @@ export const Sampling = {
   ],
 };
 
+//Client
 export type ClientResponses = {
   sample_name: string;
   status: boolean;
@@ -227,4 +228,44 @@ export type QuestionType = {
 export type AnswerType = {
   questionId: string;
   value: string;
+};
+
+//Lab
+export type LabDashboardType = {
+  judul: string;
+  deadline: string;
+  dokumen: [DocumentType];
+  input: [InputDocumentType];
+};
+
+export type DocumentType = {
+  judul: string;
+  url: string;
+};
+
+export type InputDocumentType = {
+  sampleName: string;
+  asignedTo: string;
+  parameters: [ParameterType];
+};
+
+export type ParameterType = {
+  name: string;
+  unit: [string];
+  method: [string];
+};
+
+export type sampleAnswer = {
+  sample_name: string;
+  param: {
+    param: string;
+    result: number;
+    unit: string;
+    method: string;
+  }[];
+};
+
+export type LabInputDokumenAnswerType = {
+  projectId: string;
+  samples: sampleAnswer[];
 };

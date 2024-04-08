@@ -75,7 +75,6 @@ export const getReportById = async (projectId: string): Promise<any> => {
         },
       }
     );
-
     return response.data.result; // Access 'result' field
   } catch (error: any) {
     console.error(`Error getting sample : ${projectId}:`, error.message);
