@@ -3,11 +3,6 @@ import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-"use client";
-import { ColumnDef } from "@tanstack/react-table";
-import { ArrowUpDown, MoreHorizontal } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -225,13 +220,13 @@ export const columnsFinished: ColumnDef<ProjectMarketingType>[] = [
       const status = true;
 
       return (
-        <div className="flex justify-center items-center w-full">
+        <div className="">
           <div
-            className={`font-light text-white w-fit px-6 py-0.5 rounded-full items-center justify-center ${
-              status === "SAMPLING" ? "bg-yellow-700" : status === "ANALYSIS" ? "bg-blue-900" : "bg-moss_green"
+            className={`font-light text-white w-fit px-6 py-0.5 rounded-full ${
+              status ? "bg-yellow-700" : "bg-red-400"
             }`}
           >
-            {status}
+            {row.getValue("status")}
           </div>
         </div>
       );
@@ -242,12 +237,9 @@ export const columnsFinished: ColumnDef<ProjectMarketingType>[] = [
     accessorKey: "alamat_sampling",
     header: "Lokasi Sampling",
     cell: ({ row }) => {
-      const deadline = row.original.jadwal_sampling?.to || "Haven't set deadline yet";
-      return (
-        <div className="capitalize text-center ">
-          {deadline}
-        </div>
-      );
+      const deadline =
+        row.original.jadwal_sampling?.to || "Haven't set deadline yet";
+      return <div className="capitalize text-center ">{deadline}</div>;
     },
   },
   //createdAt
