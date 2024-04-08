@@ -213,7 +213,7 @@ export const Sampling = {
 
 export type ClientResponses = {
   sample_name: string;
-  status: boolean;
+  status: string;
 };
 
 export type FinishedData = {

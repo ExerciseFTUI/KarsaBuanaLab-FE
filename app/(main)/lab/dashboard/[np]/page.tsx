@@ -1,9 +1,11 @@
 import LabAssignStaff from "@/components/lab/Dashboard/LabAssignStaff"
 import ListDokumen from "@/components/lab/ListDokumen"
+import NotesAdmin from "@/components/lab/NotesAdmin"
 import { Separator } from "@/components/ui/separator"
 import { getLabProjects } from "@/lib/actions/lab.actions"
 import { getLinkFiles } from "@/lib/actions/pplhp.actions"
 import { getAllUser } from "@/lib/actions/sampling.actions"
+import { getProject } from "@/lib/actions/marketing.actions"
 import { SamplingRequestData } from "@/lib/type"
 
 const dokumenData = [
@@ -20,6 +22,7 @@ export default async function LabDetails({
   const projects = await getLabProjects()
   const resFiles = await getLinkFiles(params.np)
   const resUser = await getAllUser("USER")
+  const resProject = await getProject(params.np)
 
   const samplingUser = resUser.result.filter(
     (u) => u.division == null || u.division == "Lab"
@@ -33,11 +36,13 @@ export default async function LabDetails({
   }
 
   return (
-    <div className="flex flex-row justify-between m-5 mx-10 h-full">
-      <div className="flex flex-col w-[45%]">
-        <h1 className="text-black_brown text-2xl font-semibold pb-8">
-          Lihat Dokumen
-        </h1>
+    <div className="flex flex-row justify-between mx-10 h-full gap-4">
+      <div className="flex flex-col w-[40%]">
+        {/* START DOCUMENT */}
+        <div className="flex flex-col mb-10">
+          <h1 className="text-black_brown text-2xl font-semibold pb-4">
+            Lihat Dokumen
+          </h1>
         <div className="space-y-5">
           {data.files.map((data: any, index: number) => (
             <ListDokumen
@@ -48,6 +53,11 @@ export default async function LabDetails({
             />
           ))}
         </div>
+      </div>
+
+      {/* NOTES FROM ADMIN */}
+      <NotesAdmin notes={resProject.result.notes} />
+        {/* END OF NOTES FROM ADMIN */}
       </div>
 
       <Separator orientation="vertical" className="bg-light_brown mx-12" />

@@ -1,4 +1,7 @@
+"use server";
+
 import axios from "axios";
+import { revalidatePath } from "next/cache";
 
 const apiBaseUrl = process.env.API_BASE_URL || "http://localhost:5000";
 
@@ -42,8 +45,11 @@ export const lhpRevision = async (body: any, id: string) => {
   try {
     const response = await axios.post(
       `${apiBaseUrl}/projects/lhp-revision/${id}`,
+      // `http://localhost:6666/projects/lhp-revision/${id}`,
       body
     );
+
+    revalidatePath("/admin/pplhp");
 
     return response.data;
   } catch (error: any) {
@@ -60,6 +66,8 @@ export const lhpAccept = async (body: any, id: string) => {
       `${apiBaseUrl}/projects/lhp-accept/${id}`,
       body
     );
+
+    revalidatePath("/admin/pplhp");
 
     return response.data;
   } catch (error: any) {

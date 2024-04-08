@@ -116,9 +116,9 @@ export function PPLHPDataTable({ datas }: PPLHPDataTableProps) {
         {/* Seach Input */}
         <Input
           placeholder="Filter By Name"
-          value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
+          value={(table.getColumn("project_name")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
-            table.getColumn("name")?.setFilterValue(event.target.value)
+            table.getColumn("project_name")?.setFilterValue(event.target.value)
           }
           className="max-w-sm border-pastel_moss_green rounded-full focus-visible:ring-0 bg-pastel_moss_green pl-5 placeholder:text-moss_green"
         />
