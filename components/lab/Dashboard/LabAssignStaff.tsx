@@ -27,6 +27,8 @@ export default function LabAssignStaff({ data, projects }: LabAssignStaffProps) 
 
   function saveProject() {
     // Implement your saveProject logic here
+    // log samplingAssigned
+    // console.log(samplingAssigned)
   }
 
   return (
