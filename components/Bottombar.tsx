@@ -34,7 +34,7 @@ function Bottombar() {
   const links = pathname.includes("marketing")
     ? marketingLink
     : pathname.includes("sampling")
-    ? role == "SPV"
+    ? role == "SPV" || role == "ADMIN"
       ? samplingSPVLinks
       : samplingUSERLinks
     : pathname.includes("lab")
