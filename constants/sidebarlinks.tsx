@@ -1,7 +1,5 @@
 import { HiChartBar } from "react-icons/hi";
 import { LiaRunningSolid } from "react-icons/lia";
-import { HiChartBar } from "react-icons/hi";
-import { LiaRunningSolid } from "react-icons/lia";
 import {
   AiFillHome,
   AiOutlineCheckCircle,
@@ -20,22 +18,8 @@ import { BsFileText } from "react-icons/bs";
 import { BiSolidBox } from "react-icons/bi";
 import { FiFileText } from "react-icons/fi";
 import { FiArchive } from "react-icons/fi";
-} from "react-icons/ai";
-import { MdOutlineCancel } from "react-icons/md";
-import { FaRunning } from "react-icons/fa";
-import { ReactNode } from "react";
-import { GiLoveLetter, GiPaper } from "react-icons/gi";
-import { LetterCaseCapitalizeIcon, PlusIcon } from "@radix-ui/react-icons";
-import { Archive, Mail } from "lucide-react";
-import { BsFileText } from "react-icons/bs";
-import { BiSolidBox } from "react-icons/bi";
-import { FiFileText } from "react-icons/fi";
-import { FiArchive } from "react-icons/fi";
 
 export interface ISidebarLinks {
-  route: string;
-  label: string;
-  icon: ReactNode;
   route: string;
   label: string;
   icon: ReactNode;
