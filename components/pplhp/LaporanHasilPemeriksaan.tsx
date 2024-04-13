@@ -46,7 +46,7 @@ const LaporanHasilPemeriksaan: FC<LaporanHasilPemeriksaanProps> = ({
 
   // Determine the button text based on the context
   const buttonText =
-    context === "lhpdraft" ? "SUBMIT FOR FINAL REVIEW" : "FINISH REVIEW"
+    context === "lhpdraft" ? "SUBMIT TO LAB" : "FINISH REVIEW"
 
   return (
     <div className="h-screen px-16 space-y-14">

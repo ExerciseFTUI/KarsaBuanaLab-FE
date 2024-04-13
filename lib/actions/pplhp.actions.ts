@@ -98,3 +98,18 @@ export const changeToFinished = async (id: string): Promise<String> => {
     return null as unknown as string
   }
 }
+
+export const getProjectDetails = async (projectId: string): Promise<any> => {
+  try {
+    const response = await axios.get(
+      `https://karsalab.netlabdte.com/projects/get-lhp/${projectId}`
+    );
+    return response.data;
+  } catch (error: any) {
+    console.error(
+      `Error fetching project details for ID ${projectId}:`,
+      error.message
+    );
+    throw new Error(error.message);
+  }
+};
