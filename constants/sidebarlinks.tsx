@@ -115,11 +115,11 @@ export const pplhpLinks: ISidebarLinks[] = [
     route: "/lhpdraft",
     label: "Pembuatan Draft LHP",
   },
-  {
-    icon: <FaRunning />,
-    route: "/finalreview",
-    label: "Final Review LHP dan Printing",
-  },
+  // {
+  //   icon: <FaRunning />,
+  //   route: "/finalreview",
+  //   label: "Final Review LHP dan Printing",
+  // },
 ];
 
 export const labLinks: ISidebarLinks[] = [

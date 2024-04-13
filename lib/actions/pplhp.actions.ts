@@ -98,3 +98,44 @@ export const changeToFinished = async (id: string): Promise<String> => {
     return null as unknown as string
   }
 }
+
+export const setDeadlineLHP = async (
+  projectId: string,
+  deadline: { from: string; to: string } // Specify type of deadline
+): Promise<Project> => {
+  try {
+    const response = await axios.post(
+      `https://karsalab.netlabdte.com/projects/set-deadline-lhp`,
+      {
+        projectId,
+        deadline, // Pass the deadline object directly
+      }
+    );
+
+    // Assuming the response contains the updated project object
+    return response.data.message;
+    console.log(response.data.message);
+    console.log("Deadline set successfully.");
+  } catch (error: any) {
+    console.error(
+      `Error setting deadline for project with ID ${projectId}:`,
+      error.message
+    );
+    throw new Error(error.message);
+  }
+};
+
+export const getProjectDetails = async (projectId: string): Promise<any> => {
+  try {
+    const response = await axios.get(
+      `https://karsalab.netlabdte.com/projects/get-lhp/${projectId}`
+    );
+    return response.data;
+  } catch (error: any) {
+    console.error(
+      `Error fetching project details for ID ${projectId}:`,
+      error.message
+    );
+    throw new Error(error.message);
+  }
+};
