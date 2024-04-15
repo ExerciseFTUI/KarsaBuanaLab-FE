@@ -1,6 +1,6 @@
 import PPLHPDataTable from "@/components/pplhp/PPLHPDraftDataTable";
 import getSessionServer from "@/lib/actions/getSessionServer";
-import { getProject } from "@/lib/actions/pplhp.actions";
+import { getPplhpByStatus, getProject } from "@/lib/actions/pplhp.actions";
 import { Project } from "@/lib/models/project.model";
 import { revalidatePath } from "next/cache";
 

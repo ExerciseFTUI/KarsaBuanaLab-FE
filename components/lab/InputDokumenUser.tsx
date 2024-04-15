@@ -25,7 +25,7 @@ import {
 import { Input } from "../ui/input";
 import { InputDocumentType, sampleAnswer } from "@/lib/type";
 import {
-  form,
+  Form,
   labInputDocumentValidation,
 } from "@/lib/validations/LabValidation";
 import { z } from "zod";
@@ -33,13 +33,13 @@ import { submitLab } from "@/lib/actions/lab.action";
 import { useToast } from "../ui/use-toast";
 import { useRouter } from "next/navigation";
 
-interface inputDokumenUserProps {
+interface InputDokumenUserProps {
   sample: [InputDocumentType];
   userId: string;
   projectId: string;
 }
 
-const inputDokumenUser: FC<inputDokumenUserProps> = ({
+const InputDokumenUser: FC<InputDokumenUserProps> = ({
   sample,
   userId,
   projectId,
@@ -50,7 +50,7 @@ const inputDokumenUser: FC<inputDokumenUserProps> = ({
     register,
     handleSubmit,
     formState: { errors },
-  } = form();
+  } = Form();
 
   function mergeData(
     data: [InputDocumentType],
@@ -220,4 +220,4 @@ const inputDokumenUser: FC<inputDokumenUserProps> = ({
   );
 };
 
-export default inputDokumenUser;
+export default InputDokumenUser;
