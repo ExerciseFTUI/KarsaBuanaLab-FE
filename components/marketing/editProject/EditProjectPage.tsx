@@ -166,6 +166,7 @@ export default function EditProjectPage({
   const form = useForm<z.infer<typeof createProjectValidation>>({
     resolver: zodResolver(createProjectValidation),
     defaultValues: {
+      password: project.password || "",
       title: project.project_name || "",
       custName: project.client_name || "",
       alamatKantor: project.alamat_kantor || "",
@@ -406,6 +407,8 @@ export default function EditProjectPage({
     }
   }
 
+  const password = form.watch("password")
+
   //=============================== End Document Section
 
   return (
@@ -430,6 +433,7 @@ export default function EditProjectPage({
           status={status}
           note="Gakuat bayar jasa kita"
           updatePayment={updatePayment}
+          password={password}
         />
         <Tabs defaultValue="sampling" className="w-[40rem] max-sm:w-[420px] ">
           <TabsList className="grid w-full grid-cols-2">

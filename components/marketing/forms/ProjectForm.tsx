@@ -1,5 +1,5 @@
 "use client";
-import React, { FC, useState, useEffect } from "react";
+import React, { FC, useState, useEffect, useRef } from "react";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -14,7 +14,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-
+import { FaCopy } from "react-icons/fa";
 import {
   Card,
   CardContent,
@@ -40,6 +40,7 @@ interface ProjectFormProps {
   updatePayment?(
     values: z.infer<typeof createProjectValidation>
   ): Promise<void>;
+  password?: string;
 }
 
 const ProjectForm: FC<ProjectFormProps> = ({
@@ -48,11 +49,27 @@ const ProjectForm: FC<ProjectFormProps> = ({
   status,
   note,
   updatePayment,
+  password,
 }) => {
   const router = useRouter();
   const query = useSearchParams();
   const { toast } = useToast();
   const [paidStatus, setPaidStatus] = useState(form.getValues("is_paid"));
+
+  const copyToClipboard = async (text: string) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      toast({
+        title: `Copied to clipboard ${text}`,
+      });
+    } catch (error) {
+      toast({
+        title: "Failed to copy to clipboard",
+        variant: "destructive",
+      });
+    }
+  }
+  
 
   return (
     // w-[450px] max-sm:w-[400px] md:max-h-[33rem]
@@ -297,6 +314,35 @@ const ProjectForm: FC<ProjectFormProps> = ({
                 </FormItem>
               )}
             />
+                  <div className="flex w-full max-w-sm items-center space-x-2">
+            <FormField
+                  control={form.control}
+                  name="password"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Password</FormLabel>
+                      <FormControl >
+                          <Input
+                            disabled={true}
+                            type="string"
+                            className=""
+                            placeholder=""
+                            {...field}
+                          />
+
+                      </FormControl>
+
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                  <Button
+                    onClick={() => copyToClipboard(password ?? "")}
+                    className="bg-moss_green text-white"
+                  >
+                    <FaCopy />
+                  </Button>
+                </div>
             <FormField
               control={form.control}
               name="contactPerson"
