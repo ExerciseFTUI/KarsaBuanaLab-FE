@@ -12,6 +12,7 @@ export default async function Home({ params }: { params: { np: string } }) {
     project = await getLabDashboardProject(params.np, session.user.id);
     console.log(project);
   }
+  
   return (
     <div className="flex flex-row justify-between m-5 mx-10 h-full">
       <div className="flex flex-col w-[25%] space-y-16">

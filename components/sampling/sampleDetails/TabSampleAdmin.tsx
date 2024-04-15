@@ -112,6 +112,9 @@ export default function TabSampleAdmin({
     router.refresh()
   }
 
+  console.log("sampling_list", sampling_list);
+  
+
   return (
     <Tabs defaultValue="buatDokumen" className="flex-1">
       {isLoading && <LoadingScreen text="" />}
@@ -141,6 +144,16 @@ export default function TabSampleAdmin({
                   href={files.sampling_list[i].url || "/"}
                 />
 
+                {/* Check s.status, if status == "WAITING" || "NOT ASSIGNET", just showing 1 disable button with text of "Waiting staff" */}
+                {s.status == "REVISION" || s.status == "NOT ASSIGNED" ? (
+                  <Button
+                    className="bg-light_brown hover:bg-dark_brown"
+                    title="Waiting Staff"
+                    disabled
+                  >
+                    Waiting
+                    </Button>
+                    ) : (
                 <div className="flex gap-2">
                   <AlertDialog>
                     <AlertDialogTrigger>
@@ -205,6 +218,7 @@ export default function TabSampleAdmin({
                     </AlertDialogContent>
                   </AlertDialog>
                 </div>
+                      )}
               </div>
             ))}
           </div>

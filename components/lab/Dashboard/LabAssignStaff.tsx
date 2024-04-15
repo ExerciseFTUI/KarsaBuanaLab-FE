@@ -1,32 +1,35 @@
 "use client"
 
-import React from "react"
+import React from "react";
+import { Project } from "@/lib/models/project.model";
+import { SamplingRequestData } from "@/lib/type";
+import { LabAssignSelect } from "./LabAssignSelect";
+import { useRouter } from "next/navigation";
+import { LabAssignEdit } from "./LabAssignEdit";
+import { format } from "date-fns";
+import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
 
-import { Project } from "@/lib/models/project.model"
-import { SamplingRequestData } from "@/lib/type"
-import { LabAssignSelect } from "./LabAssignSelect"
-import { useRouter } from "next/navigation"
-import { LabAssignEdit } from "./LabAssignEdit"
-import { format } from "date-fns"
-import { Button } from "@/components/ui/button"
-import { Separator } from "@/components/ui/separator"
-
-interface params {
-  data: SamplingRequestData
-  projects: Project[]
+interface LabAssignStaffProps {
+  data: SamplingRequestData;
+  projects: Project[];
 }
 
-export default function LabAssignStaff({ data, projects }: params) {
-  const { files, project, user } = data
+export default function LabAssignStaff({ data, projects }: LabAssignStaffProps) {
+  const { files, project, user } = data;
 
   const samplingNotAssigned = project.sampling_list.filter(
     (s) => s.lab_assigned_to.length === 0
-  )
+  );
   const samplingAssigned = project.sampling_list.filter(
     (s) => s.lab_assigned_to.length !== 0
-  )
+  );
 
-  function saveProject() {}
+  function saveProject() {
+    // Implement your saveProject logic here
+    // log samplingAssigned
+    // console.log(samplingAssigned)
+  }
 
   return (
     <div className="w-full border-0 border-black">
@@ -50,9 +53,7 @@ export default function LabAssignStaff({ data, projects }: params) {
                 className="grid grid-cols-3 grid-flow-row gap-2 text-center"
               >
                 <h1 className="">{s.sample_name}</h1>
-
                 <h1></h1>
-
                 <LabAssignSelect project={project} users={user} sampling={s} />
               </div>
             ))}
@@ -71,14 +72,9 @@ export default function LabAssignStaff({ data, projects }: params) {
           </div>
 
           {samplingAssigned.map((u, i) => {
-            const jadwal_sampling = !!u.deadline
-              ? u.deadline
-              : { from: "", to: "" }
-
-            const from = !!jadwal_sampling.from
-              ? jadwal_sampling.from.split("-")
-              : ""
-            const to = !!jadwal_sampling.to ? jadwal_sampling.to.split("-") : ""
+            const deadlineFrom = u.deadline?.from
+            const deadlineTo = u.deadline?.to
+            const deadline = deadlineFrom ? (deadlineTo ? `${deadlineTo}` : `${deadlineFrom}`) : "Haven't set deadline yet"
 
             return (
               <div
@@ -86,46 +82,15 @@ export default function LabAssignStaff({ data, projects }: params) {
                 className="grid grid-cols-3 grid-flow-row gap-2 text-center"
               >
                 <h1 className="">{u.sample_name}</h1>
-
-                <h1 className="">
-                  {!!u.deadline
-                    ? !!to
-                      ? format(
-                          new Date(
-                            parseInt(from[2]),
-                            parseInt(from[1]) - 1,
-                            parseInt(from[0])
-                          ),
-                          "LLL dd, y"
-                        ) +
-                        " - " +
-                        format(
-                          new Date(
-                            parseInt(to[2]),
-                            parseInt(to[1]) - 1,
-                            parseInt(to[0])
-                          ),
-                          "LLL dd, y"
-                        )
-                      : format(
-                          new Date(
-                            parseInt(from[2]),
-                            parseInt(from[1]) - 1,
-                            parseInt(from[0])
-                          ),
-                          "LLL dd, y"
-                        )
-                    : "Jadwal belum ada."}
-                </h1>
-
+                <h1 className="">{deadline}</h1>
                 <LabAssignEdit project={project} sampling={u} users={user} />
               </div>
-            )
+            );
           })}
         </div>
       </div>
 
-      {samplingNotAssigned.length == 0 && (
+      {samplingNotAssigned.length === 0 && (
         <>
           <Separator orientation="horizontal" className="bg-dark_brown" />
 
@@ -144,5 +109,5 @@ export default function LabAssignStaff({ data, projects }: params) {
         </>
       )}
     </div>
-  )
+  );
 }
