@@ -18,6 +18,7 @@ import Finished from "../client/Finished"
 import { Button } from "../ui/button"
 import { ClientDataType } from "@/lib/type"
 import { getReportById } from "@/lib/actions/client.actions"
+import { revalidatePath } from "next/cache"
 
 const ClientStepper = dynamic(() => import("../Stepper/ClientStepper"), {
   ssr: false,
@@ -110,16 +111,16 @@ const ClientCard: FC<ClientCardProps> = ({ resiNumber, stage, clientData }) => {
     <Card className="w-full md:w-2/3 md:h-[90vh] flex flex-col my-4 md:m-6 md:mx-10 bg-ghost_white rounded-xl">
       <CardHeader className="flex flex-row bg-dark_green px-10 rounded-xl justify-between shadow-xl">
         <CardTitle className="my-auto text-3xl text-white font-extrabold">{`ID ${resiNumber}`}</CardTitle>
-        {activeStep !== 2 ? (
-          <div className="w-fit h-fit">
+        {/* {activeStep !== 2 ? ( */}
+          {/* <div className="w-fit h-fit">
             <FiRefreshCw className="text-4xl text-ghost_green" />
-          </div>
-        ) : (
+          </div> */}
+        {/* ) : ( */}
           <FiRefreshCw
             className="text-4xl text-ghost_white cursor-pointer"
             onClick={handleRefreshClick}
           />
-        )}
+        {/* } )} */}
       </CardHeader>
       <div className="border-2 rounded-xl shadow-xl">
         <ClientStepper steps={steps} activeStep={activeStep} />

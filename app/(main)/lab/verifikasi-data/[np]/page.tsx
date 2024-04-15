@@ -10,35 +10,6 @@ import {
 } from "@/lib/actions/sampling.actions"
 import { SamplingRequestData } from "@/lib/type"
 
-// dummy data for notes from admin, array of objects of date and text
-const notesFromAdmin = [
-  {
-    date: "10 February 2023",
-    content:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-  },
-  {
-    date: "5 September 2022",
-    content:
-      "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-  },
-  {
-    date: "15 June 2023",
-    content:
-      "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
-  },
-  {
-    date: "20 April 2022",
-    content:
-      "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-  },
-  {
-    date: "3 November 2022",
-    content:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-  },
-]
-
 export default async function Home({ params }: { params: { np: string } }) {
   const resProject = await getProject(params.np)
   const resFiles = await getLinkFiles(params.np)

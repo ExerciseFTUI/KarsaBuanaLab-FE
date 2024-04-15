@@ -115,11 +115,11 @@ export const pplhpLinks: ISidebarLinks[] = [
     route: "/lhpdraft",
     label: "Pembuatan Draft LHP",
   },
-  {
-    icon: <FaRunning />,
-    route: "/finalreview",
-    label: "Final Review LHP dan Printing",
-  },
+  // {
+  //   icon: <FaRunning />,
+  //   route: "/finalreview",
+  //   label: "Final Review LHP dan Printing",
+  // },
 ];
 
 export const labLinks: ISidebarLinks[] = [
@@ -133,12 +133,14 @@ export const labLinks: ISidebarLinks[] = [
     route: "/verifikasi-data",
     label: "Verifikasi Data",
   },
-  // {
-  //   icon: <FiArchive />,
-  //   route: "/final-review",
-  //   label: "Final Review",
-  // },
+  {
+    icon: <FiArchive />,
+    route: "/final-review",
+    label: "Final Review",
+  },
 ];
+
+export const labUSERLinks: ISidebarLinks[] = [labLinks[0]];
 
 export const sampleReceiveLinks: ISidebarLinks[] = [
   {

@@ -74,20 +74,25 @@ export function DataTable({ datas, status }: DataTableProps) {
     React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
 
-  const [data, setData] = React.useState<any>([]);
+  //const [data, setData] = React.useState<any>([]);
 
-  React.useEffect(() => {
-    // if datas is not empty then push the data to the data array
-    if (datas && datas.length > 0) {
-      setData(datas);
-    } else {
-      setData([]);
-    }
-  }, []);
+  // React.useEffect(() => {
+  //   // if datas is not empty then push the data to the data array
+  //   if (datas && datas.length > 0) {
+  //     setData(datas);
+  //   } else {
+  //     setData([]);
+  //   }
+  // }, []);
 
   const table = useReactTable({
-    data: data,
-    columns: status === "CANCELLED" ? columnsCancelled : status ==="FINISHED" ? columnsFinished : columns,
+    data: datas,
+    columns:
+      status === "CANCELLED"
+        ? columnsCancelled
+        : status === "FINISHED"
+        ? columnsFinished
+        : columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
@@ -179,21 +184,21 @@ export function DataTable({ datas, status }: DataTableProps) {
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
-                className="hover:bg-pastel_moss_green ease-in-out duration-500 text-xs hover:cursor-pointer hover:rounded-xl "
-                key={row.id}
-                data-state={row.getIsSelected() && "selected"}
+                  className="hover:bg-pastel_moss_green ease-in-out duration-500 text-xs hover:cursor-pointer hover:rounded-xl "
+                  key={row.id}
+                  data-state={row.getIsSelected() && "selected"}
                 >
-                    {row.getVisibleCells().map((cell) => (
-                      <TableCell key={cell.id}>
-                        {/* <Link href={`/marketing/project/65afbed1987cf82566e2669a`}> */}
-                          {flexRender(
-                            cell.column.columnDef.cell,
-                            cell.getContext()
-                          )}
-                        {/* </Link> */}
-                      </TableCell>
-                    ))}
-                  </TableRow>
+                  {row.getVisibleCells().map((cell) => (
+                    <TableCell key={cell.id}>
+                      {/* <Link href={`/marketing/project/65afbed1987cf82566e2669a`}> */}
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
+                      )}
+                      {/* </Link> */}
+                    </TableCell>
+                  ))}
+                </TableRow>
               ))
             ) : (
               <TableRow>
