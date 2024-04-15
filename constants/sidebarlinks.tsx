@@ -133,11 +133,11 @@ export const labLinks: ISidebarLinks[] = [
     route: "/verifikasi-data",
     label: "Verifikasi Data",
   },
-  // {
-  //   icon: <FiArchive />,
-  //   route: "/final-review",
-  //   label: "Final Review",
-  // },
+  {
+    icon: <FiArchive />,
+    route: "/final-review",
+    label: "Final Review",
+  },
 ];
 
 export const labUSERLinks: ISidebarLinks[] = [labLinks[0]];

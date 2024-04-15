@@ -1,5 +1,3 @@
-"use server";
-
 import axios from "axios";
 import { Project } from "../models/project.model";
 import {
@@ -7,7 +5,6 @@ import {
   LabInputDokumenAnswerType,
   sampleAnswer,
 } from "../type";
-import ProjectD from "@/components/sampling/projectDetail";
 
 const apiBaseUrl = process.env.API_BASE_URL || "http://localhost:5000";
 const clientBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || "";

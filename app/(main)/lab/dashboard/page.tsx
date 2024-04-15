@@ -12,7 +12,6 @@ export default async function Home() {
   const role = user ? user?.role.toUpperCase() : "";
 
   let projects = await getLabProjects();
-
   if (session && role === "USER") {
     const response = await getProjectBy(session.user.id);
     projects = response.result || [];

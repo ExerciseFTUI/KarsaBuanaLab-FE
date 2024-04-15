@@ -54,13 +54,12 @@ export default async function LabDetails({
     isAdmin = false;
     console.log(project);
   }
-
+    
   return (
-    <div className="flex flex-row justify-between mx-10 h-full gap-4">
-      <div className="flex flex-col w-[40%]">
-        {/* START DOCUMENT */}
-        <div className="flex flex-col mb-10">
-          <h1 className="text-black_brown text-2xl font-semibold pb-4">
+    <div className="flex flex-row justify-between m-5 mx-10 h-full">
+      <div className="flex flex-col w-[25%] space-y-16">
+        <div>
+          <h1 className="text-black_brown text-2xl font-semibold pb-8">
             Lihat Dokumen
           </h1>
           <div className="space-y-5">
@@ -105,8 +104,66 @@ export default async function LabDetails({
         )}
 
       </div>
+      <Separator orientation="vertical" className="bg-light_brown" />
+      <div className="w-[65%]">
+        {session?.user.role == "USER" && (
+          <InputDokumenUser
+            sample={project.input}
+            userId={session.user.id}
+            projectId={params.np}
+          />
+        )}
+      </div>
 
-      <Separator orientation="vertical" className="bg-light_brown mx-12" />
+      {/* <div className="flex flex-col w-[45%] relative">
+        <div className="flex flex-row text-2xl font-medium space-x-0 cursor-pointer pb-10   ">
+          <div
+            className={`flex flex-col items-end ${
+              selectedTab === "Document"
+                ? "text-dark_brown"
+                : "text-ghost_brown"
+            } w-1/2`}
+            onClick={() => setSelectedTab("Document")}
+          >
+            <h1 className="mb-4 mx-5">Document</h1>
+            <div
+              className={`w-4/5 h-1 rounded-l-full ${
+                selectedTab === "Document" ? "bg-dark_brown" : "bg-ghost_brown"
+              }`}
+            />
+          </div>
+          <div
+            className={`w-1/2 cursor-pointer ${
+              selectedTab === "Group" ? "text-dark_brown" : "text-ghost_brown"
+            }`}
+            onClick={() => setSelectedTab("Group")}
+          >
+            <h1 className="mb-4 mx-5">Group</h1>
+            <div
+              className={`w-4/5 h-1 rounded-r-full ${
+                selectedTab === "Group" ? "bg-dark_brown" : "bg-ghost_brown"
+              }`}
+            />
+          </div>
+        </div>
+        {selectedTab === "Document" && (
+          <div className="gap-4 flex flex-row flex-wrap">
+            {inputDokumenData.map((data, index) => (
+              <InputDokumenDashboard
+                key={index} // Perhatikan penggunaan index sebagai key, ini sebaiknya digunakan jika data tidak memiliki properti unik (seperti id)
+                title={data.title}
+                fileName={data.fileName}
+                color={data.color}
+              />
+            ))}
+          </div>
+        )}
+
+        {selectedTab === "Group" && (
+          <div className="gap-4 flex flex-row flex-wrap">
+            {/* <UserDataTable table={dummyData} /> *
+          </div>
+        )}
 
       {isAdmin ? (
         <LabAssignStaff data={data} projects={projects.result} />
