@@ -25,7 +25,7 @@ import {
 import { Input } from "../ui/input";
 import { InputDocumentType, sampleAnswer } from "@/lib/type";
 import {
-  form,
+  useLabForm,
   labInputDocumentValidation,
 } from "@/lib/validations/LabValidation";
 import { z } from "zod";
@@ -39,7 +39,7 @@ interface inputDokumenUserProps {
   projectId: string;
 }
 
-const inputDokumenUser: FC<inputDokumenUserProps> = ({
+const InputDokumenUser: FC<inputDokumenUserProps> = ({
   sample,
   userId,
   projectId,
@@ -50,7 +50,7 @@ const inputDokumenUser: FC<inputDokumenUserProps> = ({
     register,
     handleSubmit,
     formState: { errors },
-  } = form();
+  } = useLabForm();
 
   function mergeData(
     data: [InputDocumentType],
@@ -220,4 +220,4 @@ const inputDokumenUser: FC<inputDokumenUserProps> = ({
   );
 };
 
-export default inputDokumenUser;
+export default InputDokumenUser;

@@ -28,7 +28,10 @@ export default function Home({ params }: { params: { np: string } }) {
             <Separator orientation="vertical" className="bg-light_brown" />
             <div className="flex flex-col w-[45%] relative">
                 <h1 className="text-black_brown text-2xl font-semibold pb-8">Input Dokumen</h1>
-                <InputDokumenFinalReview color="light_brown" />
+                <InputDokumenFinalReview  
+                fileName="LHP"
+                url={dokumenData[0].link}
+                color="light_brown"/>
                 <div className="flex flex-row absolute bottom-5 w-full justify-between">
                     <button className="w-[47%] text-dark_brown font-semibold p-3 rounded-2xl border-2 border-dark_brown" >Cancel</button>
                     <button className="w-[47%] text-white bg-dark_brown font-semibold p-3 rounded-2xl border-2 border-dark_brown" >Save</button>                

@@ -28,7 +28,10 @@ export type labInputDocumentValidationType = z.infer<
   typeof labInputDocumentValidation
 >;
 
-export const form = () =>
-  useForm<labInputDocumentValidationType>({
+export const useLabForm = () => {
+  const form = useForm<labInputDocumentValidationType>({
     resolver: zodResolver(labInputDocumentValidation),
   });
+
+  return form;
+};
