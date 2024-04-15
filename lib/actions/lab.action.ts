@@ -5,10 +5,21 @@ import {
   LabInputDokumenAnswerType,
   sampleAnswer,
 } from "../type";
-import ProjectD from "@/components/sampling/projectDetail";
 
-const apiBaseUrl = process.env.API_BASE_URL || "";
+const apiBaseUrl = process.env.API_BASE_URL || "http://localhost:5000";
 const clientBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || "";
+
+export const getProjectLab = async () : Promise<Project[]> => {
+  try {
+    const response = await axios.get(`${apiBaseUrl}/lab/`);
+    
+    return response.data.result; // Access 'result' field
+  } catch (error: any) {
+    console.error(`Error getting project :`, error.message);
+    return null as unknown as Project[];
+  }
+};
+
 export const getProjectBy = async (userId: string): Promise<any> => {
   try {
     const response = await axios.get(`${apiBaseUrl}/lab/get-project-by-lab`, {
