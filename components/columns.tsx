@@ -232,16 +232,14 @@ export const columnsFinished: ColumnDef<ProjectMarketingType>[] = [
       );
     },
   },
-  //Lokasi
+  //Deadline
   {
     accessorKey: "alamat_sampling",
-    header: "Alamat Sampling",
+    header: "Lokasi Sampling",
     cell: ({ row }) => {
-      return (
-        <div className="capitalize pl-0.5">
-          {row.getValue("alamat_sampling")}
-        </div>
-      );
+      const deadline =
+        row.original.jadwal_sampling?.to || "Haven't set deadline yet";
+      return <div className="capitalize text-center ">{deadline}</div>;
     },
   },
   //createdAt
