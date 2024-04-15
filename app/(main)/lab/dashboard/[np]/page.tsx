@@ -52,7 +52,6 @@ export default async function LabDetails({
   if (session && session.user.role === "USER") {
     project = await getLabDashboardProject(params.np, session.user.id);
     isAdmin = false;
-    console.log(project);
   }
 
   return (

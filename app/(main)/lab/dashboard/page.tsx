@@ -14,7 +14,7 @@ export default async function Home() {
   let projects = await getLabProjects();
   if (session && role === "USER") {
     const response = await getProjectBy(session.user.id);
-    projects = response.result || [];
+    projects.result = response;
   }
 
   return (
