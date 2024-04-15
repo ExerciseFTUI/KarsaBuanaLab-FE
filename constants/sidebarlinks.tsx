@@ -140,6 +140,8 @@ export const labLinks: ISidebarLinks[] = [
   // },
 ];
 
+export const labUSERLinks: ISidebarLinks[] = [labLinks[0]];
+
 export const sampleReceiveLinks: ISidebarLinks[] = [
   {
     icon: <AiFillHome />,
