@@ -176,6 +176,8 @@ const CreateProjectPage: FC<CreateProjectProps> = ({ baseSamples }) => {
 
         const response = await createProjectJson(body);
 
+        console.log("success to get Response : ", response);
+        
         if (!response._id) {
           toast({
             title: "Failed to create project",
@@ -190,24 +192,6 @@ const CreateProjectPage: FC<CreateProjectProps> = ({ baseSamples }) => {
           description: "Continue to upload document please wait...",
         });
 
-        // if (uploadedFiles.length > 0 && response?._id) {
-        //   const fileResponse = await updateProjectFile(
-        //     response?._id,
-        //     uploadedFiles
-        //   );
-        // }
-
-        // if (uploadedFiles.length > 0) {
-        //   const fileResponse = await updateProjectFile(
-        //     "65b79328c0bdd92b29e84f43",
-        //     uploadedFiles
-        //   );
-        // }
-
-        // toast({
-        //   title: "Successfully Create project!",
-        //   description: "Good Job",
-        // });
         setIsLoading(false);
         router.push("/marketing/running");
         // router.push(`/marketing/project/RUNNING/${response?._id}`);
