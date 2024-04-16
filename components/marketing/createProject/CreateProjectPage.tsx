@@ -143,6 +143,7 @@ const CreateProjectPage: FC<CreateProjectProps> = ({ baseSamples }) => {
     },
   });
 
+  let start: number;
   // 2. Define a submit handler.
   async function onSubmitForm2(
     values: z.infer<typeof createProjectValidation>
@@ -174,6 +175,10 @@ const CreateProjectPage: FC<CreateProjectProps> = ({ baseSamples }) => {
 
         console.log(body);
 
+        // I want to check how long it takes from send API until finished
+        // Start timer from here
+        start = new Date().getTime();
+
         const response = await createProjectJson(body);
 
         console.log("success to get Response : ", response);
@@ -193,6 +198,13 @@ const CreateProjectPage: FC<CreateProjectProps> = ({ baseSamples }) => {
           description: "Continue to upload document please wait...",
         });
 
+        // End date in here
+        const end = new Date().getTime();
+        const time = end - start;
+
+        // console log time in seconds
+        console.log("it takes ", time / 1000, " seconds to finish");
+
         setIsLoading(false);
         router.push("/marketing/running");
         // router.push(`/marketing/project/RUNNING/${response?._id}`);
@@ -203,6 +215,11 @@ const CreateProjectPage: FC<CreateProjectProps> = ({ baseSamples }) => {
         });
       }
     } catch (error: any) {
+      // end timer if error
+      const end = new Date().getTime();
+      const time = end - start;
+      console.log("it takes ", time / 1000, " seconds to aborted from vercel");
+
       toast({
         title: "Oops, Create project failed!",
         description: "Please Try Again Later",
