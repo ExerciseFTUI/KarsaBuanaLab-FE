@@ -314,7 +314,7 @@ const ProjectForm: FC<ProjectFormProps> = ({
                 </FormItem>
               )}
             />
-                  <div className="flex w-full max-w-sm items-center space-x-2">
+                  {/* <div className="flex w-full max-w-sm items-center space-x-2">
             <FormField
                   control={form.control}
                   name="password"
@@ -342,7 +342,7 @@ const ProjectForm: FC<ProjectFormProps> = ({
                   >
                     <FaCopy />
                   </Button>
-                </div>
+                </div> */}
             <FormField
               control={form.control}
               name="contactPerson"

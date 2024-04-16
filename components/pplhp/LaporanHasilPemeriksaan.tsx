@@ -26,7 +26,7 @@ import {
 } from "@tanstack/react-table";
 import { Project } from "@/lib/models/project.model";
 import LoadingScreen from "@/components/LoadingScreen";
-import { useToast } from "@/components/ui/use-toast";
+import { toast, useToast } from "@/components/ui/use-toast";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -71,30 +71,50 @@ const LaporanHasilPemeriksaan: FC<LaporanHasilPemeriksaanProps> = ({
 
   const handleSubmitDraft = async () => {
     try {
-      // Check if both from and to dates are selected
-      if (!date?.from || !date?.to) {
-        console.error("Both from and to dates must be selected.");
+
+      let deadline = {
+        from: "",
+        to: "",
+      };
+
+      // Check if both from and to dates are selected and if just one is selected, save to date?.to
+      if (date?.from && date?.to) {
+        // Format the from and to dates into separate strings
+        const formattedFrom = format(date.from, "dd-LL-y");
+        const formattedTo = format(date.to, "dd-LL-y");
+  
+        // Prepare the deadline object with formatted dates
+        deadline = {
+          from: formattedFrom,
+          to: formattedTo,
+        };
+
+      } else if (date?.from) {
+        // Format the from date into a string
+        const formattedFrom = format(date.from, "dd-LL-y");
+  
+        // Prepare the deadline object with formatted from date
+        deadline = {
+          from: formattedFrom,
+          to: "",
+        };
+
+      } else {
+        toast({
+          title: "Failed to submit deadline",
+          description: "please choose the date range",
+          variant: "destructive"
+        });
         return;
       }
 
-      // Format the from and to dates into separate strings
-      const formattedFrom = format(date.from, "dd-LL-y");
-      const formattedTo = format(date.to, "dd-LL-y");
-
-      // Prepare the deadline object with formatted dates
-      const deadline = {
-        from: formattedFrom,
-        to: formattedTo,
-      };
-
-      console.log(deadline);
 
       // Call setDeadlineLHP with the project ID (np) and the deadline string
       const response = await setDeadlineLHP(np, deadline);
-
-      // Handle the response as needed
-      console.log(response);
-      console.log("Deadline set successfully.");
+      toast({
+        title: "Deadline LHP submitted",
+        description: "The deadline has been set",
+      });
 
       if (context === "lhpdraft") {
         // Assuming changeToReview is the function to change the project status to "Change to Review"
