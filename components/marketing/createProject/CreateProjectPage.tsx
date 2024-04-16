@@ -143,16 +143,9 @@ const CreateProjectPage: FC<CreateProjectProps> = ({ baseSamples }) => {
     },
   });
 
-  const [startTime, setStartTime] = useState<number | null>(null); // Use null as initial value
-
-  // useEffect to log startTime whenever it changes
-  useEffect(() => {
-    if (startTime !== null) {
-      console.log("start time useState : ", startTime);
-    }
-  }, [startTime]); // Trigger useEffect whenever startTime changes
-
-  // Define your submit handler
+  let start = 0;
+  const [startTime, setStartTime] = useState(0)
+  // 2. Define a submit handler.
   async function onSubmitForm2(
     values: z.infer<typeof createProjectValidation>
   ) {
@@ -183,59 +176,71 @@ const CreateProjectPage: FC<CreateProjectProps> = ({ baseSamples }) => {
 
         console.log(body);
 
-        // Start timer when API request begins
-        setStartTime(new Date().getTime());
+        // I want to check how long it takes from send API until finished
+        // Start timer from here
+        start = new Date().getTime();
+        console.log("start time : ", start);
+        
+        // setStartTime(start)
+        // console.log("start time useState : ", startTime);
+        
+        // return;
 
         const response = await createProjectJson(body);
 
-        console.log("Response : ", response);
+        console.log("success to get Response : ", response);
         
         if (!response) {
           toast({
             title: "Failed to create project",
-            description: "Please resubmit the form.",
+            description: "please resubmit the form",
           });
+          setIsLoading(false);
           return;
         }
+        console.log("get to here : ", response);
 
         toast({
           title: "Create Project Success",
-          description: "Continue to upload document. Please wait...",
+          description: "Continue to upload document please wait...",
         });
 
-        // Calculate elapsed time in seconds
-        if (startTime !== null) {
-          const end = new Date().getTime();
-          const time = (end - startTime) / 1000; // Convert to seconds
-          console.log(`It took ${time} seconds to finish.`);
-        }
+        // End date in here
+        const end = new Date().getTime();
+        console.log("end time : ", end);
+        
+        const time = end - start;
+
+        // console log time in seconds
+        console.log("it takes ", time / 1000, " seconds to finish");
 
         setIsLoading(false);
         router.push("/marketing/running");
+        // router.push(`/marketing/project/RUNNING/${response?._id}`);
       } else {
         toast({
-          title: "Oops, you forgot something!",
-          description: "Please add at least one sample.",
+          title: "Oops, you forget something!",
+          description: "Please add at least one sample",
         });
       }
     } catch (error: any) {
-      // Calculate elapsed time in case of error
-      if (startTime !== null) {
-        const end = new Date().getTime();
-        const time = (end - startTime) / 1000; // Convert to seconds
-        console.log(`It took ${time} seconds to abort due to error.`);
-      }
+      // end timer if error
+      const end = new Date().getTime();
+      console.log("end time : ", end);
+      
+      const time = end - start;
+      console.log("it takes ", time / 1000, " seconds to aborted from vercel");
 
       toast({
         title: "Oops, Create project failed!",
-        description: "Please try again later.",
+        description: "Please Try Again Later",
         variant: "destructive",
       });
       console.error("Error creating project:", error.message);
     } finally {
       setIsLoading(false); // Set loading to false after API call is finished
     }
-  };
+  }
 
   //================================= End Project Information Section
 
