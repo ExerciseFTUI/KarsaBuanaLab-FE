@@ -143,7 +143,8 @@ const CreateProjectPage: FC<CreateProjectProps> = ({ baseSamples }) => {
     },
   });
 
-  let start: number;
+  let start = 0;
+  const [startTime, setStartTime] = useState(0)
   // 2. Define a submit handler.
   async function onSubmitForm2(
     values: z.infer<typeof createProjectValidation>
@@ -178,6 +179,7 @@ const CreateProjectPage: FC<CreateProjectProps> = ({ baseSamples }) => {
         // I want to check how long it takes from send API until finished
         // Start timer from here
         start = new Date().getTime();
+        setStartTime(start)
 
         const response = await createProjectJson(body);
 
@@ -217,7 +219,7 @@ const CreateProjectPage: FC<CreateProjectProps> = ({ baseSamples }) => {
     } catch (error: any) {
       // end timer if error
       const end = new Date().getTime();
-      const time = end - start;
+      const time = end - startTime;
       console.log("it takes ", time / 1000, " seconds to aborted from vercel");
 
       toast({
