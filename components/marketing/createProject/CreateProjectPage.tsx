@@ -190,7 +190,7 @@ const CreateProjectPage: FC<CreateProjectProps> = ({ baseSamples }) => {
 
         console.log("success to get Response : ", response);
         
-        if (!response) {
+        if (!response._id) {
           toast({
             title: "Failed to create project",
             description: "please resubmit the form",
