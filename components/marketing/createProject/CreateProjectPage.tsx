@@ -186,6 +186,7 @@ const CreateProjectPage: FC<CreateProjectProps> = ({ baseSamples }) => {
           setIsLoading(false);
           return;
         }
+        console.log("get to here : ", response);
 
         toast({
           title: "Create Project Success",
