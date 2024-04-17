@@ -109,9 +109,11 @@ export default function SampleProjectTab({ data, projects }: Params) {
     const response = await assignProject(
       data.project._id,
       assigned,
-      { from: date?.from ? format(date.from, "dd-LL-y") : null,
-        to: date?.to ? format(date.to, "dd-LL-y") : null }
-      )
+      { 
+        from: date?.from ? format(date.from, "dd-LL-y") : null,
+        to: date?.to ? format(date.to, "dd-LL-y") : null 
+      }
+    )
 
     setIsLoading(false)
 

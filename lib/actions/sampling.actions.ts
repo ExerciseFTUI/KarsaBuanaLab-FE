@@ -155,7 +155,7 @@ export const assignProject = async (
       jadwal_sampling: jadwalSampling,
     })
 
-    revalidatePath(`/sampling/project/${projectId}`) // path sekarang
+    revalidatePath(`/sampling/project`) // path sekarang
 
     return response.data as BaseApiResponse<Project>
   } catch (error: any) {
