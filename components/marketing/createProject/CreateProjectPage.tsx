@@ -143,6 +143,8 @@ const CreateProjectPage: FC<CreateProjectProps> = ({ baseSamples }) => {
     },
   });
 
+  let start = 0;
+  const [startTime, setStartTime] = useState(0)
   // 2. Define a submit handler.
   async function onSubmitForm2(
     values: z.infer<typeof createProjectValidation>
@@ -174,8 +176,20 @@ const CreateProjectPage: FC<CreateProjectProps> = ({ baseSamples }) => {
 
         console.log(body);
 
+        // I want to check how long it takes from send API until finished
+        // Start timer from here
+        start = new Date().getTime();
+        console.log("start time : ", start);
+        
+        // setStartTime(start)
+        // console.log("start time useState : ", startTime);
+        
+        // return;
+
         const response = await createProjectJson(body);
 
+        console.log("success to get Response : ", response);
+        
         if (!response._id) {
           toast({
             title: "Failed to create project",
@@ -184,30 +198,22 @@ const CreateProjectPage: FC<CreateProjectProps> = ({ baseSamples }) => {
           setIsLoading(false);
           return;
         }
+        console.log("get to here : ", response);
 
         toast({
           title: "Create Project Success",
           description: "Continue to upload document please wait...",
         });
 
-        // if (uploadedFiles.length > 0 && response?._id) {
-        //   const fileResponse = await updateProjectFile(
-        //     response?._id,
-        //     uploadedFiles
-        //   );
-        // }
+        // End date in here
+        const end = new Date().getTime();
+        console.log("end time : ", end);
+        
+        const time = end - start;
 
-        // if (uploadedFiles.length > 0) {
-        //   const fileResponse = await updateProjectFile(
-        //     "65b79328c0bdd92b29e84f43",
-        //     uploadedFiles
-        //   );
-        // }
+        // console log time in seconds
+        console.log("it takes ", time / 1000, " seconds to finish");
 
-        // toast({
-        //   title: "Successfully Create project!",
-        //   description: "Good Job",
-        // });
         setIsLoading(false);
         router.push("/marketing/running");
         // router.push(`/marketing/project/RUNNING/${response?._id}`);
@@ -218,6 +224,13 @@ const CreateProjectPage: FC<CreateProjectProps> = ({ baseSamples }) => {
         });
       }
     } catch (error: any) {
+      // end timer if error
+      const end = new Date().getTime();
+      console.log("end time : ", end);
+      
+      const time = end - start;
+      console.log("it takes ", time / 1000, " seconds to aborted from vercel");
+
       toast({
         title: "Oops, Create project failed!",
         description: "Please Try Again Later",

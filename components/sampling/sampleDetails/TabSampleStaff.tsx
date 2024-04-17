@@ -41,6 +41,9 @@ export default function TabSampleStaff({
     getCoreRowModel: getCoreRowModel(),
   })
 
+  console.log("table", table.getRowModel().rows.map((row) => row.original.username));
+  
+
   const router = useRouter()
   const { toast } = useToast()
 
@@ -72,7 +75,7 @@ export default function TabSampleStaff({
   return (
     <Tabs defaultValue="Sampel" className="flex-1">
       {isLoading && <LoadingScreen text="" />}
-      <SamplingTabsList value1="Sampel" value2="Grup" />
+      <SamplingTabsList value1="Sampel" value2="Group" />
 
       <TabsContent className="py-4" value="Sampel">
         <div className="flex gap-4 flex-col">
@@ -121,8 +124,22 @@ export default function TabSampleStaff({
         </div>
       </TabsContent>
 
-      <TabsContent className="py-4" value="Grup">
-        <UserDataTable table={table} />
+      <TabsContent className="py-4" value="Group">
+        {/* mapping the (row) => row.original.username */}
+        <div className=" bg-light_brown rounded-lg px-4 py-2 ">
+          <p className="text-white mb-4">Your teammate : </p>
+          {table.getRowModel().rows?.length ? (
+            table.getRowModel().rows.map((row, index) => (
+                <div key={row.id} className="flex gap-4 items-center text-white mb-2">
+                  {index+1}. {row.original.username}
+                </div>
+            ))
+            ) : (
+              <div className="h-24 text-center">No results.</div>
+            )}
+        </div>
+
+        {/* <UserDataTable table={table} /> */}
       </TabsContent>
     </Tabs>
   )
