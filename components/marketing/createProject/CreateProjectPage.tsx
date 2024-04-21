@@ -29,6 +29,7 @@ import { useRouter } from "next/navigation";
 import { set } from "date-fns";
 import LoadingScreen from "@/components/LoadingComp";
 import {
+  createProjectJsonClient,
   getProjectClient,
   updateProjectFile,
 } from "@/lib/actions/marketing.client.actions";
@@ -144,7 +145,7 @@ const CreateProjectPage: FC<CreateProjectProps> = ({ baseSamples }) => {
   });
 
   let start = 0;
-  const [startTime, setStartTime] = useState(0)
+  const [startTime, setStartTime] = useState(0);
   // 2. Define a submit handler.
   async function onSubmitForm2(
     values: z.infer<typeof createProjectValidation>
@@ -180,16 +181,17 @@ const CreateProjectPage: FC<CreateProjectProps> = ({ baseSamples }) => {
         // Start timer from here
         start = new Date().getTime();
         console.log("start time : ", start);
-        
+
         // setStartTime(start)
         // console.log("start time useState : ", startTime);
-        
+
         // return;
 
-        const response = await createProjectJson(body);
+        // const response = await createProjectJson(body);
+        const response = await createProjectJsonClient(body);
 
         console.log("success to get Response : ", response);
-        
+
         if (!response._id) {
           toast({
             title: "Failed to create project",
@@ -208,7 +210,7 @@ const CreateProjectPage: FC<CreateProjectProps> = ({ baseSamples }) => {
         // End date in here
         const end = new Date().getTime();
         console.log("end time : ", end);
-        
+
         const time = end - start;
 
         // console log time in seconds
@@ -227,7 +229,7 @@ const CreateProjectPage: FC<CreateProjectProps> = ({ baseSamples }) => {
       // end timer if error
       const end = new Date().getTime();
       console.log("end time : ", end);
-      
+
       const time = end - start;
       console.log("it takes ", time / 1000, " seconds to aborted from vercel");
 
