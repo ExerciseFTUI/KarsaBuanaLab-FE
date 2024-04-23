@@ -268,8 +268,8 @@ export type InputDocumentType = {
 
 export type ParameterType = {
   name: string;
-  unit: [string];
-  method: [string];
+  unit: string[];
+  method: string[];
   result: string;
 };
 

@@ -57,6 +57,7 @@ const InputDokumenUser: FC<inputDokumenUserProps> = ({
     setValue
   } = useLabForm();
 
+  // For default values result
   useEffect(() => {
     sample.forEach((inputDocument, sampleId) => {
       inputDocument.parameters.forEach((parameter, parameterId) => {
@@ -65,6 +66,32 @@ const InputDokumenUser: FC<inputDokumenUserProps> = ({
       });
     });
   }, [sample, setValue]);
+
+  // For default values unit and method
+  const [lastSelectedUnits, setLastSelectedUnits] = useState<Record<string, string>>({});
+
+  useEffect(() => {
+    const updatedLastSelectedUnits: Record<string, string> = {};
+
+    // Loop through each parameter in the sample
+    sample.forEach((inputDocument) => {
+      inputDocument.parameters.forEach((parameter) => {
+        const { name, unit } = parameter;
+        const lastUnit = lastSelectedUnits[name]; // Get last selected unit
+
+        // Check if last selected unit is valid and still available in options
+        if (lastUnit && unit.includes(lastUnit)) {
+          updatedLastSelectedUnits[name] = lastUnit; // Use last selected unit as default
+        } else {
+          updatedLastSelectedUnits[name] = unit[0] || ''; // Use first available unit as default
+        }
+      });
+    });
+
+    // Update state with the new last selected units
+    setLastSelectedUnits(updatedLastSelectedUnits);
+  }, []); // Only re-run the effect when sample or choiceParams change
+
 
   function mergeData(
     data: [InputDocumentType],
@@ -118,6 +145,11 @@ const InputDokumenUser: FC<inputDokumenUserProps> = ({
       return;
     }
   }
+
+  // useEffect(() => {
+  //   console.log("sample", sample);
+  // }, []);
+
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
       <div className="h-fit">
@@ -181,21 +213,17 @@ const InputDokumenUser: FC<inputDokumenUserProps> = ({
                           `sample.${sampleId}.parameter.${parameterId}.unit`
                         )}
                       >
-                        {/* <option className="w-full p-4 rounded bg-gray-100 shadow-none">
+                        <option className="w-full p-4 rounded bg-gray-100 shadow-none">
                           {parameter.unit[0] ?? "Select Unit"}
-                        </option> */}
+                        </option>
                         {choiceParams
                           .find((param) => param.param === parameter.name)
-                          ?.unit.map((unit) => (
+                          ?.unit.filter((unit) => unit !== parameter.unit[0]) // Filter out units that are the same as the parameter's unit
+                          .map((unit) => (
                             <option key={unit} value={unit}>
                               {unit}
                             </option>
                           ))}
-                        {/* {parameter.unit.map((unit) => (
-                          <option key={unit} value={unit}>
-                            {unit}
-                          </option>
-                        ))} */}
                       </select>
                       <div className="text-xs text-red-600 pt-3 text-center">
                         {
@@ -224,21 +252,17 @@ const InputDokumenUser: FC<inputDokumenUserProps> = ({
                           `sample.${sampleId}.parameter.${parameterId}.method`
                         )}
                       >
-                        {/* <option className="w-full p-4 rounded bg-gray-100 shadow-none">
-                          Pilih Method
-                        </option> */}
+                        <option className="w-full p-4 rounded bg-gray-100 shadow-none">
+                          {parameter.method[0] || `Select Method`}
+                        </option>
                         {choiceParams
                           .find((param) => param.param === parameter.name)
-                          ?.method.map((method) => (
+                          ?.method.filter((method) => method !== parameter.method[0])
+                          .map((method) => (
                             <option key={method} value={method}>
                               {method}
                             </option>
                           ))}
-                        {/* {parameter.method.map((method) => (
-                          <option key={method} value={method}>
-                            {method}
-                          </option>
-                        ))} */}
                       </select>
                       <div className="text-xs text-red-600 pt-3 text-center">
                         {
