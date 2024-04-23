@@ -1,5 +1,5 @@
 "use client";
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   AlertDialog,
@@ -23,40 +23,81 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Input } from "../ui/input";
-import { InputDocumentType, sampleAnswer } from "@/lib/type";
+import { InputDocumentType, labInputChoice, sampleAnswer } from "@/lib/type";
 import {
   useLabForm,
   labInputDocumentValidation,
 } from "@/lib/validations/LabValidation";
 import { z } from "zod";
-import { submitLab } from "@/lib/actions/lab.action";
+import { getChoiceParams, submitLab } from "@/lib/actions/lab.action";
 import { useToast } from "../ui/use-toast";
 import { useRouter } from "next/navigation";
+import InputParam from "./InputParam";
 
 interface inputDokumenUserProps {
   sample: [InputDocumentType];
   userId: string;
   projectId: string;
+  choiceParams: [labInputChoice];
 }
 
 const InputDokumenUser: FC<inputDokumenUserProps> = ({
   sample,
   userId,
   projectId,
+  choiceParams,
 }) => {
   const router = useRouter();
   const { toast } = useToast();
+  
   const {
     register,
     handleSubmit,
     formState: { errors },
+    setValue
   } = useLabForm();
+
+  // For default values result
+  useEffect(() => {
+    sample.forEach((inputDocument, sampleId) => {
+      inputDocument.parameters.forEach((parameter, parameterId) => {
+        const defaultValue = String(parameter.result);
+        setValue(`sample.${sampleId}.parameter.${parameterId}.result`, defaultValue);
+      });
+    });
+  }, [sample, setValue]);
+
+  // For default values unit and method
+  const [lastSelectedUnits, setLastSelectedUnits] = useState<Record<string, string>>({});
+
+  useEffect(() => {
+    const updatedLastSelectedUnits: Record<string, string> = {};
+
+    // Loop through each parameter in the sample
+    sample.forEach((inputDocument) => {
+      inputDocument.parameters.forEach((parameter) => {
+        const { name, unit } = parameter;
+        const lastUnit = lastSelectedUnits[name]; // Get last selected unit
+
+        // Check if last selected unit is valid and still available in options
+        if (lastUnit && unit.includes(lastUnit)) {
+          updatedLastSelectedUnits[name] = lastUnit; // Use last selected unit as default
+        } else {
+          updatedLastSelectedUnits[name] = unit[0] || ''; // Use first available unit as default
+        }
+      });
+    });
+
+    // Update state with the new last selected units
+    setLastSelectedUnits(updatedLastSelectedUnits);
+  }, []); // Only re-run the effect when sample or choiceParams change
+
 
   function mergeData(
     data: [InputDocumentType],
     unitMethodResult: {
       sample: {
-        parameter: { unit: string; method: string; result: number }[];
+        parameter: { unit: string; method: string; result: string }[];
       }[];
     }
   ) {
@@ -74,12 +115,20 @@ const InputDokumenUser: FC<inputDokumenUserProps> = ({
       };
       mergedData.push(mergedSample);
     });
+    console.log("mergedData", mergedData);
+    
     return mergedData;
   }
 
   async function onSubmit(data: z.infer<typeof labInputDocumentValidation>) {
+    console.log("on submit");
+    
     const answer = mergeData(sample, data);
     const response = await submitLab(projectId, answer);
+
+    console.log("answer", answer);
+    
+    return;
     if (response) {
       toast({
         title: "Submitted",
@@ -96,6 +145,11 @@ const InputDokumenUser: FC<inputDokumenUserProps> = ({
       return;
     }
   }
+
+  // useEffect(() => {
+  //   console.log("sample", sample);
+  // }, []);
+
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
       <div className="h-fit">
@@ -128,6 +182,31 @@ const InputDokumenUser: FC<inputDokumenUserProps> = ({
                       {parameter.name}
                     </TableCell>
                     <TableCell>
+                      {/* Bachul */}
+                      {/* <div 
+                        {...register(
+                          `sample.${sampleId}.parameter.${parameterId}.method`
+                          // selectedUnit
+                        )}>
+                        <InputParam 
+                          title="Select unit" 
+                          result={parameter.unit[0] ?? "Select Unit"}
+                          // passing data choiceParams.unit with the same parameter.name and choiceParams.param please note that choiceParams still array of object, so we need to find the object of choiceParams.param that have the same parameter.name and return the unit
+                          options={choiceParams.find(
+                            (param) => param.param === parameter.name)?.unit ?? []
+                          }
+                          {...register(
+                            `sample.${sampleId}.parameter.${parameterId}.unit`
+                            )}
+                            />
+                        <div className="text-xs text-red-600 pt-3 text-center">
+                          {
+                            errors.sample?.[sampleId]?.parameter?.[parameterId]
+                            ?.unit?.message
+                          }
+                        </div>
+                      </div> */}
+                      {/* Bachul */}
                       <select
                         className="w-full"
                         {...register(
@@ -135,13 +214,16 @@ const InputDokumenUser: FC<inputDokumenUserProps> = ({
                         )}
                       >
                         <option className="w-full p-4 rounded bg-gray-100 shadow-none">
-                          Pilih Unit
+                          {parameter.unit[0] ?? "Select Unit"}
                         </option>
-                        {parameter.unit.map((unit) => (
-                          <option key={unit} value={unit}>
-                            {unit}
-                          </option>
-                        ))}
+                        {choiceParams
+                          .find((param) => param.param === parameter.name)
+                          ?.unit.filter((unit) => unit !== parameter.unit[0]) // Filter out units that are the same as the parameter's unit
+                          .map((unit) => (
+                            <option key={unit} value={unit}>
+                              {unit}
+                            </option>
+                          ))}
                       </select>
                       <div className="text-xs text-red-600 pt-3 text-center">
                         {
@@ -151,6 +233,19 @@ const InputDokumenUser: FC<inputDokumenUserProps> = ({
                       </div>
                     </TableCell>
                     <TableCell>
+                      {/* Bachul */}
+                      {/* <InputParam 
+                          title="Select Method" 
+                          result={parameter.method[0] ?? "Select Method"}
+                          // passing data choiceParams.unit with the same parameter.name and choiceParams.param please note that choiceParams still array of object, so we need to find the object of choiceParams.param that have the same parameter.name and return the unit
+                          options={choiceParams.find(
+                            (param) => param.param === parameter.name)?.method ?? []
+                          }
+                          {...register(
+                            `sample.${sampleId}.parameter.${parameterId}.method`
+                            )}
+                            /> */}
+                            {/* Bachul */}
                       <select
                         className="w-full"
                         {...register(
@@ -158,13 +253,16 @@ const InputDokumenUser: FC<inputDokumenUserProps> = ({
                         )}
                       >
                         <option className="w-full p-4 rounded bg-gray-100 shadow-none">
-                          Pilih Method
+                          {parameter.method[0] || `Select Method`}
                         </option>
-                        {parameter.method.map((method) => (
-                          <option key={method} value={method}>
-                            {method}
-                          </option>
-                        ))}
+                        {choiceParams
+                          .find((param) => param.param === parameter.name)
+                          ?.method.filter((method) => method !== parameter.method[0])
+                          .map((method) => (
+                            <option key={method} value={method}>
+                              {method}
+                            </option>
+                          ))}
                       </select>
                       <div className="text-xs text-red-600 pt-3 text-center">
                         {
@@ -174,13 +272,19 @@ const InputDokumenUser: FC<inputDokumenUserProps> = ({
                       </div>
                     </TableCell>
                     <TableCell className="text-right">
-                      <Input
+                    <Input
+                  type="text"
+                  className="bg-gray-100"
+                  {...register(`sample.${sampleId}.parameter.${parameterId}.result`)}
+                />
+                      {/* <Input
                         type="text"
                         className="bg-gray-100"
                         {...register(
                           `sample.${sampleId}.parameter.${parameterId}.result`
                         )}
-                      />
+                        value={parameter.result}
+                      /> */}
                       <div className="text-xs text-red-600 pt-3 text-center">
                         {
                           errors.sample?.[sampleId]?.parameter?.[parameterId]

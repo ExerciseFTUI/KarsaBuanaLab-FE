@@ -158,7 +158,7 @@ const LabDataTable: FC<LabDataTableProps> = ({ data, link }) => {
                   className="hover:bg-light_green ease-in-out duration-500 text-xs hover:cursor-pointer hover:rounded-xl"
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
-                  onClick={() => {router.push(link + row.getValue("_id")); console.log("link : ", link, row.getValue("_id"));
+                  onClick={() => {router.push(link + row.getValue("_id")); 
                   }}
                 >
                   {row.getVisibleCells().map((cell) => (

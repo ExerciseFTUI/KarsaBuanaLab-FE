@@ -21,6 +21,7 @@ import { SamplingRequestData } from "@/lib/type"
 import LoadingScreen from "../LoadingScreen"
 import { Sampling } from "@/lib/models/sampling.model"
 import Link from "next/link"
+import { saveSample } from "@/lib/actions/lab.actions"
 
 export default function VerifikasiSampling({
   data,
@@ -40,9 +41,37 @@ export default function VerifikasiSampling({
 
   async function submitSample(sample_id: string, status: string) {
     setIsLoading(true)
+    console.log("status : ", status);
+    
+
+    if (status == "REVISION BY SPV") {
+      const response = await saveSample(project._id, status);
+      console.log("resp : ", response);
+      
+
+      setIsLoading(false);
+
+      if (!response) {
+        toast({
+          title: "Failed to reanalisa data",
+          description: "Please Try Again",
+          variant: "destructive",
+        });
+
+        return;
+      }
+
+      toast({
+        title: "Data Has Been Verified",
+        description: "Please check again if its correct",
+      });
+
+      router.refresh();
+      return;
+    }
 
     const response = await verifySample(project._id, status, sample_id)
-
+    
     setIsLoading(false)
 
     if (!response) {
@@ -143,7 +172,7 @@ export default function VerifikasiSampling({
                     <AlertDialogFooter>
                       <AlertDialogCancel>Cancel</AlertDialogCancel>
                       <AlertDialogAction
-                        onClick={(e) => submitSample(s._id, "REVISION")}
+                        onClick={(e) => submitSample(s._id, "REVISION BY SPV")}
                       >
                         Continue
                       </AlertDialogAction>

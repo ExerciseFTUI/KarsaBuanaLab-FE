@@ -6,7 +6,7 @@ export default async function Home() {
   const res = await getProjectByDivision("Lab")
 
   const data = !!res
-    ? (res as any).projects.filter((p: any) => p.lab_status === "NEED ANALYZE")
+    ? (res as any).projects.filter((p: any) => p.lab_status ===  "IN REVIEW BY SPV")
     : []
 
   return (

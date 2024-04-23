@@ -37,6 +37,33 @@ export const getProjectBy = async (userId: string): Promise<any> => {
   }
 };
 
+export const getChoiceParams = async (
+  projectId: string,
+  userId: string
+): Promise<any> => {
+  try {
+    const response = await axios.get(
+      `${apiBaseUrl}/sampling/get-parameter`,
+      // `http://localhost:8080/sampling/get-parameter`,
+      {
+        data: {
+          projectId: projectId,
+          userId: userId,
+        },
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+      }
+    );
+    
+    return response.data.result; // Access 'result' field
+  } catch (error: any) {
+    console.error(`Error getting project with ID ${projectId}:`, error.message);
+    return null as unknown;
+  }
+}
+
+
 export const getLabDashboardProject = async (
   projectId: string,
   userId: string
@@ -44,6 +71,7 @@ export const getLabDashboardProject = async (
   try {
     const response = await axios.get(
       `${apiBaseUrl}/sampling/get-sampling-details`,
+      // `http://localhost:8080/sampling/get-sampling-details`,
       {
         data: {
           projectId: projectId,
@@ -66,7 +94,10 @@ export const submitLab = async (
   samples: sampleAnswer[]
 ): Promise<any> => {
   try {
-    const response = await axios.post(`${clientBaseUrl}/lab/submit-lab`, {
+    const response = await axios.post(
+      `${clientBaseUrl}/lab/submit-lab`, 
+      // `http://localhost:8080/lab/submit-lab`, 
+    {
       projectId,
       samples,
     });

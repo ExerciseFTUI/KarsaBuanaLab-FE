@@ -1096,7 +1096,11 @@ export const LabDashboardPageColumns: ColumnDef<LabDataType>[] = [
         color = "bg-yellow-700";
       } else if (row.getValue("lab_status") === "IN REVIEW BY ADMIN") {
         color = "bg-blue-900";
-      } else if (row.getValue("lab_status") === "REVISION") {
+      } else if (row.getValue("lab_status") === "REVISION BY ADMIN" || row.getValue("lab_status") === "REVISION"){
+        color = "bg-red-700";
+      } else if (row.getValue("lab_status") === "IN REVIEW BY SPV") {
+        color = "bg-blue-400";
+      }  else if (row.getValue("lab_status") === "REVISION BY SPV") {
         color = "bg-red-400";
       }
 
