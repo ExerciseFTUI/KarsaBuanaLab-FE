@@ -27,8 +27,8 @@ export default async function RootLayout({
   const user = session?.user || "";
   const role = user ? user?.role.toUpperCase() : "";
 
-  let res = null;
-  let data: Project[] = [];
+  const res = await getProjectByDivision("Sampling");
+  const data = res ? (res as any).projects : [];
 
   return (
     <>
@@ -37,7 +37,7 @@ export default async function RootLayout({
         <section className="flex flex-col sm:min-h-screen items-center flex-1 pt-2 px-6 pb-10 max-lg:pb-32 sm:px-10 bg-[#F8F8F8] overflow-auto">
           <div className="w-full ">
             <Topbar
-              projects={data ? data : []}
+              projects={!!data.length ? data : []}
               data={session ? session : null}
             />
             {children}
