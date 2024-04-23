@@ -4,7 +4,7 @@ import NotesAdmin from "@/components/lab/NotesAdmin"
 import InputDokumenUser from "@/components/lab/InputDokumenUser";
 import { Separator } from "@/components/ui/separator"
 import { getLabProjects } from "@/lib/actions/lab.actions"
-import { getLabDashboardProject } from "@/lib/actions/lab.action";
+import { getChoiceParams, getLabDashboardProject } from "@/lib/actions/lab.action";
 import { getLinkFiles } from "@/lib/actions/pplhp.actions"
 import { getAllUser } from "@/lib/actions/sampling.actions"
 import { getProject } from "@/lib/actions/marketing.actions"
@@ -26,6 +26,7 @@ export default async function LabDetails({
 }) {
   const session = await getSessionServer();
   let project;
+  let chooseParams;
   let isAdmin = true;
 
   // SPV
@@ -51,6 +52,7 @@ export default async function LabDetails({
   // STAFF
   if (session && session.user.role === "USER") {
     project = await getLabDashboardProject(params.np, session.user.id);
+    chooseParams = await getChoiceParams(params.np, session.user.id);
     isAdmin = false;
   }
 
@@ -114,6 +116,7 @@ export default async function LabDetails({
             sample={project.input}
             userId={session ? session.user.id : ""}
             projectId={params.np}
+            choiceParams={chooseParams}
           />
       )}
     </div>
