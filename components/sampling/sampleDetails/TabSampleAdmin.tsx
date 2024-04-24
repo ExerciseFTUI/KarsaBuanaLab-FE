@@ -1,19 +1,19 @@
-"use client"
+"use client";
 
-import React, { useState } from "react"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import HyperLinkButton from "../HyperlinkButton"
-import { Button } from "@/components/ui/button"
-import { Project } from "@/lib/models/project.model"
-import { UserDataTable } from "../UserDataTable"
-import { getCoreRowModel, useReactTable } from "@tanstack/react-table"
-import { groupUserStaffColumns } from "../sampleListDataTables/DataTableColumns"
-import { useRouter } from "next/navigation"
-import { changeDivision, verifySample } from "@/lib/actions/sampling.actions"
-import LoadingScreen from "@/components/LoadingScreen"
-import { SamplingRequestData } from "@/lib/type"
-import { cn } from "@/lib/utils"
-import { useToast } from "@/components/ui/use-toast"
+import React, { useState } from "react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import HyperLinkButton from "../HyperlinkButton";
+import { Button } from "@/components/ui/button";
+import { Project } from "@/lib/models/project.model";
+import { UserDataTable } from "../UserDataTable";
+import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
+import { groupUserStaffColumns } from "../sampleListDataTables/DataTableColumns";
+import { useRouter } from "next/navigation";
+import { changeDivision, verifySample } from "@/lib/actions/sampling.actions";
+import LoadingScreen from "@/components/LoadingScreen";
+import { SamplingRequestData } from "@/lib/type";
+import { cn } from "@/lib/utils";
+import { useToast } from "@/components/ui/use-toast";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -24,96 +24,93 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/components/ui/alert-dialog"
+} from "@/components/ui/alert-dialog";
 
 export default function TabSampleAdmin({
   data,
 }: {
-  data: SamplingRequestData
+  data: SamplingRequestData;
 }) {
-  const { project, files, user } = data
-  const sampling_list = project.sampling_list /* .filter(
+  const { project, files, user } = data;
+  const sampling_list = project.sampling_list; /* .filter(
     (s) =>
       s.status == "WAITING" || s.status == "ACCEPTED" || s.status == "REVISION"
   ) */
   const canSave =
     sampling_list.filter((s) => s.status == "ACCEPTED").length ==
-    sampling_list.length
+    sampling_list.length;
 
   const table = useReactTable({
     data: user,
     columns: groupUserStaffColumns,
     getCoreRowModel: getCoreRowModel(),
-  })
+  });
 
-  const router = useRouter()
-  const { toast } = useToast()
+  const router = useRouter();
+  const { toast } = useToast();
 
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false);
 
   const submitSample = async (sample_id: string, status: string) => {
-    setIsLoading(true)
+    setIsLoading(true);
 
-    const response = await verifySample(project._id, status, sample_id)
+    const response = await verifySample(project._id, status, sample_id);
 
-    setIsLoading(false)
+    setIsLoading(false);
 
     if (!response) {
       toast({
         title: "Failed to Verify Sampling",
         description: "Please Try Again",
         variant: "destructive",
-      })
+      });
     } else {
       toast({
         title: "Sampling Has Been Verified",
         description: "Please check again if its correct",
-      })
+      });
     }
 
-    router.refresh()
-  }
+    router.refresh();
+  };
 
   const saveSample = async (project_id: string, division: string) => {
-    setIsLoading(true)
+    setIsLoading(true);
 
     project.sampling_list.forEach(async (s) => {
-      const response = await verifySample(project_id, "SUBMIT", s._id)
+      const response = await verifySample(project_id, "SUBMIT", s._id);
 
       if (!response) {
         toast({
           title: "Failed to Verify Sampling",
           description: "Please Try Again",
           variant: "destructive",
-        })
+        });
       } else {
         toast({
           title: "Sampling Has Been Verified",
           description: "Please check again if its correct",
-        })
+        });
       }
-    })
+    });
 
-    const response = await changeDivision(project._id, division)
+    const response = await changeDivision(project._id, division);
 
     if (!response)
       toast({
         title: "Failed to Save Project",
         description: "Please Try Again",
         variant: "destructive",
-      })
+      });
     else
       toast({
         title: "Project has been moved to PPLHP Division!",
         // description: "Please check again if its correct",
-      })
+      });
 
-    setIsLoading(false)
-    router.refresh()
-  }
-
-  console.log("sampling_list", sampling_list);
-  
+    setIsLoading(false);
+    router.push("/sampling/sample");
+  };
 
   return (
     <Tabs defaultValue="buatDokumen" className="flex-1">
@@ -152,73 +149,73 @@ export default function TabSampleAdmin({
                     disabled
                   >
                     Waiting
-                    </Button>
-                    ) : (
-                <div className="flex gap-2">
-                  <AlertDialog>
-                    <AlertDialogTrigger>
-                      <Button
-                        className={cn(
-                          "bg-light_brown hover:bg-dark_brown",
-                          s.status == "ACCEPTED" ? "hidden" : ""
-                        )}
-                        title="Accept"
-                        disabled={s.status == "SUBMIT"}
-                      >
-                        {s.status == "SUBMIT" ? "Waiting" : "Accept"}
-                      </Button>
-                    </AlertDialogTrigger>
-
-                    <AlertDialogContent>
-                      <AlertDialogHeader>
-                        <AlertDialogTitle>
-                          Are you sure to ACCEPT this sampling?
-                        </AlertDialogTitle>
-                      </AlertDialogHeader>
-
-                      <AlertDialogFooter>
-                        <AlertDialogCancel>Cancel</AlertDialogCancel>
-                        <AlertDialogAction
-                          onClick={(e) => submitSample(s._id, "ACCEPTED")}
+                  </Button>
+                ) : (
+                  <div className="flex gap-2">
+                    <AlertDialog>
+                      <AlertDialogTrigger>
+                        <Button
+                          className={cn(
+                            "bg-light_brown hover:bg-dark_brown",
+                            s.status == "ACCEPTED" ? "hidden" : ""
+                          )}
+                          title="Accept"
+                          disabled={s.status == "SUBMIT"}
                         >
-                          Continue
-                        </AlertDialogAction>
-                      </AlertDialogFooter>
-                    </AlertDialogContent>
-                  </AlertDialog>
+                          {s.status == "SUBMIT" ? "Waiting" : "Accept"}
+                        </Button>
+                      </AlertDialogTrigger>
 
-                  <AlertDialog>
-                    <AlertDialogTrigger>
-                      <Button
-                        className={cn(
-                          "bg-light_brown hover:bg-dark_brown",
-                          s.status == "SUBMIT" ? "hidden" : ""
-                        )}
-                        title="Revisi"
-                      >
-                        Revisi
-                      </Button>
-                    </AlertDialogTrigger>
+                      <AlertDialogContent>
+                        <AlertDialogHeader>
+                          <AlertDialogTitle>
+                            Are you sure to ACCEPT this sampling?
+                          </AlertDialogTitle>
+                        </AlertDialogHeader>
 
-                    <AlertDialogContent>
-                      <AlertDialogHeader>
-                        <AlertDialogTitle>
-                          Are you sure to REVISE this sampling?
-                        </AlertDialogTitle>
-                      </AlertDialogHeader>
+                        <AlertDialogFooter>
+                          <AlertDialogCancel>Cancel</AlertDialogCancel>
+                          <AlertDialogAction
+                            onClick={(e) => submitSample(s._id, "ACCEPTED")}
+                          >
+                            Continue
+                          </AlertDialogAction>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    </AlertDialog>
 
-                      <AlertDialogFooter>
-                        <AlertDialogCancel>Cancel</AlertDialogCancel>
-                        <AlertDialogAction
-                          onClick={(e) => submitSample(s._id, "REVISION")}
+                    <AlertDialog>
+                      <AlertDialogTrigger>
+                        <Button
+                          className={cn(
+                            "bg-light_brown hover:bg-dark_brown",
+                            s.status == "SUBMIT" ? "hidden" : ""
+                          )}
+                          title="Revisi"
                         >
-                          Continue
-                        </AlertDialogAction>
-                      </AlertDialogFooter>
-                    </AlertDialogContent>
-                  </AlertDialog>
-                </div>
-                      )}
+                          Revisi
+                        </Button>
+                      </AlertDialogTrigger>
+
+                      <AlertDialogContent>
+                        <AlertDialogHeader>
+                          <AlertDialogTitle>
+                            Are you sure to REVISE this sampling?
+                          </AlertDialogTitle>
+                        </AlertDialogHeader>
+
+                        <AlertDialogFooter>
+                          <AlertDialogCancel>Cancel</AlertDialogCancel>
+                          <AlertDialogAction
+                            onClick={(e) => submitSample(s._id, "REVISION")}
+                          >
+                            Continue
+                          </AlertDialogAction>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    </AlertDialog>
+                  </div>
+                )}
               </div>
             ))}
           </div>
@@ -299,5 +296,5 @@ export default function TabSampleAdmin({
         </Button> */}
       </TabsContent>
     </Tabs>
-  )
+  );
 }
