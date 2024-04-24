@@ -24,11 +24,19 @@ export default async function RootLayout({
 }) {
   const session = await getSessionServer();
 
-  const user = session?.user || "";
-  const role = user ? user?.role.toUpperCase() : "";
+  const user: any = session?.user || "";
+  const role = user ? user?.role.toUpperCase() : "a";
 
-  const res = await getProjectByDivision("Sampling");
-  const data = res ? (res as any).projects : [];
+  let res,
+    data: any[] = [];
+
+  if (role === "ADMIN") {
+    res = await getProjectByDivision("Sampling");
+    data = !!res ? (res as any).projects : [];
+  } else {
+    res = await getProjectsByAcc(user.id);
+    data = !!res ? (res as any).projectList : [];
+  }
 
   return (
     <>
