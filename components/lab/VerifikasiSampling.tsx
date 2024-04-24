@@ -21,6 +21,7 @@ import { SamplingRequestData } from "@/lib/type";
 import LoadingScreen from "../LoadingScreen";
 import { Sampling } from "@/lib/models/sampling.model";
 import Link from "next/link";
+import { saveSample } from "@/lib/actions/lab.actions";
 
 export default function VerifikasiSampling({
   data,
