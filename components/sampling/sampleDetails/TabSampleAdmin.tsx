@@ -259,8 +259,18 @@ export default function TabSampleAdmin({
         value="buatDokumen"
       >
         <div className="w-full">
-          <h1 className="text-xl font-semibold mb-2">Staff</h1>
-          <UserDataTable table={table} />
+          <h1 className="text-xl font-semibold mb-2">Staff Assign</h1>
+          <div className=" bg-light_brown rounded-lg px-4 py-2 ">
+          {table.getRowModel().rows?.length ? (
+            table.getRowModel().rows.map((row, index) => (
+                <div key={row.id} className="flex gap-4 items-center text-white mb-2">
+                  {index+1}. {row.original.username}
+                </div>
+            ))
+            ) : (
+              <div className="h-24 text-center">No results.</div>
+            )}
+        </div>
         </div>
 
         <div className="w-full">

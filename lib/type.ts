@@ -268,15 +268,22 @@ export type InputDocumentType = {
 
 export type ParameterType = {
   name: string;
-  unit: [string];
-  method: [string];
+  unit: string[];
+  method: string[];
+  result: string;
 };
+
+export type labInputChoice = {
+  param: string;
+  unit: string[];
+  method: string[];
+}
 
 export type sampleAnswer = {
   sample_name: string;
   param: {
     param: string;
-    result: number;
+    result: string;
     unit: string;
     method: string;
   }[];
