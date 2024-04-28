@@ -246,30 +246,21 @@ const ProjectForm: FC<ProjectFormProps> = ({
                               <AlertDialogTrigger asChild>
                                 <div className=' flex'>
                                   <FaArrowUp 
-                                    className=" hover:cursor-pointer text-2xl mx-2 self-center bg-light_green p-1 rounded-lg " 
+                                    className="text-3xl cursor-pointer mx-2 self-center bg-light_green p-1 rounded-lg " 
                                     onClick={() => {
-                                      console.log("before: ", form.getValues("numRevisi"));
-                                      
-                                      // form.setValue("numRevisi", (form.getValues("numRevisi")) + 1); 
                                       form.setValue("numRevisi", (numRevision ?? 0) + 1, {
                                         shouldValidate: true,
                                       });
                                       setIsRevUp(true);
-
-                                      console.log("after: ", form.getValues("numRevisi"));
                                     }}
                                     />
                                   <FaArrowDown 
-                                    className="text-2xl mr-2 self-center bg-light_green p-1 rounded-lg" 
+                                    className="text-3xl cursor-pointer mr-2 self-center bg-light_green p-1 rounded-lg" 
                                     onClick={() => {
-                                      console.log("before: ", form.getValues("numRevisi"));
-                                      
                                       form.setValue("numRevisi", (numRevision ?? 0) - 1, {
                                         shouldValidate: true,
                                       }); 
                                       setIsRevUp(false);
-
-                                      console.log("after: ", form.getValues("numRevisi"));
                                     }}
                                     />
                                 </div>
@@ -402,35 +393,30 @@ const ProjectForm: FC<ProjectFormProps> = ({
                 </FormItem>
               )}
             />
-                  {/* <div className="flex w-full max-w-sm items-center space-x-2">
             <FormField
-                  control={form.control}
-                  name="password"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Password</FormLabel>
-                      <FormControl >
-                          <Input
-                            disabled={true}
-                            type="string"
-                            className=""
-                            placeholder=""
-                            {...field}
-                          />
-
-                      </FormControl>
-
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                  <Button
-                    onClick={() => copyToClipboard(password ?? "")}
-                    className="bg-moss_green text-white"
-                  >
-                    <FaCopy />
-                  </Button>
-                </div> */}
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Password</FormLabel>
+                  <FormControl>
+                    <div className=" flex">
+                      <Input
+                        disabled={true}
+                        type="string"
+                        className=""
+                        placeholder=""
+                        {...field}
+                      />
+                      <FaCopy
+                        onClick={() => copyToClipboard(field.value ?? '')}
+                        className=" cursor-pointer text-3xl m-2 self-center bg-light_green p-1 rounded-lg"
+                      />
+                    </div>
+                  </FormControl>
+                </FormItem>
+              )}
+            />
             <FormField
               control={form.control}
               name="contactPerson"
