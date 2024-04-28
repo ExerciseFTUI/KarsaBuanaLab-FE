@@ -6,6 +6,17 @@ import * as z from "zod";
 
 import { Button } from "@/components/ui/button";
 import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
+import {
   Form,
   FormControl,
   FormDescription,
@@ -14,7 +25,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { FaCopy } from "react-icons/fa";
+import { FaArrowUp, FaArrowDown, FaCopy } from "react-icons/fa";
 import {
   Card,
   CardContent,
@@ -31,6 +42,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useToast } from "@/components/ui/use-toast";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import VerifRevision from "../editProject/VerifRevision";
 
 interface ProjectFormProps {
   form: UseFormReturn<z.infer<typeof createProjectValidation>>;
@@ -41,6 +53,9 @@ interface ProjectFormProps {
     values: z.infer<typeof createProjectValidation>
   ): Promise<void>;
   password?: string;
+  updateRevision?(
+    values: z.infer<typeof createProjectValidation>
+  ): Promise<void>;
 }
 
 const ProjectForm: FC<ProjectFormProps> = ({
@@ -50,11 +65,14 @@ const ProjectForm: FC<ProjectFormProps> = ({
   note,
   updatePayment,
   password,
+  updateRevision,
 }) => {
   const router = useRouter();
   const query = useSearchParams();
   const { toast } = useToast();
   const [paidStatus, setPaidStatus] = useState(form.getValues("is_paid"));
+  const numRevision = form.getValues("numRevisi");
+  const [isRevUp, setIsRevUp] = useState(false);
 
   const copyToClipboard = async (text: string) => {
     try {
@@ -208,26 +226,96 @@ const ProjectForm: FC<ProjectFormProps> = ({
                     </FormItem>
                   )}
                 />
-                <FormField
-                  control={form.control}
-                  name="numRevisi"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Nomor Revisi</FormLabel>
-                      <FormControl>
-                        <Input
-                          disabled={true}
-                          type="number"
-                          className=""
-                          placeholder=""
-                          {...field}
-                        />
-                      </FormControl>
+                  <FormField
+                    control={form.control}
+                    name="numRevisi"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Nomor Revisi</FormLabel>
+                        <FormControl>
+                          <div className="flex">
+                            <Input
+                              disabled={true}
+                              type="number"
+                              className=""
+                              placeholder=""
+                              {...field}
+                            />
 
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                            <AlertDialog>
+                              <AlertDialogTrigger asChild>
+                                <div className=' flex'>
+                                  <FaArrowUp 
+                                    className=" hover:cursor-pointer text-2xl mx-2 self-center bg-light_green p-1 rounded-lg " 
+                                    onClick={() => {
+                                      console.log("before: ", form.getValues("numRevisi"));
+                                      
+                                      // form.setValue("numRevisi", (form.getValues("numRevisi")) + 1); 
+                                      form.setValue("numRevisi", (numRevision ?? 0) + 1, {
+                                        shouldValidate: true,
+                                      });
+                                      setIsRevUp(true);
+
+                                      console.log("after: ", form.getValues("numRevisi"));
+                                    }}
+                                    />
+                                  <FaArrowDown 
+                                    className="text-2xl mr-2 self-center bg-light_green p-1 rounded-lg" 
+                                    onClick={() => {
+                                      console.log("before: ", form.getValues("numRevisi"));
+                                      
+                                      form.setValue("numRevisi", (numRevision ?? 0) - 1, {
+                                        shouldValidate: true,
+                                      }); 
+                                      setIsRevUp(false);
+
+                                      console.log("after: ", form.getValues("numRevisi"));
+                                    }}
+                                    />
+                                </div>
+                              </AlertDialogTrigger>
+
+                              <AlertDialogContent>
+                                  <AlertDialogHeader>
+                                      <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+
+                                      <AlertDialogDescription>
+                                          Please kindly check it first.
+                                      </AlertDialogDescription>
+                                  </AlertDialogHeader>
+
+                                  <AlertDialogFooter>
+                                      <AlertDialogCancel onClick={() => {
+                                        if (isRevUp) {
+                                          form.setValue("numRevisi", (numRevision ?? 0) - 1, {
+                                            shouldValidate: true,
+                                          });
+                                        }
+                                        else {
+                                          form.setValue("numRevisi", (numRevision ?? 0) + 1, {
+                                            shouldValidate: true,
+                                          });
+                                        }
+                                      }}>Cancel</AlertDialogCancel>
+                                      <AlertDialogAction onClick={async () => {
+                                        if (updateRevision) {
+                                          console.log("num revisi : ", form.getValues("numRevisi"));
+                                          
+                                          await updateRevision(form.getValues());
+                                        }
+                                      }}>
+                                          Continue
+                                      </AlertDialogAction>
+                                  </AlertDialogFooter>
+                              </AlertDialogContent>
+                          </AlertDialog>
+                          </div>
+                        </FormControl>
+
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
                 <FormField
                   control={form.control}
                   name="valuasiProject"
