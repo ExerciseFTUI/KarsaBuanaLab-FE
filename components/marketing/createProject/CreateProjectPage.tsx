@@ -180,7 +180,7 @@ const CreateProjectPage: FC<CreateProjectProps> = ({ baseSamples }) => {
         // I want to check how long it takes from send API until finished
         // Start timer from here
         start = new Date().getTime();
-        console.log("start time : ", start);
+        console.log("start time in : ", start);
 
         // setStartTime(start)
         // console.log("start time useState : ", startTime);
