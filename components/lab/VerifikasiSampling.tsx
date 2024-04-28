@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import {
   AlertDialog,
@@ -9,45 +9,45 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/components/ui/alert-dialog"
-import { useRouter } from "next/navigation"
-import { useEffect, useState } from "react"
-import { Button } from "@/components/ui/button"
-import { cn } from "@/lib/utils"
-import { useToast } from "@/components/ui/use-toast"
-import { verifySample } from "@/lib/actions/sampling.actions"
-import HyperLinkButton from "../sampling/HyperlinkButton"
-import { SamplingRequestData } from "@/lib/type"
-import LoadingScreen from "../LoadingScreen"
-import { Sampling } from "@/lib/models/sampling.model"
-import Link from "next/link"
-import { saveSample } from "@/lib/actions/lab.actions"
+} from "@/components/ui/alert-dialog";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+import { useToast } from "@/components/ui/use-toast";
+import { verifySample } from "@/lib/actions/sampling.actions";
+import HyperLinkButton from "../sampling/HyperlinkButton";
+import { SamplingRequestData } from "@/lib/type";
+import LoadingScreen from "../LoadingScreen";
+import { Sampling } from "@/lib/models/sampling.model";
+import Link from "next/link";
+import { saveSample } from "@/lib/actions/lab.actions";
 
 export default function VerifikasiSampling({
   data,
 }: {
-  data: SamplingRequestData
+  data: SamplingRequestData;
 }) {
-  const { project, files, user } = data
+  const { project, files, user } = data;
 
-  const router = useRouter()
-  const { toast } = useToast()
+  const router = useRouter();
+  const { toast } = useToast();
 
-  const [isLoading, setIsLoading] = useState(false)
+  console.log(data);
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const canSave =
     project.sampling_list.filter((s) => s.status == "ACCEPTED").length ==
-    project.sampling_list.length
+    project.sampling_list.length;
 
   async function submitSample(sample_id: string, status: string) {
-    setIsLoading(true)
+    setIsLoading(true);
     console.log("status : ", status);
-    
 
     if (status == "REVISION BY SPV") {
       const response = await saveSample(project._id, status);
       console.log("resp : ", response);
-      
 
       setIsLoading(false);
 
@@ -70,24 +70,24 @@ export default function VerifikasiSampling({
       return;
     }
 
-    const response = await verifySample(project._id, status, sample_id)
-    
-    setIsLoading(false)
+    const response = await verifySample(project._id, status, sample_id);
+
+    setIsLoading(false);
 
     if (!response) {
       toast({
         title: "Failed to Verify Data",
         description: "Please Try Again",
         variant: "destructive",
-      })
+      });
     } else {
       toast({
         title: "Data Has Been Verified",
         description: "Please check again if its correct",
-      })
+      });
     }
 
-    router.refresh()
+    router.refresh();
   }
 
   return (
@@ -102,9 +102,7 @@ export default function VerifikasiSampling({
         {project.sampling_list.map((s: Sampling, i: number) => {
           const assignedUser = s.lab_assigned_to.flatMap((u) =>
             user.filter((k) => k._id === u)
-          )
-
-          console.log(assignedUser)
+          );
 
           return (
             <div key={i} className="w-full flex flex-col justify-between gap-4">
@@ -117,10 +115,10 @@ export default function VerifikasiSampling({
               </div>
 
               <div className="flex gap-2">
-                {assignedUser.map((u) => (
-                  <>
-                    <h1 className="text-base">{u.username}</h1>
-                  </>
+                {assignedUser.map((u, j) => (
+                  <h1 key={j} className="text-base">
+                    {u.username}
+                  </h1>
                 ))}
               </div>
 
@@ -181,7 +179,7 @@ export default function VerifikasiSampling({
                 </AlertDialog>
               </div>
             </div>
-          )
+          );
         })}
 
         {canSave && (
@@ -211,5 +209,5 @@ export default function VerifikasiSampling({
         )}
       </div>
     </div>
-  )
+  );
 }
