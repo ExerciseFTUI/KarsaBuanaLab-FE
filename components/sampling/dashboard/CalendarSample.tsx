@@ -29,9 +29,6 @@ const CalendarSample : FC<dashboardSampling> = ({ data }) => {
       return updatedItem;
     });
     setUpdatedData(updatedData);
-
-
-  console.log("updatedData", updatedData);
   }, [data]);
 
   
