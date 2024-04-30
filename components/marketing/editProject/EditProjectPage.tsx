@@ -47,6 +47,7 @@ import DeleteDialog from "@/components/DeleteDialog"
 import { AlertDialog } from "@/components/ui/alert-dialog"
 import { AlertDialogTrigger } from "@radix-ui/react-alert-dialog"
 import CancelPopup from "@/components/cancelPopup"
+import { revalidatePath } from "next/cache"
 
 interface EditProjectPageProps {
   project: Project
@@ -345,6 +346,14 @@ export default function EditProjectPage({
 
         return
       }
+
+      // refresh the page
+      toast({
+        title: "Success",
+        description: "Revision number updated successfully",
+      })
+
+      router.refresh()
     } catch (error: any) {
       const errorMsg = error?.response?.data?.message || error
       toast({
