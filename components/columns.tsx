@@ -108,8 +108,8 @@ export const columns: ColumnDef<ProjectMarketingType>[] = [
 
       const deadline =
         row.original.current_division === "SAMPLING" && jadwalSampling
-          ? `${jadwalSampling.to || "Haven't set deadline yet"}`
-          : `${deadlineLHP?.to || "Haven't set deadline yet"}`;
+          ? `${jadwalSampling.to || jadwalSampling.from || "Haven't set deadline yet"}`
+          : `${deadlineLHP?.to || deadlineLHP?.from || "Haven't set deadline yet"}`;
 
       return <div className="capitalize text-center">{deadline}</div>;
     },
