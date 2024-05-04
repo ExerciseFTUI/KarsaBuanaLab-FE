@@ -1146,19 +1146,31 @@ export const LabDashboardPageColumnsUser: ColumnDef<LabDataType>[] = [
     },
   },
   {
-    accessorKey: "sampling_list", // Update accessorKey to "sampling_list"
+    accessorKey: "lab_sample_status",
     header: "Status",
     cell: ({ row }) => {
-      // Assuming sampling_list is an array, we'll map through it
-      const samplingList = row.getValue("sampling_list") as SampleType[];
-      const statusArray = samplingList.map((sample) => sample.status);
-
-      // Now you have an array of statuses, you might want to display them differently
-      // For simplicity, let's just join them into a comma-separated string
-      const statusString = statusArray.join(", ");
-
+      var color = "bg-moss_green";
+      var statusString: string = row.getValue("lab_sample_status") as string; // Asserting the type to string
+  
+      if (statusString === "ASSIGNED") {
+        color = "bg-yellow-700";
+      } else if (statusString === "VERIFYING") {
+        color = "bg-blue-900";
+      } else if (statusString === "REVISION") {
+        color = "bg-red-700";
+      } else if (statusString === "FINISHED") {
+        color = "bg-moss_green";
+      } else if (statusString === "ACCEPTED") {
+        color = "bg-blue-400";
+      } else if (statusString === "SUBMIT") {
+        color = "bg-red-400";
+        statusString = "Need Analyze";
+      }
+  
       return (
-        <div className="capitalize  text-white rounded-md w-fit px-2 text-center flex font-semibold bg-moss_green">
+        <div
+          className={`capitalize text-white rounded-md w-fit px-2 text-center flex font-semibold ${color}`}
+        >
           {statusString}
         </div>
       );

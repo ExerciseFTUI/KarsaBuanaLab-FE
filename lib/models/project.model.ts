@@ -32,6 +32,7 @@ export interface Project {
   __v: number
   lab_status: string
   notes: NotesFromAdmin[]
+  lab_sample_status: string
 }
 
 export interface NotesFromAdmin {
