@@ -111,6 +111,7 @@ export const getDashboardSampling = async (): Promise<
   try {
     const response = await axios.get(
       `${apiBaseUrl}/sampling/get-dashboard-sampling/`
+      // `http://localhost:8080/sampling/get-dashboard-sampling/`
     )
 
     revalidatePath(`/sampling`)
