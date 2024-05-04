@@ -62,6 +62,9 @@ const InputDokumenUser: FC<inputDokumenUserProps> = ({
     sample.forEach((inputDocument, sampleId) => {
       inputDocument.parameters.forEach((parameter, parameterId) => {
         const defaultValue = String(parameter.result);
+        if (defaultValue === "undefined" || defaultValue === "null") {
+          return;
+        }
         setValue(`sample.${sampleId}.parameter.${parameterId}.result`, defaultValue);
       });
     });
@@ -129,26 +132,22 @@ const InputDokumenUser: FC<inputDokumenUserProps> = ({
     console.log("answer", answer);
     
     return;
-    if (response) {
-      toast({
-        title: "Submitted",
-        description: "Thank you for submitting!",
-      });
+    // if (response) {
+    //   toast({
+    //     title: "Submitted",
+    //     description: "Thank you for submitting!",
+    //   });
 
-      router.push("/lab/dashboard");
-    }
-    if (!response) {
-      toast({
-        title: "Failed to get the project",
-        description: "please resubmit the form",
-      });
-      return;
-    }
+    //   router.push("/lab/dashboard");
+    // }
+    // if (!response) {
+    //   toast({
+    //     title: "Failed to get the project",
+    //     description: "please resubmit the form",
+    //   });
+    //   return;
+    // }
   }
-
-  // useEffect(() => {
-  //   console.log("sample", sample);
-  // }, []);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
@@ -214,11 +213,11 @@ const InputDokumenUser: FC<inputDokumenUserProps> = ({
                         )}
                       >
                         <option className="w-full p-4 rounded bg-gray-100 shadow-none">
-                          {parameter.unit[0] ?? "Select Unit"}
+                          { parameter.unit ?? "Select Unit"}
                         </option>
                         {choiceParams
                           .find((param) => param.param === parameter.name)
-                          ?.unit.filter((unit) => unit !== parameter.unit[0]) // Filter out units that are the same as the parameter's unit
+                          ?.unit.filter((unit) => !parameter.unit.includes(unit)) // Filter out units that are the same as the parameter's unit
                           .map((unit) => (
                             <option key={unit} value={unit}>
                               {unit}
@@ -253,11 +252,11 @@ const InputDokumenUser: FC<inputDokumenUserProps> = ({
                         )}
                       >
                         <option className="w-full p-4 rounded bg-gray-100 shadow-none">
-                          {parameter.method[0] || `Select Method`}
+                          {parameter.method ?? `Select Method`}
                         </option>
                         {choiceParams
                           .find((param) => param.param === parameter.name)
-                          ?.method.filter((method) => method !== parameter.method[0])
+                          ?.method.filter((method) => !parameter.method.includes(method))
                           .map((method) => (
                             <option key={method} value={method}>
                               {method}
@@ -273,10 +272,10 @@ const InputDokumenUser: FC<inputDokumenUserProps> = ({
                     </TableCell>
                     <TableCell className="text-right">
                     <Input
-                  type="text"
-                  className="bg-gray-100"
-                  {...register(`sample.${sampleId}.parameter.${parameterId}.result`)}
-                />
+                      type="text"
+                      className="bg-white"
+                      {...register(`sample.${sampleId}.parameter.${parameterId}.result`)}
+                    />
                       {/* <Input
                         type="text"
                         className="bg-gray-100"

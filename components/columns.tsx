@@ -20,6 +20,7 @@ import {
   ProjectMarketingType,
   UserType,
   ProjectAdminPplhpType,
+  SampleType,
 } from "@/lib/type";
 import Link from "next/link";
 import { ProjectSamplingType } from "@/lib/type";
@@ -1076,17 +1077,6 @@ export const LabDashboardPageColumns: ColumnDef<LabDataType>[] = [
       );
     },
   },
-  // {
-  //   accessorKey: "contact_person",
-  //   header: "Contact Person",
-  //   cell: ({ row }) => {
-  //     return (
-  //       <div className="capitalize pl-0.5">
-  //         {row.getValue("contact_person")}
-  //       </div>
-  //     );
-  //   },
-  // },
   {
     accessorKey: "lab_status",
     header: "Status",
@@ -1109,6 +1099,67 @@ export const LabDashboardPageColumns: ColumnDef<LabDataType>[] = [
           className={`capitalize  text-white rounded-md w-fit px-2 text-center flex font-semibold ${color}`}
         >
           {row.getValue("lab_status")}
+        </div>
+      );
+    },
+  },
+  {
+    accessorKey: "_id",
+  },
+];
+
+export const LabDashboardPageColumnsUser: ColumnDef<LabDataType>[] = [
+  // No Penawaran
+  {
+    accessorKey: "no_penawaran",
+    header: "No Penawaran",
+    cell: ({ row }) => <div className="">{row.getValue("no_penawaran")}</div>,
+  },
+  {
+    accessorKey: "project_name",
+    header: ({ column }) => {
+      return (
+        <Button
+          className="italic text-moss_green"
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Judul Project
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => (
+      <div className="capitalize pl-4">{row.getValue("project_name")}</div>
+    ),
+  },
+  //Lokasi
+  {
+    accessorKey: "alamat_sampling",
+    header: "Lokasi",
+    cell: ({ row }) => {
+      return (
+        <div className="capitalize pl-0.5">
+          {row.getValue("alamat_sampling")}
+        </div>
+      );
+    },
+  },
+  {
+    accessorKey: "sampling_list", // Update accessorKey to "sampling_list"
+    header: "Status",
+    cell: ({ row }) => {
+      // Assuming sampling_list is an array, we'll map through it
+      const samplingList = row.getValue("sampling_list") as SampleType[];
+      const statusArray = samplingList.map((sample) => sample.status);
+
+      // Now you have an array of statuses, you might want to display them differently
+      // For simplicity, let's just join them into a comma-separated string
+      const statusString = statusArray.join(", ");
+
+      return (
+        <div className="capitalize  text-white rounded-md w-fit px-2 text-center flex font-semibold bg-moss_green">
+          {statusString}
         </div>
       );
     },
