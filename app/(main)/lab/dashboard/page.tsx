@@ -53,7 +53,7 @@ export default async function Home() {
       <LabDataTable
         data={projects.result ? projects.result : []}
         link="dashboard/"
-        idUser={(session && role === "USER" && session.user.id) || ""}
+        idUser={(session && role === "USER" && session.user.id) || undefined}
       />
     </div>
   )

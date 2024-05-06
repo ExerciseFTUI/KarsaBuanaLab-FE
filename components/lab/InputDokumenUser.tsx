@@ -49,6 +49,8 @@ const InputDokumenUser: FC<inputDokumenUserProps> = ({
 }) => {
   const router = useRouter();
   const { toast } = useToast();
+  // State declaration
+  const [lastSelectedUnits, setLastSelectedUnits] = useState<Record<string, string>>({});
   
   const {
     register,
@@ -58,42 +60,43 @@ const InputDokumenUser: FC<inputDokumenUserProps> = ({
   } = useLabForm();
 
   // For default values result
-  useEffect(() => {
-    sample.forEach((inputDocument, sampleId) => {
-      inputDocument.parameters.forEach((parameter, parameterId) => {
-        const defaultValue = String(parameter.result);
-        if (defaultValue === "undefined" || defaultValue === "null") {
-          return;
-        }
-        setValue(`sample.${sampleId}.parameter.${parameterId}.result`, defaultValue);
-      });
+useEffect(() => {
+  sample.forEach((inputDocument, sampleId) => {
+    inputDocument.parameters.forEach((parameter, parameterId) => {
+      const defaultValue = String(parameter.result);
+      if (defaultValue === "undefined" || defaultValue === "null") {
+        return;
+      }
+      setValue(`sample.${sampleId}.parameter.${parameterId}.result`, defaultValue);
     });
-  }, [sample, setValue]);
+  });
+}, [sample, setValue]);
 
-  // For default values unit and method
-  const [lastSelectedUnits, setLastSelectedUnits] = useState<Record<string, string>>({});
+// For default values unit and method
+useEffect(() => {
+  const updatedLastSelectedUnits: Record<string, string> = {};
 
-  useEffect(() => {
-    const updatedLastSelectedUnits: Record<string, string> = {};
+  // Loop through each parameter in the sample
+  sample.forEach((inputDocument) => {
+    inputDocument.parameters.forEach((parameter) => {
+      const { name, unit, method } = parameter;
+      const lastUnit = lastSelectedUnits[name]; // Get last selected unit
 
-    // Loop through each parameter in the sample
-    sample.forEach((inputDocument) => {
-      inputDocument.parameters.forEach((parameter) => {
-        const { name, unit } = parameter;
-        const lastUnit = lastSelectedUnits[name]; // Get last selected unit
-
+      // Check if unit and method are defined
+      if (unit && method) {
         // Check if last selected unit is valid and still available in options
-        if (lastUnit && unit.includes(lastUnit)) {
+        if (lastUnit === unit || lastUnit === method) {
           updatedLastSelectedUnits[name] = lastUnit; // Use last selected unit as default
         } else {
-          updatedLastSelectedUnits[name] = unit[0] || ''; // Use first available unit as default
+          updatedLastSelectedUnits[name] = unit; // Use unit as default
         }
-      });
+      }
     });
+  });
 
-    // Update state with the new last selected units
-    setLastSelectedUnits(updatedLastSelectedUnits);
-  }, []); // Only re-run the effect when sample or choiceParams change
+  // Update state with the new last selected units
+  setLastSelectedUnits(updatedLastSelectedUnits);
+}, [sample]); // Only re-run the effect when sample changes
 
 
   function mergeData(
@@ -148,6 +151,7 @@ const InputDokumenUser: FC<inputDokumenUserProps> = ({
     //   return;
     // }
   }
+  
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
@@ -217,7 +221,7 @@ const InputDokumenUser: FC<inputDokumenUserProps> = ({
                         </option>
                         {choiceParams
                           .find((param) => param.param === parameter.name)
-                          ?.unit.filter((unit) => !parameter.unit.includes(unit)) // Filter out units that are the same as the parameter's unit
+                          ?.unit.filter((unit) => !parameter.unit || !parameter.unit.includes(unit)) // Use optional chaining operator to handle undefined
                           .map((unit) => (
                             <option key={unit} value={unit}>
                               {unit}
@@ -256,7 +260,7 @@ const InputDokumenUser: FC<inputDokumenUserProps> = ({
                         </option>
                         {choiceParams
                           .find((param) => param.param === parameter.name)
-                          ?.method.filter((method) => !parameter.method.includes(method))
+                          ?.method.filter((method) => !parameter.method || !parameter.method.includes(method))
                           .map((method) => (
                             <option key={method} value={method}>
                               {method}
