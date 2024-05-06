@@ -28,7 +28,7 @@ export default async function Home() {
             if (sample.status === "REVISION") {
               project.lab_sample_status = "REVISION";
             } else if (sample.status === "WAITING") {
-              project.lab_sample_status = "WAITING";
+              project.lab_sample_status = "IN REVIEW BY SPV";
             } else if (sample.status === "SUBMIT") {
               project.lab_sample_status = "SUBMIT";
             } else if (sample.status === "ACCEPTED") {
