@@ -356,6 +356,30 @@ const ProjectForm: FC<ProjectFormProps> = ({
                     </FormItem>
                   )}
                 />
+                <FormField
+                  control={form.control}
+                  name="password"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Password</FormLabel>
+                      <FormControl>
+                        <div className=" flex">
+                          <Input
+                            disabled={true}
+                            type="string"
+                            className=""
+                            placeholder=""
+                            {...field}
+                          />
+                          <FaCopy
+                            onClick={() => copyToClipboard(field.value ?? '')}
+                            className=" cursor-pointer text-3xl m-2 self-center bg-light_green p-1 rounded-lg"
+                          />
+                        </div>
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
               </div>
             )}
             <FormField
@@ -415,30 +439,6 @@ const ProjectForm: FC<ProjectFormProps> = ({
                   </FormControl>
 
                   <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="password"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Password</FormLabel>
-                  <FormControl>
-                    <div className=" flex">
-                      <Input
-                        disabled={true}
-                        type="string"
-                        className=""
-                        placeholder=""
-                        {...field}
-                      />
-                      <FaCopy
-                        onClick={() => copyToClipboard(field.value ?? '')}
-                        className=" cursor-pointer text-3xl m-2 self-center bg-light_green p-1 rounded-lg"
-                      />
-                    </div>
-                  </FormControl>
                 </FormItem>
               )}
             />
