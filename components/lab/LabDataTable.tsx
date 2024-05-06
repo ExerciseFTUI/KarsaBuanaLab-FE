@@ -69,7 +69,7 @@ const LabDataTable: FC<LabDataTableProps> = ({ data, link, idUser }) => {
 
   const table = useReactTable({
     data,
-    columns: idUser !== "" ? LabDashboardPageColumnsUser : LabDashboardPageColumns,
+    columns: idUser !== undefined ? LabDashboardPageColumnsUser : LabDashboardPageColumns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),

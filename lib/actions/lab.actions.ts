@@ -65,7 +65,11 @@ export async function saveSample(
   status: string
 ): Promise<BaseApiResponse<Project>> {
   try {
-    const response = await axios.post(apiBaseUrl + "change-lab-status", {
+    
+    const response = await axios.post(
+      apiBaseUrl + "change-lab-status", 
+      // `http://localhost:8080/lab/change-lab-status`,
+    {
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       projectId,
       status,
