@@ -147,7 +147,7 @@ const CalendarSample : FC<dashboardSampling> = ({ data }) => {
         <FullCalendar
           plugins={[dayGridPlugin, interactionPlugin]}
           initialView="dayGridMonth"
-          weekends={false}
+          // weekends={false}
           events={updatedData}  
           // dateClick={handleDateClick}
           eventContent={renderEventContent}
