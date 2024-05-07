@@ -25,7 +25,7 @@ export default async function RootLayout({
   const session = await getSessionServer();
 
   const user: any = session?.user || "";
-  const role = user ? user?.role.toUpperCase() : "a";
+  const role = user ? user?.role.toUpperCase() : "";
 
   let res,
     data: any[] = [];
