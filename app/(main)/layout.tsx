@@ -38,6 +38,10 @@ export default async function RootLayout({
     data = !!res ? (res as any).projectList : [];
   }
 
+  data = data.filter(
+    (p) => p.jadwal_sampling != null && p.current_division == "SAMPLING"
+  );
+
   return (
     <>
       <main className="flex flex-row ">
