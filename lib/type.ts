@@ -283,7 +283,7 @@ export type sampleAnswer = {
   sample_name: string;
   param: {
     param: string;
-    result: string;
+    result: number;
     unit: string;
     method: string;
   }[];
