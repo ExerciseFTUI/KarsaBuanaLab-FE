@@ -89,7 +89,7 @@ export function DeadlineNotification({ projects }: { projects: Project[] }) {
 
         <Separator orientation="horizontal" className="mt-4" />
 
-        <div className="grid gap-4 py-4">
+        <div className="grid gap-4 py-4 overflow-y-scroll">
           {sortedDeadline.map((j: any, i: any) => (
             <div
               className={cn(
