@@ -71,7 +71,8 @@ export default function TabSampleStaff({
       });
     }
 
-    router.push("/sampling/sample");
+    // router.push("/sampling/sample");
+    router.refresh();
   };
 
   return (

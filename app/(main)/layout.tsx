@@ -25,7 +25,7 @@ export default async function RootLayout({
   const session = await getSessionServer();
 
   const user: any = session?.user || "";
-  const role = user ? user?.role.toUpperCase() : "a";
+  const role = user ? user?.role.toUpperCase() : "";
 
   let res,
     data: any[] = [];
@@ -37,6 +37,10 @@ export default async function RootLayout({
     res = await getProjectsByAcc(user.id);
     data = !!res ? (res as any).projectList : [];
   }
+
+  data = data.filter(
+    (p) => p.jadwal_sampling != null && p.current_division == "SAMPLING"
+  );
 
   return (
     <>
