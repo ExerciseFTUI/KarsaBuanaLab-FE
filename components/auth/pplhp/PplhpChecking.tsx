@@ -11,6 +11,7 @@ import { Lhp } from "./PplhpType";
 import { lhpAccept, lhpRevision } from "@/lib/actions/admin.action";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/components/ui/use-toast";
+import LoadingScreen from "@/components/LoadingScreen";
 
 interface PplhpCheckingProps {
   title: string;
@@ -28,6 +29,7 @@ export const PplhpChecking: FC<PplhpCheckingProps> = ({
   const router = useRouter();
   const { toast } = useToast();
   const [note, setNote] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleAccept = async () => {
     //TODO:
@@ -40,7 +42,7 @@ export const PplhpChecking: FC<PplhpCheckingProps> = ({
       },
       from: "ADMIN",
     };
-
+    setIsLoading(true);
     const response = await lhpAccept(body, id);
 
     router.push("/admin/pplhp");
@@ -71,8 +73,10 @@ export const PplhpChecking: FC<PplhpCheckingProps> = ({
       from: "ADMIN",
     };
 
+    setIsLoading(true);
     const response = await lhpRevision(body, id);
-
+    setIsLoading(false);
+    
     router.push("/admin/pplhp");
 
     if (!response) {
@@ -92,6 +96,8 @@ export const PplhpChecking: FC<PplhpCheckingProps> = ({
 
   return (
     <div className="h-screen px-16 space-y-10 w-full max-w-3xl">
+      {isLoading && <LoadingScreen />}
+      
       <h1 className={`text-center text-2xl font-semibold text-${color}`}>
         {title}
       </h1>
@@ -147,7 +153,4 @@ export const PplhpChecking: FC<PplhpCheckingProps> = ({
     </div>
   );
 };
-function setIsLoading(arg0: boolean) {
-  throw new Error("Function not implemented.");
-}
 

@@ -52,8 +52,9 @@ export type SampleType = {
   sample_name: string;
   harga: string;
   fileId: string;
-  regulation: string;
+  // regulation: string;
   location: string;
+  status: string;
 };
 
 export type FileType = {
@@ -103,7 +104,18 @@ export type LabDataType = {
   alamat_kantor: string;
   contact_person: string;
   lab_status: string;
+  sampling_list: SampleType[];
 };
+
+// export type LabDataTypeUser = {
+//   _id: string;
+//   no_penawaran: string;
+//   project_name: string;
+//   alamat_sampling: string;
+//   alamat_kantor: string;
+//   contact_person: string;
+//   sampling_list: SampleType[];
+// };
 
 export type ProjectSamplingType = {
   no_penawaran: string;
@@ -268,8 +280,8 @@ export type InputDocumentType = {
 
 export type ParameterType = {
   name: string;
-  unit: string[];
-  method: string[];
+  unit: string;
+  method: string;
   result: string;
 };
 

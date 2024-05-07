@@ -35,6 +35,7 @@ export const getProjectByDivision = async (
   try {
     const response = await axios.get(
       `${apiBaseUrl}/projects/get-project-by-division/`,
+      // `http://localhost:8080/projects/get-project-by-division/`,
       {
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
         data: { division: division, status: "RUNNING" },
@@ -111,6 +112,7 @@ export const getDashboardSampling = async (): Promise<
   try {
     const response = await axios.get(
       `${apiBaseUrl}/sampling/get-dashboard-sampling/`
+      // `http://localhost:8080/sampling/get-dashboard-sampling/`
     )
 
     revalidatePath(`/sampling`)
@@ -127,8 +129,12 @@ export const verifySample = async (
   status: string,
   sample_id: string
 ): Promise<BaseApiResponse<Project>> => {
+  
   try {
-    const response = await axios.post(`${apiBaseUrl}/sampling/change`, {
+    const response = await axios.post(
+      `${apiBaseUrl}/sampling/change`, 
+      // `http://localhost:8080/sampling/change`,
+    {
       projectId,
       status,
       sample_id,

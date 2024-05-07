@@ -44,37 +44,29 @@ export default function VerifikasiSampling({
   async function submitSample(sample_id: string, status: string) {
     setIsLoading(true);
     console.log("status : ", status);
-
-    if (status == "REVISION BY SPV") {
-      const response = await saveSample(project._id, status);
-      console.log("resp : ", response);
-
-      setIsLoading(false);
-
-      if (!response) {
-        toast({
-          title: "Failed to reanalisa data",
-          description: "Please Try Again",
-          variant: "destructive",
-        });
-
-        return;
-      }
-
-      toast({
-        title: "Data Has Been Verified",
-        description: "Please check again if its correct",
-      });
-
-      router.refresh();
-      return;
-    }
-
-    const response = await verifySample(project._id, status, sample_id);
-
+    const response = await saveSample(project._id, status);
     setIsLoading(false);
 
     if (!response) {
+      toast({
+        title: status === "REVISION BY SPV" ? "Failed to reanalisa data" : "Failed to Accept Data",
+        description: "Please Try Again",
+        variant: "destructive",
+      });
+
+      return;
+    }
+
+    toast({
+      title: "Data Has Been Verified",
+      description: "Please check again if its correct",
+    });
+    
+    const resp = await verifySample(project._id, status, sample_id);
+
+    setIsLoading(false);
+
+    if (!resp) {
       toast({
         title: "Failed to Verify Data",
         description: "Please Try Again",
@@ -106,13 +98,14 @@ export default function VerifikasiSampling({
 
           return (
             <div key={i} className="w-full flex flex-col justify-between gap-4">
-              <div className="flex gap-2">
-                <h1 className="font-bold">{s.sample_name}</h1>
-
-                <Link href={files.sampling_list[i].url || "/"} className="">
-                  ⇲
-                </Link>
+              <div className="flex font-bold w-full bg-dark_green text-white rounded-lg justify-between px-5">
+                <h1 className="">{s.sample_name}</h1>
+                <h1 className=" font-medium"> {s.status.toLocaleLowerCase()}</h1>
               </div>
+
+                <Link href={files.sampling_list[i].url || "/"} className=" bg-moss_green w-fit px-4 py-2 rounded-lg text-white">
+                  See Analyze Result
+                </Link>
 
               <div className="flex gap-2">
                 {assignedUser.map((u, j) => (
