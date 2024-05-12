@@ -204,7 +204,7 @@ const CreateProjectPage: FC<CreateProjectProps> = ({ baseSamples }) => {
 
         toast({
           title: "Create Project Success",
-          description: "Continue to upload document please wait...",
+          description: "Dont forget to refresh the page ",
         });
 
         // End date in here
@@ -218,7 +218,7 @@ const CreateProjectPage: FC<CreateProjectProps> = ({ baseSamples }) => {
 
         setIsLoading(false);
         router.push("/marketing/running");
-        // router.push(`/marketing/project/RUNNING/${response?._id}`);
+
       } else {
         toast({
           title: "Oops, you forget something!",

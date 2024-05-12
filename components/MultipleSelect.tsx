@@ -40,7 +40,7 @@ const MultipleSelect: FC<SelectProps> = ({
             }),
           }}
           classNames={{
-            control: () => "text-sm",
+            control: () => "text-sm overflow-auto max-h-[4rem]",
           }}
         />
       </div>
