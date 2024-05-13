@@ -6,8 +6,6 @@ const apiBaseUrl =
   process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:5000";
 
 export const createProjectJsonClient = async (body: any) => {
-  console.log("body", body);
-  
   try {
     const response = await axios.post(
       // `http://localhost:8080/projects/createJSON`,
