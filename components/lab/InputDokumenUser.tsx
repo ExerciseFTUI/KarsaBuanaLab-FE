@@ -74,6 +74,8 @@ useEffect(() => {
 
 // For default values unit and method
 useEffect(() => {
+  console.log("sample: ", sample[0].parameters);
+  
   const updatedLastSelectedUnits: Record<string, string> = {};
 
   // Loop through each parameter in the sample
