@@ -7,9 +7,11 @@ import { ClientResponses } from "@/lib/type";
 
 interface SampleProps {
   data: ClientResponses[];
+  setEnabled: (enabled: boolean) => void;
 }
 
-const Sample: FC<SampleProps> = ({ data }) => {
+const Sample: FC<SampleProps> = ({ data, setEnabled }) => {
+  setEnabled(data.every((item) => item.status === "ACCEPTED"));
   return (
     <div className="space-y-12 mt-4 m-10">
       <div className="space-y-0">

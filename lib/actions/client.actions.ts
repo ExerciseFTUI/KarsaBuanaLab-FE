@@ -13,10 +13,33 @@ export const getProjectDivision = async (
       projectId,
       password,
     });
+    console.log(response.data.result);
     return response.data.result;
   } catch (error: any) {
     console.error("Error getting Project", error.message);
     return null as unknown;
+  }
+};
+
+
+export const getAllStatusById = async (projectId: string): Promise<any[]> => {
+  try {
+    const response = await axios.get(
+      `${apiBaseUrl}/clients/get-all-status`,
+      {
+        data: {
+          projectId: projectId,
+        },
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+      }
+    );
+
+    return response.data.result; // Access 'result' field
+  } catch (error: any) {
+    console.error(`Error getting sample : ${projectId}:`, error.message);
+    return [];
   }
 };
 

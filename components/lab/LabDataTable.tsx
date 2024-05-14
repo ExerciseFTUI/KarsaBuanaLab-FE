@@ -49,15 +49,16 @@ import {
   DoubleArrowLeftIcon,
   DoubleArrowRightIcon,
 } from "@radix-ui/react-icons";
-import { LabDashboardPageColumns, columns } from "@/components/columns";
+import { LabDashboardPageColumns, LabDashboardPageColumnsUser, columns } from "@/components/columns";
 import { LabDataType } from "@/lib/type";
 
 interface LabDataTableProps {
-  data: LabDataType[];
+  data: LabDataType[] ;
   link: string;
+  idUser?: string;
 }
 
-const LabDataTable: FC<LabDataTableProps> = ({ data, link }) => {
+const LabDataTable: FC<LabDataTableProps> = ({ data, link, idUser }) => {
   const router = useRouter()
   const [sorting, setSorting] = useState<SortingState>([])
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
@@ -68,7 +69,7 @@ const LabDataTable: FC<LabDataTableProps> = ({ data, link }) => {
 
   const table = useReactTable({
     data,
-    columns: LabDashboardPageColumns,
+    columns: idUser !== undefined ? LabDashboardPageColumnsUser : LabDashboardPageColumns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
@@ -85,7 +86,7 @@ const LabDataTable: FC<LabDataTableProps> = ({ data, link }) => {
     },
   });
 
-
+  
   
 
   return (
@@ -158,7 +159,7 @@ const LabDataTable: FC<LabDataTableProps> = ({ data, link }) => {
                   className="hover:bg-light_green ease-in-out duration-500 text-xs hover:cursor-pointer hover:rounded-xl"
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
-                  onClick={() => {router.push(link + row.getValue("_id")); console.log("link : ", link, row.getValue("_id"));
+                  onClick={() => {router.push(link + row.getValue("_id")); 
                   }}
                 >
                   {row.getVisibleCells().map((cell) => (

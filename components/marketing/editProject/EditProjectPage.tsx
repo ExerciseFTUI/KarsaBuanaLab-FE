@@ -47,6 +47,7 @@ import DeleteDialog from "@/components/DeleteDialog"
 import { AlertDialog } from "@/components/ui/alert-dialog"
 import { AlertDialogTrigger } from "@radix-ui/react-alert-dialog"
 import CancelPopup from "@/components/cancelPopup"
+import { revalidatePath } from "next/cache"
 
 interface EditProjectPageProps {
   project: Project
@@ -324,6 +325,51 @@ export default function EditProjectPage({
   }
   // =============== End of Action to update reason why project cancelled =================================== //
 
+  // ========================= Action to update num revision ============================================== //
+
+  async function updateRevision(
+    values: z.infer<typeof createProjectValidation>
+  ) {
+    try {
+      const body = {
+        _id: project._id,
+        jumlah_revisi: values.numRevisi,
+      }
+
+      //Connect to API
+      const responseInfo = await updateProjectInfo(body)
+      if (!responseInfo) {
+        toast({
+          title: "Oops, Failed!",
+          description: "Failed to update revision number",
+        })
+
+        return
+      }
+
+      // refresh the page
+      toast({
+        title: "Success",
+        description: "Revision number updated successfully",
+      })
+
+      router.refresh()
+    } catch (error: any) {
+      const errorMsg = error?.response?.data?.message || error
+      toast({
+        title: "Oops, Failed!",
+        description: errorMsg,
+        variant: "destructive",
+      })
+      console.error("Error from backend", errorMsg)
+      console.error("Error during project update:", errorMsg)
+    } finally {
+      router.refresh()
+    }
+  }
+
+  // ========================= End of Action to update num revision ============================================== //
+  
   // ========================= Action to update status payment ============================================== //
 
   async function updatePayment(
@@ -434,6 +480,7 @@ export default function EditProjectPage({
           note="Gakuat bayar jasa kita"
           updatePayment={updatePayment}
           password={password}
+          updateRevision={updateRevision}
         />
         <Tabs defaultValue="sampling" className="w-[40rem] max-sm:w-[420px] ">
           <TabsList className="grid w-full grid-cols-2">

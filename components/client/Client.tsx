@@ -10,7 +10,6 @@ export default function Client() {
   const [clientData, setClientData] = useState();
 
   console.log("clientData", clientData);
-  
 
   const { data } = useSession();
 
@@ -25,7 +24,7 @@ export default function Client() {
         {resiNumber !== "" ? (
           <ClientCard
             resiNumber={resiNumber}
-            stage="finished"
+            stage={stage}
             clientData={clientData ? clientData : null}
           />
         ) : (

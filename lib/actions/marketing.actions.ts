@@ -155,6 +155,8 @@ export const createProject = async (
 };
 
 export const createProjectJson = async (body: any) => {
+  console.log("body", body);
+  
   try {
     const response = await axios.post(
       `${apiBaseUrl}/projects/createJSON`,
@@ -227,7 +229,7 @@ export const getSample = async (): Promise<BaseApiResponse<[BaseSample]>> => {
 
     return response.data as BaseApiResponse<[BaseSample]>;
   } catch (error: any) {
-    console.error("Error getting sample:", error.message);
+    console.error("Error getting sample marketing/getSample:", error.message);
     return null as unknown as BaseApiResponse<[BaseSample]>;
   }
 };

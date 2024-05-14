@@ -53,8 +53,8 @@ const IdCheckForm: FC<IdCheckFormProps> = ({
   const form = useForm<z.infer<typeof clientValidation>>({
     resolver: zodResolver(clientValidation),
     defaultValues: {
-      resiNumber: "65afbd1e987cf82566e265bb",
-      password: "O4T9UM",
+      resiNumber: "660b67cd2a288e583b6eeaf3",
+      password: "R6SY6Z",
     },
   });
   const [isLoading, setIsLoading] = useState(false);
@@ -86,7 +86,7 @@ const IdCheckForm: FC<IdCheckFormProps> = ({
         return;
       }
       setResiNumber(values.resiNumber);
-      setStage(response.result);
+      setStage(response);
       setClientData(combinedData);
     } catch (error) {
       console.error("Error getting project :", error);

@@ -6,6 +6,17 @@ import * as z from "zod";
 
 import { Button } from "@/components/ui/button";
 import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
+import {
   Form,
   FormControl,
   FormDescription,
@@ -14,7 +25,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { FaCopy } from "react-icons/fa";
+import { FaArrowUp, FaArrowDown, FaCopy } from "react-icons/fa";
 import {
   Card,
   CardContent,
@@ -31,6 +42,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useToast } from "@/components/ui/use-toast";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import VerifRevision from "../editProject/VerifRevision";
 
 interface ProjectFormProps {
   form: UseFormReturn<z.infer<typeof createProjectValidation>>;
@@ -41,6 +53,9 @@ interface ProjectFormProps {
     values: z.infer<typeof createProjectValidation>
   ): Promise<void>;
   password?: string;
+  updateRevision?(
+    values: z.infer<typeof createProjectValidation>
+  ): Promise<void>;
 }
 
 const ProjectForm: FC<ProjectFormProps> = ({
@@ -50,11 +65,14 @@ const ProjectForm: FC<ProjectFormProps> = ({
   note,
   updatePayment,
   password,
+  updateRevision,
 }) => {
   const router = useRouter();
   const query = useSearchParams();
   const { toast } = useToast();
   const [paidStatus, setPaidStatus] = useState(form.getValues("is_paid"));
+  var numRevision = form.getValues("numRevisi");
+  const [isRevUp, setIsRevUp] = useState(false);
 
   const copyToClipboard = async (text: string) => {
     try {
@@ -208,26 +226,112 @@ const ProjectForm: FC<ProjectFormProps> = ({
                     </FormItem>
                   )}
                 />
-                <FormField
-                  control={form.control}
-                  name="numRevisi"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Nomor Revisi</FormLabel>
-                      <FormControl>
-                        <Input
-                          disabled={true}
-                          type="number"
-                          className=""
-                          placeholder=""
-                          {...field}
-                        />
-                      </FormControl>
+                  <FormField
+                    control={form.control}
+                    name="numRevisi"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Nomor Revisi</FormLabel>
+                        <FormControl>
+                          <div className="flex">
+                            <Input
+                              disabled={true}
+                              type="number"
+                              className=""
+                              placeholder=""
+                              {...field}
+                            />
 
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                            <AlertDialog>
+                              <AlertDialogTrigger asChild>
+                                <div className=' flex'>
+                                  <FaArrowUp 
+                                    className="text-3xl cursor-pointer mx-2 self-center bg-light_green p-1 rounded-lg " 
+                                    onClick={() => {
+                                      form.setValue("numRevisi", (numRevision ?? 0) + 1, {
+                                        shouldValidate: true,
+                                      });
+                                      setIsRevUp(true);
+                                    }}
+                                    />
+                                    {numRevision !== 0 &&
+                                    (
+                                      <FaArrowDown 
+                                        className="text-3xl cursor-pointer mr-2 self-center bg-light_green p-1 rounded-lg" 
+                                        onClick={() => {
+                                          if (numRevision === 0) {
+                                            console.log("got revision");
+                                            
+                                            toast({
+                                              title: "Cannot revision lower than 0",
+                                              variant: "destructive",
+                                            });
+    
+                                            form.setValue("numRevisi", 0, {
+                                              shouldValidate: true,
+                                            }); 
+    
+                                            return;
+                                          }
+                                          
+                                          
+                                          form.setValue("numRevisi", (numRevision ?? 1) - 1, {
+                                            shouldValidate: true,
+                                          }); 
+                                          setIsRevUp(false);
+                                        }}
+                                        />
+
+                                    )}
+                                </div>
+                              </AlertDialogTrigger>
+
+                              { (numRevision !== -1) && 
+                                (
+                                <AlertDialogContent>
+                                    <AlertDialogHeader>
+                                        <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+
+                                        <AlertDialogDescription>
+                                            Please kindly check it first.
+                                        </AlertDialogDescription>
+                                    </AlertDialogHeader>
+
+                                    <AlertDialogFooter>
+                                        <AlertDialogCancel onClick={() => {
+                                          if (isRevUp) {
+                                            form.setValue("numRevisi", (numRevision ?? 0) - 1, {
+                                              shouldValidate: true,
+                                            });
+                                          }
+                                          else {
+                                            if (numRevision !== -2) {
+                                              form.setValue("numRevisi", (numRevision ?? 0) + 1, {
+                                                shouldValidate: true,
+                                              });
+                                            }
+                                          }
+                                        }}>Cancel</AlertDialogCancel>
+                                        <AlertDialogAction onClick={async () => {
+                                          if (updateRevision) {
+                                            await updateRevision(form.getValues());
+                                          }
+                                        }}>
+                                            Continue
+                                        </AlertDialogAction>
+                                    </AlertDialogFooter>
+                                </AlertDialogContent>
+                                )
+                              }
+
+
+                            </AlertDialog>
+                          </div>
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
                 <FormField
                   control={form.control}
                   name="valuasiProject"
@@ -249,6 +353,30 @@ const ProjectForm: FC<ProjectFormProps> = ({
                       </FormControl>
 
                       <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="password"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Password</FormLabel>
+                      <FormControl>
+                        <div className=" flex">
+                          <Input
+                            disabled={true}
+                            type="string"
+                            className=""
+                            placeholder=""
+                            {...field}
+                          />
+                          <FaCopy
+                            onClick={() => copyToClipboard(field.value ?? '')}
+                            className=" cursor-pointer text-3xl m-2 self-center bg-light_green p-1 rounded-lg"
+                          />
+                        </div>
+                      </FormControl>
                     </FormItem>
                   )}
                 />
@@ -314,35 +442,6 @@ const ProjectForm: FC<ProjectFormProps> = ({
                 </FormItem>
               )}
             />
-                  {/* <div className="flex w-full max-w-sm items-center space-x-2">
-            <FormField
-                  control={form.control}
-                  name="password"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Password</FormLabel>
-                      <FormControl >
-                          <Input
-                            disabled={true}
-                            type="string"
-                            className=""
-                            placeholder=""
-                            {...field}
-                          />
-
-                      </FormControl>
-
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                  <Button
-                    onClick={() => copyToClipboard(password ?? "")}
-                    className="bg-moss_green text-white"
-                  >
-                    <FaCopy />
-                  </Button>
-                </div> */}
             <FormField
               control={form.control}
               name="contactPerson"
