@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import {
   AlertDialog,
@@ -9,56 +9,77 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/components/ui/alert-dialog"
-import { useRouter } from "next/navigation"
-import { useEffect, useState } from "react"
-import { Button } from "@/components/ui/button"
-import { cn } from "@/lib/utils"
-import { useToast } from "@/components/ui/use-toast"
-import { verifySample } from "@/lib/actions/sampling.actions"
-import HyperLinkButton from "../sampling/HyperlinkButton"
-import { SamplingRequestData } from "@/lib/type"
-import LoadingScreen from "../LoadingScreen"
-import { Sampling } from "@/lib/models/sampling.model"
-import Link from "next/link"
+} from "@/components/ui/alert-dialog";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+import { useToast } from "@/components/ui/use-toast";
+import { verifySample } from "@/lib/actions/sampling.actions";
+import HyperLinkButton from "../sampling/HyperlinkButton";
+import { SamplingRequestData } from "@/lib/type";
+import LoadingScreen from "../LoadingScreen";
+import { Sampling } from "@/lib/models/sampling.model";
+import Link from "next/link";
+import { saveSample } from "@/lib/actions/lab.actions";
 
 export default function VerifikasiSampling({
   data,
 }: {
-  data: SamplingRequestData
+  data: SamplingRequestData;
 }) {
-  const { project, files, user } = data
+  const { project, files, user } = data;
 
-  const router = useRouter()
-  const { toast } = useToast()
+  const router = useRouter();
+  const { toast } = useToast();
 
-  const [isLoading, setIsLoading] = useState(false)
+  console.log(data);
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const canSave =
     project.sampling_list.filter((s) => s.status == "ACCEPTED").length ==
-    project.sampling_list.length
+    project.sampling_list.length;
 
   async function submitSample(sample_id: string, status: string) {
-    setIsLoading(true)
-
-    const response = await verifySample(project._id, status, sample_id)
-
-    setIsLoading(false)
+    setIsLoading(true);
+    console.log("status : ", status);
+    const response = await saveSample(project._id, status);
+    setIsLoading(false);
 
     if (!response) {
+      toast({
+        title: status === "REVISION BY SPV" ? "Failed to reanalisa data" : "Failed to Accept Data",
+        description: "Please Try Again",
+        variant: "destructive",
+      });
+
+      return;
+    }
+
+    toast({
+      title: "Data Has Been Verified",
+      description: "Please check again if its correct",
+    });
+    
+    const resp = await verifySample(project._id, status, sample_id);
+
+    setIsLoading(false);
+
+    if (!resp) {
       toast({
         title: "Failed to Verify Data",
         description: "Please Try Again",
         variant: "destructive",
-      })
+      });
     } else {
       toast({
         title: "Data Has Been Verified",
         description: "Please check again if its correct",
-      })
+      });
     }
 
-    router.refresh()
+    router.refresh();
   }
 
   return (
@@ -73,25 +94,24 @@ export default function VerifikasiSampling({
         {project.sampling_list.map((s: Sampling, i: number) => {
           const assignedUser = s.lab_assigned_to.flatMap((u) =>
             user.filter((k) => k._id === u)
-          )
-
-          console.log(assignedUser)
+          );
 
           return (
             <div key={i} className="w-full flex flex-col justify-between gap-4">
-              <div className="flex gap-2">
-                <h1 className="font-bold">{s.sample_name}</h1>
-
-                <Link href={files.sampling_list[i].url || "/"} className="">
-                  ⇲
-                </Link>
+              <div className="flex font-bold w-full bg-dark_green text-white rounded-lg justify-between px-5">
+                <h1 className="">{s.sample_name}</h1>
+                <h1 className=" font-medium"> {s.status.toLocaleLowerCase()}</h1>
               </div>
 
+                <Link href={files.sampling_list[i].url || "/"} className=" bg-moss_green w-fit px-4 py-2 rounded-lg text-white">
+                  See Analyze Result
+                </Link>
+
               <div className="flex gap-2">
-                {assignedUser.map((u) => (
-                  <>
-                    <h1 className="text-base">{u.username}</h1>
-                  </>
+                {assignedUser.map((u, j) => (
+                  <h1 key={j} className="text-base">
+                    {u.username}
+                  </h1>
                 ))}
               </div>
 
@@ -143,7 +163,7 @@ export default function VerifikasiSampling({
                     <AlertDialogFooter>
                       <AlertDialogCancel>Cancel</AlertDialogCancel>
                       <AlertDialogAction
-                        onClick={(e) => submitSample(s._id, "REVISION")}
+                        onClick={(e) => submitSample(s._id, "REVISION BY SPV")}
                       >
                         Continue
                       </AlertDialogAction>
@@ -152,7 +172,7 @@ export default function VerifikasiSampling({
                 </AlertDialog>
               </div>
             </div>
-          )
+          );
         })}
 
         {canSave && (
@@ -182,5 +202,5 @@ export default function VerifikasiSampling({
         )}
       </div>
     </div>
-  )
+  );
 }

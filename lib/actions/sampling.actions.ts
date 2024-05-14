@@ -21,7 +21,7 @@ export const getSampleById = async (
 
     return response.data as BaseApiResponse<Sampling>
   } catch (error: any) {
-    console.error("Error getting sample", error.message)
+    console.error("Error getting sample sampling/get/year/sampleId", error.message)
     return {
       message: "Failed to get sample",
       result: null,
@@ -35,6 +35,7 @@ export const getProjectByDivision = async (
   try {
     const response = await axios.get(
       `${apiBaseUrl}/projects/get-project-by-division/`,
+      // `http://localhost:8080/projects/get-project-by-division/`,
       {
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
         data: { division: division, status: "RUNNING" },
@@ -43,7 +44,7 @@ export const getProjectByDivision = async (
 
     return response.data as BaseApiResponse<[Project]>
   } catch (error: any) {
-    console.error("Error getting sample", error.message)
+    console.error("Error getting sample /projects/get-project-by-division/", error.message)
     return null as unknown as BaseApiResponse<[Project]>
   }
 }
@@ -58,7 +59,7 @@ export const getLinkFiles = async (
 
     return response.data as BaseApiResponse<File[]>
   } catch (error: any) {
-    console.error("Error getting sample", error.message)
+    console.error("Error getting sample /projects/get-link-files/${projectId}", error.message)
     return null as unknown as BaseApiResponse<File[]>
   }
 }
@@ -79,7 +80,7 @@ export const getProjectsByAcc = async (
 
     return response.data as BaseApiResponse<[Project]>
   } catch (error: any) {
-    console.error("Error getting sample", error.message)
+    console.error("Error getting sample /projects/get-project-by-acc", error.message)
     return null as unknown as BaseApiResponse<[Project]>
   }
 }
@@ -100,7 +101,7 @@ export const sampleAssignment = async (
 
     return response.data as BaseApiResponse<Project>
   } catch (error: any) {
-    console.error("Error getting sample", error.message)
+    console.error("Error getting sample /sampling/assign/${sampleId}", error.message)
     return null as unknown as BaseApiResponse<Project>
   }
 }
@@ -111,13 +112,14 @@ export const getDashboardSampling = async (): Promise<
   try {
     const response = await axios.get(
       `${apiBaseUrl}/sampling/get-dashboard-sampling/`
+      // `http://localhost:8080/sampling/get-dashboard-sampling/`
     )
 
     revalidatePath(`/sampling`)
 
     return response.data as BaseApiResponse<Project>
   } catch (error: any) {
-    console.error("Error getting sample", error.message)
+    console.error("Error getting sample /sampling/get-dashboard-sampling/", error.message)
     return null as unknown as BaseApiResponse<Project>
   }
 }
@@ -127,8 +129,12 @@ export const verifySample = async (
   status: string,
   sample_id: string
 ): Promise<BaseApiResponse<Project>> => {
+  
   try {
-    const response = await axios.post(`${apiBaseUrl}/sampling/change`, {
+    const response = await axios.post(
+      `${apiBaseUrl}/sampling/change`, 
+      // `http://localhost:8080/sampling/change`,
+    {
       projectId,
       status,
       sample_id,
@@ -138,7 +144,7 @@ export const verifySample = async (
 
     return response.data as BaseApiResponse<Project>
   } catch (error: any) {
-    console.error("Error getting sample", error.message)
+    console.error("Error getting sample /sampling/change", error.message)
     return null as unknown as BaseApiResponse<Project>
   }
 }
@@ -148,6 +154,8 @@ export const assignProject = async (
   accountId: string[],
   jadwalSampling: any
 ): Promise<BaseApiResponse<Project>> => {
+  console.log("assignProject", projectId, accountId, jadwalSampling);
+  
   try {
     const response = await axios.post(`${apiBaseUrl}/projects/assign-project`, {
       projectId,
@@ -155,11 +163,11 @@ export const assignProject = async (
       jadwal_sampling: jadwalSampling,
     })
 
-    revalidatePath(`/sampling/project/${projectId}`) // path sekarang
+    revalidatePath(`/sampling/project`) // path sekarang
 
     return response.data as BaseApiResponse<Project>
   } catch (error: any) {
-    console.error("Error getting sample", error.response.data)
+    console.error("Error getting sample /projects/assign-project", error.response.data)
     return null as unknown as BaseApiResponse<Project>
   }
 }

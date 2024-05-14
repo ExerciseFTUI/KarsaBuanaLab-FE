@@ -16,6 +16,9 @@ interface params {
 }
 
 export function UserDataTable({ table }: params) {
+
+  // print the value of 
+  
   return (
     <Table className="text-base text-light_brown">
       <TableHeader>

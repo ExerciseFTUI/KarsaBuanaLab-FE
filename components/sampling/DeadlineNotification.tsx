@@ -1,6 +1,6 @@
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import {
   Sheet,
   SheetClose,
@@ -10,21 +10,26 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from "@/components/ui/sheet"
-import { Separator } from "../ui/separator"
-import { Project } from "@/lib/models/project.model"
-import { cn } from "@/lib/utils"
-import { differenceInCalendarDays, format } from "date-fns"
+} from "@/components/ui/sheet";
+import { Separator } from "../ui/separator";
+import { Project } from "@/lib/models/project.model";
+import { cn } from "@/lib/utils";
+import { differenceInCalendarDays, format } from "date-fns";
 
 export function DeadlineNotification({ projects }: { projects: Project[] }) {
-  const deadlineData = projects.map((d) => {
-    const { jadwal_sampling } = d
+  let deadlineData: any = [];
 
-    const now = format(new Date(), "dd-LL-y").split("-")
-    const from = jadwal_sampling.from ? jadwal_sampling.from.split("-") : null
-    const to = jadwal_sampling.to ? jadwal_sampling.to.split("-") : null
+  for (let i = 0; i < projects.length; ++i) {
+    const d = projects[i];
+    const { jadwal_sampling } = d;
 
-    return {
+    if (!jadwal_sampling) continue;
+
+    const now = format(new Date(), "dd-LL-y").split("-");
+    const from = jadwal_sampling.from ? jadwal_sampling.from.split("-") : null;
+    const to = jadwal_sampling.to ? jadwal_sampling.to.split("-") : null;
+
+    deadlineData.push({
       project_name: d.project_name,
       deadline:
         from != null
@@ -50,10 +55,12 @@ export function DeadlineNotification({ projects }: { projects: Project[] }) {
                 )
               )
           : 0,
-    }
-  })
+    });
+  }
 
-  const sortedDeadline = deadlineData.sort((a, b) => a.deadline - b.deadline)
+  const sortedDeadline = deadlineData.sort(
+    (a: any, b: any) => a.deadline - b.deadline
+  );
 
   return (
     <Sheet>
@@ -82,8 +89,8 @@ export function DeadlineNotification({ projects }: { projects: Project[] }) {
 
         <Separator orientation="horizontal" className="mt-4" />
 
-        <div className="grid gap-4 py-4">
-          {sortedDeadline.map((j, i) => (
+        <div className="grid gap-4 py-4 overflow-y-scroll">
+          {sortedDeadline.map((j: any, i: any) => (
             <div
               className={cn(
                 "w-full border-b-2 border-pastel_moss_green py-2 text-moss_green",
@@ -107,5 +114,5 @@ export function DeadlineNotification({ projects }: { projects: Project[] }) {
         </div>
       </SheetContent>
     </Sheet>
-  )
+  );
 }

@@ -10,7 +10,7 @@ import { Project } from "@/lib/models/project.model";
 import LoadingScreen from "@/components/LoadingScreen";
 import { SamplingRequestData } from "@/lib/type";
 
-export default function Project({
+export default function ProjectDetail({
   data,
   role,
 }: {
@@ -20,7 +20,7 @@ export default function Project({
   const { project, files, user } = data;
 
   if (role == "") return;
-  
+
   if (data == null)
     return (
       <div className="w-full h-full flex justify-center items-center font-bold">

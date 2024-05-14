@@ -24,11 +24,23 @@ export default async function RootLayout({
 }) {
   const session = await getSessionServer();
 
-  const user = session?.user || "";
+  const user: any = session?.user || "";
   const role = user ? user?.role.toUpperCase() : "";
 
-  let res = null;
-  let data: Project[] = [];
+  let res,
+    data: any[] = [];
+
+  if (role === "ADMIN") {
+    res = await getProjectByDivision("Sampling");
+    data = !!res ? (res as any).projects : [];
+  } else {
+    res = await getProjectsByAcc(user.id);
+    data = !!res ? (res as any).projectList : [];
+  }
+
+  data = data.filter(
+    (p) => p.jadwal_sampling != null && p.current_division == "SAMPLING"
+  );
 
   return (
     <>
@@ -37,7 +49,7 @@ export default async function RootLayout({
         <section className="flex flex-col sm:min-h-screen items-center flex-1 pt-2 px-6 pb-10 max-lg:pb-32 sm:px-10 bg-[#F8F8F8] overflow-auto">
           <div className="w-full ">
             <Topbar
-              projects={data ? data : []}
+              projects={!!data.length ? data : []}
               data={session ? session : null}
             />
             {children}
