@@ -12,6 +12,18 @@ import {
 } from "@/components/ui/table";
 import { Table as DataTable, flexRender } from "@tanstack/react-table";
 import React from "react";
+import {
+  DoubleArrowLeftIcon,
+  DoubleArrowRightIcon,
+} from "@radix-ui/react-icons";
+import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 interface InventoryAssignedTableProps {
   table: DataTable<any>;
@@ -25,7 +37,6 @@ const InventoryAssignedTable: FC<InventoryAssignedTableProps> = ({ table }) => {
           Assigned: {table.getFilteredSelectedRowModel().rows.length}{" "}
         </div>
       </div>
-
       <Table className="text-base text-light_brown">
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (

@@ -1,6 +1,8 @@
 import InventoryDetail from "@/components/auth/inventory/create/Inventory";
 import InventoryForm from "@/components/auth/inventory/create/InventoryForm";
 import InventoryPIC from "@/components/auth/inventory/create/InventoryPIC";
+import { InventoryUser } from "@/components/auth/inventory/InventoryType";
+import { getInventoryUsers } from "@/lib/actions/inventory.action";
 import { User } from "@/lib/models/user.model";
 
 const allUsers: User[] = [
@@ -57,9 +59,11 @@ const allUsers: User[] = [
 ];
 
 export default async function CreateInventoryPage() {
+  const inventoryUsers: InventoryUser[] = await getInventoryUsers();
+
   return (
     <div className="flex overflow-auto custom-scrollbar w-full py-4 ">
-      <InventoryDetail isUpdate={false} allUsers={allUsers} />
+      <InventoryDetail isUpdate={false} allUsers={inventoryUsers} />
     </div>
   );
 }
