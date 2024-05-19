@@ -5,8 +5,15 @@ import { BaseApiResponse } from "../models/baseApiResponse.model";
 import { Project } from "../models/project.model";
 import { Sampling } from "../models/sampling.model";
 import { revalidatePath } from "next/cache";
+import {
+  LabDashboardType,
+  LabInputDokumenAnswerType,
+  sampleAnswer,
+} from "../type";
 
-const apiBaseUrl = process.env.API_BASE_URL + "/lab/";
+const apiBaseUrl = process.env.API_BASE_URL + "/lab/" || "http://localhost:5000/lab/";
+const clientBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || "";
+
 
 export async function getLabProjects(): Promise<BaseApiResponse<Project[]>> {
   try {
@@ -82,3 +89,56 @@ export async function saveSample(
     return error.response.data as unknown as BaseApiResponse<Project>;
   }
 }
+
+export const getProjectLab = async () : Promise<Project[]> => {
+  try {
+    const response = await axios.get(apiBaseUrl);
+    
+    return response.data.result; // Access 'result' field
+  } catch (error: any) {
+    console.error(`Error getting project :`, error.message);
+    return null as unknown as Project[];
+  }
+};
+
+export const getProjectBy = async (userId: string): Promise<any> => {
+  try {
+    const response = await axios.get(
+      apiBaseUrl + "get-project-by-lab", 
+      {
+        data: {
+          userId: userId,
+        },
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+      });
+    return response.data.labAssignedProjects;
+  } catch (error: any) {
+    console.error(`Error getting project with ID ${userId}:`, error.message);
+    return null as unknown;
+  }
+};
+
+export const submitLab = async (
+  projectId: string,
+  samples: sampleAnswer[]
+): Promise<any> => {
+  try {
+    const response = await axios.post(
+      apiBaseUrl + "submit-lab", 
+      // `http://localhost:8080/lab/submit-lab`, 
+    {
+      projectId,
+      samples,
+    });
+
+    revalidatePath(`/lab/dashboard/${projectId}`);
+
+    return response.data;
+  } catch (error: any) {
+    console.error(`Error submitting input document:`, error.message);
+    console.log(error?.response?.data);
+    return null as unknown;
+  }
+};

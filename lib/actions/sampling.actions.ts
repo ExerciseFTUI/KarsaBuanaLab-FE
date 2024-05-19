@@ -154,7 +154,6 @@ export const assignProject = async (
   accountId: string[],
   jadwalSampling: any
 ): Promise<BaseApiResponse<Project>> => {
-  console.log("assignProject", projectId, accountId, jadwalSampling);
   
   try {
     const response = await axios.post(`${apiBaseUrl}/projects/assign-project`, {
@@ -206,5 +205,57 @@ export const getAllUser = async (
   } catch (error: any) {
     console.error("Error getting user data", error.message)
     return null as unknown as BaseApiResponse<User[]>
+  }
+}
+
+export const getLabDashboardProject = async (
+  projectId: string,
+  userId: string
+): Promise<any> => {
+  try {
+    const response = await axios.get(
+      `${apiBaseUrl}/sampling/get-sampling-details`,
+      // `http://localhost:8080/sampling/get-sampling-details`,
+      {
+        data: {
+          projectId: projectId,
+          userId: userId,
+        },
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+      }
+    );
+    
+    return response.data.result; // Access 'result' field
+  } catch (error: any) {
+    console.error(`Error getting project with ID ${projectId}:`, error.message);
+    return null as unknown;
+  }
+};
+
+export const getChoiceParams = async (
+  projectId: string,
+  userId: string
+): Promise<any> => {
+  try {
+    const response = await axios.get(
+      `${apiBaseUrl}/sampling/get-parameter`,
+      // `http://localhost:8080/sampling/get-parameter`,
+      {
+        data: {
+          projectId: projectId,
+          userId: userId,
+        },
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+      }
+    );
+    
+    return response.data.result; // Access 'result' field
+  } catch (error: any) {
+    console.error(`Error getting project with ID ${projectId}:`, error.message);
+    return null as unknown;
   }
 }
