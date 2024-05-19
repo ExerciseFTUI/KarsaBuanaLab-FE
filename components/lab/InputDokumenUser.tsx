@@ -51,6 +51,9 @@ const InputDokumenUser: FC<inputDokumenUserProps> = ({
   const { toast } = useToast();
   // State declaration
   const [lastSelectedUnits, setLastSelectedUnits] = useState<Record<string, string>>({});
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [formData, setFormData] = useState<z.infer<typeof labInputDocumentValidation>>();
+
   
   const {
     register,
@@ -129,31 +132,34 @@ useEffect(() => {
   }
 
   async function onSubmit(data: z.infer<typeof labInputDocumentValidation>) {
-    console.log("on submit");
-    
-    const answer = mergeData(sample, data);
+    setFormData(data);
+    setIsDialogOpen(true);
+  }
+
+  async function handleConfirmSubmit() {
+    if (!formData) return;
+  
+    const answer = mergeData(sample, formData);
     const response = await submitLab(projectId, answer);
 
-    console.log("answer", answer);
+    console.log("response", response);
     
-    return;
-    // if (response) {
-    //   toast({
-    //     title: "Submitted",
-    //     description: "Thank you for submitting!",
-    //   });
-
-    //   router.push("/lab/dashboard");
-    // }
-    // if (!response) {
-    //   toast({
-    //     title: "Failed to get the project",
-    //     description: "please resubmit the form",
-    //   });
-    //   return;
-    // }
-  }
   
+    if (response) {
+      toast({
+        title: "Submitted",
+        description: "Thank you for submitting!",
+      });
+  
+      router.push("/lab/dashboard");
+    } else {
+      toast({
+        title: "Failed to get the project",
+        description: "please resubmit the form",
+      });
+    }
+    setIsDialogOpen(false);
+  }
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
@@ -303,24 +309,22 @@ useEffect(() => {
             </Table>
           ))}
         </div>
-        <AlertDialog>
-          <AlertDialogTrigger asChild>
-            <div className="flex justify-center bottom-0 mt-24 text-lg">
-              <Button className="w-2/3 p-6 bg-light_brown hover:bg-dark_brown">
-                Submit Survey
-              </Button>
-            </div>
-          </AlertDialogTrigger>
+        <div className="flex justify-center bottom-0 mt-24 text-lg">
+          <Button className="w-2/3 p-6 bg-light_brown hover:bg-dark_brown" type="button" onClick={handleSubmit(onSubmit)}>
+            Submit
+          </Button>
+        </div>
+        <AlertDialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <AlertDialogContent>
             <AlertDialogHeader>
               <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
               <AlertDialogDescription>
-                This action cannot be undone. 
+                This action cannot be undone.
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
-              <AlertDialogCancel>Cancel</AlertDialogCancel>
-              <AlertDialogAction type="submit">Continue</AlertDialogAction>
+              <AlertDialogCancel onClick={() => setIsDialogOpen(false)}>Cancel</AlertDialogCancel>
+              <AlertDialogAction onClick={handleConfirmSubmit}>Continue</AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>
