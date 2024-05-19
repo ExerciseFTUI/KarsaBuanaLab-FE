@@ -59,7 +59,8 @@ const InputDokumenUser: FC<inputDokumenUserProps> = ({
     register,
     handleSubmit,
     formState: { errors },
-    setValue
+    setValue,
+    getValues
   } = useLabForm();
 
   // For default values result
@@ -77,7 +78,7 @@ useEffect(() => {
 
 // For default values unit and method
 useEffect(() => {
-  console.log("sample: ", sample[0].parameters);
+  // console.log("sample: ", sample[0].parameters);
   
   const updatedLastSelectedUnits: Record<string, string> = {};
 
@@ -86,11 +87,13 @@ useEffect(() => {
     inputDocument.parameters.forEach((parameter) => {
       const { name, unit, method } = parameter;
       const lastUnit = lastSelectedUnits[name]; // Get last selected unit
+      //set value for method
+      setValue(`sample.${sample.indexOf(inputDocument)}.parameter.${inputDocument.parameters.indexOf(parameter)}.method`, method);
 
       // Check if unit and method are defined
       if (unit && method) {
         // Check if last selected unit is valid and still available in options
-        if (lastUnit === unit || lastUnit === method) {
+        if (lastUnit === unit) {
           updatedLastSelectedUnits[name] = lastUnit; // Use last selected unit as default
         } else {
           updatedLastSelectedUnits[name] = unit; // Use unit as default
@@ -108,7 +111,7 @@ useEffect(() => {
     data: [InputDocumentType],
     unitMethodResult: {
       sample: {
-        parameter: { unit: string; method: string; result: string }[];
+        parameter: { unit: string; method: string[]; result: string }[];
       }[];
     }
   ) {
@@ -126,7 +129,7 @@ useEffect(() => {
       };
       mergedData.push(mergedSample);
     });
-    console.log("mergedData", mergedData);
+    // console.log("mergedData", mergedData);
     
     return mergedData;
   }
@@ -142,7 +145,7 @@ useEffect(() => {
     const answer = mergeData(sample, formData);
     const response = await submitLab(projectId, answer);
 
-    console.log("response", response);
+    // console.log("response", response);
     
   
     if (response) {
@@ -193,49 +196,27 @@ useEffect(() => {
                       {parameter.name}
                     </TableCell>
                     <TableCell>
-                      {/* Bachul */}
-                      {/* <div 
-                        {...register(
-                          `sample.${sampleId}.parameter.${parameterId}.method`
-                          // selectedUnit
-                        )}>
-                        <InputParam 
-                          title="Select unit" 
-                          result={parameter.unit[0] ?? "Select Unit"}
-                          // passing data choiceParams.unit with the same parameter.name and choiceParams.param please note that choiceParams still array of object, so we need to find the object of choiceParams.param that have the same parameter.name and return the unit
-                          options={choiceParams.find(
-                            (param) => param.param === parameter.name)?.unit ?? []
-                          }
-                          {...register(
-                            `sample.${sampleId}.parameter.${parameterId}.unit`
-                            )}
-                            />
-                        <div className="text-xs text-red-600 pt-3 text-center">
-                          {
-                            errors.sample?.[sampleId]?.parameter?.[parameterId]
-                            ?.unit?.message
-                          }
-                        </div>
-                      </div> */}
-                      {/* Bachul */}
-                      <select
-                        className="w-full"
-                        {...register(
-                          `sample.${sampleId}.parameter.${parameterId}.unit`
-                        )}
-                      >
-                        <option className="w-full p-4 rounded bg-gray-100 shadow-none">
-                          { parameter.unit ?? "Select Unit"}
-                        </option>
-                        {choiceParams
-                          .find((param) => param.param === parameter.name)
-                          ?.unit.filter((unit) => !parameter.unit || !parameter.unit.includes(unit)) // Use optional chaining operator to handle undefined
-                          .map((unit) => (
-                            <option key={unit} value={unit}>
-                              {unit}
-                            </option>
-                          ))}
-                      </select>
+                    <select
+                      className="w-full"
+                      {...register(
+                        `sample.${sampleId}.parameter.${parameterId}.unit`,
+                        {
+                          setValueAs: (value) => (value === "Select Unit" ? "" : value),
+                        }
+                      )}
+                    >
+                      <option className="w-full p-4 rounded bg-gray-100 shadow-none">
+                      { parameter.unit ?? "Select Unit"}
+                      </option>
+                      {choiceParams
+                        .find((param) => param.param === parameter.name)
+                        ?.unit.filter((unit) => !parameter.unit || !parameter.unit.includes(unit)) // Use optional chaining operator to handle undefined
+                        .map((unit) => (
+                          <option key={unit} value={unit}>
+                            {unit}
+                          </option>
+                        ))}
+                    </select>
                       <div className="text-xs text-red-600 pt-3 text-center">
                         {
                           errors.sample?.[sampleId]?.parameter?.[parameterId]
@@ -244,42 +225,36 @@ useEffect(() => {
                       </div>
                     </TableCell>
                     <TableCell>
-                      {/* Bachul */}
-                      {/* <InputParam 
-                          title="Select Method" 
-                          result={parameter.method[0] ?? "Select Method"}
-                          // passing data choiceParams.unit with the same parameter.name and choiceParams.param please note that choiceParams still array of object, so we need to find the object of choiceParams.param that have the same parameter.name and return the unit
-                          options={choiceParams.find(
-                            (param) => param.param === parameter.name)?.method ?? []
-                          }
-                          {...register(
-                            `sample.${sampleId}.parameter.${parameterId}.method`
-                            )}
-                            /> */}
-                            {/* Bachul */}
-                      <select
-                        className="w-full"
-                        {...register(
-                          `sample.${sampleId}.parameter.${parameterId}.method`
-                        )}
-                      >
-                        <option className="w-full p-4 rounded bg-gray-100 shadow-none">
-                          {parameter.method ?? `Select Method`}
-                        </option>
-                        {choiceParams
-                          .find((param) => param.param === parameter.name)
-                          ?.method.filter((method) => !parameter.method || !parameter.method.includes(method))
-                          .map((method) => (
-                            <option key={method} value={method}>
+                      {choiceParams
+                        .find((param) => param.param === parameter.name)
+                        ?.method.map((method) => {
+                          return (
+                            <label key={method} className="block">
+                              <input
+                                type="checkbox"
+                                value={method}
+                                onChange={(e) => {
+                                  const isChecked = e.target.checked;
+                                  const selectedMethod = e.target.value;
+                                  const currentMethods = getValues(`sample.${sampleId}.parameter.${parameterId}.method`) || [];
+                                  let updatedMethods;
+                                  if (isChecked) {
+                                    updatedMethods = [...currentMethods, selectedMethod];
+                                  } else {
+                                    updatedMethods = currentMethods.filter((m) => m !== selectedMethod);
+                                  }
+                                  setValue(`sample.${sampleId}.parameter.${parameterId}.method`, updatedMethods);
+                                }}
+                                
+                                defaultChecked={parameter.method?.includes(method)}
+                                className="mr-2"
+                              />
                               {method}
-                            </option>
-                          ))}
-                      </select>
+                            </label>
+                          );
+                        })}
                       <div className="text-xs text-red-600 pt-3 text-center">
-                        {
-                          errors.sample?.[sampleId]?.parameter?.[parameterId]
-                            ?.method?.message
-                        }
+                        {errors.sample?.[sampleId]?.parameter?.[parameterId]?.method?.message}
                       </div>
                     </TableCell>
                     <TableCell className="text-right">

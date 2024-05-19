@@ -281,7 +281,7 @@ export type InputDocumentType = {
 export type ParameterType = {
   name: string;
   unit: string;
-  method: string;
+  method: string[];
   result: string;
 };
 
@@ -297,7 +297,7 @@ export type sampleAnswer = {
     param: string;
     result: string;
     unit: string;
-    method: string;
+    method: string[];
   }[];
 };
 
