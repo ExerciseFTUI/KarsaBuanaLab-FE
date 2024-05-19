@@ -29,7 +29,7 @@ import {
   labInputDocumentValidation,
 } from "@/lib/validations/LabValidation";
 import { z } from "zod";
-import { getChoiceParams, submitLab } from "@/lib/actions/lab.action";
+import { submitLab } from "@/lib/actions/lab.actions";
 import { useToast } from "../ui/use-toast";
 import { useRouter } from "next/navigation";
 import InputParam from "./InputParam";
