@@ -55,16 +55,12 @@ import {
   DoubleArrowLeftIcon,
   DoubleArrowRightIcon,
 } from "@radix-ui/react-icons";
-import {
-  InventoryType,
-  ProjectMarketingType,
-  ProjectType,
-  UserType,
-} from "@/lib/type";
+
 import { Project } from "@/lib/models/project.model";
 import Link from "next/link";
 import { inventoryColumns } from "./InventoryColumn";
 import { AiFillFolderAdd } from "react-icons/ai";
+import { Inventory } from "./InventoryType";
 
 // interface InventoryDataTableProps<TData, TValue> {
 //   columns: ColumnDef<TData, TValue>[];
@@ -72,7 +68,7 @@ import { AiFillFolderAdd } from "react-icons/ai";
 // }
 
 interface InventoryDataTableProps {
-  datas: InventoryType[];
+  datas: Inventory[];
 }
 
 export function InventoryDataTable({ datas }: InventoryDataTableProps) {

@@ -1,45 +1,71 @@
 "use client";
 
 import {
+  ColumnFiltersState,
   RowSelectionState,
   getCoreRowModel,
+  getPaginationRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { FC, useEffect, useState } from "react";
+import { Dispatch, FC, SetStateAction, useEffect, useState } from "react";
 import { userColumns } from "../InventoryColumn";
 import { User } from "@/lib/models/user.model";
 import InventoryAssignedTable from "./InventoryAssignedTable";
 import InventoryUnAssignedTable from "./InventoryUnassignedTable";
+import { InventoryUser } from "../InventoryType";
 
 interface InventoryPICProps {
-  allUsers: User[];
+  allUsers: InventoryUser[];
+  assignedUsers: string[];
+  setAssignedUsers: Dispatch<SetStateAction<string[]>>;
 }
 
-const InventoryPIC: FC<InventoryPICProps> = ({ allUsers }) => {
+const InventoryPIC: FC<InventoryPICProps> = ({
+  allUsers,
+  assignedUsers,
+  setAssignedUsers,
+}) => {
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 
-  // useEffect(() => {
-  //   const initialState: any = {};
+  useEffect(() => {
+    const initialState: any = {};
 
-  //   allUsers.map((user) => {
-  //     if (user._id !== "") {
-  //       initialState[user._id] = true;
-  //     }
-  //   });
+    allUsers.map((user) => {
+      if (assignedUsers.includes(user._id)) {
+        initialState[user._id] = true;
+      }
+    });
 
-  //   setRowSelection(initialState);
-  // }, []);
+    setRowSelection(initialState);
+  }, []);
 
   const table = useReactTable({
     data: !!allUsers ? allUsers : [],
     columns: userColumns,
     getCoreRowModel: getCoreRowModel(),
     onRowSelectionChange: setRowSelection,
+    getPaginationRowModel: getPaginationRowModel(),
+    onColumnFiltersChange: setColumnFilters,
     state: {
       rowSelection,
+      columnFilters,
+    },
+    initialState: {
+      pagination: {
+        pageSize: 5,
+      },
     },
     getRowId: (allUsers) => allUsers._id,
   });
+
+  useEffect(() => {
+    const assigned = table
+      .getFilteredSelectedRowModel()
+      .rows.map((r) => allUsers[r.index]._id);
+
+    setAssignedUsers(assigned);
+  }, [table.getFilteredSelectedRowModel().rows.length]);
 
   return (
     <div className="w-full">

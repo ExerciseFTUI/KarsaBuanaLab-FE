@@ -8,13 +8,13 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { User } from "@/lib/models/user.model";
-import { InventoryType } from "@/lib/type";
 import { DropdownMenu } from "@radix-ui/react-dropdown-menu";
 import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 import Link from "next/link";
+import { Inventory, InventoryUser } from "./InventoryType";
 
-export const inventoryColumns: ColumnDef<InventoryType>[] = [
+export const inventoryColumns: ColumnDef<Inventory>[] = [
   //Nama Tools
   {
     accessorKey: "tools_name",
@@ -142,7 +142,7 @@ export const inventoryColumns: ColumnDef<InventoryType>[] = [
   },
 ];
 
-export const userColumns: ColumnDef<User>[] = [
+export const userColumns: ColumnDef<InventoryUser>[] = [
   //Nama Tools
   {
     id: "select",
@@ -186,8 +186,6 @@ export const userColumns: ColumnDef<User>[] = [
       );
     },
     cell: ({ row }) => {
-      console.log(row.original.email);
-
       return (
         <div className="flex flex-col justify-start items-start pl-4">
           <div className="capitalize ">{row.getValue("username")}</div>
