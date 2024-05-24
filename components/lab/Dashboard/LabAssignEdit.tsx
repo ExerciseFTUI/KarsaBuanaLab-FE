@@ -41,6 +41,7 @@ export function LabAssignEdit({
 }) {
   const router = useRouter();
   const [open, setOpen] = React.useState(false);
+  const [openSelect, setOpenSelect] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(false);
 
   const [selectedUser, setSelectedUser] = React.useState<User[]>(
@@ -86,6 +87,7 @@ export function LabAssignEdit({
     );
 
     setIsLoading(false);
+    setOpen(false);
 
     if (!response) {
       toast({
@@ -100,13 +102,11 @@ export function LabAssignEdit({
       });
     }
 
-    setOpen(false);
-
-    router.push(`/lab/dashboard/${project._id}`);
+    router.refresh();
   }
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       {isLoading && <LoadingScreen />}
       <DialogTrigger asChild>
         <Button className="py-4 px-4 w-fit mx-auto bg-light_brown hover:bg-dark_brown disabled:bg-transparent">
@@ -126,7 +126,7 @@ export function LabAssignEdit({
         <div className="pt-4">
           <h1 className="text-lg font-semibold mb-4">Select User</h1>
 
-          <Popover open={open} onOpenChange={setOpen}>
+          <Popover open={openSelect} onOpenChange={setOpenSelect}>
             <PopoverTrigger asChild>
               <Button
                 variant="outline"
@@ -156,7 +156,7 @@ export function LabAssignEdit({
                               ...selectedUser,
                               users.find((u) => u._id == currentValue) as User,
                             ]);
-                            setOpen(false);
+                            setOpenSelect(false);
                           }}
                         >
                           {u.username}

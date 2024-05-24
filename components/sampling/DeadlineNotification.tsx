@@ -56,6 +56,60 @@ export function DeadlineNotification({ projects }: { projects: Project[] }) {
               )
           : 0,
     });
+    deadlineData.push({
+      project_name: d.project_name,
+      deadline:
+        from != null
+          ? to != null
+            ? differenceInCalendarDays(
+                new Date(parseInt(to[2]), parseInt(to[1]) - 1, parseInt(to[0])),
+                new Date(
+                  parseInt(now[2]),
+                  parseInt(now[1]) - 1,
+                  parseInt(now[0])
+                )
+              )
+            : differenceInCalendarDays(
+                new Date(
+                  parseInt(from[2]),
+                  parseInt(from[1]) - 1,
+                  parseInt(from[0])
+                ),
+                new Date(
+                  parseInt(now[2]),
+                  parseInt(now[1]) - 1,
+                  parseInt(now[0])
+                )
+              )
+          : 0,
+    });
+    deadlineData.push({
+      project_name: d.project_name,
+      deadline:
+        from != null
+          ? to != null
+            ? differenceInCalendarDays(
+                new Date(parseInt(to[2]), parseInt(to[1]) - 1, parseInt(to[0])),
+                new Date(
+                  parseInt(now[2]),
+                  parseInt(now[1]) - 1,
+                  parseInt(now[0])
+                )
+              )
+            : differenceInCalendarDays(
+                new Date(
+                  parseInt(from[2]),
+                  parseInt(from[1]) - 1,
+                  parseInt(from[0])
+                ),
+                new Date(
+                  parseInt(now[2]),
+                  parseInt(now[1]) - 1,
+                  parseInt(now[0])
+                )
+              )
+          : 0,
+    });
   }
 
   const sortedDeadline = deadlineData.sort(
@@ -89,7 +143,7 @@ export function DeadlineNotification({ projects }: { projects: Project[] }) {
 
         <Separator orientation="horizontal" className="mt-4" />
 
-        <div className="grid gap-4 py-4 overflow-y-scroll">
+        <div className="flex flex-col gap-4 pt-4 overflow-y-scroll max-h-[calc(100vh-7rem)]">
           {sortedDeadline.map((j: any, i: any) => (
             <div
               className={cn(
