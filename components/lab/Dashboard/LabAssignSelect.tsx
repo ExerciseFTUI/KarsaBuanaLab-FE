@@ -41,6 +41,7 @@ export function LabAssignSelect({
 }) {
   const router = useRouter();
   const [open, setOpen] = React.useState(false);
+  const [dialogOpen, setDialogOpen] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(false);
 
   const [selectedUser, setSelectedUser] = React.useState<User[]>([]);
@@ -79,6 +80,9 @@ export function LabAssignSelect({
     );
 
     setIsLoading(false);
+    setDialogOpen(false);
+    setSelectedUser([]);
+    setDate(undefined);
 
     if (!response) {
       toast({
@@ -93,13 +97,11 @@ export function LabAssignSelect({
       });
     }
 
-    setOpen(false);
-
     router.refresh();
   };
 
   return (
-    <Dialog>
+    <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
       {isLoading && <LoadingScreen />}
       <DialogTrigger asChild>
         <Button className="py-4 px-4 w-fit mx-auto bg-light_brown hover:bg-dark_brown disabled:bg-transparent">
