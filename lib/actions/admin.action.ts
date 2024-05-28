@@ -63,7 +63,7 @@ export const lhpRevision = async (body: any, id: string) => {
 export const lhpAccept = async (body: any, id: string) => {
   try {
     const response = await axios.post(
-      // `http://localhost:6666/projects/lhp-accept/${id}`,
+      // `http://localhost:8080/projects/lhp-accept/${id}`,
       `${apiBaseUrl}/projects/lhp-accept/${id}`,
       body
     );
