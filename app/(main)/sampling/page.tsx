@@ -8,14 +8,16 @@ import { getDashboardSampling } from "@/lib/actions/sampling.actions"
 
 export default async function Sampling() {
   const data = await getDashboardSampling();
-  const assignSampling = data ? data.result : [];
-  
-  // const session = await getSessionServer()
+  let assignSampling = data.result || [];
 
-  // if (session?.user.role == "SPV" || session?.user.role == "ADMIN")
-  //   redirect("/sampling/project")
+  const session = await getSessionServer();
+  const user = session?.user || "";
+  const role = user ? user.role.toUpperCase() : "";
 
-  // if (session?.user.role == "USER") redirect("/sampling/sample")
+  // // If session exists, role is "USER", and assignSampling has elements, filter assignSampling based on user.id
+  if (session && role === "USER" && assignSampling.length > 0) {
+    assignSampling = assignSampling.filter((sample) => sample.person.includes(session.user.name));
+  }
 
   return(
     <>

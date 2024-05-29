@@ -2,7 +2,7 @@
 
 import axios from "axios"
 import { BaseApiResponse } from "../models/baseApiResponse.model"
-import { Sampling } from "../models/sampling.model"
+import { DashboardSampling, Sampling } from "../models/sampling.model"
 import { Project } from "../models/project.model"
 import { revalidatePath } from "next/cache"
 import { User } from "../models/user.model"
@@ -107,7 +107,7 @@ export const sampleAssignment = async (
 }
 
 export const getDashboardSampling = async (): Promise<
-  BaseApiResponse<Project>
+  BaseApiResponse<DashboardSampling[]>
 > => {
   try {
     const response = await axios.get(
@@ -117,10 +117,10 @@ export const getDashboardSampling = async (): Promise<
 
     revalidatePath(`/sampling`)
 
-    return response.data as BaseApiResponse<Project>
+    return response.data as BaseApiResponse<DashboardSampling[]>
   } catch (error: any) {
     console.error("Error getting sample /sampling/get-dashboard-sampling/", error.message)
-    return null as unknown as BaseApiResponse<Project>
+    return null as unknown as BaseApiResponse<DashboardSampling[]>
   }
 }
 
