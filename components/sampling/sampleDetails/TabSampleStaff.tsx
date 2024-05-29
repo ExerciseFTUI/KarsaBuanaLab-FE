@@ -41,11 +41,6 @@ export default function TabSampleStaff({
     getCoreRowModel: getCoreRowModel(),
   });
 
-  console.log(
-    "table",
-    table.getRowModel().rows.map((row) => row.original.username)
-  );
-
   const router = useRouter();
   const { toast } = useToast();
 

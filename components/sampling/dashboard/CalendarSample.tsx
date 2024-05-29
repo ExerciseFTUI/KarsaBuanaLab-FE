@@ -11,9 +11,10 @@ import { useRouter } from "next/navigation"
 
 interface dashboardSampling {
   data: CalendarSample[];
+  role: string;
 }
 
-const CalendarSample : FC<dashboardSampling> = ({ data }) => {
+const CalendarSample : FC<dashboardSampling> = ({ data, role }) => {
   const router = useRouter()
   const [projectTitle, setProjectTitle] = useState("");
   const [detailProject, setDetailProject] = useState(false);
@@ -127,7 +128,11 @@ const CalendarSample : FC<dashboardSampling> = ({ data }) => {
             </div>
             <div className='flex justify-center gap-10 mt-10'>
               <button
-                onClick={() => router.push("sampling/project/"+clickedEvent._id)}
+                onClick={() => {
+                  const basePath = "sampling/";
+                  const path = role.toLowerCase() === "user" ? "sample/" : "project/";
+                  router.push(`${basePath}${path}${clickedEvent._id}`);
+                }}                
                 className=' bg-moss_green text-white px-4 py-2 rounded hover:bg-dark_green'
               >
                 See Project

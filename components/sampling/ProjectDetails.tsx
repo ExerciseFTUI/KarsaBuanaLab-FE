@@ -13,8 +13,6 @@ interface pdType {
 }
 
 export default function ProjectDetails({ data, className = "" }: pdType) {
-  console.log("data", data);
-  
   return (
     <div
       className={cn(
