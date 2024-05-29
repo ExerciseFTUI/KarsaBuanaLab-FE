@@ -23,7 +23,7 @@ export default async function Sampling() {
     <>
       <div className=" w-full h-fit flex flex-col">
         {/* <div className=" text-black font-semibold text-xl"> This is Dashboard</div> */}
-        <CalendarSample data={assignSampling}/>
+        <CalendarSample data={assignSampling} role={role.toLowerCase()} />
       </div>
     </>
   )
