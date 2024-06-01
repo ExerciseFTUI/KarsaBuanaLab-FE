@@ -2,6 +2,8 @@
 
 import axios from "axios";
 import { revalidatePath } from "next/cache";
+import { UserType } from "../type";
+import { BaseApiResponse } from "../models/baseApiResponse.model";
 
 const apiBaseUrl = process.env.API_BASE_URL || "http://localhost:5000";
 
@@ -78,3 +80,36 @@ export const lhpAccept = async (body: any, id: string) => {
     return null;
   }
 };
+
+export const getAllUser = async () : Promise<BaseApiResponse<UserType[]>> => {
+  try {
+    const response = await axios.get(
+      // `http://localhost:8080/auth/getAllUser`
+      `${apiBaseUrl}/auth/getAllUser`
+    )
+
+    return response.data as BaseApiResponse<UserType[]>
+  } catch (error: any) {
+    console.error("Error getting user /auth/getAllUser", error.message)
+    console.error(error.response?.data?.message)
+    return null as unknown as BaseApiResponse<UserType[]>
+  }
+}
+
+export const getUser = async (_id: string) : Promise<BaseApiResponse<UserType>> => {
+  try {
+    const response = await axios.post(
+      // `http://localhost:8080/auth/getUser`,
+      `${apiBaseUrl}/auth/getUser/${_id}`,
+      {
+        _id
+      }
+    )
+
+    return response.data as BaseApiResponse<UserType>
+  } catch (error: any) {
+    console.error("Error getting user /auth/getUser", error.message)
+    console.error(error.response?.data?.message)
+    return null as unknown as BaseApiResponse<UserType>
+  }
+}

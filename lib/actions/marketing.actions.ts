@@ -155,8 +155,6 @@ export const createProject = async (
 };
 
 export const createProjectJson = async (body: any) => {
-  console.log("body", body);
-  
   try {
     const response = await axios.post(
       `${apiBaseUrl}/projects/createJSON`,

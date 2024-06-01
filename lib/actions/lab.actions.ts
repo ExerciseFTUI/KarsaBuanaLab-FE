@@ -138,7 +138,6 @@ export const submitLab = async (
     return response.data;
   } catch (error: any) {
     console.error(`Error submitting input document:`, error.message);
-    console.log(error?.response?.data);
     return null as unknown;
   }
 };

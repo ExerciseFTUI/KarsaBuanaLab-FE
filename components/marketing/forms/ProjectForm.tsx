@@ -260,8 +260,6 @@ const ProjectForm: FC<ProjectFormProps> = ({
                                         className="text-3xl cursor-pointer mr-2 self-center bg-light_green p-1 rounded-lg" 
                                         onClick={() => {
                                           if (numRevision === 0) {
-                                            console.log("got revision");
-                                            
                                             toast({
                                               title: "Cannot revision lower than 0",
                                               variant: "destructive",

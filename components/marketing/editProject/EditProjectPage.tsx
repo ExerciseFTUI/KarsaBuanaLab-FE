@@ -293,8 +293,7 @@ export default function EditProjectPage({
         desc_failed: reason,
         status: "CANCELLED",
       };
-      // console.log("desc failed : ", body);
-
+      
       //Connect to API
       const responseInfo = await updateProjectInfo(body)
       if (!responseInfo) {

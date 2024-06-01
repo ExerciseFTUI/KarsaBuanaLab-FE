@@ -8,7 +8,7 @@ export const metadata = {
 export default function RegisterPage() {
   return (
     <div className="">
-      <RegisterForm />
+      <RegisterForm isUpdate={false} />
     </div>
   );
 }

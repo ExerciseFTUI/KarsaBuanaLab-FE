@@ -80,20 +80,6 @@ export function InventoryDataTable({ datas }: InventoryDataTableProps) {
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
-
-  //   const [data, setData] = React.useState<any>([]);
-
-  //   React.useEffect(() => {
-  //     // if datas is not empty then push the data to the data array
-  //     if (datas && datas.length > 0) {
-  //       setData(datas);
-  //     } else {
-  //       setData([]);
-  //     }
-  //   }, []);
-
-  //   console.log(data);
-
   const table = useReactTable({
     data: datas,
     columns: inventoryColumns,
