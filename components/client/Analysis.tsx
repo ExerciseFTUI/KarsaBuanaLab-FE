@@ -7,9 +7,10 @@ interface AnalysisProps {
   data: ClientResponses[];
   stage: String;
   setEnabled: (enabled: boolean) => void;
+  isDone: boolean
 }
 
-const Analysis: FC<AnalysisProps> = ({ data, stage, setEnabled }) => {
+const Analysis: FC<AnalysisProps> = ({ data, stage, setEnabled, isDone }) => {
   setEnabled(data.every((item) => item.status === "ACCEPTED"));
   const hasRevision = data.some((item) => item.status.includes("REVISION")) && (stage == "PPLHP" || stage == "LAB");
   return (
@@ -18,11 +19,10 @@ const Analysis: FC<AnalysisProps> = ({ data, stage, setEnabled }) => {
         <div className="mb-4">
           <h1 className="text-2xl font-bold">
             Progress Analisa Sample {hasRevision && "(Need Revision)"}
-            {/* Progress Analisa Sample */}
           </h1>
           <div className="bg-[#bbbabf] w-full h-0.5 m-2" />
         </div>
-        <CustomCheckbox items={data ? data : []} />
+        <CustomCheckbox items={data ? data : []} isDone={isDone} />
       </div>
     </div>
   );

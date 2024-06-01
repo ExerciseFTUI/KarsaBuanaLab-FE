@@ -8,9 +8,10 @@ import { ClientResponses } from "@/lib/type";
 interface SampleProps {
   data: ClientResponses[];
   setEnabled: (enabled: boolean) => void;
+  isDone: boolean;
 }
 
-const Sample: FC<SampleProps> = ({ data, setEnabled }) => {
+const Sample: FC<SampleProps> = ({ data, setEnabled, isDone }) => {
   setEnabled(data.every((item) => item.status === "ACCEPTED"));
   return (
     <div className="space-y-12 mt-4 m-10">
@@ -19,7 +20,7 @@ const Sample: FC<SampleProps> = ({ data, setEnabled }) => {
           <h1 className="text-2xl font-bold">Sampling Progress</h1>
           <div className="bg-[#bbbabf] w-full h-0.5 m-2" />
         </div>
-        <CustomCheckbox items={data ? data : []} />
+        <CustomCheckbox items={data ? data : []} isDone={isDone} />
       </div>
     </div>
   );
