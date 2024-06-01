@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -7,41 +7,41 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog"
-import React from "react"
-import { Popover, PopoverContent, PopoverTrigger } from "../../ui/popover"
-import { CalendarIcon, Check, ChevronsUpDown } from "lucide-react"
+} from "@/components/ui/dialog";
+import React from "react";
+import { Popover, PopoverContent, PopoverTrigger } from "../../ui/popover";
+import { CalendarIcon, Check, ChevronsUpDown } from "lucide-react";
 import {
   Command,
   CommandEmpty,
   CommandGroup,
   CommandInput,
   CommandItem,
-} from "../../ui/command"
-import { cn } from "@/lib/utils"
-import { Sampling } from "@/lib/models/sampling.model"
-import { format } from "date-fns"
-import { Calendar } from "../../ui/calendar"
-import { assignStaffDeadline, removeStaff } from "@/lib/actions/lab.actions"
-import { toast } from "../../ui/use-toast"
-import { useRouter } from "next/navigation"
-import LoadingScreen from "../../LoadingScreen"
-import { Project } from "@/lib/models/project.model"
-import { User } from "@/lib/models/user.model"
-import { DateRange } from "react-day-picker"
+} from "../../ui/command";
+import { cn } from "@/lib/utils";
+import { Sampling } from "@/lib/models/sampling.model";
+import { format } from "date-fns";
+import { Calendar } from "../../ui/calendar";
+import { assignStaffDeadline, removeStaff } from "@/lib/actions/lab.actions";
+import { toast } from "../../ui/use-toast";
+import { useRouter } from "next/navigation";
+import LoadingScreen from "../../LoadingScreen";
+import { Project } from "@/lib/models/project.model";
+import { User } from "@/lib/models/user.model";
+import { DateRange } from "react-day-picker";
 
 export function LabAssignEdit({
   sampling,
   users,
   project,
 }: {
-  project: Project
-  sampling: Sampling
-  users: User[]
+  project: Project;
+  sampling: Sampling;
+  users: User[];
 }) {
-  const router = useRouter()
-  const [open, setOpen] = React.useState(false)
-  const [isLoading, setIsLoading] = React.useState(false)
+  const router = useRouter();
+  const [open, setOpen] = React.useState(false);
+  const [isLoading, setIsLoading] = React.useState(false);
 
   const [selectedUser, setSelectedUser] = React.useState<User[]>(
     users
@@ -49,15 +49,15 @@ export function LabAssignEdit({
         sampling.lab_assigned_to.includes(u._id) == true ? u : null
       )
       .filter((u) => u !== null) as User[]
-  )
+  );
 
   // DATE
   const deadline = !!sampling.deadline
     ? sampling.deadline
-    : { from: "", to: "" }
+    : { from: "", to: "" };
 
-  let from = deadline.from ? deadline.from.split("-").reverse() : null
-  let to = deadline.to ? deadline.to.split("-").reverse() : null
+  let from = deadline.from ? deadline.from.split("-").reverse() : null;
+  let to = deadline.to ? deadline.to.split("-").reverse() : null;
 
   const [date, setDate] = React.useState<DateRange | undefined>({
     from: from
@@ -66,14 +66,14 @@ export function LabAssignEdit({
     to: to
       ? new Date(parseInt(to[0]), parseInt(to[1]) - 1, parseInt(to[2]))
       : undefined,
-  })
+  });
 
   async function editSampling() {
     if (selectedUser.length == 0)
-      return toast({ title: "There must be at least 1 staff!" })
-    if (!date) return toast({ title: "Cannot remove deadline!" })
+      return toast({ title: "There must be at least 1 staff!" });
+    if (!date) return toast({ title: "Cannot remove deadline!" });
 
-    setIsLoading(true)
+    setIsLoading(true);
 
     const response = await assignStaffDeadline(
       sampling._id,
@@ -83,26 +83,26 @@ export function LabAssignEdit({
         to: date?.to ? format(date.to, "dd-LL-y") : null,
       },
       project._id
-    )
+    );
 
-    setIsLoading(false)
+    setIsLoading(false);
 
     if (!response) {
       toast({
         title: "Failed to Assign Deadline and User",
         description: "Please Try Again",
         variant: "destructive",
-      })
+      });
     } else {
       toast({
         title: "User and Deadline Has Been Assigned",
         description: "Check again in the screen if its correct",
-      })
+      });
     }
 
-    setOpen(false)
+    setOpen(false);
 
-    router.push(`/lab/dashboard/${project._id}`)
+    router.push(`/lab/dashboard/${project._id}`);
   }
 
   return (
@@ -155,8 +155,8 @@ export function LabAssignEdit({
                             setSelectedUser([
                               ...selectedUser,
                               users.find((u) => u._id == currentValue) as User,
-                            ])
-                            setOpen(false)
+                            ]);
+                            setOpen(false);
                           }}
                         >
                           {u.username}
@@ -241,5 +241,5 @@ export function LabAssignEdit({
         </DialogFooter>
       </DialogContent>
     </Dialog>
-  )
+  );
 }

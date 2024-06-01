@@ -1,21 +1,21 @@
-"use client"
+"use client";
 
-import React, { useState } from "react"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import HyperLinkButton from "../HyperlinkButton"
-import { getCoreRowModel, useReactTable } from "@tanstack/react-table"
-import { groupUserStaffColumns } from "../sampleListDataTables/DataTableColumns"
-import { UserDataTable } from "../UserDataTable"
-import { Project } from "@/lib/models/project.model"
-import SamplingTabsList from "../tab/SamplingTabsList"
-import { Button } from "@/components/ui/button"
-import { verifySample } from "@/lib/actions/sampling.actions"
-import { useRouter } from "next/navigation"
-import LoadingScreen from "@/components/LoadingScreen"
-import { User } from "@/lib/models/user.model"
-import { Sampling } from "@/lib/models/sampling.model"
-import { SamplingRequestData } from "@/lib/type"
-import { useToast } from "@/components/ui/use-toast"
+import React, { useState } from "react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import HyperLinkButton from "../HyperlinkButton";
+import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
+import { groupUserStaffColumns } from "../sampleListDataTables/DataTableColumns";
+import { UserDataTable } from "../UserDataTable";
+import { Project } from "@/lib/models/project.model";
+import SamplingTabsList from "../tab/SamplingTabsList";
+import { Button } from "@/components/ui/button";
+import { verifySample } from "@/lib/actions/sampling.actions";
+import { useRouter } from "next/navigation";
+import LoadingScreen from "@/components/LoadingScreen";
+import { User } from "@/lib/models/user.model";
+import { Sampling } from "@/lib/models/sampling.model";
+import { SamplingRequestData } from "@/lib/type";
+import { useToast } from "@/components/ui/use-toast";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -26,53 +26,59 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/components/ui/alert-dialog"
+} from "@/components/ui/alert-dialog";
 
 export default function TabSampleStaff({
   data,
 }: {
-  data: SamplingRequestData
+  data: SamplingRequestData;
 }) {
-  const { project, user, files } = data
+  const { project, user, files } = data;
 
   const table = useReactTable({
     data: user,
     columns: groupUserStaffColumns,
     getCoreRowModel: getCoreRowModel(),
-  })
+  });
 
-  const router = useRouter()
-  const { toast } = useToast()
+  console.log(
+    "table",
+    table.getRowModel().rows.map((row) => row.original.username)
+  );
 
-  const [isLoading, setIsLoading] = useState(false)
+  const router = useRouter();
+  const { toast } = useToast();
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const submitSample = async (e: any, sample_id: string) => {
-    setIsLoading(true)
+    setIsLoading(true);
 
-    const response = await verifySample(project._id, "WAITING", sample_id)
+    const response = await verifySample(project._id, "WAITING", sample_id);
 
-    setIsLoading(false)
+    setIsLoading(false);
 
     if (!response) {
       toast({
         title: "Failed to Verify Sampling",
         description: "Please Try Again",
         variant: "destructive",
-      })
+      });
     } else {
       toast({
         title: "Sampling Has Been Requested to be Verified",
         description: "Wait for the Supervisor to check the sampling",
-      })
+      });
     }
 
-    router.refresh()
-  }
+    // router.push("/sampling/sample");
+    router.refresh();
+  };
 
   return (
     <Tabs defaultValue="Sampel" className="flex-1">
       {isLoading && <LoadingScreen text="" />}
-      <SamplingTabsList value1="Sampel" value2="Grup" />
+      <SamplingTabsList value1="Sampel" value2="Group" />
 
       <TabsContent className="py-4" value="Sampel">
         <div className="flex gap-4 flex-col">
@@ -121,9 +127,26 @@ export default function TabSampleStaff({
         </div>
       </TabsContent>
 
-      <TabsContent className="py-4" value="Grup">
-        <UserDataTable table={table} />
+      <TabsContent className="py-4" value="Group">
+        {/* mapping the (row) => row.original.username */}
+        <div className=" bg-light_brown rounded-lg px-4 py-2 ">
+          <p className="text-white mb-4">Your teammate : </p>
+          {table.getRowModel().rows?.length ? (
+            table.getRowModel().rows.map((row, index) => (
+              <div
+                key={row.id}
+                className="flex gap-4 items-center text-white mb-2"
+              >
+                {index + 1}. {row.original.username}
+              </div>
+            ))
+          ) : (
+            <div className="h-24 text-center">No results.</div>
+          )}
+        </div>
+
+        {/* <UserDataTable table={table} /> */}
       </TabsContent>
     </Tabs>
-  )
+  );
 }

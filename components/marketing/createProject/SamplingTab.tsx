@@ -54,7 +54,7 @@ const SamplingTab: FC<SamplingTabProps> = ({
 
   return (
     <>
-    {/* max-h-[90vh] md:max-h-[25rem] */}
+      {/* max-h-[90vh] md:max-h-[25rem] */}
       <Card className="overflow-y-auto md:max-h-[70vh] custom-scrollbar">
         <CardHeader>
           <CardTitle>Sampling</CardTitle>
@@ -99,6 +99,7 @@ const SamplingTab: FC<SamplingTabProps> = ({
           setOpenModal(false);
           //Reset Parameter value
           setValue("parameters", [""], { shouldValidate: true });
+          setValue("regulation", "", { shouldValidate: true });
           // form.reset();
         }}
         form={form}

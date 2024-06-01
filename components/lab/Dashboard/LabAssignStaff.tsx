@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import React from "react";
 import { Project } from "@/lib/models/project.model";
@@ -9,13 +9,18 @@ import { LabAssignEdit } from "./LabAssignEdit";
 import { format } from "date-fns";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import { saveSample } from "@/lib/actions/lab.actions";
+import { toast } from "@/components/ui/use-toast";
 
 interface LabAssignStaffProps {
   data: SamplingRequestData;
   projects: Project[];
 }
 
-export default function LabAssignStaff({ data, projects }: LabAssignStaffProps) {
+export default function LabAssignStaff({
+  data,
+  projects,
+}: LabAssignStaffProps) {
   const { files, project, user } = data;
 
   const samplingNotAssigned = project.sampling_list.filter(
@@ -25,10 +30,31 @@ export default function LabAssignStaff({ data, projects }: LabAssignStaffProps) 
     (s) => s.lab_assigned_to.length !== 0
   );
 
-  function saveProject() {
-    // Implement your saveProject logic here
-    // log samplingAssigned
-    // console.log(samplingAssigned)
+  const router = useRouter();
+
+  const [isLoading, setIsLoading] = React.useState(false);
+
+  async function saveProject() {
+    setIsLoading(true);
+
+    const response = await saveSample(project._id, "NEED ANALYZE");
+
+    setIsLoading(false);
+
+    if (!response) {
+      toast({
+        title: "Failed to Assign Deadline and User",
+        description: "Please Try Again",
+        variant: "destructive",
+      });
+    } else {
+      toast({
+        title: "User and Deadline Has Been Assigned",
+        description: "Check again in the screen if its correct",
+      });
+    }
+
+    router.replace(`/lab/dashboard/`);
   }
 
   return (
@@ -72,9 +98,13 @@ export default function LabAssignStaff({ data, projects }: LabAssignStaffProps) 
           </div>
 
           {samplingAssigned.map((u, i) => {
-            const deadlineFrom = u.deadline?.from
-            const deadlineTo = u.deadline?.to
-            const deadline = deadlineFrom ? (deadlineTo ? `${deadlineTo}` : `${deadlineFrom}`) : "Haven't set deadline yet"
+            const deadlineFrom = u.deadline?.from;
+            const deadlineTo = u.deadline?.to;
+            const deadline = deadlineFrom
+              ? deadlineTo
+                ? `${deadlineTo}`
+                : `${deadlineFrom}`
+              : "Haven't set deadline yet";
 
             return (
               <div

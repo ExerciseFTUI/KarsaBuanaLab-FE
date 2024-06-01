@@ -20,6 +20,7 @@ import {
   ProjectMarketingType,
   UserType,
   ProjectAdminPplhpType,
+  SampleType,
 } from "@/lib/type";
 import Link from "next/link";
 import { ProjectSamplingType } from "@/lib/type";
@@ -108,8 +109,8 @@ export const columns: ColumnDef<ProjectMarketingType>[] = [
 
       const deadline =
         row.original.current_division === "SAMPLING" && jadwalSampling
-          ? `${jadwalSampling.to || "Haven't set deadline yet"}`
-          : `${deadlineLHP?.to || "Haven't set deadline yet"}`;
+          ? `${jadwalSampling.to || jadwalSampling.from || "Haven't set deadline yet"}`
+          : `${deadlineLHP?.to || deadlineLHP?.from || "Haven't set deadline yet"}`;
 
       return <div className="capitalize text-center">{deadline}</div>;
     },
@@ -1076,17 +1077,6 @@ export const LabDashboardPageColumns: ColumnDef<LabDataType>[] = [
       );
     },
   },
-  // {
-  //   accessorKey: "contact_person",
-  //   header: "Contact Person",
-  //   cell: ({ row }) => {
-  //     return (
-  //       <div className="capitalize pl-0.5">
-  //         {row.getValue("contact_person")}
-  //       </div>
-  //     );
-  //   },
-  // },
   {
     accessorKey: "lab_status",
     header: "Status",
@@ -1096,7 +1086,11 @@ export const LabDashboardPageColumns: ColumnDef<LabDataType>[] = [
         color = "bg-yellow-700";
       } else if (row.getValue("lab_status") === "IN REVIEW BY ADMIN") {
         color = "bg-blue-900";
-      } else if (row.getValue("lab_status") === "REVISION") {
+      } else if (row.getValue("lab_status") === "REVISION BY ADMIN" || row.getValue("lab_status") === "REVISION"){
+        color = "bg-red-700";
+      } else if (row.getValue("lab_status") === "IN REVIEW BY SPV") {
+        color = "bg-blue-400";
+      }  else if (row.getValue("lab_status") === "REVISION BY SPV") {
         color = "bg-red-400";
       }
 
@@ -1105,6 +1099,79 @@ export const LabDashboardPageColumns: ColumnDef<LabDataType>[] = [
           className={`capitalize  text-white rounded-md w-fit px-2 text-center flex font-semibold ${color}`}
         >
           {row.getValue("lab_status")}
+        </div>
+      );
+    },
+  },
+  {
+    accessorKey: "_id",
+  },
+];
+
+export const LabDashboardPageColumnsUser: ColumnDef<LabDataType>[] = [
+  // No Penawaran
+  {
+    accessorKey: "no_penawaran",
+    header: "No Penawaran",
+    cell: ({ row }) => <div className="">{row.getValue("no_penawaran")}</div>,
+  },
+  {
+    accessorKey: "project_name",
+    header: ({ column }) => {
+      return (
+        <Button
+          className="italic text-moss_green"
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Judul Project
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => (
+      <div className="capitalize pl-4">{row.getValue("project_name")}</div>
+    ),
+  },
+  //Lokasi
+  {
+    accessorKey: "alamat_sampling",
+    header: "Lokasi",
+    cell: ({ row }) => {
+      return (
+        <div className="capitalize pl-0.5">
+          {row.getValue("alamat_sampling")}
+        </div>
+      );
+    },
+  },
+  {
+    accessorKey: "lab_sample_status",
+    header: "Status",
+    cell: ({ row }) => {
+      var color = "bg-moss_green";
+      var statusString: string = row.getValue("lab_sample_status") as string; // Asserting the type to string
+  
+      if (statusString === "ASSIGNED") {
+        color = "bg-yellow-700";
+      } else if (statusString === "VERIFYING") {
+        color = "bg-blue-900";
+      } else if (statusString === "REVISION") {
+        color = "bg-red-700";
+      } else if (statusString === "FINISHED") {
+        color = "bg-moss_green";
+      } else if (statusString === "ACCEPTED") {
+        color = "bg-blue-400";
+      } else if (statusString === "SUBMIT") {
+        color = "bg-red-400";
+        statusString = "Need Analyze";
+      }
+  
+      return (
+        <div
+          className={`capitalize text-white rounded-md w-fit px-2 text-center flex font-semibold ${color}`}
+        >
+          {statusString}
         </div>
       );
     },

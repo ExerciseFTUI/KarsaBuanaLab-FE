@@ -8,11 +8,18 @@ export const parameterInputValidation = z.object({
     .string({ required_error: "Required Field" })
     .min(1, "Required Field"),
   result: z
-    .string()
-    .refine((result) => !isNaN(parseFloat(result)), {
-      message: "Required Field",
+    .string() // Allow result to be either string or number
+    .transform((value) => {
+      const parsedValue = Number(value);
+      return isNaN(parsedValue) ? value : parsedValue.toString();
     })
-    .transform((result) => Number(result)),
+    .refine((result) => !isNaN(parseFloat(result)), {
+      message: "Result must be a valid number or string representation of a number",
+    }),
+    // .refine((result) => !isNaN(parseFloat(result)), {
+    //   message: "Required Field",
+    // })
+    // .transform((result) => String(result)),
 });
 
 export const sampleInputValidation = z.object({
@@ -28,7 +35,10 @@ export type labInputDocumentValidationType = z.infer<
   typeof labInputDocumentValidation
 >;
 
-export const Form = () =>
-  useForm<labInputDocumentValidationType>({
+export const useLabForm = () => {
+  const form = useForm<labInputDocumentValidationType>({
     resolver: zodResolver(labInputDocumentValidation),
   });
+
+  return form;
+};

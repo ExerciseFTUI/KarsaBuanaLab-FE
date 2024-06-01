@@ -39,7 +39,8 @@ export const createProjectValidation = z.object({
     .string()
     .max(280, {message: "Makismal 280 character"})
     .optional(),
-  status: z.string().optional()
+  status: z.string().optional(),
+  password: z.string().optional(),
 });
 
 export type createProjectValidation = z.infer<typeof createProjectValidation>;
