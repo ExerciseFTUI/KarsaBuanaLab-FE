@@ -1,5 +1,5 @@
 "use client"
-import React, { FC, useState } from "react"
+import React, { FC, useEffect, useState } from "react"
 import axios from "axios"
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
@@ -39,76 +39,93 @@ import {
   registerValidationType,
 } from "@/lib/validations/RegisterValidation"
 import { Input } from "../ui/input"
-import { register } from "@/lib/actions/auth.action"
+import { register, updateUser } from "@/lib/actions/auth.action"
 import { useToast } from "../ui/use-toast"
 import { useRouter } from "next/navigation"
 import { ReloadIcon } from "@radix-ui/react-icons"
+import { UserType } from "@/lib/type"
 
-interface RegisterFormProps {}
+interface RegisterFormProps {
+  isUpdate: boolean,
+  account?: UserType
+}
 
-// async function postRegister(values: registerValidationType): Promise<string> {
-//   try {
-//     let config = {
-//       method: "post",
-//       maxBodyLength: Infinity,
-//       url: "http://localhost:3000/auth/register",
-//       headers: {
-//         "Content-Type": "application/json",
-//       },
-//       data: values,
-//     };
-
-//     const response = await axios.request(config);
-//     return response.data.message;
-//   } catch (error: any) {
-//     return error.response.data.message;
-//   }
-// }
-
-const RegisterForm: FC<RegisterFormProps> = ({}) => {
+const RegisterForm: FC<RegisterFormProps> = ({
+  isUpdate,
+  account
+}) => {
   const { toast } = useToast()
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
 
   const form = useForm<z.infer<typeof registerValidation>>({
     resolver: zodResolver(registerValidation),
+
     defaultValues: {
       username: "",
-      email: "", // Added email field
+      email: "", 
       password: "",
-      confirmPassword: "", // Added confirm password field
-      role: "", // Added role field
-      division: "", // Added title fiels
+      confirmPassword: "", 
+      role: "", 
+      division: "", 
     },
   })
 
+  useEffect(() => {
+    if (isUpdate && account) {
+      form.reset({
+        username: account.username,
+        email: account.email,
+        role: account.role,
+        division: account.division,
+        password: "",
+        confirmPassword: ""
+      })
+    }
+  }, [isUpdate, account, form])
+
   async function onSubmit(values: z.infer<typeof registerValidation>) {
-    // const result = await postRegister(values);
-
-    // if (result === "User created") {
-    //   window.alert(result);
-    //   form.reset();
-    // } else {
-    //   window.alert(result);
-    // }
-
     setIsLoading(true)
 
-    const result = await register(values)
-
-    if (result) {
-      toast({
-        title: "Successfully Register New User",
-        description: "Login to continue",
-      })
-
-      router.push("/login")
+    if (isUpdate && account) {
+      const result = await updateUser(account?._id, values)
+      
+      if (result.result) {
+        toast({
+          title: "Successfully Updated User",
+          description: "Check the updated user in the list",
+        })
+        setIsLoading(false)
+  
+        router.push("/admin")
+      } else {
+        toast({
+          title: "Update User Failed",
+          description: result.message || "Please Try Again",
+          variant: "destructive",
+        })
+      }
+      
+      setIsLoading(false)
+      return;
     } else {
-      toast({
-        title: "Register New User Failed",
-        description: "Please Try Again",
-        variant: "destructive",
-      })
+      const result = await register(values)
+
+      if (result.result) {
+        toast({
+          title: "Successfully Register New User",
+          description: "Login to continue",
+        })
+        setIsLoading(false)
+  
+        router.push("/admin")
+      } else {
+        toast({
+          title: "Register New User Failed",
+          description: result.message || "Please Try Again",
+          variant: "destructive",
+        })
+      }
     }
 
     setIsLoading(false)
@@ -117,7 +134,7 @@ const RegisterForm: FC<RegisterFormProps> = ({}) => {
   return (
     <Card className="w-[450px] max-sm:w-[300px]">
       <CardHeader>
-        <CardTitle className="text-xl">Add New User</CardTitle>
+        <CardTitle className="text-xl">{ isUpdate? "Update User" : "Add New User"}</CardTitle>
         <CardDescription>To join Lab Karsa Buana</CardDescription>
       </CardHeader>
       <CardContent>
@@ -156,7 +173,7 @@ const RegisterForm: FC<RegisterFormProps> = ({}) => {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Password</FormLabel>
+                  <FormLabel> {isUpdate ? "New Password" : "Password"} </FormLabel>
                   <FormControl>
                     <Input
                       type="password"
@@ -175,7 +192,7 @@ const RegisterForm: FC<RegisterFormProps> = ({}) => {
               name="confirmPassword"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Confirm Password</FormLabel>
+                  <FormLabel>{isUpdate ? "Confirm New Password" : "Confirm Password"}</FormLabel>
                   <FormControl>
                     <Input
                       type="password"
@@ -292,7 +309,7 @@ const RegisterForm: FC<RegisterFormProps> = ({}) => {
                   Please wait
                 </>
               ) : (
-                "Register"
+                isUpdate ? "Update Account" : "Register"
               )}
             </Button>
           </form>

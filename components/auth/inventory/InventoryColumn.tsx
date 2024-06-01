@@ -186,8 +186,6 @@ export const userColumns: ColumnDef<User>[] = [
       );
     },
     cell: ({ row }) => {
-      console.log(row.original.email);
-
       return (
         <div className="flex flex-col justify-start items-start pl-4">
           <div className="capitalize ">{row.getValue("username")}</div>
