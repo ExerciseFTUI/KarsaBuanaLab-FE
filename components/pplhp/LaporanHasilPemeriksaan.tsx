@@ -119,12 +119,10 @@ const LaporanHasilPemeriksaan: FC<LaporanHasilPemeriksaanProps> = ({
       if (context === "lhpdraft") {
         // Assuming changeToReview is the function to change the project status to "Change to Review"
         const message = await changeToReview(np);
-        console.log(message);
         router.push(`/pplhp/lhpdraft`);
       } else if (context === "finalreview") {
         // Assuming changeToFinished is the function to change the project status to "Change to Finish"
         const message = await changeToFinished(np);
-        console.log(message);
         router.push(`/pplhp/finalreview`);
       }
     } catch (error) {

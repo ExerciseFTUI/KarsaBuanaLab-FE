@@ -63,11 +63,10 @@ export type FileType = {
 };
 
 export type UserType = {
-  id?: string;
-  name?: string;
-  email?: string;
-  // password: string;
-  // phone: string
+  _id: string;
+  username: string;
+  email: string;
+  password: string;
   role: string;
   division: string;
 };

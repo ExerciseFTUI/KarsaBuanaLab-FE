@@ -56,7 +56,6 @@ const ClientCard: FC<ClientCardProps> = ({ resiNumber, stage, clientData }) => {
           setStep(2);
           break;
         default:
-          console.log(stage);
           setStep(0);
       }
     };

@@ -89,7 +89,7 @@ export function DeadlineNotification({ projects }: { projects: Project[] }) {
 
         <Separator orientation="horizontal" className="mt-4" />
 
-        <div className="grid gap-4 py-4 overflow-y-scroll">
+        <div className="flex flex-col gap-4 pt-4 overflow-y-scroll max-h-[calc(100vh-7rem)]">
           {sortedDeadline.map((j: any, i: any) => (
             <div
               className={cn(

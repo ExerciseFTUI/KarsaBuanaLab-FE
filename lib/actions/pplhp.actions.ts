@@ -114,8 +114,6 @@ export const setDeadlineLHP = async (
 
     // Assuming the response contains the updated project object
     return response.data.message;
-    console.log(response.data.message);
-    console.log("Deadline set successfully.");
   } catch (error: any) {
     console.error(
       `Error setting deadline for project with ID ${projectId}:`,

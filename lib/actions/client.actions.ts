@@ -13,7 +13,6 @@ export const getProjectDivision = async (
       projectId,
       password,
     });
-    console.log(response.data.result);
     return response.data.result;
   } catch (error: any) {
     console.error("Error getting Project", error.message);

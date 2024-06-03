@@ -88,7 +88,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
               <FormItem>
                 {/* <FormLabel>Email</FormLabel> */}
                 <FormControl>
-                  <Input className="" placeholder="Email" {...field} />
+                  <Input className="" placeholder="Email or Username" {...field} />
                 </FormControl>
 
                 <FormMessage />

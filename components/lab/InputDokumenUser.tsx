@@ -78,8 +78,6 @@ useEffect(() => {
 
 // For default values unit and method
 useEffect(() => {
-  // console.log("sample: ", sample[0].parameters);
-  
   const updatedLastSelectedUnits: Record<string, string> = {};
 
   // Loop through each parameter in the sample
@@ -129,8 +127,7 @@ useEffect(() => {
       };
       mergedData.push(mergedSample);
     });
-    // console.log("mergedData", mergedData);
-    
+
     return mergedData;
   }
 
@@ -145,9 +142,6 @@ useEffect(() => {
     const answer = mergeData(sample, formData);
     const response = await submitLab(projectId, answer);
 
-    // console.log("response", response);
-    
-  
     if (response) {
       toast({
         title: "Submitted",
