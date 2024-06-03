@@ -19,5 +19,4 @@ export type InventoryUser = {
   role: string;
   createdAt: string;
   __v: number;
-  jadwal: any[]; // Assuming jadwal is of any type, you can replace it with the correct type if known
 };

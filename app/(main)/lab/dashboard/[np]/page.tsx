@@ -4,7 +4,8 @@ import NotesAdmin from "@/components/lab/NotesAdmin"
 import InputDokumenUser from "@/components/lab/InputDokumenUser";
 import { Separator } from "@/components/ui/separator"
 import { getLabProjects } from "@/lib/actions/lab.actions"
-import { getChoiceParams, getLabDashboardProject } from "@/lib/actions/lab.action";
+import { getChoiceParams } from "@/lib/actions/sampling.actions";
+import { getLabDashboardProject } from "@/lib/actions/sampling.actions"
 import { getLinkFiles } from "@/lib/actions/pplhp.actions"
 import { getAllUser } from "@/lib/actions/sampling.actions"
 import { getProject } from "@/lib/actions/marketing.actions"
@@ -12,6 +13,7 @@ import { SamplingRequestData } from "@/lib/type"
 import getSessionServer from "@/lib/actions/getSessionServer";
 import InputDokumenFinalReview from "@/components/lab/InputDokumenFinalReview";
 import { is } from "date-fns/locale";
+import { useEffect } from "react";
 
 const dokumenData = [
   { title: "Log Penerimaan Sample", link: "/link1" },
@@ -29,15 +31,12 @@ export default async function LabDetails({
   let chooseParams;
   let isAdmin = true;
 
-  // SPV
   const projects = await getLabProjects()
   const resFiles = await getLinkFiles(params.np)
   const resUser = await getAllUser("USER")
   const resProject = await getProject(params.np)
   const notes = resProject.result.notes
-  // console.log("resProject", resProject.result.sampling_list);
   
-
   const samplingUser = resUser.result.filter(
     (u) => u.division == null || u.division == "Lab"
   )

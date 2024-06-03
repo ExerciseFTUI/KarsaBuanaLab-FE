@@ -1,18 +1,21 @@
 "use client";
 
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import SamplingTabsList from "@/components/sampling/tab/SamplingTabsList";
 import { User } from "@/lib/models/user.model";
 import InventoryPIC from "./InventoryPIC";
 import InventoryDocument from "./InventoryDocument";
+import { InventoryUser } from "../InventoryType";
 
 interface InventoryTabProps {
   defaultValue: "PIC" | "Document";
-  allUsers: User[];
+  allUsers: InventoryUser[];
   setUploadedFiles: any;
   uploadedFiles: any;
   isUpdate: boolean;
+  assignedUsers: string[];
+  setAssignedUsers: Dispatch<SetStateAction<string[]>>;
 }
 
 export default function InventoryTab({
@@ -21,6 +24,8 @@ export default function InventoryTab({
   setUploadedFiles,
   uploadedFiles,
   isUpdate,
+  assignedUsers,
+  setAssignedUsers,
 }: InventoryTabProps) {
   return (
     <Tabs defaultValue={`${defaultValue}`} className="flex-1 -mt-6">
@@ -47,7 +52,11 @@ export default function InventoryTab({
         )}
       </TabsList>
       <TabsContent className="py-4" value="PIC">
-        <InventoryPIC allUsers={allUsers} />
+        <InventoryPIC
+          allUsers={allUsers}
+          assignedUsers={assignedUsers}
+          setAssignedUsers={setAssignedUsers}
+        />
       </TabsContent>
 
       {isUpdate && (

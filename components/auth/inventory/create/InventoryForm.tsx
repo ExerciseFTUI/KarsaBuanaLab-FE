@@ -26,6 +26,15 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { inventoryValidation } from "../InventoryValidation";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+  SelectItem,
+} from "@/components/ui/select";
 
 interface InventoryFormProps {
   form: UseFormReturn<z.infer<typeof inventoryValidation>>;
@@ -82,6 +91,73 @@ const InventoryForm: FC<InventoryFormProps> = ({ form, onSubmit }) => {
                 />
               </FormControl>
 
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="category"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="text-light_brown">Category</FormLabel>
+              <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <FormControl>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select the maintenance" />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent className="text-sm">
+                  <SelectItem className="p-3" value="Tools">
+                    Tools
+                  </SelectItem>
+                  <SelectItem className="p-3" value="Materials">
+                    Materials
+                  </SelectItem>
+                </SelectContent>
+              </Select>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="maintenanceEvery"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="text-light_brown">
+                Maintenance Every
+              </FormLabel>
+              <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <FormControl>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select the maintenance" />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent className="text-sm">
+                  <SelectItem className="p-3" value="1 Month">
+                    1 Month
+                  </SelectItem>
+                  <SelectItem className="p-3" value="2 Month">
+                    2 Month
+                  </SelectItem>
+                  <SelectItem className="p-3" value="3 Month">
+                    3 Month
+                  </SelectItem>
+                  <SelectItem className="p-3" value="4 Month">
+                    4 Month
+                  </SelectItem>
+                  <SelectItem className="p-3" value="6 Month">
+                    6 Month
+                  </SelectItem>
+                  <SelectItem className="p-3" value="1 Year">
+                    1 Year
+                  </SelectItem>
+                  <SelectItem className="p-3" value="2 Year">
+                    2 Year
+                  </SelectItem>
+                </SelectContent>
+              </Select>
               <FormMessage />
             </FormItem>
           )}

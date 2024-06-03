@@ -1,4 +1,5 @@
 import { InventoryDataTable } from "@/components/auth/inventory/InventoryDataTable";
+import { getAllInventory } from "@/lib/actions/inventory.action";
 
 const dummyData = [
   {
@@ -34,9 +35,11 @@ const dummyData = [
 //TODO: assigned_user masih salah
 
 export default async function InventoryPage() {
+  const inventories = await getAllInventory();
+
   return (
     <div>
-      <InventoryDataTable datas={dummyData} />
+      <InventoryDataTable datas={inventories} />
     </div>
   );
 }

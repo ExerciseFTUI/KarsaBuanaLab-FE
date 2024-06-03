@@ -34,18 +34,6 @@ import {
   updateProjectFile,
 } from "@/lib/actions/marketing.client.actions";
 
-// const getProject = async () => {
-//   //Add try catch
-//   try {
-//     const response = await axios.get(
-//       `https://karsalab.netlabdte.com//marketing/getSample`
-//     );
-//     console.log(response.data);
-//   } catch (error: any) {
-//     console.error(`Error get project :`, error.message);
-//   }
-// };
-
 interface CreateProjectProps {
   baseSamples: BaseSample[];
 }
@@ -175,22 +163,7 @@ const CreateProjectPage: FC<CreateProjectProps> = ({ baseSamples }) => {
           sampling_list: sampling_list,
         };
 
-        console.log(body);
-
-        // I want to check how long it takes from send API until finished
-        // Start timer from here
-        start = new Date().getTime();
-        console.log("start time in : ", start);
-
-        // setStartTime(start)
-        // console.log("start time useState : ", startTime);
-
-        // return;
-
-        // const response = await createProjectJson(body);
         const response = await createProjectJsonClient(body);
-
-        console.log("success to get Response : ", response);
 
         if (!response._id) {
           toast({
@@ -200,22 +173,11 @@ const CreateProjectPage: FC<CreateProjectProps> = ({ baseSamples }) => {
           setIsLoading(false);
           return;
         }
-        console.log("get to here : ", response);
-
+        
         toast({
           title: "Create Project Success",
           description: "Dont forget to refresh the page ",
         });
-
-        // End date in here
-        const end = new Date().getTime();
-        console.log("end time : ", end);
-
-        const time = end - start;
-
-        // console log time in seconds
-        console.log("it takes ", time / 1000, " seconds to finish");
-
         setIsLoading(false);
         router.push("/marketing/running");
 
@@ -226,13 +188,6 @@ const CreateProjectPage: FC<CreateProjectProps> = ({ baseSamples }) => {
         });
       }
     } catch (error: any) {
-      // end timer if error
-      const end = new Date().getTime();
-      console.log("end time : ", end);
-
-      const time = end - start;
-      console.log("it takes ", time / 1000, " seconds to aborted from vercel");
-
       toast({
         title: "Oops, Create project failed!",
         description: "Please Try Again Later",
@@ -249,10 +204,6 @@ const CreateProjectPage: FC<CreateProjectProps> = ({ baseSamples }) => {
   //=============================== Document Section
 
   const [uploadedFiles, setUploadedFiles] = useState([]);
-
-  // useEffect(() => {
-  //   console.log(uploadedFiles);
-  // }, [uploadedFiles]);
 
   //=============================== End Document Section
 

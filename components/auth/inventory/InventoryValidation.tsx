@@ -7,6 +7,12 @@ export const inventoryValidation = z.object({
   description: z.string().min(5, {
     message: "Description is Required",
   }),
+  category: z.string().min(3, {
+    message: "Category is Required",
+  }),
+  maintenanceEvery: z.string().min(3, {
+    message: "Maintenance is Required",
+  }),
   deadline: z.coerce
     .date({
       required_error: "Deadline is Required",

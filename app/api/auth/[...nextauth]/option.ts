@@ -28,7 +28,9 @@ export const options: NextAuthOptions = {
         // Docs: https://next-auth.js.org/configuration/providers/credentials
 
         const response = await axios.post(
-          process.env.API_BASE_URL + "/auth/login",
+          process.env.API_BASE_URL 
+          // "http://localhost:8080"
+          + "/auth/login",
           {
             email: credentials?.email,
             password: credentials?.password,

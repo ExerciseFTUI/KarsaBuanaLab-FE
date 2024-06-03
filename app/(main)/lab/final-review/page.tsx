@@ -5,10 +5,7 @@ import { Project } from "@/lib/models/project.model"
 
 export default async function Home() {
   const res = await getProjectByDivision("Lab")
-
   const data = res ? (res as any).projects.filter((item: any) => item.lab_status === "NEED ANALYZE") : []
-  // console.log(projects);
-  
 
   return (
     <div className="flex justify-between w-full h-screen">
