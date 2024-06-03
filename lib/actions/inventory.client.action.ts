@@ -2,11 +2,13 @@
 
 import axios from "axios";
 
-const apiBaseUrl = process.env.API_BASE_URL || "http://localhost:5000";
+const apiBaseUrl =
+  process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:5000";
 
 //Update Project file
 export const addInventoryFile = async (id: string, files: any) => {
-  console.log("hello World");
+  console.log(id);
+  console.log(files);
 
   var bodyFormData = new FormData();
   bodyFormData.append("inventoryId", id);
@@ -16,7 +18,8 @@ export const addInventoryFile = async (id: string, files: any) => {
     bodyFormData.append("files", files[i]);
   }
 
-  console.log(bodyFormData);
+  console.log(bodyFormData.get("inventoryId"));
+  console.log(bodyFormData.get("files"));
 
   try {
     const response = await axios.post(
@@ -35,5 +38,28 @@ export const addInventoryFile = async (id: string, files: any) => {
     console.error(error?.response?.data);
     console.error(`Error update projectFile :`, error.message);
     return false;
+  }
+};
+
+//Update Project file
+export const deleteProjectFile = async (id: string, file_id: string) => {
+  const body = {
+    inventoryId: id,
+    fileId: file_id,
+  };
+
+  try {
+    const response = await axios.put(
+      `${apiBaseUrl}/projects/delete-file`,
+      body
+    );
+    if (response.data.result) {
+      return true;
+    } else {
+      return false;
+    }
+  } catch (error: any) {
+    console.error(error.response.data);
+    console.error(`Error delete projectFile :`, error.message);
   }
 };

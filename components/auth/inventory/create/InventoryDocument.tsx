@@ -5,10 +5,12 @@ import Dropzone from "@/components/Dropzone";
 import { Button } from "@/components/ui/button";
 import { ImageIcon, TrashIcon } from "lucide-react";
 import { FC, useState } from "react";
+import { InventoryFile } from "../InventoryType";
 
 interface InventoryDocumentProps {
   uploadedFiles: any;
   setUploadedFiles: any;
+  inventoryDocument: InventoryFile[];
 }
 
 const projectFile = [
@@ -32,6 +34,7 @@ const projectFile = [
 const InventoryDocument: FC<InventoryDocumentProps> = ({
   uploadedFiles,
   setUploadedFiles,
+  inventoryDocument,
 }) => {
   const [fileIdToDelete, setFileIdToDelete] = useState("");
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -40,15 +43,15 @@ const InventoryDocument: FC<InventoryDocumentProps> = ({
     <>
       <div className="px-2 space-y-10">
         <div className="text-dark_brown">
-          <div className="mx-5 mt-5 max-w-3xl">
+          <div className="mx-5 mt-5 ">
             <h1 className="font-semibold mb-4 text-xl">Uploaded Files</h1>
-            {projectFile.length === 0 && (
+            {inventoryDocument.length === 0 && (
               <p className=" text-sm flex flex-row justify-center py-3">
                 File Not Found
               </p>
             )}
             <div className="grid grid-cols-2 gap-4 justify-center items-center">
-              {projectFile.map((file, index) => (
+              {inventoryDocument.map((file, index) => (
                 <div
                   className="bg-dark_brown  items-center justify-between rounded-lg px-5 py-3 hover:bg-light_brown text-white font-medium flex delay-150"
                   key={index + file._id}
