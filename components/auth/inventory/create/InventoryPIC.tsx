@@ -73,10 +73,10 @@ const InventoryPIC: FC<InventoryPICProps> = ({
         PIC
       </h1> */}
       <div className="flex flex-col  w-full">
-        <div className="w-full xl:w-3/4">
+        <div className="w-full xl:w-4/4">
           <InventoryUnAssignedTable table={table} />
         </div>
-        <div className="w-full xl:w-3/4">
+        <div className="w-full xl:w-4/4">
           <InventoryAssignedTable table={table} />
         </div>
       </div>
