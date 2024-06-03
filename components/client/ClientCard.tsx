@@ -98,13 +98,18 @@ const ClientCard: FC<ClientCardProps> = ({ resiNumber, stage, clientData }) => {
       case 0:
         return (
           clientData?.sample && (
-            <Sample data={clientData.sample} setEnabled={setEnabled} />
+            <Sample data={clientData.sample} setEnabled={setEnabled} isDone={activeStep < step} />
           )
         );
       case 1:
         return (
           clientData?.analysis && (
-            <Analysis data={clientData.analysis} stage={stage} setEnabled={setEnabled} />
+            <Analysis
+              data={clientData.analysis}
+              stage={stage}
+              setEnabled={setEnabled}
+              isDone={activeStep < step}
+            />
           )
         );
       case 2:
@@ -124,7 +129,6 @@ const ClientCard: FC<ClientCardProps> = ({ resiNumber, stage, clientData }) => {
     <Card className="w-full md:w-2/3 md:h-[90vh] flex flex-col my-4 md:m-6 md:mx-10 bg-ghost_white rounded-xl">
       <CardHeader className="flex flex-row bg-dark_green px-10 rounded-xl justify-between shadow-xl">
         <CardTitle className="my-auto text-3xl text-white font-extrabold">{`ID ${resiNumber}`}</CardTitle>
-
         <FiRefreshCw
           className="text-4xl text-ghost_white cursor-pointer"
           onClick={handleRefreshClick}
@@ -147,7 +151,7 @@ const ClientCard: FC<ClientCardProps> = ({ resiNumber, stage, clientData }) => {
           className={`${
             !(activeStep !== step) && "invisible"
           }  text-lg py-2 w-36`}
-          disabled={!enabled}
+          hidden={!enabled}
           onClick={() => setActiveStep(activeStep + 1)}
         >
           Next

@@ -7,9 +7,10 @@ import { ClientResponses } from "@/lib/type";
 
 interface CustomCheckboxProps {
   items: ClientResponses[];
+  isDone: boolean
 }
 
-const CustomCheckbox: FC<CustomCheckboxProps> = ({ items }) => {
+const CustomCheckbox: FC<CustomCheckboxProps> = ({ items, isDone }) => {
   return (
     <>
       {items.map((item: ClientResponses) => (
@@ -19,7 +20,7 @@ const CustomCheckbox: FC<CustomCheckboxProps> = ({ items }) => {
             <div>
               <Checkbox
                 className="h-6 w-6 bg-ghost_white cursor-default"
-                checked={item.status == "ACCEPTED" ? true : false}
+                checked={isDone ? true : (item.status == "ACCEPTED" ? true : false)}
               />
             </div>
             <div
