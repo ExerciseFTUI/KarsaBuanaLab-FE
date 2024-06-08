@@ -39,6 +39,7 @@ interface inputDokumenUserProps {
   userId: string;
   projectId: string;
   choiceParams: [labInputChoice];
+  status: string;
 }
 
 const InputDokumenUser: FC<inputDokumenUserProps> = ({
@@ -46,6 +47,7 @@ const InputDokumenUser: FC<inputDokumenUserProps> = ({
   userId,
   projectId,
   choiceParams,
+  status
 }) => {
   const router = useRouter();
   const { toast } = useToast();
@@ -53,7 +55,6 @@ const InputDokumenUser: FC<inputDokumenUserProps> = ({
   const [lastSelectedUnits, setLastSelectedUnits] = useState<Record<string, string>>({});
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [formData, setFormData] = useState<z.infer<typeof labInputDocumentValidation>>();
-
   
   const {
     register,
@@ -191,11 +192,12 @@ useEffect(() => {
                     </TableCell>
                     <TableCell>
                     <select
+                      disabled={status === "IN REVIEW BY SPV"}
                       className="w-full"
                       {...register(
                         `sample.${sampleId}.parameter.${parameterId}.unit`,
                         {
-                          setValueAs: (value) => (value === "Select Unit" ? "" : value),
+                          setValueAs: (value: any) => (value === "Select Unit" ? "" : value),
                         }
                       )}
                     >
@@ -225,6 +227,7 @@ useEffect(() => {
                           return (
                             <label key={method} className="block">
                               <input
+                                disabled={status === "IN REVIEW BY SPV"}
                                 type="checkbox"
                                 value={method}
                                 onChange={(e) => {
@@ -254,6 +257,7 @@ useEffect(() => {
                     <TableCell className="text-right">
                     <Input
                       type="text"
+                      disabled={status === "IN REVIEW BY SPV"}
                       className="bg-white"
                       {...register(`sample.${sampleId}.parameter.${parameterId}.result`)}
                     />
@@ -279,8 +283,8 @@ useEffect(() => {
           ))}
         </div>
         <div className="flex justify-center bottom-0 mt-24 text-lg">
-          <Button className="w-2/3 p-6 bg-light_brown hover:bg-dark_brown" type="button" onClick={handleSubmit(onSubmit)}>
-            Submit
+          <Button disabled={status === "IN REVIEW BY SPV"} className="w-2/3 p-6 bg-light_brown hover:bg-dark_brown" type="button" onClick={handleSubmit(onSubmit)}>
+            {status === "IN REVIEW BY SPV" ? "Verifying by SPV, can't edit" : "Submit"}
           </Button>
         </div>
         <AlertDialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
