@@ -138,7 +138,7 @@ export default function VerifikasiSampling({
                     <AlertDialogFooter>
                       <AlertDialogCancel>Cancel</AlertDialogCancel>
                       <AlertDialogAction
-                        onClick={(e) => submitSample(s._id, "ACCEPTED")}
+                        onClick={(e) => submitSample(s._id, "ACCEPTED LAB")}
                       >
                         Continue
                       </AlertDialogAction>

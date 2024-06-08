@@ -16,6 +16,8 @@ export default async function Home() {
     const response = await getProjectBy(session.user.id);
     projects.result = response;
 
+    
+
     // set lab_sample_status
     projects.result.forEach((project: Project) => {
       project.lab_sample_status = "NOT ASSIGNED";
