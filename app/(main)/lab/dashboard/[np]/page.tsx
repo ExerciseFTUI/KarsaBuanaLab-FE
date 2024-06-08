@@ -116,6 +116,7 @@ export default async function LabDetails({
             userId={session ? session.user.id : ""}
             projectId={params.np}
             choiceParams={chooseParams}
+            status={project.status}
           />
       )}
     </div>
