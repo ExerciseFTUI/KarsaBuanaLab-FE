@@ -100,7 +100,7 @@ export const getUser = async (_id: string) : Promise<BaseApiResponse<UserType>> 
   try {
     const response = await axios.post(
       // `http://localhost:8080/auth/getUser`,
-      `${apiBaseUrl}/auth/getUser/${_id}`,
+      `${apiBaseUrl}/auth/getUser`,
       {
         _id
       }
