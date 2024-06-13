@@ -50,7 +50,11 @@ export const inventoryColumns: ColumnDef<Inventory>[] = [
       );
     },
     cell: ({ row }) => (
-      <div className="capitalize pl-4">{row.getValue("assigned_user")}</div>
+      <div className="capitalize pl-4">
+        {row.original.assigned_users.length > 0
+          ? row.original.assigned_users[0].username
+          : "Empty"}
+      </div>
     ),
   },
   //Deadline
@@ -65,7 +69,12 @@ export const inventoryColumns: ColumnDef<Inventory>[] = [
     },
 
     cell: ({ row }) => {
-      const deadline = "Haven't set deadline yet";
+      let deadline;
+      if (row.original.deadline) {
+        deadline = formatDate(row.original.deadline);
+      } else {
+        deadline = "Haven't set deadline yet";
+      }
       // row.original.jadwal_sampling?.to || "Haven't set deadline yet";
       return <div className="capitalize text-center ">{deadline}</div>;
     },
@@ -209,3 +218,12 @@ export const userColumns: ColumnDef<InventoryUser>[] = [
     ),
   },
 ];
+
+function formatDate(dateString: string) {
+  const date = new Date(dateString);
+
+  // Options for toLocaleDateString
+  const options: any = { day: "2-digit", month: "long", year: "numeric" };
+
+  return date.toLocaleDateString("id-ID", options);
+}

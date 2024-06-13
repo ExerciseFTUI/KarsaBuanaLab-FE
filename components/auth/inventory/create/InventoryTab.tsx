@@ -67,6 +67,7 @@ export default function InventoryTab({
             uploadedFiles={uploadedFiles}
             setUploadedFiles={setUploadedFiles}
             inventoryDocument={inventory.inventory_file}
+            inventoryId={inventory._id}
           />
         </TabsContent>
       )}

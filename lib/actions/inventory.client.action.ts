@@ -48,12 +48,14 @@ export const deleteProjectFile = async (id: string, file_id: string) => {
     fileId: file_id,
   };
 
+  console.log(body);
+
   try {
-    const response = await axios.put(
-      `${apiBaseUrl}/projects/delete-file`,
+    const response = await axios.post(
+      `${apiBaseUrl}/inventory/delete-file`,
       body
     );
-    if (response.data.result) {
+    if (response.data.message == "File deleted successfully") {
       return true;
     } else {
       return false;
