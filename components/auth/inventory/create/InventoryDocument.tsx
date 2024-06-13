@@ -6,11 +6,14 @@ import { Button } from "@/components/ui/button";
 import { ImageIcon, TrashIcon } from "lucide-react";
 import { FC, useState } from "react";
 import { InventoryFile } from "../InventoryType";
+import { deleteProjectFile } from "@/lib/actions/inventory.client.action";
+import { useRouter } from "next/navigation";
 
 interface InventoryDocumentProps {
   uploadedFiles: any;
   setUploadedFiles: any;
   inventoryDocument: InventoryFile[];
+  inventoryId: string;
 }
 
 const projectFile = [
@@ -35,9 +38,23 @@ const InventoryDocument: FC<InventoryDocumentProps> = ({
   uploadedFiles,
   setUploadedFiles,
   inventoryDocument,
+  inventoryId,
 }) => {
   const [fileIdToDelete, setFileIdToDelete] = useState("");
   const [dialogOpen, setDialogOpen] = useState(false);
+  const router = useRouter();
+
+  const handleDeleteFile = async (fileId: string) => {
+    //Project Id
+    const response = await deleteProjectFile(inventoryId, fileId);
+
+    if (response) {
+      alert("File Deleted Succesfully");
+      router.refresh();
+    } else {
+      alert("Failed to  Delete file");
+    }
+  };
 
   return (
     <>
@@ -73,7 +90,7 @@ const InventoryDocument: FC<InventoryDocumentProps> = ({
                     className="delay-150"
                     onClick={() => {
                       setDialogOpen(true);
-                      setFileIdToDelete(file._id);
+                      setFileIdToDelete(file.file_id);
                     }}
                   >
                     <TrashIcon className="h-5 w-5 " />
@@ -100,8 +117,8 @@ const InventoryDocument: FC<InventoryDocumentProps> = ({
       <DeleteDialog
         setIsOpen={setDialogOpen}
         isOpen={dialogOpen}
-        deleteFunction={() => alert(`Deleted ${fileIdToDelete}`)}
-        // deleteFunction={() => handleDeleteFile(project._id, fileIdToDelete)}
+        // deleteFunction={() => alert(`Deleted ${fileIdToDelete}`)}
+        deleteFunction={() => handleDeleteFile(fileIdToDelete)}
         description="This action cannot be undone. This will be permanently delete your file "
       />
     </>

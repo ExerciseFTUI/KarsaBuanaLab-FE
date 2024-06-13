@@ -99,6 +99,12 @@ export function InventoryDataTable({ datas }: InventoryDataTableProps) {
     },
   });
 
+  React.useEffect(() => {
+    table.getRowModel().rows.map((row) => {
+      console.log(row);
+    });
+  }, []);
+
   return (
     <div className="w-full">
       {/* Top Search Title */}
@@ -187,6 +193,9 @@ export function InventoryDataTable({ datas }: InventoryDataTableProps) {
                   className="hover:bg-pastel_moss_green ease-in-out duration-500 text-xs hover:cursor-pointer hover:rounded-xl "
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
+                  onClick={() => {
+                    router.push("inventory/" + row.original._id);
+                  }}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
