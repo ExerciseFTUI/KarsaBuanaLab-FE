@@ -63,11 +63,10 @@ export type FileType = {
 };
 
 export type UserType = {
-  id?: string;
-  name?: string;
-  email?: string;
-  // password: string;
-  // phone: string
+  _id: string;
+  username: string;
+  email: string;
+  password: string;
   role: string;
   division: string;
 };
@@ -281,7 +280,7 @@ export type InputDocumentType = {
 export type ParameterType = {
   name: string;
   unit: string;
-  method: string;
+  method: string[];
   result: string;
 };
 
@@ -297,7 +296,7 @@ export type sampleAnswer = {
     param: string;
     result: string;
     unit: string;
-    method: string;
+    method: string[];
   }[];
 };
 

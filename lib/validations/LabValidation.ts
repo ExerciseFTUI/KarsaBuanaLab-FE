@@ -3,10 +3,22 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 export const parameterInputValidation = z.object({
-  unit: z.string({ required_error: "Required Field" }).min(1, "Required Field"),
-  method: z
+  unit: z
     .string({ required_error: "Required Field" })
-    .min(1, "Required Field"),
+    .min(1, "Required Field")
+    .refine((value) => value !== null, {
+      message: "Required Field",
+    }),
+  method: z
+    .string({ required_error: "Required Field" }).array()
+    // .min(1, "Required Field").array()
+    //transform if the value just one or it means just a string change it to array
+    .transform((value) => {
+      if (typeof value === "string") {
+        return [value];
+      }
+      return value;
+    }),
   result: z
     .string() // Allow result to be either string or number
     .transform((value) => {

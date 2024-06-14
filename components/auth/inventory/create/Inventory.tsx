@@ -10,44 +10,157 @@ import { inventoryValidation } from "../InventoryValidation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Inventory } from "../InventoryType";
+import { Inventory, InventoryUser } from "../InventoryType";
+import {
+  createInventory,
+  updateInventory,
+} from "@/lib/actions/inventory.action";
+import { useRouter } from "next/navigation";
+import { addInventoryFile } from "@/lib/actions/inventory.client.action";
+import { Button } from "@/components/ui/button";
 
 interface InventoryProps {
-  allUsers: User[];
+  allUsers: InventoryUser[];
   isUpdate: boolean;
   inventory?: Inventory;
 }
 
-const InventoryDetail: FC<InventoryProps> = ({ allUsers, isUpdate }) => {
+const InventoryDetail: FC<InventoryProps> = ({
+  allUsers,
+  isUpdate,
+  inventory,
+}) => {
+  const router = useRouter();
+
+  //Document Section
+  const [uploadedFiles, setUploadedFiles] = useState([]);
+
+  const inventoryDeadline = inventory?.last_maintenance
+    ? new Date(inventory?.last_maintenance)
+    : new Date();
+
+  const defaultAssignedUsersValue = inventory?.assigned_user
+    ? inventory?.assigned_user
+    : [];
+
   //Form Section
   const form = useForm<z.infer<typeof inventoryValidation>>({
     resolver: zodResolver(inventoryValidation),
     defaultValues: {
-      tool: `${isUpdate ? "Default Value" : ""}`,
-      description: `${isUpdate ? "Default Value" : ""}`,
-      deadline: new Date("2022-01-01") || new Date(),
+      tool: `${isUpdate ? inventory?.tools_name : ""}`,
+      description: `${isUpdate ? inventory?.description : ""}`,
+      deadline: inventoryDeadline,
+      category: `${isUpdate ? inventory?.category : ""}`,
+      maintenanceEvery: `${isUpdate ? inventory?.maintenance_every : ""}`,
     },
   });
+
+  const [assignedUsers, setAssignedUsers] = useState<string[]>(
+    defaultAssignedUsersValue
+  );
 
   async function onSubmit(values: z.infer<typeof inventoryValidation>) {
     isUpdate ? onSubmitUpdate(values) : onSubmitCreate(values);
   }
 
   async function onSubmitCreate(values: z.infer<typeof inventoryValidation>) {
+    const body = {
+      tools_name: values.tool,
+      description: values.description,
+      last_maintenance: values.deadline?.toISOString(),
+      assigned_user: assignedUsers,
+      maintenance_every: values.maintenanceEvery,
+      category: values.category,
+    };
+
     //Dont forget to check the date if it is null
-    console.log(values);
-    alert(JSON.stringify(values, null, 2));
+    // alert(JSON.stringify(body, null, 2));
+
+    const isSuccess = await createInventory(body);
+
+    if (isSuccess) {
+      alert("Successfully created");
+      router.push("/admin/inventory");
+    } else {
+      alert("Failed to create");
+    }
   }
 
   async function onSubmitUpdate(values: z.infer<typeof inventoryValidation>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
-    alert(JSON.stringify(values, null, 2));
+    let isUpdateFormSuccess;
+    let isAddFileSuccess;
+
+    if (inventory) {
+      if (isChangingValue(values)) {
+        const body = {
+          id: inventory?._id,
+          updates: {
+            tools_name: values.tool,
+            description: values.description,
+            last_maintenance: values.deadline?.toISOString(),
+            assigned_user: assignedUsers,
+            maintenance_every: values.maintenanceEvery,
+            category: values.category,
+          },
+        };
+
+        isUpdateFormSuccess = await updateInventory(body);
+
+        if (!isUpdateFormSuccess) {
+          alert("Failed to update inventory form");
+          return;
+        }
+      }
+
+      if (uploadedFiles.length > 0) {
+        isAddFileSuccess = await addInventoryFile(inventory._id, uploadedFiles);
+
+        if (!isAddFileSuccess) {
+          alert("Failed to add file");
+          return;
+        }
+      }
+
+      alert("Successfully updating inventory");
+      router.refresh();
+    }
   }
 
-  //Document Section
-  const [uploadedFiles, setUploadedFiles] = useState([]);
+  async function uploadFile() {
+    try {
+      if (uploadedFiles.length > 0 && inventory) {
+        // isAddFileSuccess = await addInventoryFile(inventory._id, uploadedFiles);
+        const isAddFileSuccess = await addInventoryFile(
+          inventory._id,
+          uploadedFiles
+        );
+
+        if (!isAddFileSuccess) {
+          alert("Failed to add file");
+          return;
+        }
+
+        alert("Success Adding File");
+        setUploadedFiles([]);
+        router.refresh();
+      }
+    } catch (error) {
+      alert("Failed to add file");
+    }
+  }
+
+  function isChangingValue(values: z.infer<typeof inventoryValidation>) {
+    if (
+      values.tool !== inventory?.tools_name ||
+      values.description !== inventory?.description ||
+      values.deadline !== inventoryDeadline ||
+      values.category !== inventory?.category ||
+      values.maintenanceEvery !== inventory?.maintenance_every
+    ) {
+      return true;
+    }
+    return false;
+  }
 
   return (
     <div className="flex gap-6 max-md:flex-col max-md:items-center w-full">
@@ -59,14 +172,23 @@ const InventoryDetail: FC<InventoryProps> = ({ allUsers, isUpdate }) => {
           <InventoryForm form={form} onSubmit={onSubmit} />
         </div>
       </div>
-      <div className="xl:w-3/5 w-full">
+      <div className="xl:w-3/5 w-full space-y-10">
         <InventoryTab
           uploadedFiles={uploadedFiles}
           setUploadedFiles={setUploadedFiles}
           allUsers={allUsers}
+          assignedUsers={assignedUsers}
+          setAssignedUsers={setAssignedUsers}
           defaultValue={`${isUpdate ? "Document" : "PIC"}`}
           isUpdate={isUpdate}
+          inventory={inventory}
         />
+        <button
+          onClick={form.handleSubmit(onSubmit)}
+          className="w-full bg-light_brown rounded-lg px-4 py-2 hover:bg-dark_brown duration-200 text-white font-medium"
+        >
+          Submit
+        </button>
       </div>
     </div>
   );

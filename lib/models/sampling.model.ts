@@ -30,3 +30,12 @@ export interface CalendarSample {
   end: string
   person: string[]
 }
+
+export interface DashboardSampling {
+  _id: string,
+  title: string,
+  start: string,
+  end: string,
+  location: string,
+  person: string[]
+}

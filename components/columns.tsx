@@ -311,11 +311,18 @@ export const columnsFinished: ColumnDef<ProjectMarketingType>[] = [
 
 // Table Column for Admin Page
 export const adminColumns: ColumnDef<UserType>[] = [
-  //No Penawaran
   {
-    accessorKey: "name",
-    header: "Name",
-    cell: ({ row }) => <div className="">{row.getValue("name")}</div>,
+    accessorKey: "_id",
+    header: "",
+    cell: ({ row }) => (
+      <div></div>
+    ),
+    enableHiding: true
+  },
+  {
+    accessorKey: "username",
+    header: "Username",
+    cell: ({ row }) => <div className="">{row.getValue("username")}</div>,
   },
   {
     accessorKey: "email",
@@ -335,7 +342,6 @@ export const adminColumns: ColumnDef<UserType>[] = [
       <div className="capitalize pl-4">{row.getValue("email")}</div>
     ),
   },
-  //Status
   {
     accessorKey: "role",
     header: ({ column }) => {
@@ -362,7 +368,6 @@ export const adminColumns: ColumnDef<UserType>[] = [
       );
     },
   },
-  //Lokasi
   {
     accessorKey: "division",
     header: "Division",
@@ -372,76 +377,38 @@ export const adminColumns: ColumnDef<UserType>[] = [
       );
     },
   },
-  //createdAt
   // {
-  //   accessorKey: "created_at",
-  //   header: ({ column }) => {
+  //   id: "actions",
+  //   enableHiding: false,
+  //   cell: ({ row }) => {
+  //     const userId = row.original.id;
+
   //     return (
-  //       <Button
-  //         variant="ghost"
-  //         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-  //       >
-  //         Created At
-  //         <ArrowUpDown className="ml-2 h-4 w-4" />
-  //       </Button>
+  //       <DropdownMenu>
+  //         <DropdownMenuTrigger asChild>
+  //           <Button variant="ghost" className="h-8 w-8 p-0">
+  //             <span className="sr-only">Open menu</span>
+  //             <MoreHorizontal className="h-4 w-4" />
+  //           </Button>
+  //         </DropdownMenuTrigger>
+  //         <DropdownMenuContent align="end">
+  //           <DropdownMenuLabel>Actions</DropdownMenuLabel>
+  //           <DropdownMenuItem>
+  //             <Link href={`/admin/${userId}`}>View user details</Link>
+  //           </DropdownMenuItem>
+  //           <DropdownMenuSeparator />
+  //           <DropdownMenuItem
+  //             onClick={() =>
+  //               navigator.clipboard.writeText(row.getValue("email"))
+  //             }
+  //           >
+  //             Copy Email
+  //           </DropdownMenuItem>
+  //         </DropdownMenuContent>
+  //       </DropdownMenu>
   //     );
   //   },
-
-  //   cell: ({ row }) => {
-  //     const date = new Date(row.getValue("created_at"));
-
-  //     let month = (date.getMonth() + 1).toString().padStart(2, "0"); // Months are zero-based
-  //     let day = date.getDate().toString().padStart(2, "0");
-  //     let year = date.getFullYear();
-
-  //     let formattedDate = month + "/" + day + "/" + year;
-  //     return <div className={`font-medium pl-4`}>{formattedDate}</div>;
-  //   },
   // },
-  //Last Update
-  // {
-  //   accessorKey: "lastUpdate",
-  //   header: () => (
-  //     <div className={`pl-2 font-medium text-[#666D4B]`}>Last Update</div>
-  //   ),
-
-  //   cell: ({ row }) => {
-  //     return <div className={`pl-4 font-medium`}>Today</div>;
-  //   },
-  // },
-  //Action
-  {
-    id: "actions",
-    enableHiding: false,
-    cell: ({ row }) => {
-      const userId = row.original.id;
-
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem>
-              <Link href={`/admin/${userId}`}>View user details</Link>
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem
-              onClick={() =>
-                navigator.clipboard.writeText(row.getValue("email"))
-              }
-            >
-              Copy Email
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      );
-    },
-  },
 ];
 
 //Table Column for PPLHP Admin Page

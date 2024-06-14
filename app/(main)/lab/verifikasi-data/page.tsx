@@ -7,7 +7,7 @@ export default async function Home() {
   const res = await getLabProjects();
 
   const data = !!res
-    ? res.result.filter((p: any) => p.lab_status === "NEED ANALYZE")
+    ? res.result.filter((p: any) => p.lab_status === "IN REVIEW BY SPV")
     : [];
 
   return (

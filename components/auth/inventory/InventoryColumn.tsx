@@ -8,13 +8,13 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { User } from "@/lib/models/user.model";
-import { InventoryType } from "@/lib/type";
 import { DropdownMenu } from "@radix-ui/react-dropdown-menu";
 import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 import Link from "next/link";
+import { Inventory, InventoryUser } from "./InventoryType";
 
-export const inventoryColumns: ColumnDef<InventoryType>[] = [
+export const inventoryColumns: ColumnDef<Inventory>[] = [
   //Nama Tools
   {
     accessorKey: "tools_name",
@@ -50,7 +50,11 @@ export const inventoryColumns: ColumnDef<InventoryType>[] = [
       );
     },
     cell: ({ row }) => (
-      <div className="capitalize pl-4">{row.getValue("assigned_user")}</div>
+      <div className="capitalize pl-4">
+        {row.original.assigned_users.length > 0
+          ? row.original.assigned_users[0].username
+          : "Empty"}
+      </div>
     ),
   },
   //Deadline
@@ -65,7 +69,12 @@ export const inventoryColumns: ColumnDef<InventoryType>[] = [
     },
 
     cell: ({ row }) => {
-      const deadline = "Haven't set deadline yet";
+      let deadline;
+      if (row.original.deadline) {
+        deadline = formatDate(row.original.deadline);
+      } else {
+        deadline = "Haven't set deadline yet";
+      }
       // row.original.jadwal_sampling?.to || "Haven't set deadline yet";
       return <div className="capitalize text-center ">{deadline}</div>;
     },
@@ -142,7 +151,7 @@ export const inventoryColumns: ColumnDef<InventoryType>[] = [
   },
 ];
 
-export const userColumns: ColumnDef<User>[] = [
+export const userColumns: ColumnDef<InventoryUser>[] = [
   //Nama Tools
   {
     id: "select",
@@ -186,8 +195,6 @@ export const userColumns: ColumnDef<User>[] = [
       );
     },
     cell: ({ row }) => {
-      console.log(row.original.email);
-
       return (
         <div className="flex flex-col justify-start items-start pl-4">
           <div className="capitalize ">{row.getValue("username")}</div>
@@ -211,3 +218,12 @@ export const userColumns: ColumnDef<User>[] = [
     ),
   },
 ];
+
+function formatDate(dateString: string) {
+  const date = new Date(dateString);
+
+  // Options for toLocaleDateString
+  const options: any = { day: "2-digit", month: "long", year: "numeric" };
+
+  return date.toLocaleDateString("id-ID", options);
+}

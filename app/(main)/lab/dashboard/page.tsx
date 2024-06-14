@@ -1,7 +1,6 @@
 import LabDataTable from "@/components/lab/LabDataTable";
 import getSessionServer from "@/lib/actions/getSessionServer";
-import { getProjectBy } from "@/lib/actions/lab.action";
-import { getLabProjects } from "@/lib/actions/lab.actions";
+import { getProjectBy, getLabProjects } from "@/lib/actions/lab.actions";
 import { getProject } from "@/lib/actions/pplhp.actions";
 import { Project } from "@/lib/models/project.model";
 import { Sampling } from "@/lib/models/sampling.model";
@@ -16,6 +15,8 @@ export default async function Home() {
   if (session && role === "USER") {
     const response = await getProjectBy(session.user.id);
     projects.result = response;
+
+    
 
     // set lab_sample_status
     projects.result.forEach((project: Project) => {

@@ -1,100 +1,16 @@
 import { AdminDataTable } from "@/components/auth/AdminDataTable";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { getAllUser } from "@/lib/actions/admin.action";
 import getSessionServer from "@/lib/actions/getSessionServer";
 import { UserType } from "@/lib/type";
 import { ChevronRightIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
 import { redirect, useRouter } from "next/navigation";
 
-const dummyUsers: UserType[] = [
-  {
-    name: "John Doe",
-    email: "john.doe@example.com",
-
-    role: "user",
-    division: "sales",
-  },
-  {
-    name: "Jane Smith",
-    email: "jane.smith@example.com",
-
-    role: "admin",
-    division: "marketing",
-  },
-  {
-    name: "Alice Johnson",
-    email: "alice.johnson@example.com",
-
-    role: "user",
-    division: "customer-service",
-  },
-  {
-    name: "Bob Thompson",
-    email: "bob.thompson@example.com",
-
-    role: "user",
-    division: "operations",
-  },
-  {
-    name: "Eva Davis",
-    email: "eva.davis@example.com",
-
-    role: "admin",
-    division: "human-resources",
-  },
-  {
-    name: "John Doe",
-    email: "john.doe@example.com",
-
-    role: "user",
-    division: "sales",
-  },
-  {
-    name: "Jane Smith",
-    email: "jane.smith@example.com",
-
-    role: "admin",
-    division: "marketing",
-  },
-  {
-    name: "Alice Johnson",
-    email: "alice.johnson@example.com",
-
-    role: "user",
-    division: "customer-service",
-  },
-  {
-    name: "Bob Thompson",
-    email: "bob.thompson@example.com",
-
-    role: "user",
-    division: "operations",
-  },
-  {
-    name: "Eva Davis",
-    email: "eva.davis@example.com",
-
-    role: "admin",
-    division: "human-resources",
-  },
-];
-
 export default async function AdminPage() {
-  // const response = await getbyStatus("running");
-  // const data = await getSessionServer();
-
-  // if (data && data.user.role.toLowerCase() !== "admin") {
-  //   {
-  //     data.user.division.toLowerCase() === "marketing"
-  //       ? redirect("/marketing")
-  //       : data.user.division.toLowerCase() === "sampling"
-  //       ? redirect("/sampling")
-  //       : data.user.division.toLowerCase() === "pplhp"
-  //       ? redirect("/pplhp")
-  //       : redirect("/lab");
-  //   }
-  // }
+  const response = await getAllUser();
+  const accounts: UserType[] = response ? response.result : [];
 
   return (
     <div className="w-full">
@@ -235,7 +151,7 @@ export default async function AdminPage() {
       <p className="text-2xl pt-4 px-1 font-bold text-dark_green capitalize">
         Table
       </p>
-      <AdminDataTable datas={dummyUsers} />
+      <AdminDataTable datas={accounts} />
     </div>
   );
 }

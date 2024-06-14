@@ -5,10 +5,15 @@ import Dropzone from "@/components/Dropzone";
 import { Button } from "@/components/ui/button";
 import { ImageIcon, TrashIcon } from "lucide-react";
 import { FC, useState } from "react";
+import { InventoryFile } from "../InventoryType";
+import { deleteProjectFile } from "@/lib/actions/inventory.client.action";
+import { useRouter } from "next/navigation";
 
 interface InventoryDocumentProps {
   uploadedFiles: any;
   setUploadedFiles: any;
+  inventoryDocument: InventoryFile[];
+  inventoryId: string;
 }
 
 const projectFile = [
@@ -32,23 +37,38 @@ const projectFile = [
 const InventoryDocument: FC<InventoryDocumentProps> = ({
   uploadedFiles,
   setUploadedFiles,
+  inventoryDocument,
+  inventoryId,
 }) => {
   const [fileIdToDelete, setFileIdToDelete] = useState("");
   const [dialogOpen, setDialogOpen] = useState(false);
+  const router = useRouter();
+
+  const handleDeleteFile = async (fileId: string) => {
+    //Project Id
+    const response = await deleteProjectFile(inventoryId, fileId);
+
+    if (response) {
+      alert("File Deleted Succesfully");
+      router.refresh();
+    } else {
+      alert("Failed to  Delete file");
+    }
+  };
 
   return (
     <>
       <div className="px-2 space-y-10">
         <div className="text-dark_brown">
-          <div className="mx-5 mt-5 max-w-3xl">
+          <div className="mx-5 mt-5 ">
             <h1 className="font-semibold mb-4 text-xl">Uploaded Files</h1>
-            {projectFile.length === 0 && (
+            {inventoryDocument.length === 0 && (
               <p className=" text-sm flex flex-row justify-center py-3">
                 File Not Found
               </p>
             )}
             <div className="grid grid-cols-2 gap-4 justify-center items-center">
-              {projectFile.map((file, index) => (
+              {inventoryDocument.map((file, index) => (
                 <div
                   className="bg-dark_brown  items-center justify-between rounded-lg px-5 py-3 hover:bg-light_brown text-white font-medium flex delay-150"
                   key={index + file._id}
@@ -70,7 +90,7 @@ const InventoryDocument: FC<InventoryDocumentProps> = ({
                     className="delay-150"
                     onClick={() => {
                       setDialogOpen(true);
-                      setFileIdToDelete(file._id);
+                      setFileIdToDelete(file.file_id);
                     }}
                   >
                     <TrashIcon className="h-5 w-5 " />
@@ -97,8 +117,8 @@ const InventoryDocument: FC<InventoryDocumentProps> = ({
       <DeleteDialog
         setIsOpen={setDialogOpen}
         isOpen={dialogOpen}
-        deleteFunction={() => alert(`Deleted ${fileIdToDelete}`)}
-        // deleteFunction={() => handleDeleteFile(project._id, fileIdToDelete)}
+        // deleteFunction={() => alert(`Deleted ${fileIdToDelete}`)}
+        deleteFunction={() => handleDeleteFile(fileIdToDelete)}
         description="This action cannot be undone. This will be permanently delete your file "
       />
     </>

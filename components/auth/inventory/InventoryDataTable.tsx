@@ -55,16 +55,12 @@ import {
   DoubleArrowLeftIcon,
   DoubleArrowRightIcon,
 } from "@radix-ui/react-icons";
-import {
-  InventoryType,
-  ProjectMarketingType,
-  ProjectType,
-  UserType,
-} from "@/lib/type";
+
 import { Project } from "@/lib/models/project.model";
 import Link from "next/link";
 import { inventoryColumns } from "./InventoryColumn";
 import { AiFillFolderAdd } from "react-icons/ai";
+import { Inventory } from "./InventoryType";
 
 // interface InventoryDataTableProps<TData, TValue> {
 //   columns: ColumnDef<TData, TValue>[];
@@ -72,7 +68,7 @@ import { AiFillFolderAdd } from "react-icons/ai";
 // }
 
 interface InventoryDataTableProps {
-  datas: InventoryType[];
+  datas: Inventory[];
 }
 
 export function InventoryDataTable({ datas }: InventoryDataTableProps) {
@@ -84,20 +80,6 @@ export function InventoryDataTable({ datas }: InventoryDataTableProps) {
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
-
-  //   const [data, setData] = React.useState<any>([]);
-
-  //   React.useEffect(() => {
-  //     // if datas is not empty then push the data to the data array
-  //     if (datas && datas.length > 0) {
-  //       setData(datas);
-  //     } else {
-  //       setData([]);
-  //     }
-  //   }, []);
-
-  //   console.log(data);
-
   const table = useReactTable({
     data: datas,
     columns: inventoryColumns,
@@ -116,6 +98,12 @@ export function InventoryDataTable({ datas }: InventoryDataTableProps) {
       rowSelection,
     },
   });
+
+  React.useEffect(() => {
+    table.getRowModel().rows.map((row) => {
+      console.log(row);
+    });
+  }, []);
 
   return (
     <div className="w-full">
@@ -205,6 +193,9 @@ export function InventoryDataTable({ datas }: InventoryDataTableProps) {
                   className="hover:bg-pastel_moss_green ease-in-out duration-500 text-xs hover:cursor-pointer hover:rounded-xl "
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
+                  onClick={() => {
+                    router.push("inventory/" + row.original._id);
+                  }}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
