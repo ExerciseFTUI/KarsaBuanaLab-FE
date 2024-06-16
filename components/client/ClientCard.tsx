@@ -28,9 +28,15 @@ interface ClientCardProps {
   resiNumber: string;
   stage: string;
   clientData: ClientDataType | null;
+  projectName: string;
 }
 
-const ClientCard: FC<ClientCardProps> = ({ resiNumber, stage, clientData }) => {
+const ClientCard: FC<ClientCardProps> = ({
+  resiNumber,
+  stage,
+  clientData,
+  projectName,
+}) => {
   const [activeStep, setActiveStep] = useState(0);
   const [enabled, setEnabled] = useState(false);
   const [step, setStep] = useState(0);
@@ -98,7 +104,11 @@ const ClientCard: FC<ClientCardProps> = ({ resiNumber, stage, clientData }) => {
       case 0:
         return (
           clientData?.sample && (
-            <Sample data={clientData.sample} setEnabled={setEnabled} isDone={activeStep < step} />
+            <Sample
+              data={clientData.sample}
+              setEnabled={setEnabled}
+              isDone={activeStep < step}
+            />
           )
         );
       case 1:
@@ -128,7 +138,14 @@ const ClientCard: FC<ClientCardProps> = ({ resiNumber, stage, clientData }) => {
   return (
     <Card className="w-full md:w-2/3 md:h-[90vh] flex flex-col my-4 md:m-6 md:mx-10 bg-ghost_white rounded-xl">
       <CardHeader className="flex flex-row bg-dark_green px-10 rounded-xl justify-between shadow-xl">
-        <CardTitle className="my-auto text-3xl text-white font-extrabold">{`ID ${resiNumber}`}</CardTitle>
+        <div>
+          <CardTitle className="my-auto text-3xl text-white font-extrabold">{` ${
+            projectName.includes("Project") ? "" : "Project "
+          } ${projectName}`}</CardTitle>
+          <CardDescription className="my-auto text-white font-bold">
+            Progress Project
+          </CardDescription>
+        </div>
         <FiRefreshCw
           className="text-4xl text-ghost_white cursor-pointer"
           onClick={handleRefreshClick}
