@@ -478,6 +478,7 @@ export default function EditProjectPage({
 
       <div className="flex gap-6 justify-evenly max-md:flex-col max-md:items-center">
         <ProjectForm
+          project={project}
           form={form}
           onSubmit={onSubmit2}
           status={status}
