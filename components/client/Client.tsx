@@ -6,6 +6,7 @@ import ClientCard from "./ClientCard";
 
 export default function Client() {
   const [resiNumber, setResiNumber] = useState("");
+  const [projectName, setProjectName] = useState("");
   const [stage, setStage] = useState("");
   const [clientData, setClientData] = useState();
 
@@ -18,9 +19,11 @@ export default function Client() {
           setResiNumber={setResiNumber}
           setStage={setStage}
           setClientData={setClientData}
+          setProjectName={setProjectName}
         />
         {resiNumber !== "" ? (
           <ClientCard
+            projectName={projectName}
             resiNumber={resiNumber}
             stage={stage}
             clientData={clientData ? clientData : null}
