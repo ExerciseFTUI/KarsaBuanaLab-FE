@@ -15,6 +15,7 @@ import {
   sampleReceiveLinks,
   samplingUSERLinks,
   adminLinks,
+  TMLinks,
 } from "@/constants/sidebarlinks";
 import { signOut, useSession } from "next-auth/react";
 import DeleteDialog from "./DeleteDialog";
@@ -51,7 +52,9 @@ const Sidebar: FC<LeftSidebarProps> = ({}) => {
       ? labUSERLinks
       : labLinks
     : pathname.includes("admin")
-    ? adminLinks
+    ? role == "ADMIN"
+      ? adminLinks
+      : TMLinks
     : pplhpLinks;
 
   //Receive

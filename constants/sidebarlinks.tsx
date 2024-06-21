@@ -9,7 +9,7 @@ import {
   AiOutlinePlusSquare,
 } from "react-icons/ai";
 import { MdOutlineCancel } from "react-icons/md";
-import { FaRunning } from "react-icons/fa";
+import { FaRunning, FaBookmark } from "react-icons/fa";
 import { ReactNode } from "react";
 import { GiLoveLetter, GiPaper } from "react-icons/gi";
 import { LetterCaseCapitalizeIcon, PlusIcon } from "@radix-ui/react-icons";
@@ -17,6 +17,7 @@ import { Archive, Mail } from "lucide-react";
 import { BsFileText } from "react-icons/bs";
 import { BiSolidBox } from "react-icons/bi";
 import { FiFileText } from "react-icons/fi";
+import { GiChemicalDrop } from "react-icons/gi";
 import { FiArchive } from "react-icons/fi";
 
 export interface ISidebarLinks {
@@ -42,10 +43,26 @@ export const adminLinks: ISidebarLinks[] = [
     label: "PPLHP",
   },
   {
-    icon: <Archive />,
+    icon: <GiChemicalDrop />,
     route: "/inventory",
     label: "Inventory",
   },
+];
+
+export const TMLinks: ISidebarLinks[] = [
+  adminLinks[0],
+  adminLinks[2],
+  adminLinks[3],
+  {
+    icon: <FaBookmark />,
+    route: "/approval",
+    label: "Project Approval",
+  },
+  // {
+  //   icon: <Archive />,
+  //   route: "/inventory",
+  //   label: "Inventory",
+  // },
 ];
 
 export const marketingLink: ISidebarLinks[] = [
