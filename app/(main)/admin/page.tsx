@@ -12,6 +12,11 @@ export default async function AdminPage() {
   const response = await getAllUser();
   const accounts: UserType[] = response ? response.result : [];
 
+  // get role from session
+  const session = await getSessionServer();
+  const user: any = session?.user || "";
+  const role = user ? user?.role.toUpperCase() : "";
+
   return (
     <div className="w-full">
       {/* <RunningTable projects={projects.result} /> */}
@@ -148,10 +153,14 @@ export default async function AdminPage() {
           </CardContent>
         </Card>
       </div>
-      <p className="text-2xl pt-4 px-1 font-bold text-dark_green capitalize">
-        Table
-      </p>
-      <AdminDataTable datas={accounts} />
+      {role === "ADMIN" && (
+        <div>
+          <p className="text-2xl pt-4 px-1 font-bold text-dark_green capitalize">
+            Table
+          </p>
+          <AdminDataTable datas={accounts} />
+        </div>
+      )}
     </div>
   );
 }

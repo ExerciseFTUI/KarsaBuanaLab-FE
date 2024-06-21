@@ -47,17 +47,18 @@ export const adminLinks: ISidebarLinks[] = [
     route: "/inventory",
     label: "Inventory",
   },
+  {
+    icon: <FaBookmark />,
+    route: "/approval",
+    label: "Project Approval",
+  },
 ];
 
 export const TMLinks: ISidebarLinks[] = [
   adminLinks[0],
   adminLinks[2],
   adminLinks[3],
-  {
-    icon: <FaBookmark />,
-    route: "/approval",
-    label: "Project Approval",
-  },
+  adminLinks[4],
   // {
   //   icon: <Archive />,
   //   route: "/inventory",
