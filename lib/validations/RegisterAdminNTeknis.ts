@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const registerValidation = z
+export const registerAdminNTeknis = z
   .object({
     username: z.string().min(3, {
       message: "Username is Required",
@@ -15,13 +15,10 @@ export const registerValidation = z
     role: z.string().min(1, {
       message: "Role is Required",
     }),
-    division: z.string().min(1, {
-      message: "Title is required",
-    }),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "Passwords do not match",
     path: ["confirmPassword"],
   });
 
-export type registerValidationType = z.infer<typeof registerValidation>;
+export type rregisterAdminNTeknisType = z.infer<typeof registerAdminNTeknis>;

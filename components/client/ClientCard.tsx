@@ -139,9 +139,11 @@ const ClientCard: FC<ClientCardProps> = ({
     <Card className="w-full md:w-2/3 md:h-[90vh] flex flex-col my-4 md:m-6 md:mx-10 bg-ghost_white rounded-xl">
       <CardHeader className="flex flex-row bg-dark_green px-10 rounded-xl justify-between shadow-xl">
         <div>
-          <CardTitle className="my-auto text-3xl text-white font-extrabold">{` ${
-            projectName.includes("Project") ? "" : "Project "
-          } ${projectName}`}</CardTitle>
+          <CardTitle className="my-auto text-3xl text-white font-extrabold">
+            {` ${
+              projectName.includes("Project") ? "" : "Project "
+            } ${projectName}`}
+          </CardTitle>
           <CardDescription className="my-auto text-white font-bold">
             Progress Project
           </CardDescription>
