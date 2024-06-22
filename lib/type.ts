@@ -77,7 +77,7 @@ export type RegulationType = {
   param: string[];
 };
 
-export type ReceiveSamplingType = {
+export type PplhpReceiveSamplingType = {
   _id: string;
   no_penawaran: string;
   project_name: string;

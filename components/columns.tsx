@@ -13,7 +13,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
-  ReceiveSamplingType,
+  PplhpReceiveSamplingType,
   ProjectLHPType,
   LabDataType,
   ProjectType,
@@ -413,12 +413,6 @@ export const adminColumns: ColumnDef<UserType>[] = [
 
 //Table Column for PPLHP Admin Page
 export const pplhpColumns: ColumnDef<PplhpDetail>[] = [
-  //No Penawaran
-  // {
-  //   accessorKey: "no_penawaran",
-  //   header: "No Penawaran",
-  //   cell: ({ row }) => <div className="">{row.getValue("no_penawaran")}</div>,
-  // },
   {
     accessorKey: "project_name",
     header: ({ column }) => {
@@ -818,11 +812,11 @@ export const samplingProjectPageColumns: ColumnDef<ProjectSamplingType>[] = [
 ];
 
 // Table Column for Receive Project
-export const receiveSamplingColumns: ColumnDef<ReceiveSamplingType>[] = [
+export const pplhpReceiveSamplingColumns: ColumnDef<PplhpReceiveSamplingType>[] = [
   //No Penawaran
   {
     accessorKey: "no_penawaran",
-    header: "No Penawaran",
+    header: "Noooo Penawaran",
     cell: ({ row }) => <div className="">{row.getValue("no_penawaran")}</div>,
   },
   {
