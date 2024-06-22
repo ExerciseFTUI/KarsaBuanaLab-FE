@@ -1,9 +1,10 @@
 "use client";
 import React, { FC, useState, useEffect, useRef } from "react";
-
+import { Modal } from "flowbite";
+import type { ModalOptions, ModalInterface } from "flowbite";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-
+import { SiMinutemailer } from "react-icons/si";
 import { Button } from "@/components/ui/button";
 import {
   AlertDialog,
@@ -15,7 +16,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/components/ui/alert-dialog"
+} from "@/components/ui/alert-dialog";
 import {
   Form,
   FormControl,
@@ -43,11 +44,14 @@ import { useToast } from "@/components/ui/use-toast";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import VerifRevision from "../editProject/VerifRevision";
+import { Project } from "@/lib/models/project.model";
+import { sendEmail } from "@/lib/actions/client.actions";
 
 interface ProjectFormProps {
   form: UseFormReturn<z.infer<typeof createProjectValidation>>;
   onSubmit(values: z.infer<typeof createProjectValidation>): Promise<void>;
   status?: string;
+  project?: Project;
   note?: string;
   updatePayment?(
     values: z.infer<typeof createProjectValidation>
@@ -60,6 +64,7 @@ interface ProjectFormProps {
 
 const ProjectForm: FC<ProjectFormProps> = ({
   form,
+  project,
   onSubmit,
   status,
   note,
@@ -86,8 +91,29 @@ const ProjectForm: FC<ProjectFormProps> = ({
         variant: "destructive",
       });
     }
-  }
-  
+  };
+
+  const resendEmail = async () => {
+    if (!project) {
+      toast({
+        title: "Failed to resend email, not found id project",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    const result = await sendEmail(project._id);
+    if (result) {
+      toast({
+        title: "Email resent successfully",
+      });
+    } else {
+      toast({
+        title: "Failed to resend email",
+        variant: "destructive",
+      });
+    }
+  };
 
   return (
     // w-[450px] max-sm:w-[400px] md:max-h-[33rem]
@@ -226,110 +252,126 @@ const ProjectForm: FC<ProjectFormProps> = ({
                     </FormItem>
                   )}
                 />
-                  <FormField
-                    control={form.control}
-                    name="numRevisi"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Nomor Revisi</FormLabel>
-                        <FormControl>
-                          <div className="flex">
-                            <Input
-                              disabled={true}
-                              type="number"
-                              className=""
-                              placeholder=""
-                              {...field}
-                            />
+                <FormField
+                  control={form.control}
+                  name="numRevisi"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Nomor Revisi</FormLabel>
+                      <FormControl>
+                        <div className="flex">
+                          <Input
+                            disabled={true}
+                            type="number"
+                            className=""
+                            placeholder=""
+                            {...field}
+                          />
 
-                            <AlertDialog>
-                              <AlertDialogTrigger asChild>
-                                <div className=' flex'>
-                                  <FaArrowUp 
-                                    className="text-3xl cursor-pointer mx-2 self-center bg-light_green p-1 rounded-lg " 
-                                    onClick={() => {
-                                      form.setValue("numRevisi", (numRevision ?? 0) + 1, {
+                          <AlertDialog>
+                            <AlertDialogTrigger asChild>
+                              <div className=" flex">
+                                <FaArrowUp
+                                  className="text-3xl cursor-pointer mx-2 self-center bg-light_green p-1 rounded-lg "
+                                  onClick={() => {
+                                    form.setValue(
+                                      "numRevisi",
+                                      (numRevision ?? 0) + 1,
+                                      {
                                         shouldValidate: true,
-                                      });
-                                      setIsRevUp(true);
+                                      }
+                                    );
+                                    setIsRevUp(true);
+                                  }}
+                                />
+                                {numRevision !== 0 && (
+                                  <FaArrowDown
+                                    className="text-3xl cursor-pointer mr-2 self-center bg-light_green p-1 rounded-lg"
+                                    onClick={() => {
+                                      if (numRevision === 0) {
+                                        toast({
+                                          title: "Cannot revision lower than 0",
+                                          variant: "destructive",
+                                        });
+
+                                        form.setValue("numRevisi", 0, {
+                                          shouldValidate: true,
+                                        });
+
+                                        return;
+                                      }
+
+                                      form.setValue(
+                                        "numRevisi",
+                                        (numRevision ?? 1) - 1,
+                                        {
+                                          shouldValidate: true,
+                                        }
+                                      );
+                                      setIsRevUp(false);
                                     }}
-                                    />
-                                    {numRevision !== 0 &&
-                                    (
-                                      <FaArrowDown 
-                                        className="text-3xl cursor-pointer mr-2 self-center bg-light_green p-1 rounded-lg" 
-                                        onClick={() => {
-                                          if (numRevision === 0) {
-                                            toast({
-                                              title: "Cannot revision lower than 0",
-                                              variant: "destructive",
-                                            });
-    
-                                            form.setValue("numRevisi", 0, {
-                                              shouldValidate: true,
-                                            }); 
-    
-                                            return;
-                                          }
-                                          
-                                          
-                                          form.setValue("numRevisi", (numRevision ?? 1) - 1, {
+                                  />
+                                )}
+                              </div>
+                            </AlertDialogTrigger>
+
+                            {numRevision !== -1 && (
+                              <AlertDialogContent>
+                                <AlertDialogHeader>
+                                  <AlertDialogTitle>
+                                    Are you sure?
+                                  </AlertDialogTitle>
+
+                                  <AlertDialogDescription>
+                                    Please kindly check it first.
+                                  </AlertDialogDescription>
+                                </AlertDialogHeader>
+
+                                <AlertDialogFooter>
+                                  <AlertDialogCancel
+                                    onClick={() => {
+                                      if (isRevUp) {
+                                        form.setValue(
+                                          "numRevisi",
+                                          (numRevision ?? 0) - 1,
+                                          {
                                             shouldValidate: true,
-                                          }); 
-                                          setIsRevUp(false);
-                                        }}
-                                        />
-
-                                    )}
-                                </div>
-                              </AlertDialogTrigger>
-
-                              { (numRevision !== -1) && 
-                                (
-                                <AlertDialogContent>
-                                    <AlertDialogHeader>
-                                        <AlertDialogTitle>Are you sure?</AlertDialogTitle>
-
-                                        <AlertDialogDescription>
-                                            Please kindly check it first.
-                                        </AlertDialogDescription>
-                                    </AlertDialogHeader>
-
-                                    <AlertDialogFooter>
-                                        <AlertDialogCancel onClick={() => {
-                                          if (isRevUp) {
-                                            form.setValue("numRevisi", (numRevision ?? 0) - 1, {
+                                          }
+                                        );
+                                      } else {
+                                        if (numRevision !== -2) {
+                                          form.setValue(
+                                            "numRevisi",
+                                            (numRevision ?? 0) + 1,
+                                            {
                                               shouldValidate: true,
-                                            });
-                                          }
-                                          else {
-                                            if (numRevision !== -2) {
-                                              form.setValue("numRevisi", (numRevision ?? 0) + 1, {
-                                                shouldValidate: true,
-                                              });
                                             }
-                                          }
-                                        }}>Cancel</AlertDialogCancel>
-                                        <AlertDialogAction onClick={async () => {
-                                          if (updateRevision) {
-                                            await updateRevision(form.getValues());
-                                          }
-                                        }}>
-                                            Continue
-                                        </AlertDialogAction>
-                                    </AlertDialogFooter>
-                                </AlertDialogContent>
-                                )
-                              }
-
-
-                            </AlertDialog>
-                          </div>
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+                                          );
+                                        }
+                                      }
+                                    }}
+                                  >
+                                    Cancel
+                                  </AlertDialogCancel>
+                                  <AlertDialogAction
+                                    onClick={async () => {
+                                      if (updateRevision) {
+                                        await updateRevision(form.getValues());
+                                      }
+                                    }}
+                                  >
+                                    Continue
+                                  </AlertDialogAction>
+                                </AlertDialogFooter>
+                              </AlertDialogContent>
+                            )}
+                          </AlertDialog>
+                        </div>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
                 <FormField
                   control={form.control}
                   name="valuasiProject"
@@ -370,7 +412,7 @@ const ProjectForm: FC<ProjectFormProps> = ({
                             {...field}
                           />
                           <FaCopy
-                            onClick={() => copyToClipboard(field.value ?? '')}
+                            onClick={() => copyToClipboard(field.value ?? "")}
                             className=" cursor-pointer text-3xl m-2 self-center bg-light_green p-1 rounded-lg"
                           />
                         </div>
@@ -427,13 +469,31 @@ const ProjectForm: FC<ProjectFormProps> = ({
                 <FormItem>
                   <FormLabel>Surel</FormLabel>
                   <FormControl>
-                    <Input
-                      //   disabled={true}
-                      type="string"
-                      className=""
-                      placeholder=""
-                      {...field}
-                    />
+                    <div className="flex items-center">
+                      <Input
+                        //   disabled={true}
+                        type="string"
+                        className=""
+                        placeholder=""
+                        {...field}
+                      />
+
+                      {/* <div
+                        onClick={() => console.log("send email")}
+                        className=" cursor-pointer text-3xl m-2 self-center bg-light_green p-1 rounded-lg"
+                      >
+                        Resend
+                      </div> */}
+
+                      <div
+                        className="bg-light_green text-center font-medium cursor-pointer text-black text-sm w-1/3 rounded-lg p-2 ml-2"
+                        onClick={() => {
+                          resendEmail();
+                        }}
+                      >
+                        Resend Email
+                      </div>
+                    </div>
                   </FormControl>
 
                   <FormMessage />

@@ -17,6 +17,7 @@ import {
 } from "@/lib/actions/inventory.action";
 import { useRouter } from "next/navigation";
 import { addInventoryFile } from "@/lib/actions/inventory.client.action";
+import { Button } from "@/components/ui/button";
 
 interface InventoryProps {
   allUsers: InventoryUser[];
@@ -125,6 +126,29 @@ const InventoryDetail: FC<InventoryProps> = ({
     }
   }
 
+  async function uploadFile() {
+    try {
+      if (uploadedFiles.length > 0 && inventory) {
+        // isAddFileSuccess = await addInventoryFile(inventory._id, uploadedFiles);
+        const isAddFileSuccess = await addInventoryFile(
+          inventory._id,
+          uploadedFiles
+        );
+
+        if (!isAddFileSuccess) {
+          alert("Failed to add file");
+          return;
+        }
+
+        alert("Success Adding File");
+        setUploadedFiles([]);
+        router.refresh();
+      }
+    } catch (error) {
+      alert("Failed to add file");
+    }
+  }
+
   function isChangingValue(values: z.infer<typeof inventoryValidation>) {
     if (
       values.tool !== inventory?.tools_name ||
@@ -148,7 +172,7 @@ const InventoryDetail: FC<InventoryProps> = ({
           <InventoryForm form={form} onSubmit={onSubmit} />
         </div>
       </div>
-      <div className="xl:w-3/5 w-full">
+      <div className="xl:w-3/5 w-full space-y-10">
         <InventoryTab
           uploadedFiles={uploadedFiles}
           setUploadedFiles={setUploadedFiles}
@@ -157,7 +181,14 @@ const InventoryDetail: FC<InventoryProps> = ({
           setAssignedUsers={setAssignedUsers}
           defaultValue={`${isUpdate ? "Document" : "PIC"}`}
           isUpdate={isUpdate}
+          inventory={inventory}
         />
+        <button
+          onClick={form.handleSubmit(onSubmit)}
+          className="w-full bg-light_brown rounded-lg px-4 py-2 hover:bg-dark_brown duration-200 text-white font-medium"
+        >
+          Submit
+        </button>
       </div>
     </div>
   );

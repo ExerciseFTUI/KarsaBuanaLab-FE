@@ -70,7 +70,8 @@ export const columns: ColumnDef<ProjectMarketingType>[] = [
 
     cell: ({ row }) => {
       const status =
-        row.original.current_division !== "SAMPLING"
+        row.original.current_division === "LAB" ||
+        row.original.current_division === "PPLHP"
           ? "ANALYSIS"
           : row.original.current_division;
 
@@ -109,8 +110,14 @@ export const columns: ColumnDef<ProjectMarketingType>[] = [
 
       const deadline =
         row.original.current_division === "SAMPLING" && jadwalSampling
-          ? `${jadwalSampling.to || jadwalSampling.from || "Haven't set deadline yet"}`
-          : `${deadlineLHP?.to || deadlineLHP?.from || "Haven't set deadline yet"}`;
+          ? `${
+              jadwalSampling.to ||
+              jadwalSampling.from ||
+              "Haven't set deadline yet"
+            }`
+          : `${
+              deadlineLHP?.to || deadlineLHP?.from || "Haven't set deadline yet"
+            }`;
 
       return <div className="capitalize text-center">{deadline}</div>;
     },
@@ -314,10 +321,8 @@ export const adminColumns: ColumnDef<UserType>[] = [
   {
     accessorKey: "_id",
     header: "",
-    cell: ({ row }) => (
-      <div></div>
-    ),
-    enableHiding: true
+    cell: ({ row }) => <div></div>,
+    enableHiding: true,
   },
   {
     accessorKey: "username",
@@ -1047,11 +1052,14 @@ export const LabDashboardPageColumns: ColumnDef<LabDataType>[] = [
         color = "bg-yellow-700";
       } else if (row.getValue("lab_status") === "IN REVIEW BY ADMIN") {
         color = "bg-blue-900";
-      } else if (row.getValue("lab_status") === "REVISION BY ADMIN" || row.getValue("lab_status") === "REVISION"){
+      } else if (
+        row.getValue("lab_status") === "REVISION BY ADMIN" ||
+        row.getValue("lab_status") === "REVISION"
+      ) {
         color = "bg-red-700";
       } else if (row.getValue("lab_status") === "IN REVIEW BY SPV") {
         color = "bg-blue-400";
-      }  else if (row.getValue("lab_status") === "REVISION BY SPV") {
+      } else if (row.getValue("lab_status") === "REVISION BY SPV") {
         color = "bg-red-400";
       }
 
@@ -1112,7 +1120,7 @@ export const LabDashboardPageColumnsUser: ColumnDef<LabDataType>[] = [
     cell: ({ row }) => {
       var color = "bg-moss_green";
       var statusString: string = row.getValue("lab_sample_status") as string; // Asserting the type to string
-  
+
       if (statusString === "ASSIGNED") {
         color = "bg-yellow-700";
       } else if (statusString === "VERIFYING") {
@@ -1127,7 +1135,7 @@ export const LabDashboardPageColumnsUser: ColumnDef<LabDataType>[] = [
         color = "bg-red-400";
         statusString = "Need Analyze";
       }
-  
+
       return (
         <div
           className={`capitalize text-white rounded-md w-fit px-2 text-center flex font-semibold ${color}`}

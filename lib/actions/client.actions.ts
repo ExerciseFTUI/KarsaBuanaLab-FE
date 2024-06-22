@@ -20,20 +20,29 @@ export const getProjectDivision = async (
   }
 };
 
+export const sendEmail = async (projectId: string) => {
+  try {
+    const response = await axios.post(`${apiBaseUrl}/clients/resend-email`, {
+      projectId,
+    });
+
+    return response.data;
+  } catch (error: any) {
+    console.error("Error getting Project", error.message);
+    return null as unknown;
+  }
+};
 
 export const getAllStatusById = async (projectId: string): Promise<any[]> => {
   try {
-    const response = await axios.get(
-      `${apiBaseUrl}/clients/get-all-status`,
-      {
-        data: {
-          projectId: projectId,
-        },
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-      }
-    );
+    const response = await axios.get(`${apiBaseUrl}/clients/get-all-status`, {
+      data: {
+        projectId: projectId,
+      },
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+    });
 
     return response.data.result; // Access 'result' field
   } catch (error: any) {

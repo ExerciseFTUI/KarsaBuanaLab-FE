@@ -1,4 +1,5 @@
 "use client";
+
 import axios from "axios";
 import { Project } from "../models/project.model";
 
@@ -110,6 +111,7 @@ export const updateProjectFile = async (id: string, files: any) => {
     throw new Error(error.message);
   }
 };
+
 
 //Update Project file
 export const deleteProjectFile = async (id: string, file_id: string) => {

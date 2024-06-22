@@ -6,7 +6,7 @@ import SamplingTabsList from "@/components/sampling/tab/SamplingTabsList";
 import { User } from "@/lib/models/user.model";
 import InventoryPIC from "./InventoryPIC";
 import InventoryDocument from "./InventoryDocument";
-import { InventoryUser } from "../InventoryType";
+import { Inventory, InventoryUser } from "../InventoryType";
 
 interface InventoryTabProps {
   defaultValue: "PIC" | "Document";
@@ -16,6 +16,7 @@ interface InventoryTabProps {
   isUpdate: boolean;
   assignedUsers: string[];
   setAssignedUsers: Dispatch<SetStateAction<string[]>>;
+  inventory?: Inventory;
 }
 
 export default function InventoryTab({
@@ -26,6 +27,7 @@ export default function InventoryTab({
   isUpdate,
   assignedUsers,
   setAssignedUsers,
+  inventory,
 }: InventoryTabProps) {
   return (
     <Tabs defaultValue={`${defaultValue}`} className="flex-1 -mt-6">
@@ -33,7 +35,7 @@ export default function InventoryTab({
       <TabsList
         className={`grid ${
           isUpdate ? "grid-cols-2" : "grid-cols-1"
-        }  shadow-none bg-transparent max-w-4xl`}
+        }  shadow-none bg-transparent `}
       >
         <TabsTrigger
           className="rounded-none data-[state=active]:shadow-none border-b-2 data-[state=active]:border-b-light_brown data-[state=active]:bg-transparent data-[state=active]:text-dark_brown data-[state=active]:font-bold text-base data-[state=inactive]:text-moss_green data-[state=inactive]:opacity-50 data-[state=inactive]:border-b-moss_green capitalize"
@@ -59,11 +61,13 @@ export default function InventoryTab({
         />
       </TabsContent>
 
-      {isUpdate && (
+      {isUpdate && inventory && (
         <TabsContent className="py-4" value="Document">
           <InventoryDocument
             uploadedFiles={uploadedFiles}
             setUploadedFiles={setUploadedFiles}
+            inventoryDocument={inventory.inventory_file}
+            inventoryId={inventory._id}
           />
         </TabsContent>
       )}
