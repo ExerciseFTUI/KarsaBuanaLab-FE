@@ -63,7 +63,11 @@ export default async function CreateInventoryPage() {
 
   return (
     <div className="flex overflow-auto custom-scrollbar w-full py-4 ">
-      <InventoryDetail isUpdate={false} allUsers={inventoryUsers} />
+      <InventoryDetail
+        isViewOnly={false}
+        isUpdate={false}
+        allUsers={inventoryUsers}
+      />
     </div>
   );
 }

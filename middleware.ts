@@ -12,6 +12,7 @@ import { NextResponse } from "next/server";
 export default withAuth(
   // `withAuth` augments your `Request` with the user's token.
   function middleware(request: NextRequestWithAuth) {
+    //TODO: Add Admin page and manajer teknis role
     if (
       request.nextUrl.pathname.startsWith("/marketing") &&
       request.nextauth.token?.division.toLowerCase() !== "marketing" &&

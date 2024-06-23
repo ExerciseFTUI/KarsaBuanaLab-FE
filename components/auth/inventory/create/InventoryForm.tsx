@@ -35,13 +35,68 @@ import {
   SelectValue,
   SelectItem,
 } from "@/components/ui/select";
+import InventoryComboBox from "../InventoryComboBox";
+import { InventoryVendor } from "../InventoryType";
+
+const mockVendor: InventoryVendor[] = [
+  {
+    param: "Temperature",
+    regulation: "ISO 9001",
+    _id: "1a2b3c4d5e6f7g8h9i0j",
+    sample_name: "Sample A",
+    file_id: "file123",
+    file_safety_id: "safety123",
+    __v: 0,
+  },
+  {
+    param: "pH Level",
+    regulation: "ISO 14001",
+    _id: "1a2b3c4d5e6f7g8h9i1j",
+    sample_name: "Sample B",
+    file_id: "file124",
+    file_safety_id: "safety124",
+    __v: 0,
+  },
+  {
+    param: "Conductivity",
+    regulation: "ISO 17025",
+    _id: "1a2b3c4d5e6f7g8h9i2j",
+    sample_name: "Sample C",
+    file_id: "file125",
+    file_safety_id: "safety125",
+    __v: 0,
+  },
+  {
+    param: "Salinity",
+    regulation: "ISO 22000",
+    _id: "1a2b3c4d5e6f7g8h9i3j",
+    sample_name: "Sample D",
+    file_id: "file126",
+    file_safety_id: "safety126",
+    __v: 0,
+  },
+  {
+    param: "Dissolved Oxygen",
+    regulation: "ISO 45001",
+    _id: "1a2b3c4d5e6f7g8h9i4j",
+    sample_name: "Sample E",
+    file_id: "file127",
+    file_safety_id: "safety127",
+    __v: 0,
+  },
+];
 
 interface InventoryFormProps {
   form: UseFormReturn<z.infer<typeof inventoryValidation>>;
   onSubmit(values: z.infer<typeof inventoryValidation>): Promise<void>;
+  isViewOnly: boolean;
 }
 
-const InventoryForm: FC<InventoryFormProps> = ({ form, onSubmit }) => {
+const InventoryForm: FC<InventoryFormProps> = ({
+  form,
+  onSubmit,
+  isViewOnly,
+}) => {
   const [date, setDate] = useState<Date>();
 
   useEffect(() => {
@@ -61,6 +116,7 @@ const InventoryForm: FC<InventoryFormProps> = ({ form, onSubmit }) => {
               <FormLabel className="text-light_brown">Tools Name</FormLabel>
               <FormControl>
                 <Input
+                  disabled={isViewOnly}
                   className={`rounded-2xl px-5 py-5 border-light_brown border-2 focus-visible:ring-0 ${
                     watch("tool").length > 0 ? "opacity-100" : "opacity-50"
                   }  focus:opacity-100 placeholder:text-light_brown text-light_brown`}
@@ -81,6 +137,7 @@ const InventoryForm: FC<InventoryFormProps> = ({ form, onSubmit }) => {
               <FormLabel className="text-light_brown">Description</FormLabel>
               <FormControl>
                 <Input
+                  disabled={isViewOnly}
                   className={`rounded-2xl px-5 py-5 border-light_brown border-2 focus-visible:ring-0 ${
                     watch("description").length > 0
                       ? "opacity-100"
@@ -101,13 +158,20 @@ const InventoryForm: FC<InventoryFormProps> = ({ form, onSubmit }) => {
           render={({ field }) => (
             <FormItem>
               <FormLabel className="text-light_brown">Category</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
+              <Select
+                disabled={isViewOnly}
+                onValueChange={field.onChange}
+                defaultValue={field.value}
+              >
                 <FormControl>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select the maintenance" />
+                  <SelectTrigger className="text-light_brown border-light_brown border-2 focus:ring-0">
+                    <SelectValue
+                      className="text-light_brown"
+                      placeholder="Select the maintenance"
+                    />
                   </SelectTrigger>
                 </FormControl>
-                <SelectContent className="text-sm">
+                <SelectContent className="text-sm text-light_brown">
                   <SelectItem className="p-3" value="Tools">
                     Tools
                   </SelectItem>
@@ -120,6 +184,16 @@ const InventoryForm: FC<InventoryFormProps> = ({ form, onSubmit }) => {
             </FormItem>
           )}
         />
+        <div className="flex flex-col w-full  gap-y-3">
+          <FormLabel className="text-light_brown">Vendor</FormLabel>
+          <InventoryComboBox
+            sample="sample"
+            setSample={() => {}}
+            baseSample={mockVendor}
+            form={form}
+            isDisabled={isViewOnly}
+          />
+        </div>
         <FormField
           control={form.control}
           name="maintenanceEvery"
@@ -128,13 +202,17 @@ const InventoryForm: FC<InventoryFormProps> = ({ form, onSubmit }) => {
               <FormLabel className="text-light_brown">
                 Maintenance Every
               </FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
+              <Select
+                disabled={isViewOnly}
+                onValueChange={field.onChange}
+                defaultValue={field.value}
+              >
                 <FormControl>
-                  <SelectTrigger>
+                  <SelectTrigger className="text-light_brown border-light_brown border-2 focus:ring-0">
                     <SelectValue placeholder="Select the maintenance" />
                   </SelectTrigger>
                 </FormControl>
-                <SelectContent className="text-sm">
+                <SelectContent className="text-sm text-light_brown">
                   <SelectItem className="p-3" value="1 Month">
                     1 Month
                   </SelectItem>
@@ -167,6 +245,7 @@ const InventoryForm: FC<InventoryFormProps> = ({ form, onSubmit }) => {
           <Popover>
             <PopoverTrigger asChild>
               <Button
+                disabled={isViewOnly}
                 variant={"outline"}
                 className={cn(
                   "w-full justify-start text-left text-base font-medium mt-2",
@@ -199,14 +278,14 @@ const InventoryForm: FC<InventoryFormProps> = ({ form, onSubmit }) => {
             </PopoverContent>
           </Popover>
         </div>
-        <Button
+        {/* <Button
           onClick={() => {
             form.handleSubmit(onSubmit);
           }}
           className="w-full hover:bg-dark_brown bg-light_brown mt-3"
         >
           Submit
-        </Button>
+        </Button> */}
       </form>
     </Form>
   );

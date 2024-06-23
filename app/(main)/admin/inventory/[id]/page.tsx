@@ -109,6 +109,7 @@ export default async function InventoryDetailPage({
         isUpdate={true}
         allUsers={inventoryUsers}
         inventory={inventory}
+        isViewOnly={false}
       />
     </div>
   );

@@ -14,6 +14,7 @@ interface InventoryDocumentProps {
   setUploadedFiles: any;
   inventoryDocument: InventoryFile[];
   inventoryId: string;
+  isViewOnly: boolean;
 }
 
 const projectFile = [
@@ -39,6 +40,7 @@ const InventoryDocument: FC<InventoryDocumentProps> = ({
   setUploadedFiles,
   inventoryDocument,
   inventoryId,
+  isViewOnly,
 }) => {
   const [fileIdToDelete, setFileIdToDelete] = useState("");
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -101,18 +103,20 @@ const InventoryDocument: FC<InventoryDocumentProps> = ({
           </div>
         </div>
 
-        <div className="">
-          <h1 className="text-xl font-semibold text-dark_brown ml-5">
-            Upload Image
-          </h1>
-          <div className="xl:max-w-2xl">
-            <Dropzone
-              bgColor="bg-dark_brown bg-opacity-50"
-              txtColor="text-light_brown"
-              setUploadedFiles={setUploadedFiles}
-            />
+        {!isViewOnly && (
+          <div className="">
+            <h1 className="text-xl font-semibold text-dark_brown ml-5">
+              Upload Image
+            </h1>
+            <div className="xl:max-w-2xl">
+              <Dropzone
+                bgColor="bg-dark_brown bg-opacity-50"
+                txtColor="text-light_brown"
+                setUploadedFiles={setUploadedFiles}
+              />
+            </div>
           </div>
-        </div>
+        )}
       </div>
       <DeleteDialog
         setIsOpen={setDialogOpen}

@@ -23,12 +23,14 @@ interface InventoryProps {
   allUsers: InventoryUser[];
   isUpdate: boolean;
   inventory?: Inventory;
+  isViewOnly: boolean;
 }
 
 const InventoryDetail: FC<InventoryProps> = ({
   allUsers,
   isUpdate,
   inventory,
+  isViewOnly,
 }) => {
   const router = useRouter();
 
@@ -104,6 +106,8 @@ const InventoryDetail: FC<InventoryProps> = ({
           },
         };
 
+        alert("Updating Inventory");
+
         isUpdateFormSuccess = await updateInventory(body);
 
         if (!isUpdateFormSuccess) {
@@ -122,6 +126,7 @@ const InventoryDetail: FC<InventoryProps> = ({
       }
 
       alert("Successfully updating inventory");
+      setUploadedFiles([]);
       router.refresh();
     }
   }
@@ -169,7 +174,7 @@ const InventoryDetail: FC<InventoryProps> = ({
           Tools Details
         </h1>
         <div className="max-w-xl space-y-10">
-          <InventoryForm form={form} onSubmit={onSubmit} />
+          <InventoryForm form={form} onSubmit={onSubmit} isViewOnly={false} />
         </div>
       </div>
       <div className="xl:w-3/5 w-full space-y-10">
@@ -182,7 +187,9 @@ const InventoryDetail: FC<InventoryProps> = ({
           defaultValue={`${isUpdate ? "Document" : "PIC"}`}
           isUpdate={isUpdate}
           inventory={inventory}
+          isViewOnly={isViewOnly}
         />
+
         <button
           onClick={form.handleSubmit(onSubmit)}
           className="w-full bg-light_brown rounded-lg px-4 py-2 hover:bg-dark_brown duration-200 text-white font-medium"
