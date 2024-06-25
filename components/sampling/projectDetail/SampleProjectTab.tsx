@@ -1,37 +1,40 @@
-"use client"
+"use client";
 
-import { Tabs, TabsContent } from "@/components/ui/tabs"
-import DocumentList from "../DokumentList"
-import { Button } from "@/components/ui/button"
+import { Tabs, TabsContent } from "@/components/ui/tabs";
+import DocumentList from "../DokumentList";
+import { Button } from "@/components/ui/button";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover"
-import { cn } from "@/lib/utils"
-import { CalendarIcon } from "lucide-react"
-import { Calendar } from "@/components/ui/calendar"
-import { format, differenceInCalendarDays } from "date-fns"
-import React, { useState } from "react"
-import SamplingTabsList from "../tab/SamplingTabsList"
-import { GroupUnassignedTable } from "./GroupUnassignedTable"
+} from "@/components/ui/popover";
+import { cn } from "@/lib/utils";
+import { CalendarIcon } from "lucide-react";
+import { Calendar } from "@/components/ui/calendar";
+import { format, differenceInCalendarDays } from "date-fns";
+import React, { useState } from "react";
+import SamplingTabsList from "../tab/SamplingTabsList";
+import { GroupUnassignedTable } from "./GroupUnassignedTable";
 import {
   RowSelectionState,
   getCoreRowModel,
   useReactTable,
-} from "@tanstack/react-table"
-import { groupUserSelectableColumns } from "../sampleListDataTables/DataTableColumns"
-import { GroupAssignedTable } from "./GroupAssignedTable"
-import { User } from "@/lib/models/user.model"
-import { Sampling } from "@/lib/models/sampling.model"
-import { assignProject, sampleAssignment } from "@/lib/actions/sampling.actions"
-import HyperLinkButton from "../HyperlinkButton"
-import { Project } from "@/lib/models/project.model"
-import { DateRange } from "react-day-picker"
-import { useRouter } from "next/navigation"
-import LoadingScreen from "@/components/LoadingScreen"
-import { SamplingRequestData } from "@/lib/type"
-import { useToast } from "@/components/ui/use-toast"
+} from "@tanstack/react-table";
+import { groupUserSelectableColumns } from "../sampleListDataTables/DataTableColumns";
+import { GroupAssignedTable } from "./GroupAssignedTable";
+import { User } from "@/lib/models/user.model";
+import { Sampling } from "@/lib/models/sampling.model";
+import {
+  assignProject,
+  sampleAssignment,
+} from "@/lib/actions/sampling.actions";
+import HyperLinkButton from "../HyperlinkButton";
+import { Project } from "@/lib/models/project.model";
+import { DateRange } from "react-day-picker";
+import { useRouter } from "next/navigation";
+import LoadingScreen from "@/components/LoadingScreen";
+import { SamplingRequestData } from "@/lib/type";
+import { useToast } from "@/components/ui/use-toast";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -42,32 +45,32 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/components/ui/alert-dialog"
+} from "@/components/ui/alert-dialog";
 
 interface Params {
-  data: SamplingRequestData
-  projects: Project[]
+  data: SamplingRequestData;
+  projects: Project[];
 }
 
 export default function SampleProjectTab({ data, projects }: Params) {
-  const { files, user, project } = data
+  const { files, user, project } = data;
 
   const jadwal_sampling = !!project.jadwal_sampling
     ? project.jadwal_sampling
-    : { from: "", to: "" }
+    : { from: "", to: "" };
 
   let from = jadwal_sampling.from
     ? jadwal_sampling.from.split("-").reverse()
-    : null
-  let to = jadwal_sampling.to ? jadwal_sampling.to.split("-").reverse() : null
+    : null;
+  let to = jadwal_sampling.to ? jadwal_sampling.to.split("-").reverse() : null;
 
-  let initialState: RowSelectionState = {}
+  let initialState: RowSelectionState = {};
 
   if (project.project_assigned_to.length)
     user.forEach((u: User, i: number) => {
       if (project.project_assigned_to.includes(u._id) == true)
-        initialState[`${i}`] = true
-    })
+        initialState[`${i}`] = true;
+    });
 
   const [date, setDate] = React.useState<DateRange | undefined>({
     from: from
@@ -76,10 +79,10 @@ export default function SampleProjectTab({ data, projects }: Params) {
     to: to
       ? new Date(parseInt(to[0]), parseInt(to[1]) - 1, parseInt(to[2]))
       : undefined,
-  })
+  });
 
   const [rowSelection, setRowSelection] =
-    React.useState<RowSelectionState>(initialState)
+    React.useState<RowSelectionState>(initialState);
 
   const table = useReactTable({
     data: !!user ? user : [],
@@ -89,12 +92,12 @@ export default function SampleProjectTab({ data, projects }: Params) {
     state: {
       rowSelection,
     },
-  })
+  });
 
-  const router = useRouter()
-  const { toast } = useToast()
+  const router = useRouter();
+  const { toast } = useToast();
 
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false);
 
   // prettier-ignore
   async function addProjectDeadline(e: any) {
@@ -230,5 +233,5 @@ export default function SampleProjectTab({ data, projects }: Params) {
         </div>
       </TabsContent>
     </Tabs>
-  )
+  );
 }

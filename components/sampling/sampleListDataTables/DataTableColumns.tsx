@@ -1,12 +1,12 @@
-"use client"
+"use client";
 
-import { ColumnDef } from "@tanstack/react-table"
-import { Button } from "@/components/ui/button"
-import { ArrowUpDown } from "lucide-react"
-import { Checkbox } from "@/components/ui/checkbox"
-import { User } from "@/lib/models/user.model"
-import { Project } from "@/lib/models/project.model"
-import { Sampling } from "@/lib/models/sampling.model"
+import { ColumnDef } from "@tanstack/react-table";
+import { Button } from "@/components/ui/button";
+import { ArrowUpDown } from "lucide-react";
+import { Checkbox } from "@/components/ui/checkbox";
+import { User } from "@/lib/models/user.model";
+import { Project } from "@/lib/models/project.model";
+import { Sampling } from "@/lib/models/sampling.model";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -17,8 +17,9 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/components/ui/alert-dialog"
-import { format } from "date-fns"
+} from "@/components/ui/alert-dialog";
+import { format } from "date-fns";
+import { formatDateFromBackend } from "@/lib/utils";
 
 // Table Column for Sampling Project
 export const samplingProjectPageColumns: ColumnDef<Project>[] = [
@@ -50,7 +51,7 @@ export const samplingProjectPageColumns: ColumnDef<Project>[] = [
       <div className="capitalize pl-4">{row.getValue("alamat_sampling")}</div>
     ),
   },
-]
+];
 
 export const samplingLetterPageColumns: ColumnDef<Project>[] = [
   {
@@ -81,7 +82,7 @@ export const samplingLetterPageColumns: ColumnDef<Project>[] = [
       <div className="capitalize pl-4">{row.getValue("alamat_sampling")}</div>
     ),
   },
-]
+];
 
 export const groupUserSelectableColumns = (
   projects: Project[]
@@ -118,7 +119,7 @@ export const groupUserSelectableColumns = (
         .map((p) =>
           p.project_assigned_to.includes(row.original._id) ? p : null
         )
-        .filter((p) => p != null)
+        .filter((p) => p != null);
 
       return (
         <AlertDialog>
@@ -135,22 +136,21 @@ export const groupUserSelectableColumns = (
               <div className="!mt-8">
                 {!projectsThisUserOn
                   ? "This user is not working in any projects."
-                  : projectsThisUserOn.map((p, i) => (
-                      <div
-                        key={i}
-                        className="border-b-2 border-l-black_brown mb-3"
-                      >
-                        <h1 className="font-bold text-base">
-                          {p?.project_name}
-                        </h1>
-                        <p>
-                          Deadline :{" "}
-                          {p?.jadwal_sampling.to != null
-                            ? p.jadwal_sampling.to.toString()
-                            : p?.jadwal_sampling.from.toString()}
-                        </p>
-                      </div>
-                    ))}
+                  : projectsThisUserOn.map((p, i) => {
+                      const jadwal = formatDateFromBackend(p?.jadwal_sampling);
+
+                      return (
+                        <div
+                          key={i}
+                          className="border-b-2 border-l-black_brown mb-3"
+                        >
+                          <h1 className="font-bold text-base">
+                            {p?.project_name}
+                          </h1>
+                          <p>Date : {jadwal}</p>
+                        </div>
+                      );
+                    })}
               </div>
             </AlertDialogHeader>
             <AlertDialogFooter>
@@ -158,7 +158,7 @@ export const groupUserSelectableColumns = (
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>
-      )
+      );
     },
   },
   {
@@ -166,10 +166,10 @@ export const groupUserSelectableColumns = (
     header: "Role",
     cell: ({ row }) => <div className="">{row.getValue("role")}</div>,
   },
-]
+];
 
 export const groupUserStaffColumns: ColumnDef<User>[] =
-  groupUserSelectableColumns([]).slice(1, groupUserSelectableColumns.length)
+  groupUserSelectableColumns([]).slice(1, groupUserSelectableColumns.length);
 
 export const staffGroupListColumns: ColumnDef<User>[] = [
   {
@@ -193,7 +193,7 @@ export const staffGroupListColumns: ColumnDef<User>[] = [
       <div className="text-light_brown text-sm">{row.getValue("phone")}</div>
     ),
   },
-]
+];
 
 export const staffSampleListColumns: ColumnDef<Sampling>[] = [
   {
@@ -217,4 +217,4 @@ export const staffSampleListColumns: ColumnDef<Sampling>[] = [
       <div className="text-light_brown">{row.getValue("amount")} mL</div>
     ),
   },
-]
+];
