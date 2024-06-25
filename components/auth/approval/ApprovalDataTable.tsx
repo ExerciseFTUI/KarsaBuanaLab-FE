@@ -57,6 +57,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { ApprovalProject } from "./ApprovalType";
+import { approvalColumn } from "./ApprovalColumns";
 
 // interface ApprovalDataTableProps<TData, TValue> {
 //   columns: ColumnDef<TData, TValue>[];
@@ -64,11 +66,10 @@ import {
 // }
 
 interface ApprovalDataTableProps {
-  datas: ProjectMarketingType[];
-  status: string;
+  datas: ApprovalProject[];
 }
 
-export function ApprovalDataTable({ datas, status }: ApprovalDataTableProps) {
+export function ApprovalDataTable({ datas }: ApprovalDataTableProps) {
   const router = useRouter();
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -78,7 +79,7 @@ export function ApprovalDataTable({ datas, status }: ApprovalDataTableProps) {
     React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
 
-  //const [data, setData] = React.useState<any>([]);
+  // const [data, setData] = React.useState<any>([]);
 
   // React.useEffect(() => {
   //   // if datas is not empty then push the data to the data array
@@ -91,12 +92,7 @@ export function ApprovalDataTable({ datas, status }: ApprovalDataTableProps) {
 
   const table = useReactTable({
     data: datas,
-    columns:
-      status === "CANCELLED"
-        ? columnsCancelled
-        : status === "FINISHED"
-        ? columnsFinished
-        : columns,
+    columns: approvalColumn,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
@@ -118,7 +114,7 @@ export function ApprovalDataTable({ datas, status }: ApprovalDataTableProps) {
       {/* Top Search Title */}
       <div className="flex items-center py-4">
         {/* Seach Input */}
-        <Input
+        {/* <Input
           placeholder="Filter By Project Title"
           value={
             (table.getColumn("project_name")?.getFilterValue() as string) ?? ""
@@ -127,10 +123,10 @@ export function ApprovalDataTable({ datas, status }: ApprovalDataTableProps) {
             table.getColumn("project_name")?.setFilterValue(event.target.value)
           }
           className="max-w-sm border-pastel_moss_green rounded-full focus-visible:ring-0 bg-pastel_moss_green pl-5 placeholder:text-moss_green"
-        />
+        /> */}
 
         {/* Column Visibility */}
-        <DropdownMenu>
+        {/* <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button
               variant="outline"
@@ -159,7 +155,7 @@ export function ApprovalDataTable({ datas, status }: ApprovalDataTableProps) {
                 );
               })}
           </DropdownMenuContent>
-        </DropdownMenu>
+        </DropdownMenu> */}
       </div>
 
       {/* Table Content */}

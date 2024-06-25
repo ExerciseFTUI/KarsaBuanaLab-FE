@@ -49,6 +49,7 @@ import { revalidatePath } from "next/cache";
 import { addInventoryFile } from "@/lib/actions/inventory.client.action";
 import ApprovalProjectForm from "./ApprovalProjectForm";
 import { Label } from "@/components/ui/label";
+import { changeTMStatus } from "@/lib/actions/approval.action";
 
 interface ApprovalEditProjectPageProps {
   project: Project;
@@ -79,6 +80,12 @@ export default function ApprovalEditProjectPage({
       parameters: [],
     },
   });
+
+  const validStatuses = {
+    WAITING: "WAITING",
+    ACCEPTED: "ACCEPTED",
+    REVISE: "REVISE",
+  };
 
   const { control, watch, setValue, resetField } = sampleForm;
 
@@ -466,12 +473,35 @@ export default function ApprovalEditProjectPage({
   const handleAccept = async () => {
     alert("Accept");
     //TODO: Add API Call
+    const response = await changeTMStatus(
+      project._id,
+      validStatuses.ACCEPTED,
+      note
+    );
+
+    if (response) {
+      router.refresh();
+      return;
+    }
+
+    alert("Failed ");
   };
 
   const handleRevisi = async () => {
     alert("Revisi");
-
     //TODO: Add API Call
+    const response = await changeTMStatus(
+      project._id,
+      validStatuses.ACCEPTED,
+      note
+    );
+
+    if (response) {
+      router.refresh();
+      return;
+    }
+
+    alert("Failed ");
   };
 
   return (
@@ -490,7 +520,7 @@ export default function ApprovalEditProjectPage({
       {isLoading && <LoadingScreen />}
 
       <div className="flex gap-6 justify-evenly max-md:flex-col max-md:items-center">
-        <ApprovalProjectForm
+        {/* <ApprovalProjectForm
           project={project}
           form={form}
           onSubmit={onSubmit2}
@@ -499,7 +529,38 @@ export default function ApprovalEditProjectPage({
           updatePayment={updatePayment}
           password={password}
           updateRevision={updateRevision}
-        />
+        /> */}
+        <div className="flex flex-col w-2/5">
+          <div className="grid w-full gap-2">
+            <Label htmlFor="message-2">Notes</Label>
+            <Textarea
+              rows={10}
+              // value={note}
+              // onChange={(e) => setNote(e.target.value)}
+              placeholder="Type your message here."
+              id="message-2"
+            />
+            <p className="text-sm text-muted-foreground">
+              Your message will be saved as a note.
+            </p>
+          </div>
+
+          <div className="w-full flex justify-around items-center gap-5 mt-10">
+            <Button
+              className="w-full hover:bg-dark_brown bg-light_brown"
+              onClick={handleRevisi}
+            >
+              Revisi
+            </Button>
+            <Button
+              className="w-full bg-dark_brown hover:bg-dark_green"
+              onClick={handleAccept}
+            >
+              Accept
+            </Button>
+          </div>
+        </div>
+
         <Tabs defaultValue="sampling" className="w-[40rem] max-sm:w-[420px] ">
           <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger value="sampling">Sampling</TabsTrigger>
@@ -671,7 +732,7 @@ export default function ApprovalEditProjectPage({
           {/* End Button for submit */}
 
           {/* End Document Section */}
-          <div className="grid w-full gap-2">
+          {/* <div className="grid w-full gap-2">
             <Label htmlFor="message-2">Notes</Label>
             <Textarea
               rows={10}
@@ -698,7 +759,7 @@ export default function ApprovalEditProjectPage({
             >
               Accept
             </Button>
-          </div>
+          </div> */}
         </Tabs>
       </div>
       <DeleteDialog

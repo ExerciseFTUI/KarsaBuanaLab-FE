@@ -29,6 +29,7 @@ import ProjectForm from "../forms/ProjectForm";
 import { Project } from "@/lib/models/project.model";
 import { useToast } from "@/components/ui/use-toast";
 import {
+  marketingDeal,
   updateProject,
   updateProjectInfo,
   updateProjectSample,
@@ -298,7 +299,6 @@ export default function EditProjectPage({
         desc_failed: reason,
         status: "CANCELLED",
       };
-      
       //Connect to API
       const responseInfo = await updateProjectInfo(body);
       if (!responseInfo) {
@@ -460,6 +460,17 @@ export default function EditProjectPage({
   const password = form.watch("password");
 
   //=============================== End Document Section
+
+  const handleDeal = async () => {
+    const response = await marketingDeal(project._id);
+
+    if (response) {
+      router.refresh();
+      return;
+    }
+
+    alert("Failed ");
+  };
 
   return (
     <>
@@ -653,6 +664,13 @@ export default function EditProjectPage({
             {/* End of Cancelled Project */}
           </div>
           {/* End Button for submit */}
+
+          <Button
+            className="w-full hover:bg-dark_brown bg-light_brown text-lg"
+            onClick={handleDeal}
+          >
+            Deal
+          </Button>
 
           {/* End Document Section */}
         </Tabs>
