@@ -68,7 +68,7 @@ export function DeadlineNotification({ projects }: { projects: Project[] }) {
         <Button
           variant="outline"
           className={cn(
-            "bg-moss_green text-ghost_white relative hover:bg-light_green",
+            "bg-moss_green text-ghost_white relative hover:bg-light_green py-2 h-fit",
             sortedDeadline.length && sortedDeadline[0].deadline <= 2
               ? "before:absolute before:-top-1 before:-right-1 before:w-4 before:h-4 before:bg-brick_red before:rounded-full before:border-2 before:border-black"
               : "",
