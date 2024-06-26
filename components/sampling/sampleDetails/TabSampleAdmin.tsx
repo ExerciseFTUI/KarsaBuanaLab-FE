@@ -259,7 +259,7 @@ export default function TabSampleAdmin({
         value="buatDokumen"
       >
         <div className="w-full">
-          <h1 className="text-xl font-semibold mb-2">Staff Assign</h1>
+          <h1 className="text-xl font-semibold mb-2">Assigned Staff</h1>
           <div className=" bg-light_brown rounded-lg px-4 py-2 ">
           {table.getRowModel().rows?.length ? (
             table.getRowModel().rows.map((row, index) => (
