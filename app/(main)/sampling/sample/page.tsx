@@ -16,9 +16,11 @@ export default async function SamplingProject() {
   let data: Project[] = [];
 
   if (role == "USER") {
+    /* If logged USER is a STAFF, get projects ASSIGNED to them */
     res = await getProjectsByAcc(user ? user?.id : "");
     data = (res as any).projectList;
   } else {
+    /* If logged USER is SPV || ADMIN, get all projects in SAMPLING Division */
     res = await getProjectByDivision("sampling");
     data = (res as any).projects;
   }

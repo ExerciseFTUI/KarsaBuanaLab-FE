@@ -5,15 +5,10 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import HyperLinkButton from "../HyperlinkButton";
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { groupUserStaffColumns } from "../sampleListDataTables/DataTableColumns";
-import { UserDataTable } from "../UserDataTable";
-import { Project } from "@/lib/models/project.model";
-import SamplingTabsList from "../tab/SamplingTabsList";
 import { Button } from "@/components/ui/button";
 import { verifySample } from "@/lib/actions/sampling.actions";
 import { useRouter } from "next/navigation";
 import LoadingScreen from "@/components/LoadingScreen";
-import { User } from "@/lib/models/user.model";
-import { Sampling } from "@/lib/models/sampling.model";
 import { SamplingRequestData } from "@/lib/type";
 import { useToast } from "@/components/ui/use-toast";
 import {
@@ -21,12 +16,12 @@ import {
   AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
-  AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import SamplingTabsTrigger from "../TabsTrigger";
 
 export default function TabSampleStaff({
   data,
@@ -71,9 +66,14 @@ export default function TabSampleStaff({
   };
 
   return (
-    <Tabs defaultValue="Sampel" className="flex-1">
+    <Tabs defaultValue="Sampel" className="flex-1 w-full sm:w-auto">
       {isLoading && <LoadingScreen text="" />}
-      <SamplingTabsList value1="Sampel" value2="Group" />
+      {/* TABS TRIGGER */}
+      <TabsList className="flex w-full shadow-none bg-transparent">
+        <SamplingTabsTrigger value="Sampel" header="Sampel" />
+
+        <SamplingTabsTrigger value="Group" header="Group" />
+      </TabsList>
 
       <TabsContent className="py-4" value="Sampel">
         <div className="flex gap-4 flex-col">
@@ -87,7 +87,7 @@ export default function TabSampleStaff({
               <AlertDialog>
                 <AlertDialogTrigger>
                   <Button
-                    className="w-24 py-4 self-center bg-light_brown hover:bg-dark_brown disabled:bg-transparent disabled:text-dark_brown disabled:font-bold disabled:border-2 disabled:border-dark_brown"
+                    className="sampling-btn sampling-btn-disabled"
                     disabled={s.status == "WAITING" || s.status == "ACCEPTED"}
                   >
                     {s.status == "SUBMIT"
@@ -139,8 +139,6 @@ export default function TabSampleStaff({
             <div className="h-24 text-center">No results.</div>
           )}
         </div>
-
-        {/* <UserDataTable table={table} /> */}
       </TabsContent>
     </Tabs>
   );
