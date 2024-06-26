@@ -4,8 +4,6 @@ import React, { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import HyperLinkButton from "../HyperlinkButton";
 import { Button } from "@/components/ui/button";
-import { Project } from "@/lib/models/project.model";
-import { UserDataTable } from "../UserDataTable";
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { groupUserStaffColumns } from "../sampleListDataTables/DataTableColumns";
 import { useRouter } from "next/navigation";
@@ -25,6 +23,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import SamplingTabsTrigger from "../TabsTrigger";
 
 export default function TabSampleAdmin({
   data,
@@ -32,10 +31,7 @@ export default function TabSampleAdmin({
   data: SamplingRequestData;
 }) {
   const { project, files, user } = data;
-  const sampling_list = project.sampling_list; /* .filter(
-    (s) =>
-      s.status == "WAITING" || s.status == "ACCEPTED" || s.status == "REVISION"
-  ) */
+  const sampling_list = project.sampling_list;
   const canSave =
     sampling_list.filter((s) => s.status == "ACCEPTED").length ==
     sampling_list.length;
@@ -115,145 +111,117 @@ export default function TabSampleAdmin({
   return (
     <Tabs defaultValue="buatDokumen" className="flex-1">
       {isLoading && <LoadingScreen text="" />}
-      <TabsList className="grid w-full grid-cols-2 shadow-none bg-transparent">
-        <TabsTrigger
-          className="rounded-none data-[state=active]:shadow-none border-b-2 data-[state=active]:border-b-light_brown data-[state=active]:bg-transparent data-[state=active]:text-dark_brown data-[state=active]:font-bold text-base data-[state=inactive]:text-moss_green data-[state=inactive]:opacity-50 data-[state=inactive]:border-b-moss_green"
-          value="buatDokumen"
-        >
-          Buat Dokumen
-        </TabsTrigger>
-        <TabsTrigger
-          className="rounded-none data-[state=active]:shadow-none border-b-2 data-[state=active]:border-b-light_brown data-[state=active]:bg-transparent data-[state=active]:text-dark_brown data-[state=active]:font-bold text-base data-[state=inactive]:text-moss_green data-[state=inactive]:opacity-50 data-[state=inactive]:border-b-moss_green"
+
+      {/* TABS TRIGGER */}
+      <TabsList className="flex shadow-none bg-transparent">
+        <SamplingTabsTrigger value="buatDokumen" header="Buat Dokumen" />
+
+        <SamplingTabsTrigger
           value="verifikasiSampel"
-        >
-          Verifikasi Rekaman Sampel
-        </TabsTrigger>
+          header="Verifikasi Rekaman Sampling"
+        />
       </TabsList>
 
+      {/*
+       * This specific code is used for changing each sample's STATUS by SPV
+       * 1. If SPV choose to ACCEPT the sample, then the sample goes to PPLHP Division with
+       *    a STATUS of "SUBMIT".
+       * 2. If SPV choose to REVISE the sample, then the sample will stay in the SAMPLING Division
+       *    and will be shown again to the related staff.
+       */}
       <TabsContent className="py-4" value="verifikasiSampel">
-        <div className="flex flex-wrap gap-8">
-          <div className="flex gap-4 flex-wrap w-full">
-            {sampling_list.map((s, i) => (
-              <div key={i} className="w-full flex items-center gap-4">
-                <HyperLinkButton
-                  className="w-full"
-                  title={s.sample_name}
-                  href={files.sampling_list[i].url || "/"}
-                />
+        <div className="flex flex-col gap-4 w-full">
+          {sampling_list.map((s, i) => (
+            <div key={i} className="inline-flex gap-4">
+              <HyperLinkButton
+                className="w-full"
+                title={s.sample_name}
+                href={files.sampling_list[i].url || "/"}
+              />
 
-                {/* Check s.status, if status == "WAITING" || "NOT ASSIGNET", just showing 1 disable button with text of "Waiting staff" */}
-                {s.status == "REVISION" || s.status == "NOT ASSIGNED" ? (
-                  <Button
-                    className="bg-light_brown hover:bg-dark_brown"
-                    title="Waiting Staff"
-                    disabled
-                  >
-                    Waiting
-                  </Button>
-                ) : (
-                  <div className="flex gap-2">
-                    <AlertDialog>
-                      <AlertDialogTrigger>
-                        <Button
-                          className={cn(
-                            "bg-light_brown hover:bg-dark_brown",
-                            s.status == "ACCEPTED" ? "hidden" : ""
-                          )}
-                          title="Accept"
-                          disabled={s.status == "SUBMIT"}
+              {/* Check s.status, if status == "WAITING" || "NOT ASSIGNED", just showing 1 disable button with text of "Waiting staff" */}
+              {s.status == "REVISION" || s.status == "NOT ASSIGNED" ? (
+                <Button className="sampling-btn" title="Waiting Staff" disabled>
+                  Waiting
+                </Button>
+              ) : (
+                <div className="flex">
+                  {/* Button for ACCEPT-ing the sample */}
+                  <AlertDialog>
+                    <AlertDialogTrigger>
+                      <Button
+                        className={cn(
+                          "sampling-btn",
+                          s.status == "SUBMIT" ? "hidden" : ""
+                        )}
+                        title="Accept"
+                        disabled={s.status == "SUBMIT"}
+                      >
+                        Accept
+                      </Button>
+                    </AlertDialogTrigger>
+
+                    <AlertDialogContent>
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>
+                          Are you sure to ACCEPT this sampling?
+                        </AlertDialogTitle>
+                      </AlertDialogHeader>
+
+                      <AlertDialogDescription>
+                        This action will move {s.sample_name} to PPLHP division!
+                      </AlertDialogDescription>
+
+                      <AlertDialogFooter>
+                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogAction
+                          onClick={(e) => submitSample(s._id, "SUBMIT")}
                         >
-                          {s.status == "SUBMIT" ? "Waiting" : "Accept"}
-                        </Button>
-                      </AlertDialogTrigger>
+                          Continue
+                        </AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
 
-                      <AlertDialogContent>
-                        <AlertDialogHeader>
-                          <AlertDialogTitle>
-                            Are you sure to ACCEPT this sampling?
-                          </AlertDialogTitle>
-                        </AlertDialogHeader>
+                  {/* Button for REVISE-ing the sample */}
+                  <AlertDialog>
+                    <AlertDialogTrigger>
+                      <Button
+                        className={cn(
+                          "sampling-btn",
+                          s.status == "SUBMIT" ? "" : "hidden"
+                        )}
+                        title="Revisi"
+                      >
+                        Revisi
+                      </Button>
+                    </AlertDialogTrigger>
 
-                        <AlertDialogFooter>
-                          <AlertDialogCancel>Cancel</AlertDialogCancel>
-                          <AlertDialogAction
-                            onClick={(e) => submitSample(s._id, "ACCEPTED")}
-                          >
-                            Continue
-                          </AlertDialogAction>
-                        </AlertDialogFooter>
-                      </AlertDialogContent>
-                    </AlertDialog>
+                    <AlertDialogContent>
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>
+                          Are you sure to REVISE this sampling?
+                        </AlertDialogTitle>
+                      </AlertDialogHeader>
 
-                    <AlertDialog>
-                      <AlertDialogTrigger>
-                        <Button
-                          className={cn(
-                            "bg-light_brown hover:bg-dark_brown",
-                            s.status == "SUBMIT" ? "hidden" : ""
-                          )}
-                          title="Revisi"
+                      <AlertDialogFooter>
+                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogAction
+                          onClick={(e) => submitSample(s._id, "REVISION")}
                         >
-                          Revisi
-                        </Button>
-                      </AlertDialogTrigger>
-
-                      <AlertDialogContent>
-                        <AlertDialogHeader>
-                          <AlertDialogTitle>
-                            Are you sure to REVISE this sampling?
-                          </AlertDialogTitle>
-                        </AlertDialogHeader>
-
-                        <AlertDialogFooter>
-                          <AlertDialogCancel>Cancel</AlertDialogCancel>
-                          <AlertDialogAction
-                            onClick={(e) => submitSample(s._id, "REVISION")}
-                          >
-                            Continue
-                          </AlertDialogAction>
-                        </AlertDialogFooter>
-                      </AlertDialogContent>
-                    </AlertDialog>
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-
-          {canSave && (
-            <div className="">
-              <AlertDialog>
-                <AlertDialogTrigger>
-                  <Button
-                    className={cn("bg-light_brown hover:bg-dark_brown")}
-                    title="Save"
-                  >
-                    Save
-                  </Button>
-                </AlertDialogTrigger>
-
-                <AlertDialogContent>
-                  <AlertDialogHeader>
-                    <AlertDialogTitle>
-                      Are you sure to save this sampling?
-                    </AlertDialogTitle>
-                  </AlertDialogHeader>
-
-                  <AlertDialogFooter>
-                    <AlertDialogCancel>Cancel</AlertDialogCancel>
-                    <AlertDialogAction
-                      onClick={(e) => saveSample(project._id, "PPLHP")}
-                    >
-                      Save
-                    </AlertDialogAction>
-                  </AlertDialogFooter>
-                </AlertDialogContent>
-              </AlertDialog>
+                          Continue
+                        </AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
+                </div>
+              )}
             </div>
-          )}
+          ))}
         </div>
       </TabsContent>
 
+      {/* TABS for PROJECT DETAILS */}
       <TabsContent
         className="py-4 space-y-8 flex flex-col items-center"
         value="buatDokumen"
@@ -261,16 +229,19 @@ export default function TabSampleAdmin({
         <div className="w-full">
           <h1 className="text-xl font-semibold mb-2">Assigned Staff</h1>
           <div className=" bg-light_brown rounded-lg px-4 py-2 ">
-          {table.getRowModel().rows?.length ? (
-            table.getRowModel().rows.map((row, index) => (
-                <div key={row.id} className="flex gap-4 items-center text-white mb-2">
-                  {index+1}. {row.original.username}
+            {table.getRowModel().rows?.length ? (
+              table.getRowModel().rows.map((row, index) => (
+                <div
+                  key={row.id}
+                  className="flex gap-4 items-center text-white mb-2"
+                >
+                  {index + 1}. {row.original.username}
                 </div>
-            ))
+              ))
             ) : (
               <div className="h-24 text-center">No results.</div>
             )}
-        </div>
+          </div>
         </div>
 
         <div className="w-full">
@@ -296,14 +267,6 @@ export default function TabSampleAdmin({
             className=""
           />
         </div>
-
-        {/* <Button
-          title="Simpan"
-          className="bg-light_brown hover:bg-dark_brown"
-          onClick={simpanDokumen}
-        >
-          Save
-        </Button> */}
       </TabsContent>
     </Tabs>
   );
