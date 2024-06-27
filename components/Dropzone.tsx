@@ -81,10 +81,10 @@ const Dropzone = ({ setUploadedFiles, bgColor, txtColor }: DropzoneProps) => {
       </div>
 
       <aside className={`m-5 ${txtColor?.length > 0 && txtColor}`}>
-        <h4>Files Uploaded : </h4>
+        <h4>Current Files : </h4>
         {uploadedFilesList.length === 0 && (
           <p className=" text-sm flex flex-row justify-center py-3">
-            Nothing files uploaded
+            No files.
           </p>
         )}
         <ul>{uploadedFilesList}</ul>
