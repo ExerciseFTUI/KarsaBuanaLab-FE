@@ -72,7 +72,7 @@ const SamplingTab: FC<SamplingTabProps> = ({
             variant={"outline"}
             className="w-full mb-6"
             onClick={() => {
-              if (approval) setOpenModal(true);
+              setOpenModal(true);
             }}
           >
             <PlusIcon className="mr-2 h-4 w-4" /> Add Sample
@@ -103,7 +103,7 @@ const SamplingTab: FC<SamplingTabProps> = ({
       <CreateSampleModal
         isOpen={openModal}
         onClose={() => {
-          if (approval) setOpenModal(false);
+          setOpenModal(false);
           //Reset Parameter value
           setValue("parameters", [""], { shouldValidate: true });
           setValue("regulation", "", { shouldValidate: true });

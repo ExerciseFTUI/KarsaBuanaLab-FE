@@ -492,7 +492,7 @@ export default function ApprovalEditProjectPage({
     //TODO: Add API Call
     const response = await changeTMStatus(
       project._id,
-      validStatuses.ACCEPTED,
+      validStatuses.REVISE,
       note
     );
 
@@ -503,6 +503,15 @@ export default function ApprovalEditProjectPage({
 
     alert("Failed ");
   };
+
+  useEffect(() => {
+    console.log("Yohooo outaisw");
+
+    if (project.TM_note?.length > 0) {
+      console.log("Yohooo");
+      setNote(project.TM_note);
+    }
+  }, []);
 
   return (
     <>
@@ -531,12 +540,13 @@ export default function ApprovalEditProjectPage({
           updateRevision={updateRevision}
         /> */}
         <div className="flex flex-col w-2/5">
+          <h1 className="text-lg mb-5">Current Status : {project.TM_status}</h1>
           <div className="grid w-full gap-2">
             <Label htmlFor="message-2">Notes</Label>
             <Textarea
               rows={10}
-              // value={note}
-              // onChange={(e) => setNote(e.target.value)}
+              value={note}
+              onChange={(e) => setNote(e.target.value)}
               placeholder="Type your message here."
               id="message-2"
             />

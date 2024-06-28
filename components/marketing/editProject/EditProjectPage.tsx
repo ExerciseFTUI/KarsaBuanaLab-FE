@@ -465,7 +465,8 @@ export default function EditProjectPage({
     const response = await marketingDeal(project._id);
 
     if (response) {
-      router.refresh();
+      alert("Success");
+      router.push("/marketing");
       return;
     }
 
@@ -665,12 +666,14 @@ export default function EditProjectPage({
           </div>
           {/* End Button for submit */}
 
-          <Button
-            className="w-full hover:bg-dark_brown bg-light_brown text-lg"
-            onClick={handleDeal}
-          >
-            Deal
-          </Button>
+          {project.TM_status?.toLowerCase() == "accepted" && (
+            <Button
+              className="w-full hover:bg-dark_brown bg-light_brown text-lg"
+              onClick={handleDeal}
+            >
+              Deal
+            </Button>
+          )}
 
           {/* End Document Section */}
         </Tabs>

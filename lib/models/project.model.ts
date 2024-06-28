@@ -33,8 +33,8 @@ export interface Project {
   lab_status: string;
   notes: NotesFromAdmin[];
   lab_sample_status: string;
-  tm_status: string;
-  tm_note: string;
+  TM_status: string;
+  TM_note: string;
 }
 
 export interface NotesFromAdmin {

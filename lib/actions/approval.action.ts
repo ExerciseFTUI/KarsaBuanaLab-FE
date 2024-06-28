@@ -16,7 +16,7 @@ export const getAllApprovalProject = async (): Promise<
       {
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
         //TODO: change division
-        data: { division: "SAMPLING" },
+        data: { division: "MARKETING" },
       }
     );
 
