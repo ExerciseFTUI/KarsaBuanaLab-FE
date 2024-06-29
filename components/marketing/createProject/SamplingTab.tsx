@@ -30,6 +30,7 @@ interface SamplingTabProps {
   arrayField: UseFieldArrayReturn<FieldValues, any, "id">;
   onSubmit: SubmitHandler<FieldValues>;
   baseSamples?: BaseSample[];
+  isApproval?: boolean;
 }
 
 const SamplingTab: FC<SamplingTabProps> = ({
@@ -39,8 +40,11 @@ const SamplingTab: FC<SamplingTabProps> = ({
   setOpenModal,
   onSubmit,
   baseSamples,
+  isApproval,
 }) => {
   const { toast } = useToast();
+
+  const approval = isApproval || false;
 
   const { control, watch, setValue, resetField } = form;
 
@@ -67,7 +71,9 @@ const SamplingTab: FC<SamplingTabProps> = ({
           <Button
             variant={"outline"}
             className="w-full mb-6"
-            onClick={() => setOpenModal(true)}
+            onClick={() => {
+              setOpenModal(true);
+            }}
           >
             <PlusIcon className="mr-2 h-4 w-4" /> Add Sample
           </Button>
@@ -86,6 +92,7 @@ const SamplingTab: FC<SamplingTabProps> = ({
                   deleteSample={() => deleteSample(index)}
                   update={update}
                   baseSamples={baseSamples}
+                  isApproval={approval}
                 />
               ))}
             </>

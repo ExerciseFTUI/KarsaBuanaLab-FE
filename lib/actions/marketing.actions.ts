@@ -336,7 +336,7 @@ export const updateProjectInfo = async (body: any) => {
   try {
     const response = await axios.put(
       // "http://localhost:8080/projects/edit",
-      `${apiBaseUrl}/projects/edit`, 
+      `${apiBaseUrl}/projects/edit`,
       body
     );
 
@@ -371,6 +371,25 @@ export const updateProjectSample = async (body: any, projectId: string) => {
     }
   } catch (error: any) {
     console.error(`Error update projectSample :`, error.message);
+    return false;
+  }
+};
+
+export const marketingDeal = async (projectId: string) => {
+  try {
+    const body = {
+      project_id: projectId,
+    };
+    const response = await axios.post(`${apiBaseUrl}/projects/deal`, body);
+
+    if (response.data.success) {
+      return true;
+    }
+
+    return false;
+  } catch (error: any) {
+    console.error(`Error update projectSample :`, error.message);
+    console.error(`Error update projectSample :`, error?.response?.data);
     return false;
   }
 };
