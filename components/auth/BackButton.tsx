@@ -3,13 +3,18 @@ import { FC } from "react";
 import { Button } from "../ui/button";
 import { useRouter } from "next/navigation";
 
-interface BackButtonProps {}
+interface BackButtonProps {
+  action: () => void;
+  variant: "outline" | "destructive";
+  title: string;
+}
 
-const BackButton: FC<BackButtonProps> = ({}) => {
+const BackButton: FC<BackButtonProps> = ({ action, variant, title }) => {
   const router = useRouter();
+
   return (
-    <Button variant="outline" onClick={() => router.back()}>
-      Back to previous page
+    <Button variant={variant} onClick={() => action()}>
+      {title}
     </Button>
   );
 };

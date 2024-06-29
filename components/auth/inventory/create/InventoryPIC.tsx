@@ -8,7 +8,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { Dispatch, FC, SetStateAction, useEffect, useState } from "react";
-import { userColumns } from "../InventoryColumn";
+import { userColumns, userColumnsDisabled } from "../InventoryColumn";
 import { User } from "@/lib/models/user.model";
 import InventoryAssignedTable from "./InventoryAssignedTable";
 import InventoryUnAssignedTable from "./InventoryUnassignedTable";
@@ -18,12 +18,14 @@ interface InventoryPICProps {
   allUsers: InventoryUser[];
   assignedUsers: string[];
   setAssignedUsers: Dispatch<SetStateAction<string[]>>;
+  isViewOnly: boolean;
 }
 
 const InventoryPIC: FC<InventoryPICProps> = ({
   allUsers,
   assignedUsers,
   setAssignedUsers,
+  isViewOnly,
 }) => {
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -42,7 +44,7 @@ const InventoryPIC: FC<InventoryPICProps> = ({
 
   const table = useReactTable({
     data: !!allUsers ? allUsers : [],
-    columns: userColumns,
+    columns: isViewOnly ? userColumnsDisabled : userColumns,
     getCoreRowModel: getCoreRowModel(),
     onRowSelectionChange: setRowSelection,
     getPaginationRowModel: getPaginationRowModel(),
@@ -57,6 +59,7 @@ const InventoryPIC: FC<InventoryPICProps> = ({
       },
     },
     getRowId: (allUsers) => allUsers._id,
+    enableMultiRowSelection: false, //only allow a single row to be selected at once
   });
 
   useEffect(() => {
@@ -73,9 +76,11 @@ const InventoryPIC: FC<InventoryPICProps> = ({
         PIC
       </h1> */}
       <div className="flex flex-col  w-full">
-        <div className="w-full xl:w-4/4">
-          <InventoryUnAssignedTable table={table} />
-        </div>
+        {!isViewOnly && (
+          <div className="w-full xl:w-4/4">
+            <InventoryUnAssignedTable table={table} />
+          </div>
+        )}
         <div className="w-full xl:w-4/4">
           <InventoryAssignedTable table={table} />
         </div>

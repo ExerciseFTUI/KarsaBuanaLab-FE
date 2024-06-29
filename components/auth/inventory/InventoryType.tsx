@@ -29,3 +29,13 @@ export type InventoryFile = {
   file_extension: string;
   _id: string;
 };
+
+export type InventoryVendor = {
+  param: string;
+  regulation: string;
+  _id: string;
+  sample_name: string;
+  file_id: string;
+  file_safety_id: string;
+  __v: number;
+};
