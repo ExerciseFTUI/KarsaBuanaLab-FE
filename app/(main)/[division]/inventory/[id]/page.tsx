@@ -2,9 +2,11 @@ import InventoryDetail from "@/components/auth/inventory/create/Inventory";
 import {
   Inventory,
   InventoryUser,
+  InventoryVendor,
 } from "@/components/auth/inventory/InventoryType";
 import getSessionServer from "@/lib/actions/getSessionServer";
 import {
+  getAllVendor,
   getInventoryById,
   getInventoryUsers,
 } from "@/lib/actions/inventory.action";
@@ -17,6 +19,8 @@ export default async function InventoryDetailPage({
 }) {
   const inventoryUsers: InventoryUser[] = await getInventoryUsers();
   const inventory: Inventory = await getInventoryById(params.id);
+  //Get All Vendor
+  const vendor: InventoryVendor[] = await getAllVendor();
   const session = await getSessionServer();
 
   if (
@@ -33,6 +37,7 @@ export default async function InventoryDetailPage({
         allUsers={inventoryUsers}
         inventory={inventory}
         isViewOnly={true}
+        allVendor={vendor}
       />
     </div>
   );

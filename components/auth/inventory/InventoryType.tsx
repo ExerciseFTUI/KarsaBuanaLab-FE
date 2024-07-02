@@ -1,3 +1,12 @@
+export const inventoryConditionEnum = [
+  "GOOD",
+  "BROKEN",
+  "NEED SERVICE",
+  "CALIBRATING",
+  "Tools",
+  "Materials",
+];
+
 export type Inventory = {
   _id: string;
   tools_name: string;
@@ -7,9 +16,11 @@ export type Inventory = {
   maintenance_every: string;
   assigned_user: string[];
   category: string;
+  condition: string;
   assigned_users: InventoryUser[];
   deadline: string;
   inventory_file: InventoryFile[];
+  current_vendor: string;
 };
 
 export type InventoryUser = {
@@ -31,11 +42,7 @@ export type InventoryFile = {
 };
 
 export type InventoryVendor = {
-  param: string;
-  regulation: string;
   _id: string;
-  sample_name: string;
-  file_id: string;
-  file_safety_id: string;
+  vendor_name: string;
   __v: number;
 };

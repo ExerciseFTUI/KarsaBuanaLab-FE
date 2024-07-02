@@ -10,7 +10,7 @@ import { inventoryValidation } from "../InventoryValidation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Inventory, InventoryUser } from "../InventoryType";
+import { Inventory, InventoryUser, InventoryVendor } from "../InventoryType";
 import {
   createInventory,
   updateInventory,
@@ -18,12 +18,14 @@ import {
 import { useRouter } from "next/navigation";
 import { addInventoryFile } from "@/lib/actions/inventory.client.action";
 import { Button } from "@/components/ui/button";
+import { DevTool } from "@hookform/devtools";
 
 interface InventoryProps {
   allUsers: InventoryUser[];
   isUpdate: boolean;
   inventory?: Inventory;
   isViewOnly: boolean;
+  allVendor: InventoryVendor[];
 }
 
 const InventoryDetail: FC<InventoryProps> = ({
@@ -31,6 +33,7 @@ const InventoryDetail: FC<InventoryProps> = ({
   isUpdate,
   inventory,
   isViewOnly,
+  allVendor,
 }) => {
   const router = useRouter();
 
@@ -45,6 +48,8 @@ const InventoryDetail: FC<InventoryProps> = ({
     ? inventory?.assigned_user
     : [];
 
+  const inventoryCondition = inventory?.category || inventory?.condition;
+
   //Form Section
   const form = useForm<z.infer<typeof inventoryValidation>>({
     resolver: zodResolver(inventoryValidation),
@@ -52,8 +57,9 @@ const InventoryDetail: FC<InventoryProps> = ({
       tool: `${isUpdate ? inventory?.tools_name : ""}`,
       description: `${isUpdate ? inventory?.description : ""}`,
       deadline: inventoryDeadline,
-      category: `${isUpdate ? inventory?.category : ""}`,
+      category: `${isUpdate ? inventoryCondition : ""}`,
       maintenanceEvery: `${isUpdate ? inventory?.maintenance_every : ""}`,
+      vendor: `${isUpdate ? inventory?.current_vendor?.toLowerCase() : ""}`,
     },
   });
 
@@ -72,7 +78,9 @@ const InventoryDetail: FC<InventoryProps> = ({
       last_maintenance: values.deadline?.toISOString(),
       assigned_user: assignedUsers,
       maintenance_every: values.maintenanceEvery,
-      category: values.category,
+      category: values.category, //TODO: Delete This
+      condition: values.category,
+      current_vendor: values.vendor,
     };
 
     //Dont forget to check the date if it is null
@@ -103,6 +111,8 @@ const InventoryDetail: FC<InventoryProps> = ({
             assigned_user: assignedUsers,
             maintenance_every: values.maintenanceEvery,
             category: values.category,
+            condition: values.category,
+            current_vendor: values.vendor,
           },
         };
 
@@ -160,7 +170,8 @@ const InventoryDetail: FC<InventoryProps> = ({
       values.description !== inventory?.description ||
       values.deadline !== inventoryDeadline ||
       values.category !== inventory?.category ||
-      values.maintenanceEvery !== inventory?.maintenance_every
+      values.maintenanceEvery !== inventory?.maintenance_every ||
+      values.vendor.toLowerCase() !== inventory?.current_vendor.toLowerCase()
     ) {
       return true;
     }
@@ -174,7 +185,12 @@ const InventoryDetail: FC<InventoryProps> = ({
           Tools Details
         </h1>
         <div className="max-w-xl space-y-10">
-          <InventoryForm form={form} onSubmit={onSubmit} isViewOnly={false} />
+          <InventoryForm
+            form={form}
+            onSubmit={onSubmit}
+            isViewOnly={false}
+            allVendor={allVendor}
+          />
         </div>
       </div>
       <div className="xl:w-3/5 w-full space-y-10">
@@ -197,6 +213,7 @@ const InventoryDetail: FC<InventoryProps> = ({
           Submit
         </button>
       </div>
+      <DevTool control={form.control} /> {/* set up the dev tool */}
     </div>
   );
 };

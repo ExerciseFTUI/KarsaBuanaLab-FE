@@ -3,8 +3,10 @@
 import {
   Inventory,
   InventoryUser,
+  InventoryVendor,
 } from "@/components/auth/inventory/InventoryType";
 import axios from "axios";
+import { revalidatePath } from "next/cache";
 
 const apiBaseUrl = process.env.API_BASE_URL || "http://localhost:5000";
 
@@ -45,6 +47,17 @@ export const getInventoryById = async (id: string) => {
   }
 };
 
+export const getAllVendor = async () => {
+  try {
+    const response = await axios.get(`${apiBaseUrl}/inventory/get-vendor`);
+    return response.data.vendor as InventoryVendor[];
+  } catch (error: any) {
+    console.log(error.response.data);
+    console.error(`Error getting all vendor :`, error.message);
+    return [];
+  }
+};
+
 type createInventoryRequest = {
   tools_name: string;
   description: string;
@@ -60,6 +73,7 @@ export const createInventory = async (body: createInventoryRequest) => {
       `${apiBaseUrl}/inventory/create-inventory`,
       body
     );
+    revalidatePath("/admin/inventory");
 
     return true;
   } catch (error: any) {
