@@ -17,7 +17,6 @@ import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { BiFilterAlt } from "react-icons/bi";
 
-
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -50,13 +49,13 @@ import {
   DoubleArrowLeftIcon,
   DoubleArrowRightIcon,
 } from "@radix-ui/react-icons";
-import { receiveSamplingColumns } from "@/components/columns";
-import { ReceiveSamplingType } from "@/lib/type";
+import { pplhpReceiveSamplingColumns } from "@/components/columns";
+import { PplhpReceiveSamplingType } from "@/lib/type";
 import { cn, fetcher } from "@/lib/utils";
 import { ProjectSamplingType } from "@/lib/type";
 
 interface ReceiveDataTableProps {
-  data: ReceiveSamplingType[];
+  data: PplhpReceiveSamplingType[];
 }
 
 const ReceiveDataTable: FC<ReceiveDataTableProps> = ({ data }) => {
@@ -70,7 +69,7 @@ const ReceiveDataTable: FC<ReceiveDataTableProps> = ({ data }) => {
 
   const table = useReactTable({
     data,
-    columns: receiveSamplingColumns,
+    columns: pplhpReceiveSamplingColumns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
@@ -191,7 +190,7 @@ const ReceiveDataTable: FC<ReceiveDataTableProps> = ({ data }) => {
             ) : (
               <TableRow>
                 <TableCell
-                  colSpan={receiveSamplingColumns.length}
+                  colSpan={pplhpReceiveSamplingColumns.length}
                   className="h-24 text-center"
                 >
                   No results.
