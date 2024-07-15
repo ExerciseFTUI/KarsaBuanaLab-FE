@@ -58,7 +58,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 // Define the InventoryComboBoxProps interface
 interface InventoryComboBoxProps {
   sample: string;
-  setSample: React.Dispatch<React.SetStateAction<string>>;
+  setSample: (vendor: string) => void;
   baseSample: InventoryVendor[];
   form: UseFormReturn<z.infer<typeof inventoryValidation>>;
   isDisabled: boolean;
@@ -109,7 +109,7 @@ const InventoryComboBox: React.FC<InventoryComboBoxProps> = ({
 
   return (
     <div className="w-full">
-      {isLoading && <LoadingScreen text="Creating new base sample" />}
+      {isLoading && <LoadingScreen text="Creating new base vendor" />}
       {showDeleteConfirmation && (
         <CancelPopup
           isCancelled={true}
@@ -117,7 +117,7 @@ const InventoryComboBox: React.FC<InventoryComboBoxProps> = ({
           message={`Are you sure you want to delete ${sampleName.replace(
             /_/g,
             " "
-          )} sample?`} // Concatenate sampleName in the message
+          )} vendor?`} // Concatenate sampleName in the message
           handleCancelledProject={handleDeleteVendor}
         />
       )}
@@ -139,7 +139,7 @@ const InventoryComboBox: React.FC<InventoryComboBoxProps> = ({
           <PopoverContent className="w-full p-0" side="right">
             <Command className="w-full">
               <CommandInput placeholder="Search Vendor" className="" />
-              <CommandEmpty>No Sample found.</CommandEmpty>
+              <CommandEmpty>No Vendor found.</CommandEmpty>
               <CommandEmpty
                 className=" p-2 m-1 rounded-md bg-light_green hover:bg-dark_green hover:text-white hover:cursor-pointer flex flex-row items-center "
                 onSelect={() => {
@@ -167,12 +167,12 @@ const InventoryComboBox: React.FC<InventoryComboBoxProps> = ({
                       <Check
                         className={cn(
                           "h-4 w-4",
-                          sample === data.sample_name
+                          sample === data.vendor_name
                             ? "opacity-100"
                             : "opacity-0"
                         )}
                       />
-                      <span>{data.sample_name.replace(/_/g, " ")}</span>
+                      <span>{data.vendor_name}</span>
                     </div>
                     {/* Conditional rendering of delete and edit buttons based on hover state */}
                     {hoveredSample === data._id && (
@@ -181,7 +181,7 @@ const InventoryComboBox: React.FC<InventoryComboBoxProps> = ({
                           className="h-5 w-5 mr-2 text-red-500 hover:cursor-pointer hover:text-white hover:bg-red-500 hover:rounded-md"
                           onClick={() => {
                             setEdit(false);
-                            setSampleName(data.sample_name);
+                            setSampleName(data.vendor_name);
                             setShowDeleteConfirmation(true);
                           }}
                         />
@@ -216,13 +216,13 @@ const InventoryComboBox: React.FC<InventoryComboBoxProps> = ({
           <DialogHeader>
             <DialogTitle>Add new Vendor</DialogTitle>
             <DialogDescription>
-              Add a new sample to manage project smoothly.
+              Add a new vendor to manage project smoothly.
             </DialogDescription>
           </DialogHeader>
           <div>
             <div className="space-y-4 py-2 pb-4">
               <div className="space-y-2">
-                <Label htmlFor="name">Sample name</Label>
+                <Label htmlFor="name">Vendor name</Label>
                 <Input
                   id="sampleName"
                   value={sampleName}
