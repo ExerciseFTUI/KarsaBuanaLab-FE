@@ -49,27 +49,36 @@ import {
   DoubleArrowLeftIcon,
   DoubleArrowRightIcon,
 } from "@radix-ui/react-icons";
-import { LabDashboardPageColumns, LabDashboardPageColumnsUser, columns } from "@/components/columns";
-import { LabDataType } from "@/lib/type";
+import {
+  LabDashboardPageColumns,
+  LabDashboardPageColumnsUser,
+  LabDashboardRev,
+  columns,
+} from "@/components/columns";
+import { LabDashboardPageColumnsType, LabDataType } from "@/lib/type";
 
 interface LabDataTableProps {
-  data: LabDataType[] ;
+  data: LabDashboardPageColumnsType[];
   link: string;
   idUser?: string;
 }
 
 const LabDataTable: FC<LabDataTableProps> = ({ data, link, idUser }) => {
-  const router = useRouter()
-  const [sorting, setSorting] = useState<SortingState>([])
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
+  const router = useRouter();
+  const [sorting, setSorting] = useState<SortingState>([]);
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
     _id: false,
-  })
-  const [rowSelection, setRowSelection] = useState({})
+  });
+  const [rowSelection, setRowSelection] = useState({});
 
   const table = useReactTable({
     data,
-    columns: idUser !== undefined ? LabDashboardPageColumnsUser : LabDashboardPageColumns,
+    columns: LabDashboardRev,
+    // columns:
+    //   idUser !== undefined
+    //     ? LabDashboardPageColumnsUser
+    //     : LabDashboardPageColumns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
@@ -85,9 +94,6 @@ const LabDataTable: FC<LabDataTableProps> = ({ data, link, idUser }) => {
       rowSelection,
     },
   });
-
-  
-  
 
   return (
     <div className="w-full">
@@ -127,7 +133,7 @@ const LabDataTable: FC<LabDataTableProps> = ({ data, link, idUser }) => {
                       {column.id}
                     </DropdownMenuCheckboxItem>
                   )
-                )
+                );
               })}
           </DropdownMenuContent>
         </DropdownMenu>
@@ -159,7 +165,8 @@ const LabDataTable: FC<LabDataTableProps> = ({ data, link, idUser }) => {
                   className="hover:bg-light_green ease-in-out duration-500 text-xs hover:cursor-pointer hover:rounded-xl"
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
-                  onClick={() => {router.push(link + row.getValue("_id")); 
+                  onClick={() => {
+                    router.push(link + row.getValue("_id"));
                   }}
                 >
                   {row.getVisibleCells().map((cell) => (

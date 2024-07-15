@@ -478,21 +478,16 @@ const ProjectForm: FC<ProjectFormProps> = ({
                         {...field}
                       />
 
-                      {/* <div
-                        onClick={() => console.log("send email")}
-                        className=" cursor-pointer text-3xl m-2 self-center bg-light_green p-1 rounded-lg"
-                      >
-                        Resend
-                      </div> */}
-
-                      <div
-                        className="bg-light_green text-center font-medium cursor-pointer text-black text-sm w-1/3 rounded-lg p-2 ml-2"
-                        onClick={() => {
-                          resendEmail();
-                        }}
-                      >
-                        Resend Email
-                      </div>
+                      {status?.toLocaleLowerCase() !== "create" && (
+                        <div
+                          className="bg-light_green text-center font-medium cursor-pointer text-black text-sm w-1/3 rounded-lg p-2 ml-2"
+                          onClick={() => {
+                            resendEmail();
+                          }}
+                        >
+                          Resend Email
+                        </div>
+                      )}
                     </div>
                   </FormControl>
 

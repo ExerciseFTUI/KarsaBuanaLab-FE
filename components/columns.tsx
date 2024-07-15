@@ -21,6 +21,7 @@ import {
   UserType,
   ProjectAdminPplhpType,
   SampleType,
+  LabDashboardPageColumnsType,
 } from "@/lib/type";
 import Link from "next/link";
 import { ProjectSamplingType } from "@/lib/type";
@@ -1009,6 +1010,51 @@ export const PPLHPFinalReviewPageColumns: ColumnDef<ProjectLHPType>[] = [
   },
   {
     accessorKey: "_id",
+  },
+];
+
+export const LabDashboardRev: ColumnDef<LabDashboardPageColumnsType>[] = [
+  {
+    accessorKey: "sample_number",
+    header: "Sample Number",
+    cell: ({ row }) => <div className="">{row.getValue("sample_number")}</div>,
+  },
+  {
+    accessorKey: "sample_name",
+    header: "Sample Name",
+    cell: ({ row }) => <div className="">{row.getValue("sample_name")}</div>,
+  },
+  {
+    accessorKey: "status",
+    header: "Status",
+    cell: ({ row }) => {
+      const status = row.getValue("status");
+
+      const color =
+        status == "Need Schedule" || status == "Get Sample"
+          ? "bg-moss_green"
+          : status == "On Discuss" || status == "Verifying"
+          ? "bg-light_brown"
+          : "bg-brick_red";
+
+      return (
+        <div
+          className={
+            "px-4 py-1.5 inline-block min-w-[8rem] rounded-full text-ghost_white " +
+            color
+          }
+        >
+          {row.getValue("status")}
+        </div>
+      );
+    },
+  },
+  {
+    accessorKey: "deadline",
+    header: "Deadline",
+    cell: ({ row }) => {
+      return <div className="">{row.getValue("deadline")}</div>;
+    },
   },
 ];
 
