@@ -95,6 +95,14 @@ export type ProjectLHPType = {
   contact_person: string;
 };
 
+export type LabDashboardPageColumnsType = {
+  _id: string;
+  sample_number: string;
+  sample_name: string;
+  status: string;
+  deadline: string;
+};
+
 export type LabDataType = {
   _id: string;
   no_penawaran: string;
