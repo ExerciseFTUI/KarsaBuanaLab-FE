@@ -253,12 +253,10 @@ export default function EditProjectPage({
 
       if (uploadedFiles.length > 0) {
         // Perform file upload logic here if needed
-        // const responseFile = await updateProjectFile(
-        //   project._id,
-        //   uploadedFiles
-        // );
-        const responseFile = await addInventoryFile(project._id, uploadedFiles);
-        router.refresh();
+        const responseFile = await updateProjectFile(
+          project._id,
+          uploadedFiles
+        );
       }
 
       //Display Toast
@@ -268,7 +266,7 @@ export default function EditProjectPage({
       });
 
       if (status === "RUNNING") {
-        // router.push("/marketing/running")
+        router.push("/marketing/running");
       } else if (status === "FINISHED") {
         router.push("/marketing/finished");
       } else if (status === "CANCELLED") {
@@ -298,7 +296,7 @@ export default function EditProjectPage({
         desc_failed: reason,
         status: "CANCELLED",
       };
-      
+
       //Connect to API
       const responseInfo = await updateProjectInfo(body);
       if (!responseInfo) {

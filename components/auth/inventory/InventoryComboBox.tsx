@@ -54,6 +54,8 @@ import { z } from "zod";
 import { inventoryValidation } from "./InventoryValidation";
 import { inventoryValidationV2 } from "./InventoryValidationV2";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { createVendor, deleteVendor } from "@/lib/actions/inventory.action";
+import { useSession } from "next-auth/react";
 
 // Define the InventoryComboBoxProps interface
 interface InventoryComboBoxProps {
@@ -81,6 +83,9 @@ const InventoryComboBox: React.FC<InventoryComboBoxProps> = ({
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
   const [hoveredSample, setHoveredSample] = useState("");
 
+  //Get User Role
+  const { data: userData } = useSession();
+
   const tempForm = useForm<z.infer<typeof inventoryValidationV2>>({
     resolver: zodResolver(inventoryValidationV2),
     defaultValues: {
@@ -96,15 +101,33 @@ const InventoryComboBox: React.FC<InventoryComboBoxProps> = ({
   const onSubmit = async () => {
     setIsLoading(true);
 
-    setIsLoading(false);
-
     setShowNewTeamDialog(false);
 
-    alert("Succesfully Add New Vendor");
+    const response = await createVendor(sampleName);
+
+    if (!response) {
+      alert("Failed!!");
+    } else {
+      alert("Succesfully Add New Vendor");
+      router.refresh();
+    }
+
+    setIsLoading(false);
   };
 
   const handleDeleteVendor = async () => {
-    alert("Succesfully Deleted");
+    const response = await deleteVendor(sampleName);
+
+    if (!response) {
+      alert("Failed!!");
+    } else {
+      if (sample.toLowerCase() == sampleName.toLowerCase()) {
+        setSample("");
+      }
+
+      alert("Succesfully Delete The Vendor");
+      router.refresh();
+    }
   };
 
   return (
@@ -117,7 +140,7 @@ const InventoryComboBox: React.FC<InventoryComboBoxProps> = ({
           message={`Are you sure you want to delete ${sampleName.replace(
             /_/g,
             " "
-          )} vendor?`} // Concatenate sampleName in the message
+          )} ?`}
           handleCancelledProject={handleDeleteVendor}
         />
       )}
@@ -136,7 +159,7 @@ const InventoryComboBox: React.FC<InventoryComboBoxProps> = ({
               <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 end-0 opacity-50" />
             </Button>
           </PopoverTrigger>
-          <PopoverContent className="w-full p-0" side="right">
+          <PopoverContent className="w-full p-0" side="top">
             <Command className="w-full">
               <CommandInput placeholder="Search Vendor" className="" />
               <CommandEmpty>No Vendor found.</CommandEmpty>
@@ -177,14 +200,17 @@ const InventoryComboBox: React.FC<InventoryComboBoxProps> = ({
                     {/* Conditional rendering of delete and edit buttons based on hover state */}
                     {hoveredSample === data._id && (
                       <div className="flex flex-row">
-                        <MdDelete
-                          className="h-5 w-5 mr-2 text-red-500 hover:cursor-pointer hover:text-white hover:bg-red-500 hover:rounded-md"
-                          onClick={() => {
-                            setEdit(false);
-                            setSampleName(data.vendor_name);
-                            setShowDeleteConfirmation(true);
-                          }}
-                        />
+                        {userData?.user.role == "ADMIN" && (
+                          <MdDelete
+                            className="h-5 w-5 mr-2 text-red-500 hover:cursor-pointer hover:text-white hover:bg-red-500 hover:rounded-md"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setEdit(false);
+                              setSampleName(data.vendor_name);
+                              setShowDeleteConfirmation(true);
+                            }}
+                          />
+                        )}
                       </div>
                     )}
                   </CommandItem>
@@ -193,20 +219,22 @@ const InventoryComboBox: React.FC<InventoryComboBoxProps> = ({
               <CommandSeparator />
               <CommandList>
                 <CommandGroup>
-                  <DialogTrigger asChild>
-                    <CommandItem
-                      className=" bg-light_green hover:bg-dark_green hover:text-white hover:cursor-pointer flex flex-row items-center "
-                      onSelect={() => {
-                        setOpen(false);
-                        setShowNewTeamDialog(true);
-                      }}
-                    >
-                      <PlusCircledIcon className="h-5 w-5" />
-                      <p className=" text-base font-semibold ml-3 ">
-                        Add new Vendor
-                      </p>
-                    </CommandItem>
-                  </DialogTrigger>
+                  {userData?.user.role == "ADMIN" && (
+                    <DialogTrigger asChild>
+                      <CommandItem
+                        className=" bg-light_green hover:bg-dark_green hover:text-white hover:cursor-pointer flex flex-row items-center "
+                        onSelect={() => {
+                          setOpen(false);
+                          setShowNewTeamDialog(true);
+                        }}
+                      >
+                        <PlusCircledIcon className="h-5 w-5" />
+                        <p className=" text-base font-semibold ml-3 ">
+                          Add new Vendor
+                        </p>
+                      </CommandItem>
+                    </DialogTrigger>
+                  )}
                 </CommandGroup>
               </CommandList>
             </Command>
@@ -227,7 +255,7 @@ const InventoryComboBox: React.FC<InventoryComboBoxProps> = ({
                   id="sampleName"
                   value={sampleName}
                   onChange={(e) => setSampleName(e.target.value)}
-                  placeholder="Air Tanah 2024"
+                  placeholder="Vendor Z"
                 />
               </div>
             </div>
