@@ -203,7 +203,7 @@ const InventoryComboBox: React.FC<InventoryComboBoxProps> = ({
                         {userData?.user.role == "ADMIN" && (
                           <MdDelete
                             className="h-5 w-5 mr-2 text-red-500 hover:cursor-pointer hover:text-white hover:bg-red-500 hover:rounded-md"
-                            onClick={(e) => {
+                            onClick={(e: any) => {
                               e.stopPropagation();
                               setEdit(false);
                               setSampleName(data.vendor_name);
