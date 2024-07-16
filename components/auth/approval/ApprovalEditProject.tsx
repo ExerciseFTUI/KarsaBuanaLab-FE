@@ -24,12 +24,9 @@ import {
 import { createProjectValidation } from "@/lib/validations/CreateProjectValidation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import EditProjectForm from "./EditProjectForm";
-import ProjectForm from "../forms/ProjectForm";
 import { Project } from "@/lib/models/project.model";
 import { useToast } from "@/components/ui/use-toast";
 import {
-  marketingDeal,
   updateProject,
   updateProjectInfo,
   updateProjectSample,
@@ -50,20 +47,24 @@ import { AlertDialogTrigger } from "@radix-ui/react-alert-dialog";
 import CancelPopup from "@/components/cancelPopup";
 import { revalidatePath } from "next/cache";
 import { addInventoryFile } from "@/lib/actions/inventory.client.action";
+import ApprovalProjectForm from "./ApprovalProjectForm";
+import { Label } from "@/components/ui/label";
+import { changeTMStatus } from "@/lib/actions/approval.action";
 
-interface EditProjectPageProps {
+interface ApprovalEditProjectPageProps {
   project: Project;
   baseSamples: BaseSample[];
   status?: string;
 }
 
-export default function EditProjectPage({
+export default function ApprovalEditProjectPage({
   project,
   baseSamples,
   status,
-}: EditProjectPageProps) {
+}: ApprovalEditProjectPageProps) {
   //General
   const { toast } = useToast();
+  const [note, setNote] = useState("");
 
   const router = useRouter();
   const [showCancelConfirmation, setShowCancelConfirmation] = useState(false); // State to control the cancellation confirmation popup
@@ -79,6 +80,12 @@ export default function EditProjectPage({
       parameters: [],
     },
   });
+
+  const validStatuses = {
+    WAITING: "WAITING",
+    ACCEPTED: "ACCEPTED",
+    REVISE: "REVISE",
+  };
 
   const { control, watch, setValue, resetField } = sampleForm;
 
@@ -254,10 +261,12 @@ export default function EditProjectPage({
 
       if (uploadedFiles.length > 0) {
         // Perform file upload logic here if needed
-        const responseFile = await updateProjectFile(
-          project._id,
-          uploadedFiles
-        );
+        // const responseFile = await updateProjectFile(
+        //   project._id,
+        //   uploadedFiles
+        // );
+        const responseFile = await addInventoryFile(project._id, uploadedFiles);
+        router.refresh();
       }
 
       //Display Toast
@@ -267,7 +276,7 @@ export default function EditProjectPage({
       });
 
       if (status === "RUNNING") {
-        router.push("/marketing/running");
+        // router.push("/marketing/running")
       } else if (status === "FINISHED") {
         router.push("/marketing/finished");
       } else if (status === "CANCELLED") {
@@ -297,6 +306,7 @@ export default function EditProjectPage({
         desc_failed: reason,
         status: "CANCELLED",
       };
+
       //Connect to API
       const responseInfo = await updateProjectInfo(body);
       if (!responseInfo) {
@@ -459,17 +469,49 @@ export default function EditProjectPage({
 
   //=============================== End Document Section
 
-  const handleDeal = async () => {
-    const response = await marketingDeal(project._id);
+  //=============================== Note Section
+  const handleAccept = async () => {
+    alert("Accept");
+    //TODO: Add API Call
+    const response = await changeTMStatus(
+      project._id,
+      validStatuses.ACCEPTED,
+      note
+    );
 
     if (response) {
-      alert("Success");
-      router.push("/marketing");
+      router.refresh();
       return;
     }
 
     alert("Failed ");
   };
+
+  const handleRevisi = async () => {
+    alert("Revisi");
+    //TODO: Add API Call
+    const response = await changeTMStatus(
+      project._id,
+      validStatuses.REVISE,
+      note
+    );
+
+    if (response) {
+      router.refresh();
+      return;
+    }
+
+    alert("Failed ");
+  };
+
+  useEffect(() => {
+    console.log("Yohooo outaisw");
+
+    if (project.TM_note?.length > 0) {
+      console.log("Yohooo");
+      setNote(project.TM_note);
+    }
+  }, []);
 
   return (
     <>
@@ -487,7 +529,7 @@ export default function EditProjectPage({
       {isLoading && <LoadingScreen />}
 
       <div className="flex gap-6 justify-evenly max-md:flex-col max-md:items-center">
-        <ProjectForm
+        {/* <ApprovalProjectForm
           project={project}
           form={form}
           onSubmit={onSubmit2}
@@ -496,7 +538,39 @@ export default function EditProjectPage({
           updatePayment={updatePayment}
           password={password}
           updateRevision={updateRevision}
-        />
+        /> */}
+        <div className="flex flex-col w-2/5">
+          <h1 className="text-lg mb-5">Current Status : {project.TM_status}</h1>
+          <div className="grid w-full gap-2">
+            <Label htmlFor="message-2">Notes</Label>
+            <Textarea
+              rows={10}
+              value={note}
+              onChange={(e) => setNote(e.target.value)}
+              placeholder="Type your message here."
+              id="message-2"
+            />
+            <p className="text-sm text-muted-foreground">
+              Your message will be saved as a note.
+            </p>
+          </div>
+
+          <div className="w-full flex justify-around items-center gap-5 mt-10">
+            <Button
+              className="w-full hover:bg-dark_brown bg-light_brown"
+              onClick={handleRevisi}
+            >
+              Revisi
+            </Button>
+            <Button
+              className="w-full bg-dark_brown hover:bg-dark_green"
+              onClick={handleAccept}
+            >
+              Accept
+            </Button>
+          </div>
+        </div>
+
         <Tabs defaultValue="sampling" className="w-[40rem] max-sm:w-[420px] ">
           <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger value="sampling">Sampling</TabsTrigger>
@@ -508,10 +582,11 @@ export default function EditProjectPage({
             <SamplingTab
               form={sampleForm}
               arrayField={arrayField}
-              openModal={openModal}
-              setOpenModal={setOpenModal}
-              onSubmit={onSubmitSample}
+              openModal={false}
+              setOpenModal={() => {}}
+              onSubmit={() => {}}
               baseSamples={baseSamples}
+              isApproval={true}
             />
           </TabsContent>
           {/* End Sample Section */}
@@ -632,8 +707,8 @@ export default function EditProjectPage({
                 {/* End of Spreadsheet untuk jadwal sampling */}
 
                 {/* Drag and drop files area */}
-                <h1 className=" font-semibold mx-5 mt-5 "> Upload Files </h1>
-                <Dropzone setUploadedFiles={setUploadedFiles} />
+                {/* <h1 className=" font-semibold mx-5 mt-5 "> Upload Files </h1>
+                <Dropzone setUploadedFiles={setUploadedFiles} /> */}
                 {/* End of Drag and drop files area */}
               </div>
             </Card>
@@ -645,12 +720,14 @@ export default function EditProjectPage({
           </TabsContent>
           {/* Button for submit */}
           <div className="m-5 flex justify-evenly items-center  ">
-            <button
-              onClick={form.handleSubmit(onSubmit2)}
-              className=" bg-light_green rounded-lg px-5 py-3 hover:bg-dark_green hover:text-white font-medium"
+            {/* <button
+              disabled={true}
+              // onClick={form.handleSubmit(onSubmit2)}
+              onClick={() => {}}
+              className=" bg-light_green rounded-lg px-5 py-3 font-medium"
             >
               Submit
-            </button>
+            </button> */}
             {/* Cancelled Project */}
             {status?.toLocaleLowerCase() === "running" && (
               <button
@@ -664,16 +741,35 @@ export default function EditProjectPage({
           </div>
           {/* End Button for submit */}
 
-          {project.TM_status?.toLowerCase() == "accepted" && (
-            <Button
-              className="w-full hover:bg-dark_brown bg-light_brown text-lg"
-              onClick={handleDeal}
-            >
-              Deal
-            </Button>
-          )}
-
           {/* End Document Section */}
+          {/* <div className="grid w-full gap-2">
+            <Label htmlFor="message-2">Notes</Label>
+            <Textarea
+              rows={10}
+              // value={note}
+              // onChange={(e) => setNote(e.target.value)}
+              placeholder="Type your message here."
+              id="message-2"
+            />
+            <p className="text-sm text-muted-foreground">
+              Your message will be saved as a note.
+            </p>
+          </div>
+
+          <div className="w-full flex justify-around items-center gap-5 mt-10">
+            <Button
+              className="w-full hover:bg-dark_brown bg-light_brown"
+              onClick={handleRevisi}
+            >
+              Revisi
+            </Button>
+            <Button
+              className="w-full bg-dark_brown hover:bg-dark_green"
+              onClick={handleAccept}
+            >
+              Accept
+            </Button>
+          </div> */}
         </Tabs>
       </div>
       <DeleteDialog

@@ -1,8 +1,8 @@
-import { Sampling } from "./sampling.model";
-import { File } from "./file.model";
-import { User } from "./user.model";
+import { NotesFromAdmin } from "@/lib/models/project.model";
+import { Sampling } from "@/lib/models/sampling.model";
 
-export interface Project {
+export interface ApprovalProject {
+  TM_status: string;
   no_penawaran: string;
   no_sampling: string;
   client_name: string;
@@ -33,11 +33,4 @@ export interface Project {
   lab_status: string;
   notes: NotesFromAdmin[];
   lab_sample_status: string;
-  TM_status: string;
-  TM_note: string;
-}
-
-export interface NotesFromAdmin {
-  date: Date;
-  content: string;
 }

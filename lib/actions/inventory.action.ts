@@ -135,6 +135,9 @@ export const updateInventory = async (body: updateInventoryRequest) => {
       body
     );
 
+    revalidatePath("/admin/inventory");
+    revalidatePath("(main)/[division]/inventory");
+
     return true;
   } catch (error: any) {
     console.log(error.response.data);

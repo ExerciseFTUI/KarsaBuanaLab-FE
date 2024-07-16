@@ -63,8 +63,8 @@ const Topbar: FC<TopbarProps> = ({ projects, data }) => {
       : extractedSecondPath[0];
 
   return (
-    <nav className="flex w-full items-center justify-between px-2 py-6 ">
-      <div className="flex flex-col items-start gap-1">
+    <nav className="flex flex-col md:flex-row w-full md:items-center md:justify-between px-2 py-6 ">
+      <div className="flex flex-col items-start gap-1 whitespace-pre-wrap">
         {/* <Image src={"assets/logo.svg"} alt="logo" width={28} height={28} /> */}
         <p className="capilatize text-sm font-light text-moss_green">
           {formattedPathname}
@@ -73,56 +73,41 @@ const Topbar: FC<TopbarProps> = ({ projects, data }) => {
           {secondPath + (pathname.split(" / ")[2] ? " Details" : "")}
         </p>
       </div>
-      <div className="flex items-center gap-8">
-        {/* ===========================Admin Button */}
 
-        {/* <div className="">
-          {session?.user.role.toLowerCase() == "admin" &&
-            pathname.split(" / ")[0] !== "Admin" && (
-              <Link href="/admin">
-                <Button variant={"outline"}>
-                  <LockClosedIcon className="mr-2 h-4 w-4" /> Go to Admin Page
-                </Button>
-              </Link>
-            )}
-        </div> */}
-
-        <div className="">
-          {/* <!-- NOTE: NEED TO BE CHECKED            --> */}
-          {/* {pathname.split(" / ")[0] == "Sampling" && (
-            <DeadlineNotification projects={projects} />
-          )} */}
-
-          {data?.user.role.toLowerCase() == "admin" &&
-            pathname.split(" / ")[0] !== "Admin" && (
-              <Link href="/admin">
-                <Button variant={"outline"}>
-                  <LockClosedIcon className="mr-2 h-4 w-4" /> Go to Admin Page
-                </Button>
-              </Link>
-            )}
-        </div>
-
-        <div className="">
-          {pathname.split(" / ")[0] == "Admin" &&
-            pathname.split(" / ")[1] !== "Register" && (
-              <Link href="/admin/register">
-                <Button variant={"outline"}>
-                  <PlusIcon className="mr-2 h-4 w-4" /> Add New User
-                </Button>
-              </Link>
-            )}
-        </div>
-
-        {/* <!-- END NOTE: NEED TO BE CHECKED            --> */}
-        {/* =========================== End Admin Button */}
-
+      <div className="flex justify-between gap-2 mt-4">
         <div className="">
           {pathname.split(" / ")[0] == "Sampling" && (
             <DeadlineNotification projects={projects} />
           )}
         </div>
 
+        {/* ===========================Admin Button */}
+        <div>
+          <div className="">
+            {data?.user.role.toLowerCase() == "admin" &&
+              pathname.split(" / ")[0] !== "Admin" && (
+                <Link href="/admin">
+                  <Button variant={"outline"} className="py-2 h-fit">
+                    <LockClosedIcon className="mr-2 h-4 w-4" /> Go to Admin Page
+                  </Button>
+                </Link>
+              )}
+          </div>
+
+          <div className="">
+            {pathname.split(" / ")[0] == "Admin" &&
+              pathname.split(" / ")[1] !== "Register" && (
+                <Link href="/admin/register">
+                  <Button variant={"outline"}>
+                    <PlusIcon className="mr-2 h-4 w-4" /> Add New User
+                  </Button>
+                </Link>
+              )}
+          </div>
+        </div>
+
+        {/* <!-- END NOTE: NEED TO BE CHECKED            --> */}
+        {/* =========================== End Admin Button */}
         <div className="max-md:hidden">
           <Avatar>
             <AvatarImage src="/assets/avatar2.png" />

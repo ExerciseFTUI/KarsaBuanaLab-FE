@@ -24,10 +24,10 @@ export default function LabAssignStaff({
   const { files, project, user } = data;
 
   const samplingNotAssigned = project.sampling_list.filter(
-    (s) => s.lab_assigned_to.length === 0
+    (s) => s.lab_assigned_to && s.lab_assigned_to.length === 0
   );
   const samplingAssigned = project.sampling_list.filter(
-    (s) => s.lab_assigned_to.length !== 0
+    (s) => s.lab_assigned_to && s.lab_assigned_to.length !== 0
   );
 
   const router = useRouter();

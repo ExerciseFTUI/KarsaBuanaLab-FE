@@ -43,11 +43,10 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useToast } from "@/components/ui/use-toast";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import VerifRevision from "../editProject/VerifRevision";
 import { Project } from "@/lib/models/project.model";
 import { sendEmail } from "@/lib/actions/client.actions";
 
-interface ProjectFormProps {
+interface ApprovalProjectFormProps {
   form: UseFormReturn<z.infer<typeof createProjectValidation>>;
   onSubmit(values: z.infer<typeof createProjectValidation>): Promise<void>;
   status?: string;
@@ -62,7 +61,7 @@ interface ProjectFormProps {
   ): Promise<void>;
 }
 
-const ProjectForm: FC<ProjectFormProps> = ({
+const ApprovalProjectForm: FC<ApprovalProjectFormProps> = ({
   form,
   project,
   onSubmit,
@@ -172,7 +171,7 @@ const ProjectForm: FC<ProjectFormProps> = ({
                   <FormLabel>Title</FormLabel>
                   <FormControl>
                     <Input
-                      //   disabled={true}
+                      disabled={true}
                       className=""
                       placeholder=""
                       {...field}
@@ -193,6 +192,7 @@ const ProjectForm: FC<ProjectFormProps> = ({
                     <FormControl>
                       {field.value === "" ? (
                         <Input
+                          disabled={true}
                           className=""
                           placeholder="Not yet set reason"
                           {...field}
@@ -218,7 +218,7 @@ const ProjectForm: FC<ProjectFormProps> = ({
                   <FormLabel>Nama Customer</FormLabel>
                   <FormControl>
                     <Input
-                      //   disabled={true}
+                      disabled={true}
                       type="string"
                       className=""
                       placeholder=""
@@ -267,7 +267,7 @@ const ProjectForm: FC<ProjectFormProps> = ({
                             placeholder=""
                             {...field}
                           />
-
+                          {/* 
                           <AlertDialog>
                             <AlertDialogTrigger asChild>
                               <div className=" flex">
@@ -330,25 +330,7 @@ const ProjectForm: FC<ProjectFormProps> = ({
                                 <AlertDialogFooter>
                                   <AlertDialogCancel
                                     onClick={() => {
-                                      if (isRevUp) {
-                                        form.setValue(
-                                          "numRevisi",
-                                          (numRevision ?? 0) - 1,
-                                          {
-                                            shouldValidate: true,
-                                          }
-                                        );
-                                      } else {
-                                        if (numRevision !== -2) {
-                                          form.setValue(
-                                            "numRevisi",
-                                            (numRevision ?? 0) + 1,
-                                            {
-                                              shouldValidate: true,
-                                            }
-                                          );
-                                        }
-                                      }
+                                      alert("Could not Do That");
                                     }}
                                   >
                                     Cancel
@@ -365,7 +347,7 @@ const ProjectForm: FC<ProjectFormProps> = ({
                                 </AlertDialogFooter>
                               </AlertDialogContent>
                             )}
-                          </AlertDialog>
+                          </AlertDialog> */}
                         </div>
                       </FormControl>
                       <FormMessage />
@@ -373,6 +355,7 @@ const ProjectForm: FC<ProjectFormProps> = ({
                   )}
                 />
                 <FormField
+                  disabled={true}
                   control={form.control}
                   name="valuasiProject"
                   render={({ field }) => (
@@ -430,6 +413,7 @@ const ProjectForm: FC<ProjectFormProps> = ({
                   <FormLabel>Alamat Kantor</FormLabel>
                   <FormControl>
                     <Input
+                      disabled={true}
                       type="string"
                       className=""
                       placeholder=""
@@ -451,7 +435,7 @@ const ProjectForm: FC<ProjectFormProps> = ({
                   <FormControl>
                     <Input
                       type="string"
-                      //   disabled={true}
+                      disabled={true}
                       className=""
                       placeholder=""
                       {...field}
@@ -471,23 +455,28 @@ const ProjectForm: FC<ProjectFormProps> = ({
                   <FormControl>
                     <div className="flex items-center">
                       <Input
-                        //   disabled={true}
+                        disabled={true}
                         type="string"
                         className=""
                         placeholder=""
                         {...field}
                       />
 
-                      {status?.toLocaleLowerCase() !== "create" && (
-                        <div
-                          className="bg-light_green text-center font-medium cursor-pointer text-black text-sm w-1/3 rounded-lg p-2 ml-2"
-                          onClick={() => {
-                            resendEmail();
-                          }}
-                        >
-                          Resend Email
-                        </div>
-                      )}
+                      {/* <div
+                        onClick={() => console.log("send email")}
+                        className=" cursor-pointer text-3xl m-2 self-center bg-light_green p-1 rounded-lg"
+                      >
+                        Resend
+                      </div> */}
+
+                      <div
+                        className="bg-light_green text-center font-medium cursor-pointer text-black text-sm w-1/3 rounded-lg p-2 ml-2"
+                        onClick={() => {
+                          alert("Cant Do That");
+                        }}
+                      >
+                        Resend Email
+                      </div>
                     </div>
                   </FormControl>
 
@@ -503,7 +492,7 @@ const ProjectForm: FC<ProjectFormProps> = ({
                   <FormLabel>Contact Person</FormLabel>
                   <FormControl>
                     <Input
-                      //   disabled={true}
+                      disabled={true}
                       type="string"
                       className=""
                       placeholder=""
@@ -522,4 +511,4 @@ const ProjectForm: FC<ProjectFormProps> = ({
   );
 };
 
-export default ProjectForm;
+export default ApprovalProjectForm;

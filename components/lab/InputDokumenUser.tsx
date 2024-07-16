@@ -47,64 +47,74 @@ const InputDokumenUser: FC<inputDokumenUserProps> = ({
   userId,
   projectId,
   choiceParams,
-  status
+  status,
 }) => {
   const router = useRouter();
   const { toast } = useToast();
   // State declaration
-  const [lastSelectedUnits, setLastSelectedUnits] = useState<Record<string, string>>({});
+  const [lastSelectedUnits, setLastSelectedUnits] = useState<
+    Record<string, string>
+  >({});
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [formData, setFormData] = useState<z.infer<typeof labInputDocumentValidation>>();
-  
+  const [formData, setFormData] =
+    useState<z.infer<typeof labInputDocumentValidation>>();
+
   const {
     register,
     handleSubmit,
     formState: { errors },
     setValue,
-    getValues
+    getValues,
   } = useLabForm();
 
   // For default values result
-useEffect(() => {
-  sample.forEach((inputDocument, sampleId) => {
-    inputDocument.parameters.forEach((parameter, parameterId) => {
-      const defaultValue = String(parameter.result);
-      if (defaultValue === "undefined" || defaultValue === "null") {
-        return;
-      }
-      setValue(`sample.${sampleId}.parameter.${parameterId}.result`, defaultValue);
-    });
-  });
-}, [sample, setValue]);
-
-// For default values unit and method
-useEffect(() => {
-  const updatedLastSelectedUnits: Record<string, string> = {};
-
-  // Loop through each parameter in the sample
-  sample.forEach((inputDocument) => {
-    inputDocument.parameters.forEach((parameter) => {
-      const { name, unit, method } = parameter;
-      const lastUnit = lastSelectedUnits[name]; // Get last selected unit
-      //set value for method
-      setValue(`sample.${sample.indexOf(inputDocument)}.parameter.${inputDocument.parameters.indexOf(parameter)}.method`, method);
-
-      // Check if unit and method are defined
-      if (unit && method) {
-        // Check if last selected unit is valid and still available in options
-        if (lastUnit === unit) {
-          updatedLastSelectedUnits[name] = lastUnit; // Use last selected unit as default
-        } else {
-          updatedLastSelectedUnits[name] = unit; // Use unit as default
+  useEffect(() => {
+    sample.forEach((inputDocument, sampleId) => {
+      inputDocument.parameters.forEach((parameter, parameterId) => {
+        const defaultValue = String(parameter.result);
+        if (defaultValue === "undefined" || defaultValue === "null") {
+          return;
         }
-      }
+        setValue(
+          `sample.${sampleId}.parameter.${parameterId}.result`,
+          defaultValue
+        );
+      });
     });
-  });
+  }, [sample, setValue]);
 
-  // Update state with the new last selected units
-  setLastSelectedUnits(updatedLastSelectedUnits);
-}, [sample]); // Only re-run the effect when sample changes
+  // For default values unit and method
+  useEffect(() => {
+    const updatedLastSelectedUnits: Record<string, string> = {};
 
+    // Loop through each parameter in the sample
+    sample.forEach((inputDocument) => {
+      inputDocument.parameters.forEach((parameter) => {
+        const { name, unit, method } = parameter;
+        const lastUnit = lastSelectedUnits[name]; // Get last selected unit
+        //set value for method
+        setValue(
+          `sample.${sample.indexOf(
+            inputDocument
+          )}.parameter.${inputDocument.parameters.indexOf(parameter)}.method`,
+          method
+        );
+
+        // Check if unit and method are defined
+        if (unit && method) {
+          // Check if last selected unit is valid and still available in options
+          if (lastUnit === unit) {
+            updatedLastSelectedUnits[name] = lastUnit; // Use last selected unit as default
+          } else {
+            updatedLastSelectedUnits[name] = unit; // Use unit as default
+          }
+        }
+      });
+    });
+
+    // Update state with the new last selected units
+    setLastSelectedUnits(updatedLastSelectedUnits);
+  }, [sample]); // Only re-run the effect when sample changes
 
   function mergeData(
     data: [InputDocumentType],
@@ -139,7 +149,7 @@ useEffect(() => {
 
   async function handleConfirmSubmit() {
     if (!formData) return;
-  
+
     const answer = mergeData(sample, formData);
     const response = await submitLab(projectId, answer);
 
@@ -148,7 +158,7 @@ useEffect(() => {
         title: "Submitted",
         description: "Thank you for submitting!",
       });
-  
+
       router.push("/lab/dashboard");
     } else {
       toast({
@@ -191,28 +201,32 @@ useEffect(() => {
                       {parameter.name}
                     </TableCell>
                     <TableCell>
-                    <select
-                      disabled={status === "IN REVIEW BY SPV"}
-                      className="w-full"
-                      {...register(
-                        `sample.${sampleId}.parameter.${parameterId}.unit`,
-                        {
-                          setValueAs: (value: any) => (value === "Select Unit" ? "" : value),
-                        }
-                      )}
-                    >
-                      <option className="w-full p-4 rounded bg-gray-100 shadow-none">
-                      { parameter.unit ?? "Select Unit"}
-                      </option>
-                      {choiceParams
-                        .find((param) => param.param === parameter.name)
-                        ?.unit.filter((unit) => !parameter.unit || !parameter.unit.includes(unit)) // Use optional chaining operator to handle undefined
-                        .map((unit) => (
-                          <option key={unit} value={unit}>
-                            {unit}
-                          </option>
-                        ))}
-                    </select>
+                      <select
+                        disabled={status === "IN REVIEW BY SPV"}
+                        className="w-full"
+                        {...register(
+                          `sample.${sampleId}.parameter.${parameterId}.unit`,
+                          {
+                            setValueAs: (value: any) =>
+                              value === "Select Unit" ? "" : value,
+                          }
+                        )}
+                      >
+                        <option className="w-full p-4 rounded bg-gray-100 shadow-none">
+                          {parameter.unit ?? "Select Unit"}
+                        </option>
+                        {choiceParams
+                          .find((param) => param.param === parameter.name)
+                          ?.unit.filter(
+                            (unit) =>
+                              !parameter.unit || !parameter.unit.includes(unit)
+                          ) // Use optional chaining operator to handle undefined
+                          .map((unit) => (
+                            <option key={unit} value={unit}>
+                              {unit}
+                            </option>
+                          ))}
+                      </select>
                       <div className="text-xs text-red-600 pt-3 text-center">
                         {
                           errors.sample?.[sampleId]?.parameter?.[parameterId]
@@ -233,17 +247,29 @@ useEffect(() => {
                                 onChange={(e) => {
                                   const isChecked = e.target.checked;
                                   const selectedMethod = e.target.value;
-                                  const currentMethods = getValues(`sample.${sampleId}.parameter.${parameterId}.method`) || [];
+                                  const currentMethods =
+                                    getValues(
+                                      `sample.${sampleId}.parameter.${parameterId}.method`
+                                    ) || [];
                                   let updatedMethods;
                                   if (isChecked) {
-                                    updatedMethods = [...currentMethods, selectedMethod];
+                                    updatedMethods = [
+                                      ...currentMethods,
+                                      selectedMethod,
+                                    ];
                                   } else {
-                                    updatedMethods = currentMethods.filter((m) => m !== selectedMethod);
+                                    updatedMethods = currentMethods.filter(
+                                      (m) => m !== selectedMethod
+                                    );
                                   }
-                                  setValue(`sample.${sampleId}.parameter.${parameterId}.method`, updatedMethods);
+                                  setValue(
+                                    `sample.${sampleId}.parameter.${parameterId}.method`,
+                                    updatedMethods
+                                  );
                                 }}
-                                
-                                defaultChecked={parameter.method?.includes(method)}
+                                defaultChecked={parameter.method?.includes(
+                                  method
+                                )}
                                 className="mr-2"
                               />
                               {method}
@@ -251,16 +277,21 @@ useEffect(() => {
                           );
                         })}
                       <div className="text-xs text-red-600 pt-3 text-center">
-                        {errors.sample?.[sampleId]?.parameter?.[parameterId]?.method?.message}
+                        {
+                          errors.sample?.[sampleId]?.parameter?.[parameterId]
+                            ?.method?.message
+                        }
                       </div>
                     </TableCell>
                     <TableCell className="text-right">
-                    <Input
-                      type="text"
-                      disabled={status === "IN REVIEW BY SPV"}
-                      className="bg-white"
-                      {...register(`sample.${sampleId}.parameter.${parameterId}.result`)}
-                    />
+                      <Input
+                        type="text"
+                        disabled={status === "IN REVIEW BY SPV"}
+                        className="bg-white"
+                        {...register(
+                          `sample.${sampleId}.parameter.${parameterId}.result`
+                        )}
+                      />
                       {/* <Input
                         type="text"
                         className="bg-gray-100"
@@ -283,8 +314,15 @@ useEffect(() => {
           ))}
         </div>
         <div className="flex justify-center bottom-0 mt-24 text-lg">
-          <Button disabled={status === "IN REVIEW BY SPV"} className="w-2/3 p-6 bg-light_brown hover:bg-dark_brown" type="button" onClick={handleSubmit(onSubmit)}>
-            {status === "IN REVIEW BY SPV" ? "Verifying by SPV, can't edit" : "Submit"}
+          <Button
+            disabled={status === "IN REVIEW BY SPV"}
+            className="w-2/3 p-6 bg-light_brown hover:bg-dark_brown"
+            type="button"
+            onClick={handleSubmit(onSubmit)}
+          >
+            {status === "IN REVIEW BY SPV"
+              ? "Verifying by SPV, can't edit"
+              : "Submit"}
           </Button>
         </div>
         <AlertDialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
@@ -296,8 +334,12 @@ useEffect(() => {
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
-              <AlertDialogCancel onClick={() => setIsDialogOpen(false)}>Cancel</AlertDialogCancel>
-              <AlertDialogAction onClick={handleConfirmSubmit}>Continue</AlertDialogAction>
+              <AlertDialogCancel onClick={() => setIsDialogOpen(false)}>
+                Cancel
+              </AlertDialogCancel>
+              <AlertDialogAction onClick={handleConfirmSubmit}>
+                Continue
+              </AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>

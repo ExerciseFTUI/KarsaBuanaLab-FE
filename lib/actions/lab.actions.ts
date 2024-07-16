@@ -6,14 +6,15 @@ import { Project } from "../models/project.model";
 import { Sampling } from "../models/sampling.model";
 import { revalidatePath } from "next/cache";
 import {
+  LabDashboardPageColumnsType,
   LabDashboardType,
   LabInputDokumenAnswerType,
   sampleAnswer,
 } from "../type";
 
-const apiBaseUrl = process.env.API_BASE_URL + "/lab/" || "http://localhost:5000/lab/";
+const apiBaseUrl =
+  process.env.API_BASE_URL + "/lab/" || "http://localhost:5000/lab/";
 const clientBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || "";
-
 
 export async function getLabProjects(): Promise<BaseApiResponse<Project[]>> {
   try {
@@ -22,6 +23,18 @@ export async function getLabProjects(): Promise<BaseApiResponse<Project[]>> {
     return response.data as BaseApiResponse<Project[]>;
   } catch (error) {
     return [] as unknown as BaseApiResponse<Project[]>;
+  }
+}
+
+export async function labDashboard(): Promise<
+  BaseApiResponse<LabDashboardPageColumnsType[]>
+> {
+  try {
+    const response = await axios.post(apiBaseUrl + "get-spv-dashboard");
+
+    return response.data as BaseApiResponse<LabDashboardPageColumnsType[]>;
+  } catch (error) {
+    return [] as unknown as BaseApiResponse<LabDashboardPageColumnsType[]>;
   }
 }
 
@@ -72,15 +85,15 @@ export async function saveSample(
   status: string
 ): Promise<BaseApiResponse<Project>> {
   try {
-    
     const response = await axios.post(
-      apiBaseUrl + "change-lab-status", 
+      apiBaseUrl + "change-lab-status",
       // `http://localhost:8080/lab/change-lab-status`,
-    {
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      projectId,
-      status,
-    });
+      {
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        projectId,
+        status,
+      }
+    );
 
     revalidatePath(`/lab/dashboard/`);
 
@@ -90,10 +103,10 @@ export async function saveSample(
   }
 }
 
-export const getProjectLab = async () : Promise<Project[]> => {
+export const getProjectLab = async (): Promise<Project[]> => {
   try {
     const response = await axios.get(apiBaseUrl);
-    
+
     return response.data.result; // Access 'result' field
   } catch (error: any) {
     console.error(`Error getting project :`, error.message);
@@ -103,16 +116,14 @@ export const getProjectLab = async () : Promise<Project[]> => {
 
 export const getProjectBy = async (userId: string): Promise<any> => {
   try {
-    const response = await axios.get(
-      apiBaseUrl + "get-project-by-lab", 
-      {
-        data: {
-          userId: userId,
-        },
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-      });
+    const response = await axios.get(apiBaseUrl + "get-project-by-lab", {
+      data: {
+        userId: userId,
+      },
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+    });
     return response.data.labAssignedProjects;
   } catch (error: any) {
     console.error(`Error getting project with ID ${userId}:`, error.message);
@@ -126,12 +137,13 @@ export const submitLab = async (
 ): Promise<any> => {
   try {
     const response = await axios.post(
-      apiBaseUrl + "submit-lab", 
-      // `http://localhost:8080/lab/submit-lab`, 
-    {
-      projectId,
-      samples,
-    });
+      apiBaseUrl + "submit-lab",
+      // `http://localhost:8080/lab/submit-lab`,
+      {
+        projectId,
+        samples,
+      }
+    );
 
     revalidatePath(`/lab/dashboard/${projectId}`);
 
