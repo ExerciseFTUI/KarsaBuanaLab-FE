@@ -30,7 +30,10 @@ export default async function Home() {
       if (project.sampling_list) {
         project.sampling_list.forEach((sample: Sampling) => {
           // lab_assigned_to is array
-          if (sample.lab_assigned_to.includes(session.user.id)) {
+          if (
+            sample.lab_assigned_to &&
+            sample.lab_assigned_to.includes(session.user.id)
+          ) {
             if (sample.status === "REVISION") {
               project.lab_sample_status = "REVISION";
             } else if (sample.status === "WAITING") {
