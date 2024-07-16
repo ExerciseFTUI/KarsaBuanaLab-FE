@@ -103,7 +103,7 @@ const InventoryForm: FC<InventoryFormProps> = ({
                       : "opacity-50"
                   }  focus:opacity-100 placeholder:text-light_brown text-light_brown`}
                   {...field}
-                  placeholder="Add your description here"
+                  placeholder="Merk"
                 />
               </FormControl>
 

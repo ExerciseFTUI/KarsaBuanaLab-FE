@@ -68,7 +68,7 @@ const InventoryPIC: FC<InventoryPICProps> = ({
       .rows.map((r) => allUsers[r.index]._id);
 
     setAssignedUsers(assigned);
-  }, [table.getFilteredSelectedRowModel().rows.length]);
+  }, [table.getFilteredSelectedRowModel().rows[0]]);
 
   return (
     <div className="w-full">

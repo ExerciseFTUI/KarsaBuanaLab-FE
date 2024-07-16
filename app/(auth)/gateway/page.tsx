@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 
 export default async function GatewayPage() {
   const data = await getSessionServer();
+  //TODO: Handle Manajer Teknis
   if (data?.user.division) {
     data.user.division.toLowerCase() === "marketing"
       ? redirect("/marketing")

@@ -234,6 +234,7 @@ const RegisterForm: FC<RegisterFormProps> = ({ isUpdate, account }) => {
                         <DropdownMenuSeparator />
                         <DropdownMenuItem
                           onSelect={() => {
+                            //TODO: change thisssss
                             field.onChange("ADMIN");
                             form.setValue("division", "Marketing");
                           }}

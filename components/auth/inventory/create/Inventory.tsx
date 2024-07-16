@@ -15,10 +15,10 @@ import {
   createInventory,
   updateInventory,
 } from "@/lib/actions/inventory.action";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { addInventoryFile } from "@/lib/actions/inventory.client.action";
 import { Button } from "@/components/ui/button";
-import { DevTool } from "@hookform/devtools";
+import LoadingScreen from "@/components/LoadingScreen";
 
 interface InventoryProps {
   allUsers: InventoryUser[];
@@ -36,6 +36,9 @@ const InventoryDetail: FC<InventoryProps> = ({
   allVendor,
 }) => {
   const router = useRouter();
+  const path = usePathname();
+
+  const [isLoading, setIsLoading] = useState(false);
 
   //Document Section
   const [uploadedFiles, setUploadedFiles] = useState([]);
@@ -48,7 +51,7 @@ const InventoryDetail: FC<InventoryProps> = ({
     ? inventory?.assigned_user
     : [];
 
-  const inventoryCondition = inventory?.category || inventory?.condition;
+  const inventoryCondition = inventory?.condition;
 
   //Form Section
   const form = useForm<z.infer<typeof inventoryValidation>>({
@@ -83,8 +86,7 @@ const InventoryDetail: FC<InventoryProps> = ({
       current_vendor: values.vendor,
     };
 
-    //Dont forget to check the date if it is null
-    // alert(JSON.stringify(body, null, 2));
+    setIsLoading(true);
 
     const isSuccess = await createInventory(body);
 
@@ -94,6 +96,7 @@ const InventoryDetail: FC<InventoryProps> = ({
     } else {
       alert("Failed to create");
     }
+    setIsLoading(false);
   }
 
   async function onSubmitUpdate(values: z.infer<typeof inventoryValidation>) {
@@ -101,29 +104,27 @@ const InventoryDetail: FC<InventoryProps> = ({
     let isAddFileSuccess;
 
     if (inventory) {
-      if (isChangingValue(values)) {
-        const body = {
-          id: inventory?._id,
-          updates: {
-            tools_name: values.tool,
-            description: values.description,
-            last_maintenance: values.deadline?.toISOString(),
-            assigned_user: assignedUsers,
-            maintenance_every: values.maintenanceEvery,
-            category: values.category,
-            condition: values.category,
-            current_vendor: values.vendor,
-          },
-        };
+      const body = {
+        id: inventory?._id,
+        updates: {
+          tools_name: values.tool,
+          description: values.description,
+          last_maintenance: values.deadline?.toISOString(),
+          assigned_user: assignedUsers,
+          maintenance_every: values.maintenanceEvery,
+          category: values.category,
+          condition: values.category,
+          current_vendor: values.vendor,
+        },
+      };
 
-        alert("Updating Inventory");
+      setIsLoading(true);
 
-        isUpdateFormSuccess = await updateInventory(body);
+      isUpdateFormSuccess = await updateInventory(body);
 
-        if (!isUpdateFormSuccess) {
-          alert("Failed to update inventory form");
-          return;
-        }
+      if (!isUpdateFormSuccess) {
+        alert("Failed to update inventory form");
+        return;
       }
 
       if (uploadedFiles.length > 0) {
@@ -137,49 +138,85 @@ const InventoryDetail: FC<InventoryProps> = ({
 
       alert("Successfully updating inventory");
       setUploadedFiles([]);
-      router.refresh();
+      setIsLoading(false);
+      router.push(getFirstTwoWords(path));
     }
   }
 
-  async function uploadFile() {
-    try {
-      if (uploadedFiles.length > 0 && inventory) {
-        // isAddFileSuccess = await addInventoryFile(inventory._id, uploadedFiles);
-        const isAddFileSuccess = await addInventoryFile(
-          inventory._id,
-          uploadedFiles
-        );
+  // async function uploadFile() {
+  //   try {
+  //     if (uploadedFiles.length > 0 && inventory) {
+  //       // isAddFileSuccess = await addInventoryFile(inventory._id, uploadedFiles);
+  //       const isAddFileSuccess = await addInventoryFile(
+  //         inventory._id,
+  //         uploadedFiles
+  //       );
 
-        if (!isAddFileSuccess) {
-          alert("Failed to add file");
-          return;
-        }
+  //       if (!isAddFileSuccess) {
+  //         alert("Failed to add file");
+  //         return;
+  //       }
 
-        alert("Success Adding File");
-        setUploadedFiles([]);
-        router.refresh();
-      }
-    } catch (error) {
-      alert("Failed to add file");
+  //       alert("Success Adding File");
+  //       setUploadedFiles([]);
+  //       router.refresh();
+  //     }
+  //   } catch (error) {
+  //     alert("Failed to add file");
+  //   }
+  // }
+
+  // function isChangingValue(values: z.infer<typeof inventoryValidation>) {
+  //   console.log("values.tool:", values.tool);
+  //   console.log("inventory?.tools_name:", inventory?.tools_name);
+
+  //   console.log("values.description:", values.description);
+  //   console.log("inventory?.description:", inventory?.description);
+
+  //   console.log("values.deadline:", values.deadline);
+  //   console.log("inventoryDeadline:", inventoryDeadline);
+
+  //   console.log("values.category:", values.category);
+  //   console.log("inventory?.condition:", inventory?.condition);
+
+  //   console.log("values.maintenanceEvery:", values.maintenanceEvery);
+  //   console.log("inventory?.maintenance_every:", inventory?.maintenance_every);
+
+  //   console.log("values.vendor.toLowerCase():", values.vendor.toLowerCase());
+  //   console.log(
+  //     "inventory?.current_vendor.toLowerCase():",
+  //     inventory?.current_vendor?.toLowerCase()
+  //   );
+  //   if (
+  //     values.tool !== inventory?.tools_name ||
+  //     values.description !== inventory?.description ||
+  //     values.deadline !== inventoryDeadline ||
+  //     values.category !== inventory?.condition ||
+  //     values.maintenanceEvery !== inventory?.maintenance_every ||
+  //     values.vendor.toLowerCase() !== inventory?.current_vendor.toLowerCase()
+  //   ) {
+  //     return true;
+  //   }
+  //   return false;
+  // }
+
+  function getFirstTwoWords(path: string) {
+    // Split the path by '/'
+    const parts = path.split("/");
+
+    // Check if there are at least two parts after splitting
+    if (parts.length >= 3) {
+      // Return the first two parts with a leading '/'
+      return `/${parts[1]}/${parts[2]}`;
+    } else {
+      // If there are less than two parts, return the original path
+      return path;
     }
-  }
-
-  function isChangingValue(values: z.infer<typeof inventoryValidation>) {
-    if (
-      values.tool !== inventory?.tools_name ||
-      values.description !== inventory?.description ||
-      values.deadline !== inventoryDeadline ||
-      values.category !== inventory?.category ||
-      values.maintenanceEvery !== inventory?.maintenance_every ||
-      values.vendor.toLowerCase() !== inventory?.current_vendor.toLowerCase()
-    ) {
-      return true;
-    }
-    return false;
   }
 
   return (
     <div className="flex gap-6 max-md:flex-col max-md:items-center w-full">
+      {isLoading && <LoadingScreen text="Processing..." />}
       <div className="flex flex-col w-full xl:w-2/5 sm:border-r-light_brown sm:border-r-2 border-b-2 border-b-light_brown sm:border-b-0 px-5 xl:min-h-[50vh]">
         <h1 className="text-2xl font-bold text-dark_brown capitalize mb-8">
           Tools Details
@@ -213,7 +250,6 @@ const InventoryDetail: FC<InventoryProps> = ({
           Submit
         </button>
       </div>
-      <DevTool control={form.control} /> {/* set up the dev tool */}
     </div>
   );
 };
