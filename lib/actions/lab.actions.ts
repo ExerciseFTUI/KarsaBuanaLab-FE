@@ -165,20 +165,14 @@ export const submitLab = async (
 };
 
 export const submitLabRev = async (
-  projectId: string,
   sampleId: string,
   samples: sampleAnswer
 ): Promise<any> => {
   try {
-    console.log("projectId", projectId);
-
-    console.log("samples", samples);
-
     const response = await axios.post(
       apiBaseUrl + "submit-lab-rev",
       // `http://localhost:8080/lab/submit-lab-rev`,
       {
-        projectId,
         sampleId,
         samples,
       }
@@ -186,7 +180,7 @@ export const submitLabRev = async (
 
     console.log("response", response.data);
 
-    revalidatePath(`/lab/dashboard/${projectId}`);
+    revalidatePath(`/lab/dashboard/${sampleId}`);
 
     return response.data;
   } catch (error: any) {

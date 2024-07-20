@@ -33,14 +33,14 @@ import { useRouter } from "next/navigation";
 interface inputDokumenUserProps {
   sample: InputDocumentType;
   userId: string;
-  projectId: string;
+  sampleId: string;
   choiceParams: [labInputChoice];
 }
 
 const InputDokumenUser: FC<inputDokumenUserProps> = ({
   sample,
   userId,
-  projectId,
+  sampleId,
   choiceParams,
 }) => {
   const router = useRouter();
@@ -65,6 +65,16 @@ const InputDokumenUser: FC<inputDokumenUserProps> = ({
     getValues,
   } = useLabForm();
 
+  // Initialize form values
+  useEffect(() => {
+    if (sample) {
+      sample.parameters.forEach((param, index) => {
+        // setValue(`sample.param.${index}.unit`, param.unit ?? "");
+        setValue(`sample.param.${index}.method`, param.method ?? []);
+      });
+    }
+  }, [sample, setValue]);
+
   function mergeData(
     data: InputDocumentType,
     unitMethodResult: {
@@ -80,8 +90,8 @@ const InputDokumenUser: FC<inputDokumenUserProps> = ({
       sample_name: data.sampleName,
       param: data.parameters.map((param, paramId) => ({
         param: param.name,
-        unit: unitMethodResult.sample.param[paramId].unit ?? "",
-        method: unitMethodResult.sample.param[paramId].method ?? [],
+        unit: unitMethodResult.sample.param[paramId].unit ?? param.unit,
+        method: unitMethodResult.sample.param[paramId].method ?? param.method,
       })),
     };
 
@@ -97,12 +107,7 @@ const InputDokumenUser: FC<inputDokumenUserProps> = ({
     if (!formData) return;
 
     const answer = mergeData(sample, formData);
-    // return;
-    const response = await submitLabRev(
-      "666af08b70e3b34550701155",
-      projectId,
-      answer
-    );
+    const response = await submitLabRev(sampleId, answer);
 
     if (response) {
       toast({

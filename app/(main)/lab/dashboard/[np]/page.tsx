@@ -59,11 +59,8 @@ export default async function LabDetails({
 
   // ADMIN
   if (session && session.user.role !== "USER") {
-    sample = await getSampleForLab("666af08b70e3b34550701155", params.np);
-    chooseParams = await getChoiceParamsRev(
-      "666af08b70e3b34550701155",
-      params.np
-    );
+    sample = await getSampleForLab(params.np);
+    chooseParams = await getChoiceParamsRev(params.np);
   }
 
   // STAFF
@@ -151,7 +148,7 @@ export default async function LabDetails({
               <InputDokumenUser
                 sample={sample}
                 userId={session ? session.user.id : ""}
-                projectId={params.np}
+                sampleId={params.np}
                 choiceParams={chooseParams}
                 // status={project.status}
               />

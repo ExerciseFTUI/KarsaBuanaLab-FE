@@ -280,17 +280,13 @@ export const getChoiceParams = async (
   }
 };
 
-export const getChoiceParamsRev = async (
-  projectId: string,
-  sampleId: string
-): Promise<any> => {
+export const getChoiceParamsRev = async (sampleId: string): Promise<any> => {
   try {
     const response = await axios.get(
       `${apiBaseUrl}/sampling/get-parameter-rev`,
       // `http://localhost:8080/sampling/get-parameter-rev`,
       {
         data: {
-          projectId: projectId,
           sampleId: sampleId,
         },
         headers: {
@@ -301,22 +297,18 @@ export const getChoiceParamsRev = async (
 
     return response.data.result; // Access 'result' field
   } catch (error: any) {
-    console.error(`Error getting project with ID ${projectId}:`, error.message);
+    console.error(`Error getting sample with ID ${sampleId}:`, error.message);
     return null as unknown;
   }
 };
 
-export const getSampleForLab = async (
-  projectId: string,
-  sampleId: string
-): Promise<any> => {
+export const getSampleForLab = async (sampleId: string): Promise<any> => {
   try {
     const response = await axios.get(
       `${apiBaseUrl}/sampling/get-input-sample-for-lab`,
       // `http://localhost:8080/sampling/get-input-sample-for-lab`,
       {
         data: {
-          projectId: projectId,
           sampleId: sampleId,
         },
         headers: {
@@ -327,7 +319,7 @@ export const getSampleForLab = async (
 
     return response.data.result; // Access 'result' field
   } catch (error: any) {
-    console.error(`Error getting project with ID ${projectId}:`, error.message);
+    console.error(`Error getting sample with ID ${sampleId}:`, error.message);
     return null as unknown;
   }
 };
