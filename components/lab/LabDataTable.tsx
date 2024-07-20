@@ -56,14 +56,16 @@ import {
   columns,
 } from "@/components/columns";
 import { LabDashboardPageColumnsType, LabDataType } from "@/lib/type";
+import { is } from "date-fns/locale";
 
 interface LabDataTableProps {
   data: LabDashboardPageColumnsType[];
   link: string;
   idUser?: string;
+  isLab?: boolean;
 }
 
-const LabDataTable: FC<LabDataTableProps> = ({ data, link, idUser }) => {
+const LabDataTable: FC<LabDataTableProps> = ({ data, link, idUser, isLab }) => {
   const router = useRouter();
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -77,7 +79,7 @@ const LabDataTable: FC<LabDataTableProps> = ({ data, link, idUser }) => {
     columns: LabDashboardRev,
     // columns:
     //   idUser !== undefined
-    //     ? LabDashboardPageColumnsUser
+    // ? LabDashboardPageColumnsUser
     //     : LabDashboardPageColumns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -102,10 +104,20 @@ const LabDataTable: FC<LabDataTableProps> = ({ data, link, idUser }) => {
         <Input
           placeholder="Search Project Title"
           value={
-            (table.getColumn("project_name")?.getFilterValue() as string) ?? ""
+            isLab
+              ? (table.getColumn("sample_name")?.getFilterValue() as string) ??
+                ""
+              : (table.getColumn("project_name")?.getFilterValue() as string) ??
+                ""
           }
           onChange={(event) => {
-            table.getColumn("project_name")?.setFilterValue(event.target.value);
+            isLab
+              ? table
+                  .getColumn("sample_name")
+                  ?.setFilterValue(event.target.value)
+              : table
+                  .getColumn("project_name")
+                  ?.setFilterValue(event.target.value);
           }}
           className="max-w-sm pl-10"
         />
