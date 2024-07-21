@@ -30,8 +30,18 @@ export async function labDashboard(): Promise<
   BaseApiResponse<LabDashboardPageColumnsType[]>
 > {
   try {
-    const response = await axios.post(apiBaseUrl + "get-spv-dashboard");
+    const response = await axios.get(apiBaseUrl + "get-spv-dashboard");
+    return response.data as BaseApiResponse<LabDashboardPageColumnsType[]>;
+  } catch (error) {
+    return [] as unknown as BaseApiResponse<LabDashboardPageColumnsType[]>;
+  }
+}
 
+export async function staffDashboard(): Promise<
+  BaseApiResponse<LabDashboardPageColumnsType[]>
+> {
+  try {
+    const response = await axios.get(apiBaseUrl + "get-staff-dashboard");
     return response.data as BaseApiResponse<LabDashboardPageColumnsType[]>;
   } catch (error) {
     return [] as unknown as BaseApiResponse<LabDashboardPageColumnsType[]>;
@@ -146,6 +156,29 @@ export const submitLab = async (
     );
 
     revalidatePath(`/lab/dashboard/${projectId}`);
+
+    return response.data;
+  } catch (error: any) {
+    console.error(`Error submitting input document:`, error.message);
+    return null as unknown;
+  }
+};
+
+export const submitLabRev = async (
+  sampleId: string,
+  samples: sampleAnswer
+): Promise<any> => {
+  try {
+    const response = await axios.post(
+      apiBaseUrl + "submit-lab-rev",
+      // `http://localhost:8080/lab/submit-lab-rev`,
+      {
+        sampleId,
+        samples,
+      }
+    );
+
+    revalidatePath(`/lab/dashboard/${sampleId}`);
 
     return response.data;
   } catch (error: any) {

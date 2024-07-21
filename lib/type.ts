@@ -96,6 +96,7 @@ export type ProjectLHPType = {
 };
 
 export type LabDashboardPageColumnsType = {
+  project_id: string;
   _id: string;
   sample_number: string;
   sample_name: string;
@@ -281,7 +282,7 @@ export type DocumentType = {
 
 export type InputDocumentType = {
   sampleName: string;
-  asignedTo: string;
+  // asignedTo: string;
   parameters: [ParameterType];
 };
 
@@ -289,7 +290,7 @@ export type ParameterType = {
   name: string;
   unit: string;
   method: string[];
-  result: string;
+  // analysis_status: string;
 };
 
 export type labInputChoice = {
@@ -302,7 +303,7 @@ export type sampleAnswer = {
   sample_name: string;
   param: {
     param: string;
-    result: string;
+    // result: string;
     unit: string;
     method: string[];
   }[];

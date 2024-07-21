@@ -1056,6 +1056,10 @@ export const LabDashboardRev: ColumnDef<LabDashboardPageColumnsType>[] = [
       return <div className="">{row.getValue("deadline")}</div>;
     },
   },
+  {
+    accessorKey: "_id",
+    enableHiding: true,
+  },
 ];
 
 export const LabDashboardPageColumns: ColumnDef<LabDataType>[] = [
