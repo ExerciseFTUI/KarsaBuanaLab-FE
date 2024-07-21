@@ -178,8 +178,6 @@ export const submitLabRev = async (
       }
     );
 
-    console.log("response", response.data);
-
     revalidatePath(`/lab/dashboard/${sampleId}`);
 
     return response.data;
