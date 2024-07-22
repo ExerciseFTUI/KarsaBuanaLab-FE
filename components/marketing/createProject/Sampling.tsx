@@ -56,7 +56,7 @@ const Sampling: FC<SamplingProps> = ({
   baseSamples,
 }) => {
   const [openModal, setOpenModal] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
   const [isLoading, startTranstition] = useTransition();
   const { toast } = useToast();
 

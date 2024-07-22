@@ -93,7 +93,7 @@ const ReceiveDataTable: FC<ReceiveDataTableProps> = ({ data }) => {
       <div className="flex items-center py-4">
         <BiFilterAlt className="text-xl translate-x-8" />
         <Input
-          placeholder="Filter Projects on Receive Stage"
+          placeholder="Filter Projects On Draft LHP"
           value={
             (table.getColumn("project_name")?.getFilterValue() as string) ?? ""
           }
@@ -102,57 +102,17 @@ const ReceiveDataTable: FC<ReceiveDataTableProps> = ({ data }) => {
           }
           className="max-w-sm bg-pastel_moss_green pl-10"
         />
-
-        {/* Column Visibility */}
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button
-              variant="outline"
-              className="ml-auto text-moss_green focus-visible:ring-0 hover:bg-transparent hover:text-moss_green border-pastel_moss_green border-2 shadow-none"
-            >
-              Columns <ChevronDown className="ml-2 h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-
-          <DropdownMenuContent align="end" className="text-moss_green">
-            {table
-              .getAllColumns()
-              .filter((column) => column.getCanHide())
-              .map((column) => {
-                return (
-                  column.id !== "_id" && (
-                    <DropdownMenuCheckboxItem
-                      key={column.id}
-                      className="capitalize"
-                      checked={column.getIsVisible()}
-                      onCheckedChange={(value) =>
-                        column.toggleVisibility(!!value)
-                      }
-                    >
-                      {column.id}
-                    </DropdownMenuCheckboxItem>
-                  )
-                );
-              })}
-          </DropdownMenuContent>
-        </DropdownMenu>
       </div>
 
       {/* Table Content */}
-      <div className=" text-moss_green ">
+      <div className=" text-moss_green italic">
         <Table className="font-dm-sans">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow className="italic" key={headerGroup.id}>
                 {headerGroup.headers.map((header, index) => {
                   let className =
-                    "text-center text-ghost_white italic bg-moss_green p-2";
-                  if (index === 0) {
-                    className += " rounded-l-full"; // Add rounded corners to the left side
-                  }
-                  if (index === headerGroup.headers.length - 1) {
-                    className += " rounded-r-full"; // Add rounded corners to the right side
-                  }
+                    "text-center text-ghost_green italic p-2";
                   return (
                     <TableHead key={header.id} className={className}>
                       {header.isPlaceholder
