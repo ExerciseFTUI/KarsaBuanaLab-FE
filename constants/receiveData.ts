@@ -1,4 +1,4 @@
-import { ReceiveSamplingType, SampleType } from "@/lib/type";
+import { PplhpReceiveSamplingType, SampleType } from "@/lib/type";
 import { randomInt, randomUUID } from "crypto";
 import projectJson from "@/constants/data/projectData.json";
 
@@ -21,7 +21,7 @@ import projectJson from "@/constants/data/projectData.json";
 //   return data;
 // }
 
-const projectData: ReceiveSamplingType[] = JSON.parse(
+const projectData: PplhpReceiveSamplingType[] = JSON.parse(
   JSON.stringify(projectJson)
 );
 

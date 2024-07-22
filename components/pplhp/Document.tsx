@@ -35,7 +35,7 @@ const Document: FC<DocumentProps> = ({ data, color }) => {
     }, {} as Record<string, DocumentData[]>)
   }
 
-  const typesToGroup = ["Result", "Preparation"]
+  const typesToGroup = ["Result", "Preparation", "Document"]
   const groupedData = groupDataByType(data, typesToGroup)
 
   return (

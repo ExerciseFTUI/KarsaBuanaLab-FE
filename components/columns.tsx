@@ -19,8 +19,6 @@ import {
   ProjectType,
   ProjectMarketingType,
   UserType,
-  ProjectAdminPplhpType,
-  SampleType,
 } from "@/lib/type";
 import Link from "next/link";
 import { ProjectSamplingType } from "@/lib/type";
@@ -818,12 +816,20 @@ export const samplingProjectPageColumns: ColumnDef<ProjectSamplingType>[] = [
 
 // Table Column for Receive Project
 export const pplhpReceiveSamplingColumns: ColumnDef<PplhpReceiveSamplingType>[] = [
-  //No Penawaran
+  // Nama sampel
+  // TODO: Adjust to backend
   {
-    accessorKey: "no_penawaran",
-    header: "Noooo Penawaran",
-    cell: ({ row }) => <div className="">{row.getValue("no_penawaran")}</div>,
+    accessorKey: "nama_sampel",
+    header: "Nama sampel",
+    cell: ({ row }) => {
+      return (
+        <div className="capitalize pl-0.5">
+
+        </div>
+      );
+    },
   },
+  // Judul Project
   {
     accessorKey: "project_name",
     header: ({ column }) => {
@@ -834,7 +840,6 @@ export const pplhpReceiveSamplingColumns: ColumnDef<PplhpReceiveSamplingType>[] 
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
           Judul Project
-          <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
