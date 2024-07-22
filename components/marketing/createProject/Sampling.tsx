@@ -128,7 +128,6 @@ const Sampling: FC<SamplingProps> = ({
           >
             <span className="text-white font-bold">{sampleName}</span>
             <div className=" flex flex-row">
-              
               {!isOpen && <CaretDownIcon className="h-6 w-6" />}
               {isOpen && <CaretUpIcon className="h-6 w-6" />}
             </div>

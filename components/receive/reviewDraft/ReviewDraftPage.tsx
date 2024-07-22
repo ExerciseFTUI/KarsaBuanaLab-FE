@@ -57,6 +57,7 @@ export default function ReviewDraftPage({ details }: { details: any }) {
 
       {details.sampling.map((data: any, index: number) => (
         <Sampling
+          key={index}
           sampleName={data.sample_name}
           regulation={data.regulation_name[0].regulation_name}
           parameters={data.param.map((item: any) => item.param)}
