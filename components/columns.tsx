@@ -13,7 +13,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
-  ReceiveSamplingType,
+  PplhpReceiveSamplingType,
   ProjectLHPType,
   LabDataType,
   ProjectType,
@@ -419,12 +419,6 @@ export const adminColumns: ColumnDef<UserType>[] = [
 
 //Table Column for PPLHP Admin Page
 export const pplhpColumns: ColumnDef<PplhpDetail>[] = [
-  //No Penawaran
-  // {
-  //   accessorKey: "no_penawaran",
-  //   header: "No Penawaran",
-  //   cell: ({ row }) => <div className="">{row.getValue("no_penawaran")}</div>,
-  // },
   {
     accessorKey: "project_name",
     header: ({ column }) => {
@@ -824,13 +818,21 @@ export const samplingProjectPageColumns: ColumnDef<ProjectSamplingType>[] = [
 ];
 
 // Table Column for Receive Project
-export const receiveSamplingColumns: ColumnDef<ReceiveSamplingType>[] = [
-  //No Penawaran
+export const pplhpReceiveSamplingColumns: ColumnDef<PplhpReceiveSamplingType>[] = [
+  // Nama sampel
+  // TODO: Adjust to backend
   {
-    accessorKey: "no_penawaran",
-    header: "No Penawaran",
-    cell: ({ row }) => <div className="">{row.getValue("no_penawaran")}</div>,
+    accessorKey: "nama_sampel",
+    header: "Nama sampel",
+    cell: ({ row }) => {
+      return (
+        <div className="capitalize pl-0.5">
+
+        </div>
+      );
+    },
   },
+  // Judul Project
   {
     accessorKey: "project_name",
     header: ({ column }) => {
@@ -841,7 +843,6 @@ export const receiveSamplingColumns: ColumnDef<ReceiveSamplingType>[] = [
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
           Judul Project
-          <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },

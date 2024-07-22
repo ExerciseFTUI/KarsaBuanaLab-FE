@@ -17,7 +17,6 @@ import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { BiFilterAlt } from "react-icons/bi";
 
-
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -50,13 +49,13 @@ import {
   DoubleArrowLeftIcon,
   DoubleArrowRightIcon,
 } from "@radix-ui/react-icons";
-import { receiveSamplingColumns } from "@/components/columns";
-import { ReceiveSamplingType } from "@/lib/type";
+import { pplhpReceiveSamplingColumns } from "@/components/columns";
+import { PplhpReceiveSamplingType } from "@/lib/type";
 import { cn, fetcher } from "@/lib/utils";
 import { ProjectSamplingType } from "@/lib/type";
 
 interface ReceiveDataTableProps {
-  data: ReceiveSamplingType[];
+  data: PplhpReceiveSamplingType[];
 }
 
 const ReceiveDataTable: FC<ReceiveDataTableProps> = ({ data }) => {
@@ -70,7 +69,7 @@ const ReceiveDataTable: FC<ReceiveDataTableProps> = ({ data }) => {
 
   const table = useReactTable({
     data,
-    columns: receiveSamplingColumns,
+    columns: pplhpReceiveSamplingColumns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
@@ -94,7 +93,7 @@ const ReceiveDataTable: FC<ReceiveDataTableProps> = ({ data }) => {
       <div className="flex items-center py-4">
         <BiFilterAlt className="text-xl translate-x-8" />
         <Input
-          placeholder="Filter Projects on Receive Stage"
+          placeholder="Filter Projects On Draft LHP"
           value={
             (table.getColumn("project_name")?.getFilterValue() as string) ?? ""
           }
@@ -103,57 +102,17 @@ const ReceiveDataTable: FC<ReceiveDataTableProps> = ({ data }) => {
           }
           className="max-w-sm bg-pastel_moss_green pl-10"
         />
-
-        {/* Column Visibility */}
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button
-              variant="outline"
-              className="ml-auto text-moss_green focus-visible:ring-0 hover:bg-transparent hover:text-moss_green border-pastel_moss_green border-2 shadow-none"
-            >
-              Columns <ChevronDown className="ml-2 h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-
-          <DropdownMenuContent align="end" className="text-moss_green">
-            {table
-              .getAllColumns()
-              .filter((column) => column.getCanHide())
-              .map((column) => {
-                return (
-                  column.id !== "_id" && (
-                    <DropdownMenuCheckboxItem
-                      key={column.id}
-                      className="capitalize"
-                      checked={column.getIsVisible()}
-                      onCheckedChange={(value) =>
-                        column.toggleVisibility(!!value)
-                      }
-                    >
-                      {column.id}
-                    </DropdownMenuCheckboxItem>
-                  )
-                );
-              })}
-          </DropdownMenuContent>
-        </DropdownMenu>
       </div>
 
       {/* Table Content */}
-      <div className=" text-moss_green ">
+      <div className=" text-moss_green italic">
         <Table className="font-dm-sans">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow className="italic" key={headerGroup.id}>
                 {headerGroup.headers.map((header, index) => {
                   let className =
-                    "text-center text-ghost_white italic bg-moss_green p-2";
-                  if (index === 0) {
-                    className += " rounded-l-full"; // Add rounded corners to the left side
-                  }
-                  if (index === headerGroup.headers.length - 1) {
-                    className += " rounded-r-full"; // Add rounded corners to the right side
-                  }
+                    "text-center text-ghost_green italic p-2";
                   return (
                     <TableHead key={header.id} className={className}>
                       {header.isPlaceholder
@@ -191,7 +150,7 @@ const ReceiveDataTable: FC<ReceiveDataTableProps> = ({ data }) => {
             ) : (
               <TableRow>
                 <TableCell
-                  colSpan={receiveSamplingColumns.length}
+                  colSpan={pplhpReceiveSamplingColumns.length}
                   className="h-24 text-center"
                 >
                   No results.
