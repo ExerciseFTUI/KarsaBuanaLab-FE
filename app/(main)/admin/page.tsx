@@ -40,7 +40,7 @@ export default async function AdminPage() {
             </svg>
           </CardHeader>
           <CardContent className="flex justify-between items-center">
-            <div className="">
+            {/* <div className="">
               <div className="text-2xl font-bold">$45,231.89</div>
               <p className="text-xs text-muted-foreground">
                 +20.1% from last month
@@ -51,7 +51,7 @@ export default async function AdminPage() {
                 <p className="hidden mr-1 max-md:block 2xl:block">View Page</p>
                 <ChevronRightIcon className="h-4 w-4" />
               </Button>
-            </Link>
+            </Link> */}
           </CardContent>
         </Card>
         <Card>
@@ -73,7 +73,7 @@ export default async function AdminPage() {
             </svg>
           </CardHeader>
           <CardContent className="flex justify-between items-center">
-            <div className="">
+            {/* <div className="">
               <div className="text-2xl font-bold">+2350</div>
               <p className="text-xs text-muted-foreground">
                 +180.1% from last month
@@ -85,7 +85,7 @@ export default async function AdminPage() {
                 <p className="hidden mr-1 max-md:block 2xl:block">View Page</p>
                 <ChevronRightIcon className="h-4 w-4" />
               </Button>
-            </Link>
+            </Link> */}
           </CardContent>
         </Card>
         <Card>
@@ -106,7 +106,7 @@ export default async function AdminPage() {
             </svg>
           </CardHeader>
           <CardContent className="flex justify-between items-center">
-            <div className="">
+            {/* <div className="">
               <div className="text-2xl font-bold">+12,234</div>
               <p className="text-xs text-muted-foreground">
                 +19% from last month
@@ -118,7 +118,7 @@ export default async function AdminPage() {
                 <p className="hidden mr-1 max-md:block 2xl:block">View Page</p>
                 <ChevronRightIcon className=" h-4 w-4" />
               </Button>
-            </Link>
+            </Link> */}
           </CardContent>
         </Card>
         <Card>
@@ -138,7 +138,7 @@ export default async function AdminPage() {
             </svg>
           </CardHeader>
           <CardContent className="flex justify-between items-center">
-            <div className="">
+            {/* <div className="">
               <div className="text-2xl font-bold">+573</div>
               <p className="text-xs text-muted-foreground">
                 +201 since last hour
@@ -149,7 +149,7 @@ export default async function AdminPage() {
                 <p className="hidden mr-1 max-md:block 2xl:block">View Page</p>
                 <ChevronRightIcon className="ml-1 h-4 w-4" />
               </Button>
-            </Link>
+            </Link> */}
           </CardContent>
         </Card>
       </div>

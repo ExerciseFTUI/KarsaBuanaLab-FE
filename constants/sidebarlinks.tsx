@@ -92,6 +92,11 @@ export const marketingLink: ISidebarLinks[] = [
     route: "/sample",
     label: "Sample",
   },
+  {
+    icon: <GiChemicalDrop />,
+    route: "/inventory",
+    label: "Inventory",
+  },
 ];
 
 export const samplingSPVLinks: ISidebarLinks[] = [
@@ -115,11 +120,21 @@ export const samplingSPVLinks: ISidebarLinks[] = [
     route: "/sample",
     label: "Sample",
   },
+  {
+    icon: <GiChemicalDrop />,
+    route: "/inventory",
+    label: "Inventory",
+  },
 ];
 
 export const samplingUSERLinks: ISidebarLinks[] = [
   samplingSPVLinks[0],
   samplingSPVLinks[2],
+  {
+    icon: <GiChemicalDrop />,
+    route: "/inventory",
+    label: "Inventory",
+  },
 ];
 
 export const pplhpLinks: ISidebarLinks[] = [
@@ -132,6 +147,11 @@ export const pplhpLinks: ISidebarLinks[] = [
     icon: <HiChartBar />,
     route: "/lhpdraft",
     label: "Pembuatan Draft LHP",
+  },
+  {
+    icon: <GiChemicalDrop />,
+    route: "/inventory",
+    label: "Inventory",
   },
   // {
   //   icon: <FaRunning />,
@@ -151,9 +171,21 @@ export const labLinks: ISidebarLinks[] = [
     route: "/verifikasi-data",
     label: "Verifikasi Data",
   },
+  {
+    icon: <GiChemicalDrop />,
+    route: "/inventory",
+    label: "Inventory",
+  },
 ];
 
-export const labUSERLinks: ISidebarLinks[] = [labLinks[0]];
+export const labUSERLinks: ISidebarLinks[] = [
+  labLinks[0],
+  {
+    icon: <GiChemicalDrop />,
+    route: "/inventory",
+    label: "Inventory",
+  },
+];
 
 export const sampleReceiveLinks: ISidebarLinks[] = [
   {
@@ -165,5 +197,10 @@ export const sampleReceiveLinks: ISidebarLinks[] = [
     icon: <HiChartBar />,
     route: "/ondiscuss",
     label: "Pengamanan",
+  },
+  {
+    icon: <GiChemicalDrop />,
+    route: "/inventory",
+    label: "Inventory",
   },
 ];

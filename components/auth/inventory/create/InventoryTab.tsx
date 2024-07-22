@@ -17,6 +17,7 @@ interface InventoryTabProps {
   assignedUsers: string[];
   setAssignedUsers: Dispatch<SetStateAction<string[]>>;
   inventory?: Inventory;
+  isViewOnly: boolean;
 }
 
 export default function InventoryTab({
@@ -28,21 +29,25 @@ export default function InventoryTab({
   assignedUsers,
   setAssignedUsers,
   inventory,
+  isViewOnly,
 }: InventoryTabProps) {
   return (
     <Tabs defaultValue={`${defaultValue}`} className="flex-1 -mt-6">
       {/* <SamplingTabsList value1="PIC" value2="Document" /> */}
       <TabsList
+        //Conditional for isViewOnly and IsUpdate
         className={`grid ${
-          isUpdate ? "grid-cols-2" : "grid-cols-1"
+          !isViewOnly && isUpdate ? "grid-cols-2" : "grid-cols-1"
         }  shadow-none bg-transparent `}
       >
-        <TabsTrigger
-          className="rounded-none data-[state=active]:shadow-none border-b-2 data-[state=active]:border-b-light_brown data-[state=active]:bg-transparent data-[state=active]:text-dark_brown data-[state=active]:font-bold text-base data-[state=inactive]:text-moss_green data-[state=inactive]:opacity-50 data-[state=inactive]:border-b-moss_green capitalize"
-          value={"PIC"}
-        >
-          {"PIC"}
-        </TabsTrigger>
+        {!isViewOnly && (
+          <TabsTrigger
+            className="rounded-none data-[state=active]:shadow-none border-b-2 data-[state=active]:border-b-light_brown data-[state=active]:bg-transparent data-[state=active]:text-dark_brown data-[state=active]:font-bold text-base data-[state=inactive]:text-moss_green data-[state=inactive]:opacity-50 data-[state=inactive]:border-b-moss_green capitalize"
+            value={"PIC"}
+          >
+            {"PIC"}
+          </TabsTrigger>
+        )}
 
         {isUpdate && (
           <TabsTrigger
@@ -58,6 +63,7 @@ export default function InventoryTab({
           allUsers={allUsers}
           assignedUsers={assignedUsers}
           setAssignedUsers={setAssignedUsers}
+          isViewOnly={false}
         />
       </TabsContent>
 
@@ -68,6 +74,7 @@ export default function InventoryTab({
             setUploadedFiles={setUploadedFiles}
             inventoryDocument={inventory.inventory_file}
             inventoryId={inventory._id}
+            isViewOnly={false}
           />
         </TabsContent>
       )}

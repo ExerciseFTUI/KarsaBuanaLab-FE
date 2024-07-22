@@ -219,6 +219,76 @@ export const userColumns: ColumnDef<InventoryUser>[] = [
   },
 ];
 
+export const userColumnsDisabled: ColumnDef<InventoryUser>[] = [
+  //Nama Tools
+  {
+    id: "select",
+    header: ({ table }) => (
+      <Checkbox
+        disabled={true}
+        checked={
+          table.getIsAllPageRowsSelected() ||
+          (table.getIsSomePageRowsSelected() && "indeterminate")
+        }
+        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+        aria-label="Select all"
+        className="border-dark_brown data-[state=checked]:bg-light_brown"
+      />
+    ),
+    cell: ({ row }) => (
+      <Checkbox
+        disabled={true}
+        checked={row.getIsSelected()}
+        onCheckedChange={(value) => row.toggleSelected(!!value)}
+        aria-label="Select row"
+        className="border-dark_brown data-[state=checked]:bg-light_brown"
+      />
+    ),
+    enableSorting: false,
+    enableHiding: false,
+  },
+  //Penanggung Jawab
+  {
+    accessorKey: "username",
+    header: ({ column }) => {
+      return (
+        <div className="flex flex-col justify-start items-start ">
+          <Button
+            className="text-md"
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            Name
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+          </Button>
+        </div>
+      );
+    },
+    cell: ({ row }) => {
+      return (
+        <div className="flex flex-col justify-start items-start pl-4">
+          <div className="capitalize ">{row.getValue("username")}</div>
+          <div className="text-xs">{row.original.email}</div>
+        </div>
+      );
+    },
+  },
+  {
+    accessorKey: "role",
+    header: "Role",
+    cell: ({ row }) => (
+      <div className="text-light_brown text-sm">{row.getValue("role")}</div>
+    ),
+  },
+  {
+    accessorKey: "phone",
+    header: "Phone",
+    cell: ({ row }) => (
+      <div className="text-light_brown text-sm">{row.getValue("phone")}</div>
+    ),
+  },
+];
+
 function formatDate(dateString: string) {
   const date = new Date(dateString);
 

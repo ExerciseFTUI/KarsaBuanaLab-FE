@@ -99,12 +99,6 @@ export function InventoryDataTable({ datas }: InventoryDataTableProps) {
     },
   });
 
-  React.useEffect(() => {
-    table.getRowModel().rows.map((row) => {
-      console.log(row);
-    });
-  }, []);
-
   return (
     <div className="w-full">
       {/* Top Search Title */}

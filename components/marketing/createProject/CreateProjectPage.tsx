@@ -173,14 +173,13 @@ const CreateProjectPage: FC<CreateProjectProps> = ({ baseSamples }) => {
           setIsLoading(false);
           return;
         }
-        
+
         toast({
           title: "Create Project Success",
           description: "Dont forget to refresh the page ",
         });
         setIsLoading(false);
         router.push("/marketing/running");
-
       } else {
         toast({
           title: "Oops, you forget something!",

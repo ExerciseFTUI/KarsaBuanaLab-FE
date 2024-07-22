@@ -49,27 +49,38 @@ import {
   DoubleArrowLeftIcon,
   DoubleArrowRightIcon,
 } from "@radix-ui/react-icons";
-import { LabDashboardPageColumns, LabDashboardPageColumnsUser, columns } from "@/components/columns";
-import { LabDataType } from "@/lib/type";
+import {
+  LabDashboardPageColumns,
+  LabDashboardPageColumnsUser,
+  LabDashboardRev,
+  columns,
+} from "@/components/columns";
+import { LabDashboardPageColumnsType, LabDataType } from "@/lib/type";
+import { is } from "date-fns/locale";
 
 interface LabDataTableProps {
-  data: LabDataType[] ;
+  data: LabDashboardPageColumnsType[];
   link: string;
   idUser?: string;
+  isLab?: boolean;
 }
 
-const LabDataTable: FC<LabDataTableProps> = ({ data, link, idUser }) => {
-  const router = useRouter()
-  const [sorting, setSorting] = useState<SortingState>([])
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
+const LabDataTable: FC<LabDataTableProps> = ({ data, link, idUser, isLab }) => {
+  const router = useRouter();
+  const [sorting, setSorting] = useState<SortingState>([]);
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
     _id: false,
-  })
-  const [rowSelection, setRowSelection] = useState({})
+  });
+  const [rowSelection, setRowSelection] = useState({});
 
   const table = useReactTable({
     data,
-    columns: idUser !== undefined ? LabDashboardPageColumnsUser : LabDashboardPageColumns,
+    columns: LabDashboardRev,
+    // columns:
+    //   idUser !== undefined
+    // ? LabDashboardPageColumnsUser
+    //     : LabDashboardPageColumns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
@@ -86,9 +97,6 @@ const LabDataTable: FC<LabDataTableProps> = ({ data, link, idUser }) => {
     },
   });
 
-  
-  
-
   return (
     <div className="w-full">
       <div className="flex items-center py-4">
@@ -96,10 +104,20 @@ const LabDataTable: FC<LabDataTableProps> = ({ data, link, idUser }) => {
         <Input
           placeholder="Search Project Title"
           value={
-            (table.getColumn("project_name")?.getFilterValue() as string) ?? ""
+            isLab
+              ? (table.getColumn("sample_name")?.getFilterValue() as string) ??
+                ""
+              : (table.getColumn("project_name")?.getFilterValue() as string) ??
+                ""
           }
           onChange={(event) => {
-            table.getColumn("project_name")?.setFilterValue(event.target.value);
+            isLab
+              ? table
+                  .getColumn("sample_name")
+                  ?.setFilterValue(event.target.value)
+              : table
+                  .getColumn("project_name")
+                  ?.setFilterValue(event.target.value);
           }}
           className="max-w-sm pl-10"
         />
@@ -127,7 +145,7 @@ const LabDataTable: FC<LabDataTableProps> = ({ data, link, idUser }) => {
                       {column.id}
                     </DropdownMenuCheckboxItem>
                   )
-                )
+                );
               })}
           </DropdownMenuContent>
         </DropdownMenu>
@@ -159,7 +177,8 @@ const LabDataTable: FC<LabDataTableProps> = ({ data, link, idUser }) => {
                   className="hover:bg-light_green ease-in-out duration-500 text-xs hover:cursor-pointer hover:rounded-xl"
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
-                  onClick={() => {router.push(link + row.getValue("_id")); 
+                  onClick={() => {
+                    router.push(link + row.getValue("_id"));
                   }}
                 >
                   {row.getVisibleCells().map((cell) => (
