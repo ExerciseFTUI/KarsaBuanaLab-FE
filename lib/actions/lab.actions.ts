@@ -31,6 +31,8 @@ export async function labDashboard(): Promise<
 > {
   try {
     const response = await axios.get(apiBaseUrl + "get-spv-dashboard");
+    console.log("resp", response.data.result);
+
     return response.data as BaseApiResponse<LabDashboardPageColumnsType[]>;
   } catch (error) {
     return [] as unknown as BaseApiResponse<LabDashboardPageColumnsType[]>;
@@ -62,7 +64,7 @@ export async function assignStaffDeadline(
       deadline,
     });
 
-    revalidatePath(`/lab/dashboard/${projectId}`);
+    revalidatePath(`/lab/dashboard/${projectId}/${sample_id}`);
 
     return response.data as BaseApiResponse<Project>;
   } catch (error: any) {

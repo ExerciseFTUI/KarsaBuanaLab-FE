@@ -101,7 +101,7 @@ export type LabDashboardPageColumnsType = {
   sample_number: string;
   sample_name: string;
   status: string;
-  deadline: string;
+  deadline: { from: string; to: string; _id: string };
 };
 
 export type LabDataType = {
@@ -149,7 +149,7 @@ export type ProjectSamplingType = {
 export type SamplingRequestData = {
   project: Project;
   user: User[];
-  files: any;
+  // files: any;
 };
 
 export const Sampling = {

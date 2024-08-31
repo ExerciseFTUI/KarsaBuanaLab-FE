@@ -58,6 +58,11 @@ import {
 import { LabDashboardPageColumnsType, LabDataType } from "@/lib/type";
 import { is } from "date-fns/locale";
 
+// const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
+//   _id: false,
+//   project_id: false, // Add this line to hide the project_id column
+// });
+
 interface LabDataTableProps {
   data: LabDashboardPageColumnsType[];
   link: string;
@@ -70,6 +75,7 @@ const LabDataTable: FC<LabDataTableProps> = ({ data, link, idUser, isLab }) => {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
+    project_id: false,
     _id: false,
   });
   const [rowSelection, setRowSelection] = useState({});
@@ -133,7 +139,8 @@ const LabDataTable: FC<LabDataTableProps> = ({ data, link, idUser, isLab }) => {
               .filter((column) => column.getCanHide())
               .map((column) => {
                 return (
-                  column.id !== "_id" && (
+                  column.id !== "_id" &&
+                  column.id !== "project_id" && ( // Exclude project_id from the toggling menu
                     <DropdownMenuCheckboxItem
                       key={column.id}
                       className="capitalize"
@@ -178,7 +185,12 @@ const LabDataTable: FC<LabDataTableProps> = ({ data, link, idUser, isLab }) => {
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
                   onClick={() => {
-                    router.push(link + row.getValue("_id"));
+                    router.push(
+                      link +
+                        row.getValue("project_id") +
+                        "/" +
+                        row.getValue("_id")
+                    );
                   }}
                 >
                   {row.getVisibleCells().map((cell) => (

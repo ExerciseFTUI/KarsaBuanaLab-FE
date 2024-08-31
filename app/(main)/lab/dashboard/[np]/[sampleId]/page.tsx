@@ -33,7 +33,7 @@ const dokumenData = [
 export default async function LabDetails({
   params,
 }: {
-  params: { np: string };
+  params: { np: string; sampleId: string };
 }) {
   const session = await getSessionServer();
   let project;
@@ -41,7 +41,7 @@ export default async function LabDetails({
   let isAdmin = true;
   let sample;
 
-  // const projects = await getLabProjects();
+  const projects = await getLabProjects();
   // const resFiles = await getLinkFiles(params.np);
   const resUser = await getAllUser("USER");
   // const resProject = await getProject(params.np);
@@ -50,23 +50,28 @@ export default async function LabDetails({
     (u) => u.division == null || u.division == "Lab"
   );
 
-  // const data: SamplingRequestData = {
-  //   project:
-  //     (projects.result.find((p: any) => p._id === params.np) as any) || null,
-  //   user: samplingUser || [],
-  //   files: resFiles ? (!resFiles.result ? dokumenData : resFiles.result) : [],
-  // };
+  // project = projects.result.find((p: any) => p._id === params.np) || null;
+  // const sampling = project
+  //   ? project.sampling_list.find((s: any) => s.id === params.sampleId) || null
+  //   : null;
+
+  const data: SamplingRequestData = {
+    project:
+      (projects.result.find((p: any) => p._id === params.np) as any) || null,
+    user: samplingUser || [],
+    // files: resFiles ? (!resFiles.result ? dokumenData : resFiles.result) : [],
+  };
 
   // ADMIN
   if (session && session.user.role !== "USER") {
-    sample = await getSampleForLab(params.np);
-    chooseParams = await getChoiceParamsRev(params.np);
+    sample = await getSampleForLab(params.sampleId);
+    chooseParams = await getChoiceParamsRev(params.sampleId);
   }
 
   // STAFF
   if (session && session.user.role === "USER") {
-    project = await getLabDashboardProject(params.np, session.user.id);
-    chooseParams = await getChoiceParams(params.np, session.user.id);
+    project = await getLabDashboardProject(params.sampleId, session.user.id);
+    chooseParams = await getChoiceParams(params.sampleId, session.user.id);
     isAdmin = false;
   }
 
@@ -168,6 +173,11 @@ export default async function LabDetails({
               {/* Sample Section */}
               <TabsContent value="schedule">
                 {/* <LabAssignStaff data={data} projects={projects.result} /> */}
+                <LabAssignStaff
+                  data={data}
+                  sampleId={params.sampleId}
+                  projects={projects.result}
+                />
               </TabsContent>
               {/* End Sample Section */}
 
@@ -175,7 +185,7 @@ export default async function LabDetails({
                 <InputDokumenUser
                   sample={sample}
                   userId={session ? session.user.id : ""}
-                  sampleId={params.np}
+                  sampleId={params.sampleId}
                   choiceParams={chooseParams}
                   // status={project.status}
                 />
@@ -185,7 +195,7 @@ export default async function LabDetails({
             <InputDokumenUser
               sample={project.input}
               userId={session ? session.user.id : ""}
-              sampleId={params.np}
+              sampleId={params.sampleId}
               choiceParams={chooseParams}
               // status={project.status}
             />
