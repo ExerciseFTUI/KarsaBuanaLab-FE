@@ -20,7 +20,7 @@ import { is } from "date-fns/locale";
 import { useEffect } from "react";
 import { notesFromAdmin } from "@/lib/models/project.model";
 import SamplingTabsList from "@/components/sampling/tab/SamplingTabsList";
-import { Tabs, TabsContent } from "@/components/ui/tabs";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import DocumentList from "@/components/sampling/DokumentList";
 import HyperLinkButton from "@/components/sampling/HyperlinkButton";
 
@@ -129,12 +129,11 @@ export default async function LabDetails({
           <Separator orientation="vertical" className="bg-light_brown mx-12" />
 
           {/* <div className=""> */}
-          <Tabs defaultValue="Schedule" className="flex-1">
+          {/* <Tabs defaultValue="Schedule" className="flex-1">
             <SamplingTabsList value1="Schedule" value2="Unit & Method" />
 
             <TabsContent className="py-4 w-full" value="Schedule">
               <div className="px-4 py-2 flex flex-col flex-1">
-                {/* <DocumentList data={files} /> */}
 
                 <div className="flex flex-wrap flex-col max-w-xl">
                   <h1 className="text-xl font-semibold my-5">Surat Tugas</h1>
@@ -153,20 +152,44 @@ export default async function LabDetails({
                 // status={project.status}
               />
             </TabsContent>
-          </Tabs>
+          </Tabs> */}
           {/* </div> */}
 
-          {/* {isAdmin ? (
-            <LabAssignStaff data={data} projects={projects.result} />
+          {isAdmin ? (
+            <Tabs
+              defaultValue="schedule"
+              className="w-[40rem] max-sm:w-[420px] "
+            >
+              <TabsList className="grid w-full grid-cols-2">
+                <TabsTrigger value="schedule">Schedule</TabsTrigger>
+                <TabsTrigger value="unitnmethod">Unit & Method</TabsTrigger>
+              </TabsList>
+
+              {/* Sample Section */}
+              <TabsContent value="schedule">
+                {/* <LabAssignStaff data={data} projects={projects.result} /> */}
+              </TabsContent>
+              {/* End Sample Section */}
+
+              <TabsContent className="py-4 w-full" value="unitnmethod">
+                <InputDokumenUser
+                  sample={sample}
+                  userId={session ? session.user.id : ""}
+                  sampleId={params.np}
+                  choiceParams={chooseParams}
+                  // status={project.status}
+                />
+              </TabsContent>
+            </Tabs>
           ) : (
             <InputDokumenUser
               sample={project.input}
               userId={session ? session.user.id : ""}
-              projectId={params.np}
+              sampleId={params.np}
               choiceParams={chooseParams}
-              status={project.status}
+              // status={project.status}
             />
-          )} */}
+          )}
         </div>
       )}
       {/* </div> */}
