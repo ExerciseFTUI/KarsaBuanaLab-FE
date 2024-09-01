@@ -3,7 +3,7 @@ import ListDokumen from "@/components/lab/ListDokumen";
 import NotesAdmin from "@/components/lab/NotesAdmin";
 import InputDokumenUser from "@/components/lab/InputDokumenUser";
 import { Separator } from "@/components/ui/separator";
-import { getLabProjects } from "@/lib/actions/lab.actions";
+import { getLabProjects, labDashboard } from "@/lib/actions/lab.actions";
 import {
   getChoiceParams,
   getChoiceParamsRev,
@@ -50,10 +50,19 @@ export default async function LabDetails({
     (u) => u.division == null || u.division == "Lab"
   );
 
-  // project = projects.result.find((p: any) => p._id === params.np) || null;
-  // const sampling = project
-  //   ? project.sampling_list.find((s: any) => s.id === params.sampleId) || null
-  //   : null;
+  const projectNow =
+    projects.result.find((p: any) => p._id === params.np) || null;
+  const sampling = projectNow
+    ? projectNow.sampling_list.find((s: any) => s._id === params.sampleId) ||
+      null
+    : null;
+
+  let deadline = "Haven't set deadline yet";
+  if (sampling) {
+    deadline = sampling.deadline?.to
+      ? sampling.deadline.to
+      : sampling.deadline?.from ?? "Haven't set deadline yet";
+  }
 
   const data: SamplingRequestData = {
     project:
@@ -62,23 +71,33 @@ export default async function LabDetails({
     // files: resFiles ? (!resFiles.result ? dokumenData : resFiles.result) : [],
   };
 
-  // ADMIN
-  if (session && session.user.role !== "USER") {
-    sample = await getSampleForLab(params.sampleId);
-    chooseParams = await getChoiceParamsRev(params.sampleId);
-  }
+  const allData = await labDashboard();
+  const sample_number = allData.result.find(
+    (data: any) => data._id === params.sampleId
+  )?.sample_number;
 
-  // STAFF
+  sample = await getSampleForLab(params.sampleId);
+  chooseParams = await getChoiceParamsRev(params.sampleId);
   if (session && session.user.role === "USER") {
-    project = await getLabDashboardProject(params.sampleId, session.user.id);
-    chooseParams = await getChoiceParams(params.sampleId, session.user.id);
     isAdmin = false;
   }
+  // ADMIN
+  // if (session && session.user.role !== "USER") {
+  // }
+
+  // // STAFF
+  // if (session && session.user.role === "USER") {
+  //   // project = await getLabDashboardProject(params.sampleId, session.user.id);
+  //   chooseParams = await getChoiceParams(params.sampleId, session.user.id);
+  //   console.log("project return", sample);
+
+  //   isAdmin = false;
+  // }
 
   return (
     <>
       {/* <div className="flex flex-row justify-between mx-10 h-full gap-4"> */}
-      {isAdmin && (
+      {isAdmin ? (
         <div className="flex flex-row justify-between mx-10 h-full gap-4">
           <div className="flex flex-col w-[30%]">
             {/* START DOCUMENT */}
@@ -117,7 +136,7 @@ export default async function LabDetails({
             {/* END OF NOTES FROM ADMIN */}
 
             {/* START INPUT DOKUMEN */}
-            {!isAdmin && (
+            {/* {!isAdmin && (
               <div>
                 <h1 className="text-black_brown text-2xl font-semibold pb-8">
                   LHP
@@ -128,39 +147,12 @@ export default async function LabDetails({
                   color="light_brown"
                 />
               </div>
-            )}
+            )} */}
           </div>
 
           <Separator orientation="vertical" className="bg-light_brown mx-12" />
 
-          {/* <div className=""> */}
-          {/* <Tabs defaultValue="Schedule" className="flex-1">
-            <SamplingTabsList value1="Schedule" value2="Unit & Method" />
-
-            <TabsContent className="py-4 w-full" value="Schedule">
-              <div className="px-4 py-2 flex flex-col flex-1">
-
-                <div className="flex flex-wrap flex-col max-w-xl">
-                  <h1 className="text-xl font-semibold my-5">Surat Tugas</h1>
-
-                  <HyperLinkButton title="Surat Tugas" href="/" />
-                </div>
-              </div>
-            </TabsContent>
-
-            <TabsContent className="py-4 w-full" value="Unit & Method">
-              <InputDokumenUser
-                sample={sample}
-                userId={session ? session.user.id : ""}
-                sampleId={params.np}
-                choiceParams={chooseParams}
-                // status={project.status}
-              />
-            </TabsContent>
-          </Tabs> */}
-          {/* </div> */}
-
-          {isAdmin ? (
+          {
             <Tabs
               defaultValue="schedule"
               className="w-[40rem] max-sm:w-[420px] "
@@ -184,22 +176,60 @@ export default async function LabDetails({
               <TabsContent className="py-4 w-full" value="unitnmethod">
                 <InputDokumenUser
                   sample={sample}
-                  userId={session ? session.user.id : ""}
+                  isAdmin={true}
                   sampleId={params.sampleId}
                   choiceParams={chooseParams}
                   // status={project.status}
                 />
               </TabsContent>
             </Tabs>
-          ) : (
-            <InputDokumenUser
-              sample={project.input}
-              userId={session ? session.user.id : ""}
-              sampleId={params.sampleId}
-              choiceParams={chooseParams}
-              // status={project.status}
+            // : (
+            //   <InputDokumenUser
+            //     sample={project.input}
+            //     isAdmin={true}
+            //     sampleId={params.sampleId}
+            //     choiceParams={chooseParams}
+            //     // status={project.status}
+            //   />
+            // )
+          }
+        </div>
+      ) : (
+        <div className=" h-screen w-full ">
+          <div className=" text-2xl font-semibold mb-4 text-dark_brown ">
+            Sample {sample_number} - {sampling?.sample_name}
+          </div>
+          <div className=" text-lg font-medium mb-4">
+            {" "}
+            Deadline Analisis: {deadline}
+          </div>
+
+          {/* div to divide into 2 section with 3/4 and 1/4 */}
+          <div className=" flex flex-row justify-between mx-10 h-full gap-4">
+            <div className=" flex flex-row w-3/4 ">
+              {/* Gatau apa */}
+              <InputDokumenUser
+                sample={sample}
+                isAdmin={false}
+                sampleId={params.sampleId}
+                choiceParams={chooseParams}
+              />
+              {/* <SamplingTabsList
+                project={project}
+                sampleId={params.sampleId}
+                userId={session.user.id}
+              /> */}
+            </div>
+
+            <Separator
+              orientation="vertical"
+              className="bg-light_brown mx-12"
             />
-          )}
+
+            <div className="flex flex-row w-1/4 ">
+              <NotesAdmin notes={notesFromAdmin} />
+            </div>
+          </div>
         </div>
       )}
       {/* </div> */}

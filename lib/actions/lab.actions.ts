@@ -31,7 +31,6 @@ export async function labDashboard(): Promise<
 > {
   try {
     const response = await axios.get(apiBaseUrl + "get-spv-dashboard");
-    console.log("resp", response.data.result);
 
     return response.data as BaseApiResponse<LabDashboardPageColumnsType[]>;
   } catch (error) {
@@ -39,11 +38,14 @@ export async function labDashboard(): Promise<
   }
 }
 
-export async function staffDashboard(): Promise<
-  BaseApiResponse<LabDashboardPageColumnsType[]>
-> {
+export async function staffDashboard(
+  staffID: string
+): Promise<BaseApiResponse<LabDashboardPageColumnsType[]>> {
   try {
-    const response = await axios.get(apiBaseUrl + "get-staff-dashboard");
+    const response = await axios.post(apiBaseUrl + "get-staff-dashboard", {
+      staffID,
+    });
+
     return response.data as BaseApiResponse<LabDashboardPageColumnsType[]>;
   } catch (error) {
     return [] as unknown as BaseApiResponse<LabDashboardPageColumnsType[]>;

@@ -19,7 +19,10 @@ export default async function Home() {
   if (session && role !== "USER") {
     newRes = await labDashboard();
   } else {
-    newRes = await staffDashboard();
+    let staffID = session?.user.id;
+    console.log("staffID", staffID);
+
+    newRes = await staffDashboard(staffID!);
   }
 
   // Update the project status if needed

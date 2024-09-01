@@ -64,6 +64,12 @@ export const parameterInputValidation = z.object({
       }
       return value;
     }),
+  lembar_data: z
+    .string()
+    .optional()
+    .refine((value) => value !== null, {
+      message: "Invalid value",
+    }),
 });
 
 // Sample validation schema
