@@ -1,51 +1,12 @@
-// import { zodResolver } from "@hookform/resolvers/zod";
-// import { useForm } from "react-hook-form";
-// import { z } from "zod";
-
-// export const parameterInputValidation = z.object({
-//   unit: z
-//     .string({ required_error: "Required Field" })
-//     // .min(1, "Required Field")
-//     .refine((value) => value !== null, {
-//       message: "Required Field",
-//     }),
-//   method: z
-//     .string({ required_error: "Required Field" })
-//     .array()
-//     // .min(1, "Required Field").array()
-//     //transform if the value just one or it means just a string change it to array
-//     .transform((value) => {
-//       if (typeof value === "string") {
-//         return [value];
-//       }
-//       return value;
-//     }),
-// });
-
-// export const sampleInputValidation = z.object({
-//   parameter: z.array(parameterInputValidation),
-// });
-
-// export const labInputDocumentValidation = z.object({
-//   sample: z.array(sampleInputValidation),
-// });
-
-// //Hook
-// export type labInputDocumentValidationType = z.infer<
-//   typeof labInputDocumentValidation
-// >;
-
-// export const useLabForm = () => {
-//   const form = useForm<labInputDocumentValidationType>({
-//     resolver: zodResolver(labInputDocumentValidation),
-//   });
-
-//   return form;
-// };
-
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+
+// Validation schema for lembar_data (LD)
+const lembarDataValidation = z.object({
+  ld_name: z.string().nonempty("LD Name is required"),
+  ld_file_id: z.string().nonempty("LD File ID is required"),
+});
 
 export const parameterInputValidation = z.object({
   unit: z
@@ -64,12 +25,7 @@ export const parameterInputValidation = z.object({
       }
       return value;
     }),
-  lembar_data: z
-    .string()
-    .optional()
-    .refine((value) => value !== null, {
-      message: "Invalid value",
-    }),
+  lembar_data: lembarDataValidation,
 });
 
 // Sample validation schema

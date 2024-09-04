@@ -290,7 +290,8 @@ export type ParameterType = {
   name: string;
   unit: string;
   method: string[];
-  lembar_data: string;
+  lembar_data: LD;
+  // link_lembar_data: string;
   // analysis_status: string;
 };
 
@@ -298,16 +299,23 @@ export type labInputChoice = {
   param: string;
   unit: string[];
   method: string[];
-  lembar_data: string[];
+  lembar_data: LD[];
+  // ld_name: string[];
+  // ld_file_id: string;
+};
+
+export type LD = {
+  ld_name: string;
+  ld_file_id: string;
 };
 
 export type sampleAnswer = {
   sample_name: string;
   param: {
     param: string;
-    // result: string;
     unit: string;
     method: string[];
+    lembar_data: LD;
   }[];
 };
 

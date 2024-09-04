@@ -19,7 +19,7 @@ import {
   TableRow,
   TableCell,
 } from "@/components/ui/table";
-import { InputDocumentType, labInputChoice } from "@/lib/type";
+import { InputDocumentType, labInputChoice, LD } from "@/lib/type";
 import {
   useLabForm,
   labInputDocumentValidation,
@@ -53,6 +53,7 @@ const InputDokumenUser: FC<inputDokumenUserProps> = ({
         // param: string;
         unit?: string;
         method?: string[];
+        lembar_data: LD;
       }[];
     };
   }>();
@@ -81,7 +82,7 @@ const InputDokumenUser: FC<inputDokumenUserProps> = ({
         param: {
           unit?: string;
           method?: string[];
-          lembar_data?: string;
+          lembar_data?: LD;
         }[];
       };
     }
@@ -227,31 +228,38 @@ const InputDokumenUser: FC<inputDokumenUserProps> = ({
                     {errors.sample?.param?.[parameterId]?.method?.message}
                   </div>
                 </TableCell>
-                {!isAdmin && parameter.lembar_data && (
+                {!isAdmin && (
                   <TableCell>
                     <select
                       {...register(`sample.param.${parameterId}.lembar_data`, {
                         setValueAs: (value) =>
                           value === "Pilih Lembar Data" ? "" : value,
                       })}
-                      defaultValue={parameter.lembar_data}
+                      defaultValue={parameter.lembar_data.ld_name}
                       className="w-full"
                     >
-                      <option className="w-full p-4 rounded bg-gray-100 shadow-none">
-                        {parameter.lembar_data ?? "Pilih Lembar Data"}
+                      <option>
+                        {parameter.lembar_data?.ld_name ?? "Pilih Lembar Data"}
                       </option>
-                      {choiceParams
+
+                      {/* { choiceParams
                         .find((param) => param.param === parameter.name)
-                        ?.lembar_data.filter(
-                          (lembar_data) =>
+                        ?.lembar_data.filter((lembar_data) => {
+                          // Ensure the current lembar_data is not already selected
+                          return (
                             !parameter.lembar_data ||
-                            !parameter.lembar_data.includes(lembar_data)
-                        ) // Use optional chaining operator to handle undefined
+                            parameter.lembar_data.ld_file_id !==
+                              lembar_data.ld_file_id
+                          );
+                        })
                         .map((lembar_data) => (
-                          <option key={lembar_data} value={lembar_data}>
-                            {lembar_data}
+                          <option
+                            key={lembar_data.ld_file_id}
+                            value={lembar_data.ld_file_id}
+                          >
+                            {lembar_data.ld_name}
                           </option>
-                        ))}
+                        ))} */}
                     </select>
                     <div className="text-xs text-red-600 pt-3 text-center">
                       {
