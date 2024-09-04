@@ -818,75 +818,74 @@ export const samplingProjectPageColumns: ColumnDef<ProjectSamplingType>[] = [
 ];
 
 // Table Column for Receive Project
-export const pplhpReceiveSamplingColumns: ColumnDef<PplhpReceiveSamplingType>[] = [
-  // Nama sampel
-  // TODO: Adjust to backend
-  {
-    accessorKey: "nama_sampel",
-    header: "Nama sampel",
-    cell: ({ row }) => {
-      return (
-        <div className="capitalize pl-0.5">
-
-        </div>
-      );
+export const pplhpReceiveSamplingColumns: ColumnDef<PplhpReceiveSamplingType>[] =
+  [
+    // Nama sampel
+    // TODO: Adjust to backend
+    {
+      accessorKey: "nama_sampel",
+      header: "Nama sampel",
+      cell: ({ row }) => {
+        return <div className="capitalize pl-0.5"></div>;
+      },
     },
-  },
-  // Judul Project
-  {
-    accessorKey: "project_name",
-    header: ({ column }) => {
-      return (
-        <Button
-          className="italic hover:bg-transparent hover:text-pastel_moss_green"
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Judul Project
-        </Button>
-      );
+    // Judul Project
+    {
+      accessorKey: "project_name",
+      header: ({ column }) => {
+        return (
+          <Button
+            className="italic hover:bg-transparent hover:text-pastel_moss_green"
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            Judul Project
+          </Button>
+        );
+      },
+      cell: ({ row }) => (
+        <div className="capitalize pl-4">{row.getValue("project_name")}</div>
+      ),
     },
-    cell: ({ row }) => (
-      <div className="capitalize pl-4">{row.getValue("project_name")}</div>
-    ),
-  },
-  //Status
-  {
-    accessorKey: "alamat_sampling",
-    header: "Lokasi Pengambilan Sampel",
-    cell: ({ row }) => {
-      return (
-        <div className="capitalize pl-0.5">
-          {row.getValue("alamat_sampling")}
-        </div>
-      );
+    //Status
+    {
+      accessorKey: "alamat_sampling",
+      header: "Lokasi Pengambilan Sampel",
+      cell: ({ row }) => {
+        return (
+          <div className="capitalize pl-0.5">
+            {row.getValue("alamat_sampling")}
+          </div>
+        );
+      },
     },
-  },
-  //Lokasi
-  {
-    accessorKey: "alamat_kantor",
-    header: "Lokasi",
-    cell: ({ row }) => {
-      return (
-        <div className="capitalize pl-0.5">{row.getValue("alamat_kantor")}</div>
-      );
+    //Lokasi
+    {
+      accessorKey: "alamat_kantor",
+      header: "Lokasi",
+      cell: ({ row }) => {
+        return (
+          <div className="capitalize pl-0.5">
+            {row.getValue("alamat_kantor")}
+          </div>
+        );
+      },
     },
-  },
-  {
-    accessorKey: "contact_person",
-    header: "Contact Person",
-    cell: ({ row }) => {
-      return (
-        <div className="capitalize pl-0.5">
-          {row.getValue("contact_person")}
-        </div>
-      );
+    {
+      accessorKey: "contact_person",
+      header: "Contact Person",
+      cell: ({ row }) => {
+        return (
+          <div className="capitalize pl-0.5">
+            {row.getValue("contact_person")}
+          </div>
+        );
+      },
     },
-  },
-  {
-    accessorKey: "_id",
-  },
-];
+    {
+      accessorKey: "_id",
+    },
+  ];
 
 export const LHPDraftPageColumns: ColumnDef<ProjectLHPType>[] = [
   //No Penawaran
@@ -1053,12 +1052,33 @@ export const LabDashboardRev: ColumnDef<LabDashboardPageColumnsType>[] = [
   {
     accessorKey: "deadline",
     header: "Deadline",
+    // {
+    //   accessorKey: "alamat_sampling",
+    //   header: "Lokasi Sampling",
+    //   cell: ({ row }) => {
+    //     const deadline =
+    //       row.original.jadwal_sampling?.to || "Haven't set deadline yet";
+    //     return <div className="capitalize text-center ">{deadline}</div>;
+    //   },
+    // },
     cell: ({ row }) => {
-      return <div className="">{row.getValue("deadline")}</div>;
+      const deadline = row.original.deadline.to
+        ? row.original.deadline.to
+        : row.original.deadline.from ?? "Haven't set deadline yet";
+
+      return <div>{deadline}</div>;
     },
+
+    // If the deadline is a string, just display it
+    // return <div>{deadline}</div>;
+    // },
   },
   {
     accessorKey: "_id",
+    enableHiding: true,
+  },
+  {
+    accessorKey: "project_id",
     enableHiding: true,
   },
 ];

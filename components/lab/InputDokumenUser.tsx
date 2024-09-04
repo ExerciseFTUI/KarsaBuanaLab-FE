@@ -19,7 +19,7 @@ import {
   TableRow,
   TableCell,
 } from "@/components/ui/table";
-import { InputDocumentType, labInputChoice } from "@/lib/type";
+import { InputDocumentType, labInputChoice, LD } from "@/lib/type";
 import {
   useLabForm,
   labInputDocumentValidation,
@@ -32,14 +32,14 @@ import { useRouter } from "next/navigation";
 
 interface inputDokumenUserProps {
   sample: InputDocumentType;
-  userId: string;
+  isAdmin: boolean;
   sampleId: string;
   choiceParams: [labInputChoice];
 }
 
 const InputDokumenUser: FC<inputDokumenUserProps> = ({
   sample,
-  userId,
+  isAdmin,
   sampleId,
   choiceParams,
 }) => {
@@ -53,6 +53,7 @@ const InputDokumenUser: FC<inputDokumenUserProps> = ({
         // param: string;
         unit?: string;
         method?: string[];
+        lembar_data: LD;
       }[];
     };
   }>();
@@ -69,7 +70,6 @@ const InputDokumenUser: FC<inputDokumenUserProps> = ({
   useEffect(() => {
     if (sample) {
       sample.parameters.forEach((param, index) => {
-        // setValue(`sample.param.${index}.unit`, param.unit ?? "");
         setValue(`sample.param.${index}.method`, param.method ?? []);
       });
     }
@@ -82,6 +82,7 @@ const InputDokumenUser: FC<inputDokumenUserProps> = ({
         param: {
           unit?: string;
           method?: string[];
+          lembar_data?: LD;
         }[];
       };
     }
@@ -92,6 +93,9 @@ const InputDokumenUser: FC<inputDokumenUserProps> = ({
         param: param.name,
         unit: unitMethodResult.sample.param[paramId].unit ?? param.unit,
         method: unitMethodResult.sample.param[paramId].method ?? param.method,
+        lembar_data:
+          unitMethodResult.sample.param[paramId].lembar_data ??
+          param.lembar_data,
       })),
     };
 
@@ -140,6 +144,11 @@ const InputDokumenUser: FC<inputDokumenUserProps> = ({
               <TableHead className="w-1/4 text-center text-light_brown font-semibold">
                 Method
               </TableHead>
+              {!isAdmin && (
+                <TableHead className="w-1/4 text-center text-light_brown font-semibold">
+                  Lembar Data
+                </TableHead>
+              )}
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -154,6 +163,7 @@ const InputDokumenUser: FC<inputDokumenUserProps> = ({
                     })}
                     defaultValue={parameter.unit}
                     className="w-full"
+                    disabled={isAdmin ? false : true}
                   >
                     <option className="w-full p-4 rounded bg-gray-100 shadow-none">
                       {parameter.unit ?? "Select Unit"}
@@ -183,6 +193,7 @@ const InputDokumenUser: FC<inputDokumenUserProps> = ({
                           <input
                             type="checkbox"
                             value={method}
+                            disabled={isAdmin ? false : true}
                             onChange={(e) => {
                               const isChecked = e.target.checked;
                               const selectedMethod = e.target.value;
@@ -217,13 +228,54 @@ const InputDokumenUser: FC<inputDokumenUserProps> = ({
                     {errors.sample?.param?.[parameterId]?.method?.message}
                   </div>
                 </TableCell>
+                {!isAdmin && (
+                  <TableCell>
+                    <select
+                      {...register(`sample.param.${parameterId}.lembar_data`, {
+                        setValueAs: (value) =>
+                          value === "Pilih Lembar Data" ? "" : value,
+                      })}
+                      defaultValue={parameter.lembar_data.ld_name}
+                      className="w-full"
+                    >
+                      <option>
+                        {parameter.lembar_data?.ld_name ?? "Pilih Lembar Data"}
+                      </option>
+
+                      {/* { choiceParams
+                        .find((param) => param.param === parameter.name)
+                        ?.lembar_data.filter((lembar_data) => {
+                          // Ensure the current lembar_data is not already selected
+                          return (
+                            !parameter.lembar_data ||
+                            parameter.lembar_data.ld_file_id !==
+                              lembar_data.ld_file_id
+                          );
+                        })
+                        .map((lembar_data) => (
+                          <option
+                            key={lembar_data.ld_file_id}
+                            value={lembar_data.ld_file_id}
+                          >
+                            {lembar_data.ld_name}
+                          </option>
+                        ))} */}
+                    </select>
+                    <div className="text-xs text-red-600 pt-3 text-center">
+                      {
+                        errors.sample?.param?.[parameterId]?.lembar_data
+                          ?.message
+                      }
+                    </div>
+                  </TableCell>
+                )}
               </TableRow>
             ))}
           </TableBody>
         </Table>
         <div className="flex justify-center bottom-0 mt-24 text-lg">
           <Button
-            className="w-2/3 p-6 bg-light_brown hover:bg-dark_brown"
+            className="w-2/3 p-6 bg-light_brown hover:bg-dark_brown mb-16 "
             type="submit"
           >
             Submit
@@ -253,52 +305,3 @@ const InputDokumenUser: FC<inputDokumenUserProps> = ({
 };
 
 export default InputDokumenUser;
-
-// // For default values unit and method
-// useEffect(() => {
-//   const updatedLastSelectedUnits: Record<string, string> = {};
-
-//   // Loop through each parameter in the sample
-//   sample.forEach((inputDocument) => {
-//     inputDocument.parameters.forEach((parameter) => {
-//       const { name, unit, method } = parameter;
-//       const lastUnit = lastSelectedUnits[name]; // Get last selected unit
-//       //set value for method
-//       setValue(
-//         `sample.${sample.indexOf(
-//           inputDocument
-//         )}.parameter.${inputDocument.parameters.indexOf(parameter)}.method`,
-//         method
-//       );
-
-//       // Check if unit and method are defined
-//       if (unit && method) {
-//         // Check if last selected unit is valid and still available in options
-//         if (lastUnit === unit) {
-//           updatedLastSelectedUnits[name] = lastUnit; // Use last selected unit as default
-//         } else {
-//           updatedLastSelectedUnits[name] = unit; // Use unit as default
-//         }
-//       }
-//     });
-//   });
-
-//   // Update state with the new last selected units
-//   setLastSelectedUnits(updatedLastSelectedUnits);
-// }, [sample]); // Only re-run the effect when sample changes
-
-// // For default values result
-// useEffect(() => {
-//   sample.forEach((inputDocument, sampleId) => {
-//     inputDocument.parameters.forEach((parameter, parameterId) => {
-//       const defaultValue = String(parameter.result);
-//       if (defaultValue === "undefined" || defaultValue === "null") {
-//         return;
-//       }
-//       setValue(
-//         `sample.${sampleId}.parameter.${parameterId}.result`,
-//         defaultValue
-//       );
-//     });
-//   });
-// }, [sample, setValue]);

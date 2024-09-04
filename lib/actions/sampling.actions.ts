@@ -247,6 +247,8 @@ export const getLabDashboardProject = async (
       }
     );
 
+    console.log("response api", response.data.result);
+
     return response.data.result; // Access 'result' field
   } catch (error: any) {
     console.error(`Error getting project with ID ${projectId}:`, error.message);
@@ -316,6 +318,9 @@ export const getSampleForLab = async (sampleId: string): Promise<any> => {
         },
       }
     );
+    console.log("id: ", sampleId);
+
+    console.log("response", response.data.result);
 
     return response.data.result; // Access 'result' field
   } catch (error: any) {
