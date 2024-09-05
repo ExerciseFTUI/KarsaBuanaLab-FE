@@ -1,31 +1,31 @@
-import NotesAdmin from "@/components/lab/NotesAdmin"
-import VerifikasiSampling from "@/components/lab/VerifikasiSampling"
-import HyperLinkButton from "@/components/sampling/HyperlinkButton"
-import { Separator } from "@/components/ui/separator"
-import { getProject } from "@/lib/actions/marketing.actions"
+import NotesAdmin from "@/components/lab/NotesAdmin";
+import VerifikasiSampling from "@/components/lab/VerifikasiSampling";
+import HyperLinkButton from "@/components/sampling/HyperlinkButton";
+import { Separator } from "@/components/ui/separator";
+import { getProject } from "@/lib/actions/marketing.actions";
 import {
   getAllUser,
   getLinkFiles,
   verifySample,
-} from "@/lib/actions/sampling.actions"
-import { SamplingRequestData } from "@/lib/type"
+} from "@/lib/actions/sampling.actions";
+import { SamplingRequestData } from "@/lib/type";
 
 export default async function Home({ params }: { params: { np: string } }) {
-  const resProject = await getProject(params.np)
-  const resFiles = await getLinkFiles(params.np)
-  const resUser = await getAllUser("USER")
+  const resProject = await getProject(params.np);
+  const resFiles = await getLinkFiles(params.np);
+  const resUser = await getAllUser("USER");
 
   const samplingUser = resUser.result.filter(
     (u) => u.division == null || u.division == "Lab"
-  )
+  );
 
   const data: SamplingRequestData = {
     project: resProject.result || null,
     user: samplingUser || [],
     files: resFiles.result || null,
-  }
+  };
 
-  const files = data.files.file.filter((f: any) => f.type == "Result")
+  const files = data.files.file.filter((f: any) => f.type == "Result");
 
   return (
     <div className="flex flex-row justify-between mx-10 h-full gap-4">
@@ -52,5 +52,5 @@ export default async function Home({ params }: { params: { np: string } }) {
 
       <VerifikasiSampling data={data} />
     </div>
-  )
+  );
 }

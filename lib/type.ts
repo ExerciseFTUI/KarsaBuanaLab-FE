@@ -149,7 +149,7 @@ export type ProjectSamplingType = {
 export type SamplingRequestData = {
   project: Project;
   user: User[];
-  // files: any;
+  files?: any;
 };
 
 export const Sampling = {
