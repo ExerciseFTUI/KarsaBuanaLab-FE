@@ -1,37 +1,40 @@
-"use client"
+"use client";
 
-import { Tabs, TabsContent } from "@/components/ui/tabs"
-import DocumentList from "../DokumentList"
-import { Button } from "@/components/ui/button"
+import { Tabs, TabsContent } from "@/components/ui/tabs";
+import DocumentList from "../DokumentList";
+import { Button } from "@/components/ui/button";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover"
-import { cn } from "@/lib/utils"
-import { CalendarIcon } from "lucide-react"
-import { Calendar } from "@/components/ui/calendar"
-import { format, differenceInCalendarDays } from "date-fns"
-import React, { useState } from "react"
-import SamplingTabsList from "../tab/SamplingTabsList"
-import { GroupUnassignedTable } from "./GroupUnassignedTable"
+} from "@/components/ui/popover";
+import { cn } from "@/lib/utils";
+import { CalendarIcon } from "lucide-react";
+import { Calendar } from "@/components/ui/calendar";
+import { format, differenceInCalendarDays } from "date-fns";
+import React, { useState } from "react";
+import SamplingTabsList from "../tab/SamplingTabsList";
+import { GroupUnassignedTable } from "./GroupUnassignedTable";
 import {
   RowSelectionState,
   getCoreRowModel,
   useReactTable,
-} from "@tanstack/react-table"
-import { groupUserSelectableColumns } from "../sampleListDataTables/DataTableColumns"
-import { GroupAssignedTable } from "./GroupAssignedTable"
-import { User } from "@/lib/models/user.model"
-import { Sampling } from "@/lib/models/sampling.model"
-import { assignProject, sampleAssignment } from "@/lib/actions/sampling.actions"
-import HyperLinkButton from "../HyperlinkButton"
-import { Project } from "@/lib/models/project.model"
-import { DateRange } from "react-day-picker"
-import { useRouter } from "next/navigation"
-import LoadingScreen from "@/components/LoadingScreen"
-import { SamplingRequestData } from "@/lib/type"
-import { useToast } from "@/components/ui/use-toast"
+} from "@tanstack/react-table";
+import { groupUserSelectableColumns } from "../sampleListDataTables/DataTableColumns";
+import { GroupAssignedTable } from "./GroupAssignedTable";
+import { User } from "@/lib/models/user.model";
+import { Sampling } from "@/lib/models/sampling.model";
+import {
+  assignProject,
+  sampleAssignment,
+} from "@/lib/actions/sampling.actions";
+import HyperLinkButton from "../HyperlinkButton";
+import { Project } from "@/lib/models/project.model";
+import { DateRange } from "react-day-picker";
+import { useRouter } from "next/navigation";
+import LoadingScreen from "@/components/LoadingScreen";
+import { SamplingRequestData } from "@/lib/type";
+import { useToast } from "@/components/ui/use-toast";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -42,32 +45,32 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/components/ui/alert-dialog"
+} from "@/components/ui/alert-dialog";
 
 interface Params {
-  data: SamplingRequestData
-  projects: Project[]
+  data: SamplingRequestData;
+  projects: Project[];
 }
 
 export default function SampleProjectTab({ data, projects }: Params) {
-  const { files, user, project } = data
+  const { files, user, project } = data;
 
   const jadwal_sampling = !!project.jadwal_sampling
     ? project.jadwal_sampling
-    : { from: "", to: "" }
+    : { from: "", to: "" };
 
   let from = jadwal_sampling.from
     ? jadwal_sampling.from.split("-").reverse()
-    : null
-  let to = jadwal_sampling.to ? jadwal_sampling.to.split("-").reverse() : null
+    : null;
+  let to = jadwal_sampling.to ? jadwal_sampling.to.split("-").reverse() : null;
 
-  let initialState: RowSelectionState = {}
+  let initialState: RowSelectionState = {};
 
   if (project.project_assigned_to.length)
     user.forEach((u: User, i: number) => {
       if (project.project_assigned_to.includes(u._id) == true)
-        initialState[`${i}`] = true
-    })
+        initialState[`${i}`] = true;
+    });
 
   const [date, setDate] = React.useState<DateRange | undefined>({
     from: from
@@ -76,10 +79,10 @@ export default function SampleProjectTab({ data, projects }: Params) {
     to: to
       ? new Date(parseInt(to[0]), parseInt(to[1]) - 1, parseInt(to[2]))
       : undefined,
-  })
+  });
 
   const [rowSelection, setRowSelection] =
-    React.useState<RowSelectionState>(initialState)
+    React.useState<RowSelectionState>(initialState);
 
   const table = useReactTable({
     data: !!user ? user : [],
@@ -89,12 +92,12 @@ export default function SampleProjectTab({ data, projects }: Params) {
     state: {
       rowSelection,
     },
-  })
+  });
 
-  const router = useRouter()
-  const { toast } = useToast()
+  const router = useRouter();
+  const { toast } = useToast();
 
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false);
 
   // prettier-ignore
   async function addProjectDeadline(e: any) {
@@ -135,100 +138,101 @@ export default function SampleProjectTab({ data, projects }: Params) {
   }
 
   return (
-    <Tabs defaultValue="dokumen" className="flex-1">
+    <>
       {isLoading && <LoadingScreen text="" />}
+      <Tabs defaultValue="dokumen" className="flex-1">
+        <SamplingTabsList value1="dokumen" value2="group" />
 
-      <SamplingTabsList value1="dokumen" value2="grup" />
+        <TabsContent className="py-4 w-full" value="dokumen">
+          <div className="px-4 py-2 flex flex-col flex-1">
+            <DocumentList data={files} />
 
-      <TabsContent className="py-4 w-full" value="dokumen">
-        <div className="px-4 py-2 flex flex-col flex-1">
-          <DocumentList data={files} />
+            <div className="flex flex-wrap flex-col max-w-xl">
+              <h1 className="text-xl font-semibold my-5">Surat Tugas</h1>
 
-          <div className="flex flex-wrap flex-col max-w-xl">
-            <h1 className="text-xl font-semibold my-5">Surat Tugas</h1>
-
-            <HyperLinkButton
-              title="Surat Tugas"
-              href={files.file.find((f: any) => f.name == "Surat Tugas").url}
-            />
-          </div>
-        </div>
-      </TabsContent>
-
-      <TabsContent className="p-4 w-full" value="grup">
-        <GroupUnassignedTable table={table} />
-
-        <GroupAssignedTable table={table} />
-
-        <div className="px-6 flex flex-col">
-          <h1 className="text-lg font-semibold my-5">Deadline Sampel</h1>
-
-          <Popover>
-            <PopoverTrigger asChild>
-              <Button
-                variant={"outline"}
-                className={cn(
-                  "w-full justify-start text-left text-base font-medium",
-                  "border-light_brown border-2 py-6",
-                  "hover:bg-ghost_brown hover:bg-opacity-10",
-                  !date && "text-muted-foreground",
-                  "text-light_brown hover:text-light_brown"
-                )}
-              >
-                <CalendarIcon className="mr-2 h-6 w-6 text-light_brown" />
-                {date?.from ? (
-                  date.to ? (
-                    <>
-                      {format(date.from, "LLL dd, y")} -{" "}
-                      {format(date.to, "LLL dd, y")}
-                    </>
-                  ) : (
-                    format(date.from, "LLL dd, y")
-                  )
-                ) : (
-                  <span className="text-light_brown">Pilih tanggal</span>
-                )}
-              </Button>
-            </PopoverTrigger>
-
-            <PopoverContent className="w-auto p-0">
-              <Calendar
-                initialFocus
-                mode="range"
-                defaultMonth={date?.from}
-                selected={date}
-                onSelect={setDate}
-                numberOfMonths={1}
+              <HyperLinkButton
+                title="Surat Tugas"
+                href={files.file.find((f: any) => f.name == "Surat Tugas").url}
               />
-            </PopoverContent>
-          </Popover>
+            </div>
+          </div>
+        </TabsContent>
 
-          <AlertDialog>
-            <AlertDialogTrigger asChild>
-              <Button className="w-48 py-4 self-center mt-4 bg-light_brown hover:bg-dark_brown disabled:bg-transparent disabled:text-dark_brown disabled:font-bold disabled:border-2 disabled:border-dark_brown">
-                {date == null ? "Choose Deadline" : "Save"}
-              </Button>
-            </AlertDialogTrigger>
+        <TabsContent className="p-4 w-full" value="group">
+          <GroupUnassignedTable table={table} />
 
-            <AlertDialogContent>
-              <AlertDialogHeader>
-                <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+          <GroupAssignedTable table={table} />
 
-                <AlertDialogDescription>
-                  Please kindly check the deadline and the users again.
-                </AlertDialogDescription>
-              </AlertDialogHeader>
+          <div className="px-6 flex flex-col">
+            <h1 className="text-lg font-semibold my-5">Deadline Sampel</h1>
 
-              <AlertDialogFooter>
-                <AlertDialogCancel>Cancel</AlertDialogCancel>
-                <AlertDialogAction onClick={(e) => addProjectDeadline(e)}>
-                  Continue
-                </AlertDialogAction>
-              </AlertDialogFooter>
-            </AlertDialogContent>
-          </AlertDialog>
-        </div>
-      </TabsContent>
-    </Tabs>
-  )
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button
+                  variant={"outline"}
+                  className={cn(
+                    "w-full justify-start text-left text-base font-medium",
+                    "border-light_brown border-2 py-6",
+                    "hover:bg-ghost_brown hover:bg-opacity-10",
+                    !date && "text-muted-foreground",
+                    "text-light_brown hover:text-light_brown"
+                  )}
+                >
+                  <CalendarIcon className="mr-2 h-6 w-6 text-light_brown" />
+                  {date?.from ? (
+                    date.to ? (
+                      <>
+                        {format(date.from, "LLL dd, y")} -{" "}
+                        {format(date.to, "LLL dd, y")}
+                      </>
+                    ) : (
+                      format(date.from, "LLL dd, y")
+                    )
+                  ) : (
+                    <span className="text-light_brown">Pilih tanggal</span>
+                  )}
+                </Button>
+              </PopoverTrigger>
+
+              <PopoverContent className="w-auto p-0">
+                <Calendar
+                  initialFocus
+                  mode="range"
+                  defaultMonth={date?.from}
+                  selected={date}
+                  onSelect={setDate}
+                  numberOfMonths={1}
+                />
+              </PopoverContent>
+            </Popover>
+
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <Button className="w-48 py-4 self-center mt-4 bg-light_brown hover:bg-dark_brown disabled:bg-transparent disabled:text-dark_brown disabled:font-bold disabled:border-2 disabled:border-dark_brown">
+                  {date == null ? "Choose Deadline" : "Save"}
+                </Button>
+              </AlertDialogTrigger>
+
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+
+                  <AlertDialogDescription>
+                    Please kindly check the deadline and the users again.
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                  <AlertDialogAction onClick={(e) => addProjectDeadline(e)}>
+                    Continue
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
+          </div>
+        </TabsContent>
+      </Tabs>
+    </>
+  );
 }

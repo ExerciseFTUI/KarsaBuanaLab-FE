@@ -35,20 +35,34 @@ import {
   SelectValue,
   SelectItem,
 } from "@/components/ui/select";
+import InventoryComboBox from "../InventoryComboBox";
+import { InventoryVendor, inventoryConditionEnum } from "../InventoryType";
 
 interface InventoryFormProps {
   form: UseFormReturn<z.infer<typeof inventoryValidation>>;
   onSubmit(values: z.infer<typeof inventoryValidation>): Promise<void>;
+  isViewOnly: boolean;
+  allVendor: InventoryVendor[];
 }
 
-const InventoryForm: FC<InventoryFormProps> = ({ form, onSubmit }) => {
+const InventoryForm: FC<InventoryFormProps> = ({
+  form,
+  onSubmit,
+  isViewOnly,
+  allVendor,
+}) => {
   const [date, setDate] = useState<Date>();
+  const [vendor, setVendor] = useState("");
 
   useEffect(() => {
     setDate(form.watch("deadline"));
+    setVendor(form.watch("vendor"));
   }, []);
 
-  const { watch } = form;
+  const {
+    watch,
+    formState: { errors },
+  } = form;
 
   return (
     <Form {...form}>
@@ -61,6 +75,7 @@ const InventoryForm: FC<InventoryFormProps> = ({ form, onSubmit }) => {
               <FormLabel className="text-light_brown">Tools Name</FormLabel>
               <FormControl>
                 <Input
+                  disabled={isViewOnly}
                   className={`rounded-2xl px-5 py-5 border-light_brown border-2 focus-visible:ring-0 ${
                     watch("tool").length > 0 ? "opacity-100" : "opacity-50"
                   }  focus:opacity-100 placeholder:text-light_brown text-light_brown`}
@@ -78,16 +93,17 @@ const InventoryForm: FC<InventoryFormProps> = ({ form, onSubmit }) => {
           name="description"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-light_brown">Description</FormLabel>
+              <FormLabel className="text-light_brown">Merk</FormLabel>
               <FormControl>
                 <Input
+                  disabled={isViewOnly}
                   className={`rounded-2xl px-5 py-5 border-light_brown border-2 focus-visible:ring-0 ${
                     watch("description").length > 0
                       ? "opacity-100"
                       : "opacity-50"
                   }  focus:opacity-100 placeholder:text-light_brown text-light_brown`}
                   {...field}
-                  placeholder="Add your description here"
+                  placeholder="Merk"
                 />
               </FormControl>
 
@@ -100,41 +116,71 @@ const InventoryForm: FC<InventoryFormProps> = ({ form, onSubmit }) => {
           name="category"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-light_brown">Category</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
+              <FormLabel className="text-light_brown">Condition</FormLabel>
+              <Select
+                disabled={isViewOnly}
+                onValueChange={field.onChange}
+                defaultValue={field.value}
+              >
                 <FormControl>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select the maintenance" />
+                  <SelectTrigger className="text-light_brown border-light_brown border-2 focus:ring-0">
+                    <SelectValue
+                      className="text-light_brown"
+                      placeholder="Select the Condition"
+                    />
                   </SelectTrigger>
                 </FormControl>
-                <SelectContent className="text-sm">
-                  <SelectItem className="p-3" value="Tools">
-                    Tools
-                  </SelectItem>
-                  <SelectItem className="p-3" value="Materials">
-                    Materials
-                  </SelectItem>
+                <SelectContent className="text-sm text-light_brown">
+                  {inventoryConditionEnum.map((condition, index) => (
+                    <SelectItem
+                      key={index + condition}
+                      className="p-3"
+                      value={condition}
+                    >
+                      {condition}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
               <FormMessage />
             </FormItem>
           )}
         />
+        <div className="flex flex-col w-full  gap-y-3">
+          <FormLabel className="text-light_brown">Vendor</FormLabel>
+          <InventoryComboBox
+            sample={vendor}
+            setSample={(vendor: string) => {
+              setVendor(vendor);
+              form.setValue("vendor", vendor);
+            }}
+            baseSample={allVendor}
+            form={form}
+            isDisabled={isViewOnly}
+          />
+          {errors.vendor && (
+            <p className="text-[0.8rem] font-medium text-destructive">
+              {errors.vendor.message}
+            </p>
+          )}
+        </div>
         <FormField
           control={form.control}
           name="maintenanceEvery"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-light_brown">
-                Maintenance Every
-              </FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
+              <FormLabel className="text-light_brown">Kalibrasi</FormLabel>
+              <Select
+                disabled={isViewOnly}
+                onValueChange={field.onChange}
+                defaultValue={field.value}
+              >
                 <FormControl>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select the maintenance" />
+                  <SelectTrigger className="text-light_brown border-light_brown border-2 focus:ring-0">
+                    <SelectValue placeholder="Calibrate Every" />
                   </SelectTrigger>
                 </FormControl>
-                <SelectContent className="text-sm">
+                <SelectContent className="text-sm text-light_brown">
                   <SelectItem className="p-3" value="1 Month">
                     1 Month
                   </SelectItem>
@@ -167,6 +213,7 @@ const InventoryForm: FC<InventoryFormProps> = ({ form, onSubmit }) => {
           <Popover>
             <PopoverTrigger asChild>
               <Button
+                disabled={isViewOnly}
                 variant={"outline"}
                 className={cn(
                   "w-full justify-start text-left text-base font-medium mt-2",
@@ -199,14 +246,9 @@ const InventoryForm: FC<InventoryFormProps> = ({ form, onSubmit }) => {
             </PopoverContent>
           </Popover>
         </div>
-        <Button
-          onClick={() => {
-            form.handleSubmit(onSubmit);
-          }}
-          className="w-full hover:bg-dark_brown bg-light_brown mt-3"
-        >
+        {/* <Button className="w-full hover:bg-dark_brown bg-light_brown mt-3">
           Submit
-        </Button>
+        </Button> */}
       </form>
     </Form>
   );

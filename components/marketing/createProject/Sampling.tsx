@@ -44,6 +44,7 @@ interface SamplingProps {
   index: number;
   update: UseFieldArrayUpdate<FieldValues, "samples">;
   baseSamples?: BaseSample[];
+  isApproval?: boolean;
 }
 
 const Sampling: FC<SamplingProps> = ({
@@ -54,11 +55,14 @@ const Sampling: FC<SamplingProps> = ({
   index,
   update,
   baseSamples,
+  isApproval,
 }) => {
   const [openModal, setOpenModal] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
   const [isLoading, startTranstition] = useTransition();
   const { toast } = useToast();
+
+  const approval = isApproval || false;
 
   //React Hook Form
   const form = useForm<FieldValues>({
@@ -128,7 +132,6 @@ const Sampling: FC<SamplingProps> = ({
           >
             <span className="text-white font-bold">{sampleName}</span>
             <div className=" flex flex-row">
-              
               {!isOpen && <CaretDownIcon className="h-6 w-6" />}
               {isOpen && <CaretUpIcon className="h-6 w-6" />}
             </div>
@@ -167,6 +170,7 @@ const Sampling: FC<SamplingProps> = ({
             {!isLoading && (
               <div>
                 <Button
+                  disabled={approval}
                   onClick={() => setOpenModal(true)}
                   size={"icon"}
                   variant={"ghost"}
@@ -175,7 +179,7 @@ const Sampling: FC<SamplingProps> = ({
                 </Button>
                 <AlertDialog>
                   <AlertDialogTrigger asChild>
-                    <Button size={"icon"} variant={"ghost"}>
+                    <Button disabled={approval} size={"icon"} variant={"ghost"}>
                       <TrashIcon />
                     </Button>
                   </AlertDialogTrigger>

@@ -10,150 +10,120 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import {
   Table,
   TableBody,
-  TableCaption,
-  TableCell,
-  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
+  TableCell,
 } from "@/components/ui/table";
-import { Input } from "../ui/input";
-import { InputDocumentType, labInputChoice, sampleAnswer } from "@/lib/type";
+import { InputDocumentType, labInputChoice, LD } from "@/lib/type";
 import {
   useLabForm,
   labInputDocumentValidation,
 } from "@/lib/validations/LabValidation";
 import { z } from "zod";
-import { submitLab } from "@/lib/actions/lab.actions";
+import { submitLabRev } from "@/lib/actions/lab.actions";
+import { sampleAnswer } from "@/lib/type";
 import { useToast } from "../ui/use-toast";
 import { useRouter } from "next/navigation";
-import InputParam from "./InputParam";
 
 interface inputDokumenUserProps {
-  sample: [InputDocumentType];
-  userId: string;
-  projectId: string;
+  sample: InputDocumentType;
+  isAdmin: boolean;
+  sampleId: string;
   choiceParams: [labInputChoice];
-  status: string;
 }
 
 const InputDokumenUser: FC<inputDokumenUserProps> = ({
   sample,
-  userId,
-  projectId,
+  isAdmin,
+  sampleId,
   choiceParams,
-  status
 }) => {
   const router = useRouter();
   const { toast } = useToast();
-  // State declaration
-  const [lastSelectedUnits, setLastSelectedUnits] = useState<Record<string, string>>({});
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [formData, setFormData] = useState<z.infer<typeof labInputDocumentValidation>>();
-  
+  const [formData, setFormData] = useState<{
+    sample: {
+      // sample_name: string;
+      param: {
+        // param: string;
+        unit?: string;
+        method?: string[];
+        lembar_data: LD;
+      }[];
+    };
+  }>();
+
   const {
     register,
     handleSubmit,
     formState: { errors },
     setValue,
-    getValues
+    getValues,
   } = useLabForm();
 
-  // For default values result
-useEffect(() => {
-  sample.forEach((inputDocument, sampleId) => {
-    inputDocument.parameters.forEach((parameter, parameterId) => {
-      const defaultValue = String(parameter.result);
-      if (defaultValue === "undefined" || defaultValue === "null") {
-        return;
-      }
-      setValue(`sample.${sampleId}.parameter.${parameterId}.result`, defaultValue);
-    });
-  });
-}, [sample, setValue]);
-
-// For default values unit and method
-useEffect(() => {
-  const updatedLastSelectedUnits: Record<string, string> = {};
-
-  // Loop through each parameter in the sample
-  sample.forEach((inputDocument) => {
-    inputDocument.parameters.forEach((parameter) => {
-      const { name, unit, method } = parameter;
-      const lastUnit = lastSelectedUnits[name]; // Get last selected unit
-      //set value for method
-      setValue(`sample.${sample.indexOf(inputDocument)}.parameter.${inputDocument.parameters.indexOf(parameter)}.method`, method);
-
-      // Check if unit and method are defined
-      if (unit && method) {
-        // Check if last selected unit is valid and still available in options
-        if (lastUnit === unit) {
-          updatedLastSelectedUnits[name] = lastUnit; // Use last selected unit as default
-        } else {
-          updatedLastSelectedUnits[name] = unit; // Use unit as default
-        }
-      }
-    });
-  });
-
-  // Update state with the new last selected units
-  setLastSelectedUnits(updatedLastSelectedUnits);
-}, [sample]); // Only re-run the effect when sample changes
-
+  // Initialize form values
+  useEffect(() => {
+    if (sample) {
+      sample.parameters.forEach((param, index) => {
+        setValue(`sample.param.${index}.method`, param.method ?? []);
+      });
+    }
+  }, [sample, setValue]);
 
   function mergeData(
-    data: [InputDocumentType],
+    data: InputDocumentType,
     unitMethodResult: {
       sample: {
-        parameter: { unit: string; method: string[]; result: string }[];
-      }[];
+        param: {
+          unit?: string;
+          method?: string[];
+          lembar_data?: LD;
+        }[];
+      };
     }
   ) {
-    const mergedData: sampleAnswer[] = [];
+    const mergedSample: sampleAnswer = {
+      sample_name: data.sampleName,
+      param: data.parameters.map((param, paramId) => ({
+        param: param.name,
+        unit: unitMethodResult.sample.param[paramId].unit ?? param.unit,
+        method: unitMethodResult.sample.param[paramId].method ?? param.method,
+        lembar_data:
+          unitMethodResult.sample.param[paramId].lembar_data ??
+          param.lembar_data,
+      })),
+    };
 
-    data.map((sample, sampleId) => {
-      const mergedSample = {
-        sample_name: sample.sampleName,
-        param: sample.parameters.map((param, paramId) => ({
-          param: param.name,
-          result: unitMethodResult.sample[sampleId].parameter[paramId].result,
-          unit: unitMethodResult.sample[sampleId].parameter[paramId].unit,
-          method: unitMethodResult.sample[sampleId].parameter[paramId].method,
-        })),
-      };
-      mergedData.push(mergedSample);
-    });
-
-    return mergedData;
+    return mergedSample;
   }
 
-  async function onSubmit(data: z.infer<typeof labInputDocumentValidation>) {
+  const onSubmit = (data: z.infer<typeof labInputDocumentValidation>) => {
     setFormData(data);
     setIsDialogOpen(true);
-  }
+  };
 
   async function handleConfirmSubmit() {
     if (!formData) return;
-  
+
     const answer = mergeData(sample, formData);
-    const response = await submitLab(projectId, answer);
+    const response = await submitLabRev(sampleId, answer);
 
     if (response) {
       toast({
         title: "Submitted",
         description: "Thank you for submitting!",
       });
-  
+
       router.push("/lab/dashboard");
     } else {
       toast({
         title: "Failed to get the project",
-        description: "please resubmit the form",
+        description: "Please resubmit the form",
       });
     }
     setIsDialogOpen(false);
@@ -162,129 +132,153 @@ useEffect(() => {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
       <div className="h-fit">
-        <h1 className="text-black_brown text-2xl font-semibold pb-8">
-          Input Dokumen
-        </h1>
-        <div>
-          {sample.map((sample, sampleId) => (
-            <Table key={sampleId} className="text-light_brown">
-              <TableHeader>
-                <TableRow>
-                  <TableHead className="w-1/4 text-light_brown font-semibold">
-                    {sample.sampleName}
-                  </TableHead>
-                  <TableHead className="w-1/4 text-center text-light_brown font-semibold">
-                    Unit
-                  </TableHead>
-                  <TableHead className="w-1/4 text-center text-light_brown font-semibold">
-                    Method
-                  </TableHead>
-                  <TableHead className="w-1/4 text-center text-light_brown font-semibold">
-                    Result
-                  </TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {sample.parameters.map((parameter, parameterId) => (
-                  <TableRow key={parameterId}>
-                    <TableCell className="font-medium">
-                      {parameter.name}
-                    </TableCell>
-                    <TableCell>
+        <Table className="text-light_brown">
+          <TableHeader>
+            <TableRow>
+              <TableHead className="w-1/4 text-light_brown font-semibold">
+                {sample.sampleName}
+              </TableHead>
+              <TableHead className="w-1/4 text-center text-light_brown font-semibold">
+                Unit
+              </TableHead>
+              <TableHead className="w-1/4 text-center text-light_brown font-semibold">
+                Method
+              </TableHead>
+              {!isAdmin && (
+                <TableHead className="w-1/4 text-center text-light_brown font-semibold">
+                  Lembar Data
+                </TableHead>
+              )}
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {sample.parameters.map((parameter, parameterId) => (
+              <TableRow key={parameterId}>
+                <TableCell className="font-medium">{parameter.name}</TableCell>
+                <TableCell>
+                  <select
+                    {...register(`sample.param.${parameterId}.unit`, {
+                      setValueAs: (value) =>
+                        value === "Select Unit" ? "" : value,
+                    })}
+                    defaultValue={parameter.unit}
+                    className="w-full"
+                    disabled={isAdmin ? false : true}
+                  >
+                    <option className="w-full p-4 rounded bg-gray-100 shadow-none">
+                      {parameter.unit ?? "Select Unit"}
+                    </option>
+                    {choiceParams
+                      .find((param) => param.param === parameter.name)
+                      ?.unit.filter(
+                        (unit) =>
+                          !parameter.unit || !parameter.unit.includes(unit)
+                      ) // Use optional chaining operator to handle undefined
+                      .map((unit) => (
+                        <option key={unit} value={unit}>
+                          {unit}
+                        </option>
+                      ))}
+                  </select>
+                  <div className="text-xs text-red-600 pt-3 text-center">
+                    {errors.sample?.param?.[parameterId]?.unit?.message}
+                  </div>
+                </TableCell>
+                <TableCell>
+                  {choiceParams
+                    .find((param) => param.param === parameter.name)
+                    ?.method.map((method) => {
+                      return (
+                        <label key={method} className="block">
+                          <input
+                            type="checkbox"
+                            value={method}
+                            disabled={isAdmin ? false : true}
+                            onChange={(e) => {
+                              const isChecked = e.target.checked;
+                              const selectedMethod = e.target.value;
+                              const currentMethods =
+                                getValues(
+                                  `sample.param.${parameterId}.method`
+                                ) || [];
+                              let updatedMethods;
+                              if (isChecked) {
+                                updatedMethods = [
+                                  ...currentMethods,
+                                  selectedMethod,
+                                ];
+                              } else {
+                                updatedMethods = currentMethods.filter(
+                                  (m) => m !== selectedMethod
+                                );
+                              }
+                              setValue(
+                                `sample.param.${parameterId}.method`,
+                                updatedMethods
+                              );
+                            }}
+                            defaultChecked={parameter.method?.includes(method)}
+                            className="mr-2"
+                          />
+                          {method}
+                        </label>
+                      );
+                    })}
+                  <div className="text-xs text-red-600 pt-3 text-center">
+                    {errors.sample?.param?.[parameterId]?.method?.message}
+                  </div>
+                </TableCell>
+                {!isAdmin && (
+                  <TableCell>
                     <select
-                      disabled={status === "IN REVIEW BY SPV"}
+                      {...register(`sample.param.${parameterId}.lembar_data`, {
+                        setValueAs: (value) =>
+                          value === "Pilih Lembar Data" ? "" : value,
+                      })}
+                      defaultValue={parameter.lembar_data.ld_name}
                       className="w-full"
-                      {...register(
-                        `sample.${sampleId}.parameter.${parameterId}.unit`,
-                        {
-                          setValueAs: (value: any) => (value === "Select Unit" ? "" : value),
-                        }
-                      )}
                     >
-                      <option className="w-full p-4 rounded bg-gray-100 shadow-none">
-                      { parameter.unit ?? "Select Unit"}
+                      <option>
+                        {parameter.lembar_data?.ld_name ?? "Pilih Lembar Data"}
                       </option>
-                      {choiceParams
+
+                      {/* { choiceParams
                         .find((param) => param.param === parameter.name)
-                        ?.unit.filter((unit) => !parameter.unit || !parameter.unit.includes(unit)) // Use optional chaining operator to handle undefined
-                        .map((unit) => (
-                          <option key={unit} value={unit}>
-                            {unit}
-                          </option>
-                        ))}
-                    </select>
-                      <div className="text-xs text-red-600 pt-3 text-center">
-                        {
-                          errors.sample?.[sampleId]?.parameter?.[parameterId]
-                            ?.unit?.message
-                        }
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      {choiceParams
-                        .find((param) => param.param === parameter.name)
-                        ?.method.map((method) => {
+                        ?.lembar_data.filter((lembar_data) => {
+                          // Ensure the current lembar_data is not already selected
                           return (
-                            <label key={method} className="block">
-                              <input
-                                disabled={status === "IN REVIEW BY SPV"}
-                                type="checkbox"
-                                value={method}
-                                onChange={(e) => {
-                                  const isChecked = e.target.checked;
-                                  const selectedMethod = e.target.value;
-                                  const currentMethods = getValues(`sample.${sampleId}.parameter.${parameterId}.method`) || [];
-                                  let updatedMethods;
-                                  if (isChecked) {
-                                    updatedMethods = [...currentMethods, selectedMethod];
-                                  } else {
-                                    updatedMethods = currentMethods.filter((m) => m !== selectedMethod);
-                                  }
-                                  setValue(`sample.${sampleId}.parameter.${parameterId}.method`, updatedMethods);
-                                }}
-                                
-                                defaultChecked={parameter.method?.includes(method)}
-                                className="mr-2"
-                              />
-                              {method}
-                            </label>
+                            !parameter.lembar_data ||
+                            parameter.lembar_data.ld_file_id !==
+                              lembar_data.ld_file_id
                           );
-                        })}
-                      <div className="text-xs text-red-600 pt-3 text-center">
-                        {errors.sample?.[sampleId]?.parameter?.[parameterId]?.method?.message}
-                      </div>
-                    </TableCell>
-                    <TableCell className="text-right">
-                    <Input
-                      type="text"
-                      disabled={status === "IN REVIEW BY SPV"}
-                      className="bg-white"
-                      {...register(`sample.${sampleId}.parameter.${parameterId}.result`)}
-                    />
-                      {/* <Input
-                        type="text"
-                        className="bg-gray-100"
-                        {...register(
-                          `sample.${sampleId}.parameter.${parameterId}.result`
-                        )}
-                        value={parameter.result}
-                      /> */}
-                      <div className="text-xs text-red-600 pt-3 text-center">
-                        {
-                          errors.sample?.[sampleId]?.parameter?.[parameterId]
-                            ?.result?.message
-                        }
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          ))}
-        </div>
+                        })
+                        .map((lembar_data) => (
+                          <option
+                            key={lembar_data.ld_file_id}
+                            value={lembar_data.ld_file_id}
+                          >
+                            {lembar_data.ld_name}
+                          </option>
+                        ))} */}
+                    </select>
+                    <div className="text-xs text-red-600 pt-3 text-center">
+                      {
+                        errors.sample?.param?.[parameterId]?.lembar_data
+                          ?.message
+                      }
+                    </div>
+                  </TableCell>
+                )}
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
         <div className="flex justify-center bottom-0 mt-24 text-lg">
-          <Button disabled={status === "IN REVIEW BY SPV"} className="w-2/3 p-6 bg-light_brown hover:bg-dark_brown" type="button" onClick={handleSubmit(onSubmit)}>
-            {status === "IN REVIEW BY SPV" ? "Verifying by SPV, can't edit" : "Submit"}
+          <Button
+            className="w-2/3 p-6 bg-light_brown hover:bg-dark_brown mb-16 "
+            type="submit"
+          >
+            Submit
           </Button>
         </div>
         <AlertDialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
@@ -296,8 +290,12 @@ useEffect(() => {
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
-              <AlertDialogCancel onClick={() => setIsDialogOpen(false)}>Cancel</AlertDialogCancel>
-              <AlertDialogAction onClick={handleConfirmSubmit}>Continue</AlertDialogAction>
+              <AlertDialogCancel onClick={() => setIsDialogOpen(false)}>
+                Cancel
+              </AlertDialogCancel>
+              <AlertDialogAction onClick={handleConfirmSubmit}>
+                Continue
+              </AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>

@@ -77,7 +77,7 @@ export type RegulationType = {
   param: string[];
 };
 
-export type ReceiveSamplingType = {
+export type PplhpReceiveSamplingType = {
   _id: string;
   no_penawaran: string;
   project_name: string;
@@ -93,6 +93,15 @@ export type ProjectLHPType = {
   alamat_sampling: string;
   alamat_kantor: string;
   contact_person: string;
+};
+
+export type LabDashboardPageColumnsType = {
+  project_id: string;
+  _id: string;
+  sample_number: string;
+  sample_name: string;
+  status: string;
+  deadline: { from: string; to: string; _id: string };
 };
 
 export type LabDataType = {
@@ -140,7 +149,7 @@ export type ProjectSamplingType = {
 export type SamplingRequestData = {
   project: Project;
   user: User[];
-  files: any;
+  // files: any;
 };
 
 export const Sampling = {
@@ -273,7 +282,7 @@ export type DocumentType = {
 
 export type InputDocumentType = {
   sampleName: string;
-  asignedTo: string;
+  // asignedTo: string;
   parameters: [ParameterType];
 };
 
@@ -281,22 +290,32 @@ export type ParameterType = {
   name: string;
   unit: string;
   method: string[];
-  result: string;
+  lembar_data: LD;
+  // link_lembar_data: string;
+  // analysis_status: string;
 };
 
 export type labInputChoice = {
   param: string;
   unit: string[];
   method: string[];
+  lembar_data: LD[];
+  // ld_name: string[];
+  // ld_file_id: string;
+};
+
+export type LD = {
+  ld_name: string;
+  ld_file_id: string;
 };
 
 export type sampleAnswer = {
   sample_name: string;
   param: {
     param: string;
-    result: string;
     unit: string;
     method: string[];
+    lembar_data: LD;
   }[];
 };
 

@@ -6,10 +6,11 @@ module.exports = {
     "./components/**/*.{ts,tsx}",
     "./app/**/*.{ts,tsx}",
     "./src/**/*.{ts,tsx}",
+    "./node_modules/flowbite/**/*.js",
   ],
   theme: {
     fontFamily: {
-      'dm-sans': ['DM Sans', 'system-ui'],
+      "dm-sans": ["DM Sans", "system-ui"],
     },
     container: {
       center: true,
@@ -87,5 +88,5 @@ module.exports = {
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [require("tailwindcss-animate"), require("flowbite/plugin")],
 };

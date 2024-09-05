@@ -1,14 +1,14 @@
-"use server"
+"use server";
 
-import axios from "axios"
-import { BaseApiResponse } from "../models/baseApiResponse.model"
-import { DashboardSampling, Sampling } from "../models/sampling.model"
-import { Project } from "../models/project.model"
-import { revalidatePath } from "next/cache"
-import { User } from "../models/user.model"
-import { DateRange } from "react-day-picker"
+import axios from "axios";
+import { BaseApiResponse } from "../models/baseApiResponse.model";
+import { DashboardSampling, Sampling } from "../models/sampling.model";
+import { Project } from "../models/project.model";
+import { revalidatePath } from "next/cache";
+import { User } from "../models/user.model";
+import { DateRange } from "react-day-picker";
 
-const apiBaseUrl = process.env.API_BASE_URL
+const apiBaseUrl = process.env.API_BASE_URL;
 
 export const getSampleById = async (
   year: string,
@@ -17,17 +17,20 @@ export const getSampleById = async (
   try {
     const response = await axios.get(
       `${apiBaseUrl}/sampling/get/${year}/${sampleId}`
-    )
+    );
 
-    return response.data as BaseApiResponse<Sampling>
+    return response.data as BaseApiResponse<Sampling>;
   } catch (error: any) {
-    console.error("Error getting sample sampling/get/year/sampleId", error.message)
+    console.error(
+      "Error getting sample sampling/get/year/sampleId",
+      error.message
+    );
     return {
       message: "Failed to get sample",
       result: null,
-    } as unknown as BaseApiResponse<Sampling>
+    } as unknown as BaseApiResponse<Sampling>;
   }
-}
+};
 
 export const getProjectByDivision = async (
   division: string
@@ -40,14 +43,17 @@ export const getProjectByDivision = async (
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
         data: { division: division, status: "RUNNING" },
       }
-    )
+    );
 
-    return response.data as BaseApiResponse<[Project]>
+    return response.data as BaseApiResponse<[Project]>;
   } catch (error: any) {
-    console.error("Error getting sample /projects/get-project-by-division/", error.message)
-    return null as unknown as BaseApiResponse<[Project]>
+    console.error(
+      "Error getting sample /projects/get-project-by-division/",
+      error.message
+    );
+    return null as unknown as BaseApiResponse<[Project]>;
   }
-}
+};
 
 export const getLinkFiles = async (
   projectId: string
@@ -55,14 +61,17 @@ export const getLinkFiles = async (
   try {
     const response = await axios.get(
       `${apiBaseUrl}/projects/get-link-files/${projectId}`
-    )
+    );
 
-    return response.data as BaseApiResponse<File[]>
+    return response.data as BaseApiResponse<File[]>;
   } catch (error: any) {
-    console.error("Error getting sample /projects/get-link-files/${projectId}", error.message)
-    return null as unknown as BaseApiResponse<File[]>
+    console.error(
+      "Error getting sample /projects/get-link-files/${projectId}",
+      error.message
+    );
+    return null as unknown as BaseApiResponse<File[]>;
   }
-}
+};
 
 export const getProjectsByAcc = async (
   accountId: string
@@ -76,14 +85,17 @@ export const getProjectsByAcc = async (
           accountId: accountId,
         },
       }
-    )
+    );
 
-    return response.data as BaseApiResponse<[Project]>
+    return response.data as BaseApiResponse<[Project]>;
   } catch (error: any) {
-    console.error("Error getting sample /projects/get-project-by-acc", error.message)
-    return null as unknown as BaseApiResponse<[Project]>
+    console.error(
+      "Error getting sample /projects/get-project-by-acc",
+      error.message
+    );
+    return null as unknown as BaseApiResponse<[Project]>;
   }
-}
+};
 
 export const sampleAssignment = async (
   sampleId: string,
@@ -95,16 +107,19 @@ export const sampleAssignment = async (
       {
         accountId: accountId,
       }
-    )
+    );
 
-    revalidatePath(`/sampling/project/${sampleId}`) // path sekarang
+    revalidatePath(`/sampling/project/${sampleId}`); // path sekarang
 
-    return response.data as BaseApiResponse<Project>
+    return response.data as BaseApiResponse<Project>;
   } catch (error: any) {
-    console.error("Error getting sample /sampling/assign/${sampleId}", error.message)
-    return null as unknown as BaseApiResponse<Project>
+    console.error(
+      "Error getting sample /sampling/assign/${sampleId}",
+      error.message
+    );
+    return null as unknown as BaseApiResponse<Project>;
   }
-}
+};
 
 export const getDashboardSampling = async (): Promise<
   BaseApiResponse<DashboardSampling[]>
@@ -113,63 +128,68 @@ export const getDashboardSampling = async (): Promise<
     const response = await axios.get(
       `${apiBaseUrl}/sampling/get-dashboard-sampling/`
       // `http://localhost:8080/sampling/get-dashboard-sampling/`
-    )
+    );
 
-    revalidatePath(`/sampling`)
+    revalidatePath(`/sampling`);
 
-    return response.data as BaseApiResponse<DashboardSampling[]>
+    return response.data as BaseApiResponse<DashboardSampling[]>;
   } catch (error: any) {
-    console.error("Error getting sample /sampling/get-dashboard-sampling/", error.message)
-    return null as unknown as BaseApiResponse<DashboardSampling[]>
+    console.error(
+      "Error getting sample /sampling/get-dashboard-sampling/",
+      error.message
+    );
+    return null as unknown as BaseApiResponse<DashboardSampling[]>;
   }
-}
+};
 
 export const verifySample = async (
   projectId: string,
   status: string,
   sample_id: string
 ): Promise<BaseApiResponse<Project>> => {
-  
   try {
     const response = await axios.post(
-      `${apiBaseUrl}/sampling/change`, 
+      `${apiBaseUrl}/sampling/change`,
       // `http://localhost:8080/sampling/change`,
-    {
-      projectId,
-      status,
-      sample_id,
-    })
+      {
+        projectId,
+        status,
+        sample_id,
+      }
+    );
 
-    revalidatePath(`/sampling/sample/${projectId}`) // path sekarang
+    revalidatePath(`/sampling/sample/${projectId}`); // path sekarang
 
-    return response.data as BaseApiResponse<Project>
+    return response.data as BaseApiResponse<Project>;
   } catch (error: any) {
-    console.error("Error getting sample /sampling/change", error.message)
-    return null as unknown as BaseApiResponse<Project>
+    console.error("Error getting sample /sampling/change", error.message);
+    return null as unknown as BaseApiResponse<Project>;
   }
-}
+};
 
 export const assignProject = async (
   projectId: string,
   accountId: string[],
   jadwalSampling: any
 ): Promise<BaseApiResponse<Project>> => {
-  
   try {
     const response = await axios.post(`${apiBaseUrl}/projects/assign-project`, {
       projectId,
       accountId,
       jadwal_sampling: jadwalSampling,
-    })
+    });
 
-    revalidatePath(`/sampling/project`) // path sekarang
+    revalidatePath(`/sampling/project`); // path sekarang
 
-    return response.data as BaseApiResponse<Project>
+    return response.data as BaseApiResponse<Project>;
   } catch (error: any) {
-    console.error("Error getting sample /projects/assign-project", error.response.data)
-    return null as unknown as BaseApiResponse<Project>
+    console.error(
+      "Error getting sample /projects/assign-project",
+      error.response.data
+    );
+    return null as unknown as BaseApiResponse<Project>;
   }
-}
+};
 
 export const changeDivision = async (
   projectId: string,
@@ -182,14 +202,14 @@ export const changeDivision = async (
         projectId,
         division,
       }
-    )
+    );
 
-    return response.data as BaseApiResponse<Project>
+    return response.data as BaseApiResponse<Project>;
   } catch (err: any) {
-    console.error(err.res)
-    return null as unknown as BaseApiResponse<Project>
+    console.error(err.res);
+    return null as unknown as BaseApiResponse<Project>;
   }
-}
+};
 
 export const getAllUser = async (
   division: string,
@@ -199,14 +219,14 @@ export const getAllUser = async (
     const response = await axios.get(`${apiBaseUrl}/sampling/get-all-user/`, {
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       data: { role: role },
-    })
+    });
 
-    return response.data as BaseApiResponse<User[]>
+    return response.data as BaseApiResponse<User[]>;
   } catch (error: any) {
-    console.error("Error getting user data", error.message)
-    return null as unknown as BaseApiResponse<User[]>
+    console.error("Error getting user data", error.message);
+    return null as unknown as BaseApiResponse<User[]>;
   }
-}
+};
 
 export const getLabDashboardProject = async (
   projectId: string,
@@ -226,7 +246,9 @@ export const getLabDashboardProject = async (
         },
       }
     );
-    
+
+    console.log("response api", response.data.result);
+
     return response.data.result; // Access 'result' field
   } catch (error: any) {
     console.error(`Error getting project with ID ${projectId}:`, error.message);
@@ -252,10 +274,57 @@ export const getChoiceParams = async (
         },
       }
     );
-    
+
     return response.data.result; // Access 'result' field
   } catch (error: any) {
     console.error(`Error getting project with ID ${projectId}:`, error.message);
     return null as unknown;
   }
-}
+};
+
+export const getChoiceParamsRev = async (sampleId: string): Promise<any> => {
+  try {
+    const response = await axios.get(
+      `${apiBaseUrl}/sampling/get-parameter-rev`,
+      // `http://localhost:8080/sampling/get-parameter-rev`,
+      {
+        data: {
+          sampleId: sampleId,
+        },
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+      }
+    );
+
+    return response.data.result; // Access 'result' field
+  } catch (error: any) {
+    console.error(`Error getting sample with ID ${sampleId}:`, error.message);
+    return null as unknown;
+  }
+};
+
+export const getSampleForLab = async (sampleId: string): Promise<any> => {
+  try {
+    const response = await axios.get(
+      `${apiBaseUrl}/sampling/get-input-sample-for-lab`,
+      // `http://localhost:8080/sampling/get-input-sample-for-lab`,
+      {
+        data: {
+          sampleId: sampleId,
+        },
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+      }
+    );
+    console.log("id: ", sampleId);
+
+    console.log("response", response.data.result);
+
+    return response.data.result; // Access 'result' field
+  } catch (error: any) {
+    console.error(`Error getting sample with ID ${sampleId}:`, error.message);
+    return null as unknown;
+  }
+};

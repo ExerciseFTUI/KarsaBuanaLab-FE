@@ -29,6 +29,7 @@ import ProjectForm from "../forms/ProjectForm";
 import { Project } from "@/lib/models/project.model";
 import { useToast } from "@/components/ui/use-toast";
 import {
+  marketingDeal,
   updateProject,
   updateProjectInfo,
   updateProjectSample,
@@ -253,12 +254,10 @@ export default function EditProjectPage({
 
       if (uploadedFiles.length > 0) {
         // Perform file upload logic here if needed
-        // const responseFile = await updateProjectFile(
-        //   project._id,
-        //   uploadedFiles
-        // );
-        const responseFile = await addInventoryFile(project._id, uploadedFiles);
-        router.refresh();
+        const responseFile = await updateProjectFile(
+          project._id,
+          uploadedFiles
+        );
       }
 
       //Display Toast
@@ -268,7 +267,7 @@ export default function EditProjectPage({
       });
 
       if (status === "RUNNING") {
-        // router.push("/marketing/running")
+        router.push("/marketing/running");
       } else if (status === "FINISHED") {
         router.push("/marketing/finished");
       } else if (status === "CANCELLED") {
@@ -298,7 +297,6 @@ export default function EditProjectPage({
         desc_failed: reason,
         status: "CANCELLED",
       };
-      
       //Connect to API
       const responseInfo = await updateProjectInfo(body);
       if (!responseInfo) {
@@ -461,6 +459,18 @@ export default function EditProjectPage({
 
   //=============================== End Document Section
 
+  const handleDeal = async () => {
+    const response = await marketingDeal(project._id);
+
+    if (response) {
+      alert("Success");
+      router.push("/marketing");
+      return;
+    }
+
+    alert("Failed ");
+  };
+
   return (
     <>
       {showCancelConfirmation && (
@@ -478,6 +488,7 @@ export default function EditProjectPage({
 
       <div className="flex gap-6 justify-evenly max-md:flex-col max-md:items-center">
         <ProjectForm
+          project={project}
           form={form}
           onSubmit={onSubmit2}
           status={status}
@@ -652,6 +663,15 @@ export default function EditProjectPage({
             {/* End of Cancelled Project */}
           </div>
           {/* End Button for submit */}
+
+          {project.TM_status?.toLowerCase() == "accepted" && (
+            <Button
+              className="w-full hover:bg-dark_brown bg-light_brown text-lg"
+              onClick={handleDeal}
+            >
+              Deal
+            </Button>
+          )}
 
           {/* End Document Section */}
         </Tabs>

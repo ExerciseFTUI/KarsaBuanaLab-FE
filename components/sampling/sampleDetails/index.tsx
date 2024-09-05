@@ -29,7 +29,7 @@ export default function ProjectDetail({
     );
   return (
     <div className="flex gap-6 max-md:flex-col max-md:items-center">
-      <div className="flex flex-col flex-1 sm:border-r-light_brown sm:border-r-2 border-b-2 border-b-light_brown sm:border-b-0">
+      <div className="flex flex-col flex-1 sm:border-r-light_brown sm:border-r-2 border-b-2 border-b-light_brown sm:border-b-0 pb-4 sm:pb-0">
         <ProjectDetails data={project} className="flex-none border-none" />
 
         <DocumentList data={files} className="w-full sm:w-56" />

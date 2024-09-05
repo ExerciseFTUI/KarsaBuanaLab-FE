@@ -1,18 +1,4 @@
 "use client";
-
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { PlusIcon } from "@radix-ui/react-icons";
-import { PlusCircleIcon } from "lucide-react";
-import SamplingTab from "@/components/receive/reviewDraft/SamplingTab";
 import { useState } from "react";
 import {
   FieldValues,
@@ -20,11 +6,21 @@ import {
   useFieldArray,
   useForm,
 } from "react-hook-form";
-import DocumentTab from "./DocumentTab";
+import { Button } from "@/components/ui/button";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { cn } from "@/lib/utils";
+import { CalendarIcon } from "lucide-react";
+import { Calendar } from "@/components/ui/calendar";
+import { format, differenceInCalendarDays } from "date-fns";
 import Document from "@/components/pplhp/Document";
+import { BaseSample } from "@/lib/models/baseSample.model";
+import Sampling from "@/components/marketing/createProject/Sampling";
 
-export default function ReviewDraftPage({ linkData }: { linkData: any }) {
-  //=============================== Sample Section
+export default function ReviewDraftPage({ details }: { details: any }) {
   const [openModal, setOpenModal] = useState(false);
   const sampleForm = useForm<FieldValues>({
     defaultValues: {
@@ -42,38 +38,71 @@ export default function ReviewDraftPage({ linkData }: { linkData: any }) {
   });
 
   //All the samples get save in here
-  const { fields: samples } = arrayField;
+  const { fields: samples, append, remove, update } = arrayField;
 
-  //================================= End Sample Section
-
-  //=============================== Document Section
-
-  //=============================== End Document Section
-
+  function deleteSample(index: number) {
+    remove(index);
+  }
+  const [date, setDate] = useState<Date | undefined>(new Date());
   return (
-    <div className="flex gap-6 max-md:flex-col max-md:items-center">
-      <Tabs defaultValue="sampling" className="w-[40rem] max-sm:w-[420px]">
-        <TabsList className="grid w-full grid-cols-2 space-x-0 cursor-pointer my-8 text-moss_green scale-75 lg:scale-100">
-          <TabsTrigger className="text-2xl" value="sampling">
-            Sampling
-          </TabsTrigger>
-          <TabsTrigger className="text-2xl" value="document">
-            Document
-          </TabsTrigger>
-        </TabsList>
+    <div className="flex-row space-y-10 max-md:flex-col max-md:items-center font-dm-sans">
+      <Document
+        data={details.files.map((file: any) => ({
+          url: file.url,
+          name: file.judul,
+          type: "Document",
+        }))}
+        color="light_brown"
+      />
 
-        {/* Sample Section */}
-        <TabsContent value="sampling">
-          <SamplingTab data={linkData?linkData.sampling_list:[]} />
-        </TabsContent>
-        {/* End Sample Section */}
+      {details.sampling.map((data: any, index: number) => (
+        <Sampling
+          key={index}
+          sampleName={data.sample_name}
+          regulation={data.regulation_name[0].regulation_name}
+          parameters={data.param.map((item: any) => item.param)}
+          index={index}
+          deleteSample={() => deleteSample(index)}
+          update={update}
+        />
+      ))}
+      <div className="space-y-4">
+        <p className="text-lg font-medium text-light_brown">
+          Tanggal Masuk sampel
+        </p>
+        <Popover>
+          <PopoverTrigger asChild>
+            <Button
+              variant={"outline"}
+              className={cn(
+                "w-full justify-start text-left font-normal",
+                "border-light_brown border-2 py-6",
+                "hover:bg-ghost_brown hover:bg-opacity-10",
+                !date && "text-muted-foreground",
+                "text-light_brown hover:text-light_brown"
+              )}
+            >
+              <CalendarIcon className="mr-2 h-5 w-5 text-light_brown" />
+              {date ? (
+                <>{format(date, "LLL dd, y")}</>
+              ) : (
+                <span className="text-light_brown">Pilih tanggal</span>
+              )}
+            </Button>
+          </PopoverTrigger>
 
-        {/* Document Section */}
-        <TabsContent value="document">
-          <Document data={linkData?linkData.file:[]} color="moss_green" />
-        </TabsContent>
-        {/* End Document Section */}
-      </Tabs>
+          <PopoverContent className="w-auto p-0">
+            <Calendar
+              initialFocus
+              mode="single"
+              defaultMonth={date}
+              selected={date}
+              onSelect={setDate}
+              numberOfMonths={1}
+            />
+          </PopoverContent>
+        </Popover>
+      </div>
     </div>
   );
 }

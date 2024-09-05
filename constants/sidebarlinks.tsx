@@ -9,7 +9,7 @@ import {
   AiOutlinePlusSquare,
 } from "react-icons/ai";
 import { MdOutlineCancel } from "react-icons/md";
-import { FaRunning } from "react-icons/fa";
+import { FaRunning, FaBookmark } from "react-icons/fa";
 import { ReactNode } from "react";
 import { GiLoveLetter, GiPaper } from "react-icons/gi";
 import { LetterCaseCapitalizeIcon, PlusIcon } from "@radix-ui/react-icons";
@@ -17,6 +17,7 @@ import { Archive, Mail } from "lucide-react";
 import { BsFileText } from "react-icons/bs";
 import { BiSolidBox } from "react-icons/bi";
 import { FiFileText } from "react-icons/fi";
+import { GiChemicalDrop } from "react-icons/gi";
 import { FiArchive } from "react-icons/fi";
 
 export interface ISidebarLinks {
@@ -42,10 +43,27 @@ export const adminLinks: ISidebarLinks[] = [
     label: "PPLHP",
   },
   {
-    icon: <Archive />,
+    icon: <GiChemicalDrop />,
     route: "/inventory",
     label: "Inventory",
   },
+  {
+    icon: <FaBookmark />,
+    route: "/approval",
+    label: "Project Approval",
+  },
+];
+
+export const TMLinks: ISidebarLinks[] = [
+  adminLinks[0],
+  adminLinks[2],
+  adminLinks[3],
+  adminLinks[4],
+  // {
+  //   icon: <Archive />,
+  //   route: "/inventory",
+  //   label: "Inventory",
+  // },
 ];
 
 export const marketingLink: ISidebarLinks[] = [
@@ -74,6 +92,11 @@ export const marketingLink: ISidebarLinks[] = [
     route: "/sample",
     label: "Sample",
   },
+  {
+    icon: <GiChemicalDrop />,
+    route: "/inventory",
+    label: "Inventory",
+  },
 ];
 
 export const samplingSPVLinks: ISidebarLinks[] = [
@@ -97,11 +120,21 @@ export const samplingSPVLinks: ISidebarLinks[] = [
     route: "/sample",
     label: "Sample",
   },
+  {
+    icon: <GiChemicalDrop />,
+    route: "/inventory",
+    label: "Inventory",
+  },
 ];
 
 export const samplingUSERLinks: ISidebarLinks[] = [
   samplingSPVLinks[0],
   samplingSPVLinks[2],
+  {
+    icon: <GiChemicalDrop />,
+    route: "/inventory",
+    label: "Inventory",
+  },
 ];
 
 export const pplhpLinks: ISidebarLinks[] = [
@@ -114,6 +147,11 @@ export const pplhpLinks: ISidebarLinks[] = [
     icon: <HiChartBar />,
     route: "/lhpdraft",
     label: "Pembuatan Draft LHP",
+  },
+  {
+    icon: <GiChemicalDrop />,
+    route: "/inventory",
+    label: "Inventory",
   },
   // {
   //   icon: <FaRunning />,
@@ -133,9 +171,21 @@ export const labLinks: ISidebarLinks[] = [
     route: "/verifikasi-data",
     label: "Verifikasi Data",
   },
+  {
+    icon: <GiChemicalDrop />,
+    route: "/inventory",
+    label: "Inventory",
+  },
 ];
 
-export const labUSERLinks: ISidebarLinks[] = [labLinks[0]];
+export const labUSERLinks: ISidebarLinks[] = [
+  labLinks[0],
+  {
+    icon: <GiChemicalDrop />,
+    route: "/inventory",
+    label: "Inventory",
+  },
+];
 
 export const sampleReceiveLinks: ISidebarLinks[] = [
   {
@@ -147,5 +197,10 @@ export const sampleReceiveLinks: ISidebarLinks[] = [
     icon: <HiChartBar />,
     route: "/ondiscuss",
     label: "Pengamanan",
+  },
+  {
+    icon: <GiChemicalDrop />,
+    route: "/inventory",
+    label: "Inventory",
   },
 ];

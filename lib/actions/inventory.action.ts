@@ -3,8 +3,10 @@
 import {
   Inventory,
   InventoryUser,
+  InventoryVendor,
 } from "@/components/auth/inventory/InventoryType";
 import axios from "axios";
+import { revalidatePath } from "next/cache";
 
 const apiBaseUrl = process.env.API_BASE_URL || "http://localhost:5000";
 
@@ -45,6 +47,57 @@ export const getInventoryById = async (id: string) => {
   }
 };
 
+export const getAllVendor = async () => {
+  try {
+    const response = await axios.get(`${apiBaseUrl}/inventory/get-vendor`);
+    return response.data.vendor as InventoryVendor[];
+  } catch (error: any) {
+    console.log(error.response.data);
+    console.error(`Error getting all vendor :`, error.message);
+    return [];
+  }
+};
+
+export const createVendor = async (vendor: string) => {
+  try {
+    const body = {
+      vendor_name: vendor,
+    };
+
+    const response = await axios.post(
+      `${apiBaseUrl}/inventory/create-vendor`,
+      body
+    );
+
+    return true;
+  } catch (error: any) {
+    console.log(error.response.data);
+    console.error(`Error creating vendor :`, error.message);
+    return false;
+  }
+};
+
+export const deleteVendor = async (vendor: string) => {
+  try {
+    const body = {
+      vendor_name: vendor,
+    };
+
+    const response = await axios.delete(
+      `${apiBaseUrl}/inventory/delete-vendor`,
+      {
+        data: body,
+      }
+    );
+
+    return true;
+  } catch (error: any) {
+    console.log(error.response.data);
+    console.error(`Error creating vendor :`, error.message);
+    return false;
+  }
+};
+
 type createInventoryRequest = {
   tools_name: string;
   description: string;
@@ -60,6 +113,7 @@ export const createInventory = async (body: createInventoryRequest) => {
       `${apiBaseUrl}/inventory/create-inventory`,
       body
     );
+    revalidatePath("/admin/inventory");
 
     return true;
   } catch (error: any) {
@@ -81,10 +135,31 @@ export const updateInventory = async (body: updateInventoryRequest) => {
       body
     );
 
+    revalidatePath("/admin/inventory");
+    revalidatePath("(main)/[division]/inventory");
+
     return true;
   } catch (error: any) {
     console.log(error.response.data);
     console.error(`Error updating inventory :`, error.message);
     return false;
+  }
+};
+
+export const getInventoryByPIC = async (id: string) => {
+  try {
+    const response = await axios.get(
+      `${apiBaseUrl}/inventory/get-inventory-by-pic/${id}`
+    );
+
+    if (!response.data.success) {
+      return [] as Inventory[];
+    }
+
+    return response.data.inventory as Inventory[];
+  } catch (error: any) {
+    console.log(error.response.data);
+    console.error(`Error getting single inventory :`, error.message);
+    return [] as Inventory[];
   }
 };

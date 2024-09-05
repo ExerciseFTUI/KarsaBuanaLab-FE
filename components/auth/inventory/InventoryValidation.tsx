@@ -4,11 +4,11 @@ export const inventoryValidation = z.object({
   tool: z.string().min(3, {
     message: "Tool name is Required",
   }),
-  description: z.string().min(5, {
+  description: z.string().min(3, {
     message: "Description is Required",
   }),
   category: z.string().min(3, {
-    message: "Category is Required",
+    message: "Condition is Required",
   }),
   maintenanceEvery: z.string().min(3, {
     message: "Maintenance is Required",
@@ -18,6 +18,9 @@ export const inventoryValidation = z.object({
       required_error: "Deadline is Required",
     })
     .optional(),
+  vendor: z.string({ required_error: "Vendor is required" }).min(3, {
+    message: "Vendor is Required",
+  }),
 });
 
 export type inventoryValidationType = z.infer<typeof inventoryValidation>;

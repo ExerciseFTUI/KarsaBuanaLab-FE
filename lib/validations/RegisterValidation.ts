@@ -1,4 +1,4 @@
-import { z } from "zod"
+import { z } from "zod";
 
 export const registerValidation = z
   .object({
@@ -22,6 +22,6 @@ export const registerValidation = z
   .refine((data) => data.password === data.confirmPassword, {
     message: "Passwords do not match",
     path: ["confirmPassword"],
-  })
+  });
 
-export type registerValidationType = z.infer<typeof registerValidation>
+export type registerValidationType = z.infer<typeof registerValidation>;

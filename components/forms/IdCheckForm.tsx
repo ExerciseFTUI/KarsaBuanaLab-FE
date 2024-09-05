@@ -43,12 +43,14 @@ interface IdCheckFormProps {
   setResiNumber: (resiNumber: string) => void;
   setStage: (stage: string) => void;
   setClientData: (clientData: any) => void;
+  setProjectName: (projectName: string) => void;
 }
 
 const IdCheckForm: FC<IdCheckFormProps> = ({
   setResiNumber,
   setStage,
   setClientData,
+  setProjectName,
 }) => {
   const form = useForm<z.infer<typeof clientValidation>>({
     resolver: zodResolver(clientValidation),
@@ -71,6 +73,8 @@ const IdCheckForm: FC<IdCheckFormProps> = ({
       const sample = await getSampleById(values.resiNumber);
       const analysis = await getAnalysisById(values.resiNumber);
       const finished = await getReportById(values.resiNumber);
+      const projectName = response.project_name;
+      setProjectName(projectName);
       const combinedData = {
         sample: sample,
         analysis: analysis,
@@ -86,7 +90,7 @@ const IdCheckForm: FC<IdCheckFormProps> = ({
         return;
       }
       setResiNumber(values.resiNumber);
-      setStage(response);
+      setStage(response.current_division);
       setClientData(combinedData);
     } catch (error) {
       console.error("Error getting project :", error);

@@ -15,6 +15,22 @@ export const getProject = async (projectId: string): Promise<Project[]> => {
   }
 }
 
+export const getReceiveDetails = async (projectId: string): Promise<any> => {
+  try {
+    const response = await axios.get(
+      `${apiBaseUrl}/sampling/get-details-pplhp/${projectId}`
+    );
+    return response.data.result; // Access 'result' field
+  } catch (error: any) {
+    console.error(
+      `Error getting detail for project with ID ${projectId}:`,
+      error.message
+    );
+    return null;
+  }
+};
+
+
 export const getLinkFiles = async (projectId: string): Promise<any> => {
   try {
     const response = await axios.get(

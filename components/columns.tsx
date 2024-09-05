@@ -13,7 +13,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
-  ReceiveSamplingType,
+  PplhpReceiveSamplingType,
   ProjectLHPType,
   LabDataType,
   ProjectType,
@@ -21,6 +21,7 @@ import {
   UserType,
   ProjectAdminPplhpType,
   SampleType,
+  LabDashboardPageColumnsType,
 } from "@/lib/type";
 import Link from "next/link";
 import { ProjectSamplingType } from "@/lib/type";
@@ -70,7 +71,8 @@ export const columns: ColumnDef<ProjectMarketingType>[] = [
 
     cell: ({ row }) => {
       const status =
-        row.original.current_division !== "SAMPLING"
+        row.original.current_division === "LAB" ||
+        row.original.current_division === "PPLHP"
           ? "ANALYSIS"
           : row.original.current_division;
 
@@ -109,8 +111,14 @@ export const columns: ColumnDef<ProjectMarketingType>[] = [
 
       const deadline =
         row.original.current_division === "SAMPLING" && jadwalSampling
-          ? `${jadwalSampling.to || jadwalSampling.from || "Haven't set deadline yet"}`
-          : `${deadlineLHP?.to || deadlineLHP?.from || "Haven't set deadline yet"}`;
+          ? `${
+              jadwalSampling.to ||
+              jadwalSampling.from ||
+              "Haven't set deadline yet"
+            }`
+          : `${
+              deadlineLHP?.to || deadlineLHP?.from || "Haven't set deadline yet"
+            }`;
 
       return <div className="capitalize text-center">{deadline}</div>;
     },
@@ -314,10 +322,8 @@ export const adminColumns: ColumnDef<UserType>[] = [
   {
     accessorKey: "_id",
     header: "",
-    cell: ({ row }) => (
-      <div></div>
-    ),
-    enableHiding: true
+    cell: ({ row }) => <div></div>,
+    enableHiding: true,
   },
   {
     accessorKey: "username",
@@ -413,12 +419,6 @@ export const adminColumns: ColumnDef<UserType>[] = [
 
 //Table Column for PPLHP Admin Page
 export const pplhpColumns: ColumnDef<PplhpDetail>[] = [
-  //No Penawaran
-  // {
-  //   accessorKey: "no_penawaran",
-  //   header: "No Penawaran",
-  //   cell: ({ row }) => <div className="">{row.getValue("no_penawaran")}</div>,
-  // },
   {
     accessorKey: "project_name",
     header: ({ column }) => {
@@ -818,68 +818,74 @@ export const samplingProjectPageColumns: ColumnDef<ProjectSamplingType>[] = [
 ];
 
 // Table Column for Receive Project
-export const receiveSamplingColumns: ColumnDef<ReceiveSamplingType>[] = [
-  //No Penawaran
-  {
-    accessorKey: "no_penawaran",
-    header: "No Penawaran",
-    cell: ({ row }) => <div className="">{row.getValue("no_penawaran")}</div>,
-  },
-  {
-    accessorKey: "project_name",
-    header: ({ column }) => {
-      return (
-        <Button
-          className="italic hover:bg-transparent hover:text-pastel_moss_green"
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Judul Project
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
+export const pplhpReceiveSamplingColumns: ColumnDef<PplhpReceiveSamplingType>[] =
+  [
+    // Nama sampel
+    // TODO: Adjust to backend
+    {
+      accessorKey: "nama_sampel",
+      header: "Nama sampel",
+      cell: ({ row }) => {
+        return <div className="capitalize pl-0.5"></div>;
+      },
     },
-    cell: ({ row }) => (
-      <div className="capitalize pl-4">{row.getValue("project_name")}</div>
-    ),
-  },
-  //Status
-  {
-    accessorKey: "alamat_sampling",
-    header: "Lokasi Pengambilan Sampel",
-    cell: ({ row }) => {
-      return (
-        <div className="capitalize pl-0.5">
-          {row.getValue("alamat_sampling")}
-        </div>
-      );
+    // Judul Project
+    {
+      accessorKey: "project_name",
+      header: ({ column }) => {
+        return (
+          <Button
+            className="italic hover:bg-transparent hover:text-pastel_moss_green"
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            Judul Project
+          </Button>
+        );
+      },
+      cell: ({ row }) => (
+        <div className="capitalize pl-4">{row.getValue("project_name")}</div>
+      ),
     },
-  },
-  //Lokasi
-  {
-    accessorKey: "alamat_kantor",
-    header: "Lokasi",
-    cell: ({ row }) => {
-      return (
-        <div className="capitalize pl-0.5">{row.getValue("alamat_kantor")}</div>
-      );
+    //Status
+    {
+      accessorKey: "alamat_sampling",
+      header: "Lokasi Pengambilan Sampel",
+      cell: ({ row }) => {
+        return (
+          <div className="capitalize pl-0.5">
+            {row.getValue("alamat_sampling")}
+          </div>
+        );
+      },
     },
-  },
-  {
-    accessorKey: "contact_person",
-    header: "Contact Person",
-    cell: ({ row }) => {
-      return (
-        <div className="capitalize pl-0.5">
-          {row.getValue("contact_person")}
-        </div>
-      );
+    //Lokasi
+    {
+      accessorKey: "alamat_kantor",
+      header: "Lokasi",
+      cell: ({ row }) => {
+        return (
+          <div className="capitalize pl-0.5">
+            {row.getValue("alamat_kantor")}
+          </div>
+        );
+      },
     },
-  },
-  {
-    accessorKey: "_id",
-  },
-];
+    {
+      accessorKey: "contact_person",
+      header: "Contact Person",
+      cell: ({ row }) => {
+        return (
+          <div className="capitalize pl-0.5">
+            {row.getValue("contact_person")}
+          </div>
+        );
+      },
+    },
+    {
+      accessorKey: "_id",
+    },
+  ];
 
 export const LHPDraftPageColumns: ColumnDef<ProjectLHPType>[] = [
   //No Penawaran
@@ -1007,6 +1013,76 @@ export const PPLHPFinalReviewPageColumns: ColumnDef<ProjectLHPType>[] = [
   },
 ];
 
+export const LabDashboardRev: ColumnDef<LabDashboardPageColumnsType>[] = [
+  {
+    accessorKey: "sample_number",
+    header: "Sample Number",
+    cell: ({ row }) => <div className="">{row.getValue("sample_number")}</div>,
+  },
+  {
+    accessorKey: "sample_name",
+    header: "Sample Name",
+    cell: ({ row }) => <div className="">{row.getValue("sample_name")}</div>,
+  },
+  {
+    accessorKey: "status",
+    header: "Status",
+    cell: ({ row }) => {
+      const status = row.getValue("status");
+
+      const color =
+        status == "Need Schedule" || status == "Get Sample"
+          ? "bg-moss_green"
+          : status == "On Discuss" || status == "Verifying"
+          ? "bg-light_brown"
+          : "bg-brick_red";
+
+      return (
+        <div
+          className={
+            "px-4 py-1.5 inline-block min-w-[8rem] rounded-full text-ghost_white " +
+            color
+          }
+        >
+          {row.getValue("status")}
+        </div>
+      );
+    },
+  },
+  {
+    accessorKey: "deadline",
+    header: "Deadline",
+    // {
+    //   accessorKey: "alamat_sampling",
+    //   header: "Lokasi Sampling",
+    //   cell: ({ row }) => {
+    //     const deadline =
+    //       row.original.jadwal_sampling?.to || "Haven't set deadline yet";
+    //     return <div className="capitalize text-center ">{deadline}</div>;
+    //   },
+    // },
+    cell: ({ row }) => {
+      const deadline = row.original.deadline.to
+        ? row.original.deadline.to
+        : row.original.deadline.from ?? "Haven't set deadline yet";
+
+      return <div>{deadline}</div>;
+    },
+
+    // If the deadline is a string, just display it
+    // return <div>{deadline}</div>;
+    // },
+  },
+  {
+    accessorKey: "_id",
+    enableHiding: true,
+  },
+  {
+    accessorKey: "project_id",
+    enableHiding: true,
+  },
+];
+
 export const LabDashboardPageColumns: ColumnDef<LabDataType>[] = [
   // No Penawaran
   {
@@ -1053,11 +1129,14 @@ export const LabDashboardPageColumns: ColumnDef<LabDataType>[] = [
         color = "bg-yellow-700";
       } else if (row.getValue("lab_status") === "IN REVIEW BY ADMIN") {
         color = "bg-blue-900";
-      } else if (row.getValue("lab_status") === "REVISION BY ADMIN" || row.getValue("lab_status") === "REVISION"){
+      } else if (
+        row.getValue("lab_status") === "REVISION BY ADMIN" ||
+        row.getValue("lab_status") === "REVISION"
+      ) {
         color = "bg-red-700";
       } else if (row.getValue("lab_status") === "IN REVIEW BY SPV") {
         color = "bg-blue-400";
-      }  else if (row.getValue("lab_status") === "REVISION BY SPV") {
+      } else if (row.getValue("lab_status") === "REVISION BY SPV") {
         color = "bg-red-400";
       }
 
@@ -1118,7 +1197,7 @@ export const LabDashboardPageColumnsUser: ColumnDef<LabDataType>[] = [
     cell: ({ row }) => {
       var color = "bg-moss_green";
       var statusString: string = row.getValue("lab_sample_status") as string; // Asserting the type to string
-  
+
       if (statusString === "ASSIGNED") {
         color = "bg-yellow-700";
       } else if (statusString === "VERIFYING") {
@@ -1133,7 +1212,7 @@ export const LabDashboardPageColumnsUser: ColumnDef<LabDataType>[] = [
         color = "bg-red-400";
         statusString = "Need Analyze";
       }
-  
+
       return (
         <div
           className={`capitalize text-white rounded-md w-fit px-2 text-center flex font-semibold ${color}`}
