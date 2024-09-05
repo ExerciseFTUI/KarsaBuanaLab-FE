@@ -27,20 +27,21 @@ export const createProjectValidation = z.object({
   }),
   valuasiProject: z
     .any()
-    .refine((value) => typeof value === 'string' || typeof value === 'number', {
+    .refine((value) => typeof value === "string" || typeof value === "number", {
       message: "Valuasi Project must be a string or number",
     })
     .optional(),
-  numRevisi: z
-    .number()
-    .optional(),
+  numRevisi: z.number().optional(),
   is_paid: z.boolean().optional(),
   desc_failed: z
     .string()
-    .max(280, {message: "Makismal 280 character"})
+    .max(280, { message: "Makismal 280 character" })
     .optional(),
   status: z.string().optional(),
   password: z.string().optional(),
+  projectType: z.string().min(2, {
+    message: "Please input title more than 5 words",
+  }),
 });
 
 export type createProjectValidation = z.infer<typeof createProjectValidation>;

@@ -161,6 +161,7 @@ const CreateProjectPage: FC<CreateProjectProps> = ({ baseSamples }) => {
           surel: values.surel,
           contact_person: values.contactPerson,
           sampling_list: sampling_list,
+          project_type: values.projectType,
         };
 
         const response = await createProjectJsonClient(body);

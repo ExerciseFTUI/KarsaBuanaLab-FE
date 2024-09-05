@@ -46,6 +46,15 @@ import { Textarea } from "@/components/ui/textarea";
 import VerifRevision from "../editProject/VerifRevision";
 import { Project } from "@/lib/models/project.model";
 import { sendEmail } from "@/lib/actions/client.actions";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 interface ProjectFormProps {
   form: UseFormReturn<z.infer<typeof createProjectValidation>>;
@@ -511,6 +520,38 @@ const ProjectForm: FC<ProjectFormProps> = ({
                     />
                   </FormControl>
 
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="projectType"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Tipe Project</FormLabel>
+                  <FormControl>
+                    <Select
+                      onValueChange={(projectType) => {
+                        form.setValue("projectType", projectType, {
+                          shouldValidate: true,
+                        });
+                        return field.onChange(projectType); // Update projectType instead of sample
+                      }}
+                      defaultValue={form.watch("projectType")}
+                    >
+                      <SelectTrigger className="">
+                        <SelectValue placeholder="Select project type" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          <SelectLabel>Select project type</SelectLabel>
+                          <SelectItem value="Internal">Internal</SelectItem>
+                          <SelectItem value="External">External</SelectItem>
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                  </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
