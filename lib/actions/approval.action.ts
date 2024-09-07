@@ -3,6 +3,7 @@ import axios from "axios";
 import { BaseApiResponse } from "../models/baseApiResponse.model";
 import { Project } from "../models/project.model";
 import { ApprovalProject } from "@/components/auth/approval/ApprovalType";
+import { revalidatePath } from "next/cache";
 
 const apiBaseUrl = process.env.API_BASE_URL || "http://localhost:5000";
 
@@ -49,6 +50,7 @@ export const changeTMStatus = async (
 
     //TODO: check respopnse from backend
     if (response) {
+      revalidatePath("/admin/approval");
       return true;
     }
 
