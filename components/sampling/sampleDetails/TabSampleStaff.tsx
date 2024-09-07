@@ -156,11 +156,13 @@ export default function TabSampleStaff({
                       <Button
                         className="sampling-btn sampling-btn-disabled"
                         disabled={
-                          s.status === "WAITING" || s.status === "ACCEPTED"
+                          s.status === "WAITING" ||
+                          s.status === "ACCEPTED" ||
+                          s.status === "SUBMIT"
                         }
                       >
                         {s.status === "SUBMIT"
-                          ? "Save"
+                          ? "Accepted"
                           : s.status === "WAITING"
                           ? "Verifying"
                           : s.status === "ACCEPTED"
@@ -172,7 +174,11 @@ export default function TabSampleStaff({
                     </AlertDialogTrigger>
 
                     {/* Conditionally render AlertDialogContent based on status */}
-                    {!(s.status === "WAITING" || s.status === "ACCEPTED") && (
+                    {!(
+                      s.status === "WAITING" ||
+                      s.status === "ACCEPTED" ||
+                      s.status === "SUBMIT"
+                    ) && (
                       <AlertDialogContent>
                         <AlertDialogHeader>
                           <AlertDialogTitle>

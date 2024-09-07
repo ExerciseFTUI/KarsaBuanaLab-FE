@@ -140,9 +140,17 @@ export default function TabSampleAdmin({
               />
 
               {/* Check s.status, if status == "WAITING" || "NOT ASSIGNED", just showing 1 disable button with text of "Waiting staff" */}
-              {s.status == "REVISION" || s.status == "NOT ASSIGNED" ? (
+              {s.status === "REVISION" || s.status === "NOT ASSIGNED" ? (
                 <Button className="sampling-btn" title="Waiting Staff" disabled>
                   Waiting
+                </Button>
+              ) : s.status === "SUBMIT" ? (
+                <Button
+                  className="sampling-btn"
+                  title="Already Accepted"
+                  disabled
+                >
+                  Accepted
                 </Button>
               ) : (
                 <div className="flex gap-2">
@@ -150,15 +158,8 @@ export default function TabSampleAdmin({
                   <AlertDialog>
                     <AlertDialogTrigger>
                       <Button
-                        className={
-                          (cn(
-                            "sampling-btn",
-                            s.status == "SUBMIT" ? "hidden" : ""
-                          ),
-                          " bg-moss_green")
-                        }
+                        className={cn("sampling-btn bg-moss_green")}
                         title="Accept"
-                        disabled={s.status == "SUBMIT"}
                       >
                         Accept
                       </Button>
@@ -178,7 +179,7 @@ export default function TabSampleAdmin({
                       <AlertDialogFooter>
                         <AlertDialogCancel>Cancel</AlertDialogCancel>
                         <AlertDialogAction
-                          onClick={(e) => submitSample(s._id, "SUBMIT")}
+                          onClick={() => submitSample(s._id, "SUBMIT")}
                         >
                           Continue
                         </AlertDialogAction>
@@ -191,11 +192,7 @@ export default function TabSampleAdmin({
                     <AlertDialogTrigger>
                       <Button
                         className={
-                          (cn(
-                            "sampling-btn"
-                            // s.status == "SUBMIT" ? "" : "hidden"
-                          ),
-                          " bg-red-500")
+                          (cn("sampling-btn"), " bg-red-600 hover:bg-red-800")
                         }
                         title="Revisi"
                       >
@@ -213,7 +210,7 @@ export default function TabSampleAdmin({
                       <AlertDialogFooter>
                         <AlertDialogCancel>Cancel</AlertDialogCancel>
                         <AlertDialogAction
-                          onClick={(e) => submitSample(s._id, "REVISION")}
+                          onClick={() => submitSample(s._id, "REVISION")}
                         >
                           Continue
                         </AlertDialogAction>
