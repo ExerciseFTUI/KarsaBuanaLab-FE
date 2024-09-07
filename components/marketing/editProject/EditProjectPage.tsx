@@ -50,6 +50,7 @@ import { AlertDialogTrigger } from "@radix-ui/react-alert-dialog";
 import CancelPopup from "@/components/cancelPopup";
 import { revalidatePath } from "next/cache";
 import { addInventoryFile } from "@/lib/actions/inventory.client.action";
+import { log } from "node:console";
 
 interface EditProjectPageProps {
   project: Project;
@@ -409,6 +410,38 @@ export default function EditProjectPage({
 
   // ========================= End of Action to update status payment ============================================== //
 
+  async function updateValuationProject(
+    values: z.infer<typeof createProjectValidation>
+  ) {
+    try {
+      const body = {
+        _id: project._id,
+        valuasi_proyek: values.valuasiProject,
+      };
+
+      //Connect to API
+      const responseInfo = await updateProjectInfo(body, false);
+      if (!responseInfo) {
+        toast({
+          title: "Oops, Failed!",
+          description: "Failed to update payment",
+        });
+
+        return;
+      }
+    } catch (error: any) {
+      const errorMsg = error?.response?.data?.message || error;
+      toast({
+        title: "Oops, Failed!",
+        description: errorMsg,
+        variant: "destructive",
+      });
+      console.error("Error from backend", errorMsg);
+      console.error("Error during project update:", errorMsg);
+    } finally {
+      router.refresh();
+    }
+  }
   //================================= End Project Information Section
 
   //=============================== Document Section
@@ -460,15 +493,42 @@ export default function EditProjectPage({
   //=============================== End Document Section
 
   const handleDeal = async () => {
-    const response = await marketingDeal(project._id);
+    // if valuasi_proyek is empty or 0, show alert
+    console.log("form valueasi", form.getValues("valuasiProject"));
 
+    if (
+      form.getValues("valuasiProject") === "0" ||
+      form.getValues("valuasiProject") === undefined ||
+      form.getValues("valuasiProject") === ""
+    ) {
+      console.log("failed");
+
+      toast({
+        title: "Oops, Failed!",
+        description: "Make sure the valuasi proyek is filled",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    await updateValuationProject(form.getValues());
+
+    const response = await marketingDeal(project._id);
     if (response) {
-      alert("Success");
+      toast({
+        title: "Good Job",
+        description: "Successfully project deal",
+      });
+
       router.push("/marketing");
       return;
     }
 
-    alert("Failed ");
+    toast({
+      title: "Oops, Failed!",
+      description: "Please try again later",
+      variant: "destructive",
+    });
   };
 
   return (

@@ -332,13 +332,17 @@ export const getbyStatus = async (
 };
 
 //Update Project Info
-export const updateProjectInfo = async (body: any) => {
+export const updateProjectInfo = async (body: any, needRefresh?: boolean) => {
   try {
     const response = await axios.put(
       // "http://localhost:8080/projects/edit",
       `${apiBaseUrl}/projects/edit`,
       body
     );
+
+    if (!needRefresh && response.data.result) {
+      return true;
+    }
 
     if (response.data.result) {
       //Refetch

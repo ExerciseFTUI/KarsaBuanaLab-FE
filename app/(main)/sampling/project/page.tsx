@@ -2,6 +2,7 @@ import { SamplingProjectDataTables } from "@/components/sampling/sampleListDataT
 import getSessionServer from "@/lib/actions/getSessionServer";
 import { getProjectByDivision } from "@/lib/actions/sampling.actions";
 import { redirect } from "next/navigation";
+import { log } from "node:console";
 
 export default async function SamplingProject() {
   const session = await getSessionServer();
