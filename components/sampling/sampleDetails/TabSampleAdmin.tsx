@@ -228,12 +228,12 @@ export default function TabSampleAdmin({
       >
         <div className="w-full">
           <h1 className="text-xl font-semibold mb-2">Assigned Staff</h1>
-          <div className=" bg-light_brown rounded-lg px-4 py-2 ">
+          <div className="  ">
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row, index) => (
                 <div
                   key={row.id}
-                  className="flex gap-4 items-center text-white mb-2"
+                  className="flex gap-4 items-center text-black font-medium ml-4 mb-2"
                 >
                   {index + 1}. {row.original.username}
                 </div>
