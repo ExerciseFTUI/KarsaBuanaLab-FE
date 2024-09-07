@@ -1,6 +1,6 @@
 "use client";
 
-import { Tabs, TabsContent } from "@/components/ui/tabs";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import DocumentList from "../DokumentList";
 import { Button } from "@/components/ui/button";
 import {
@@ -140,8 +140,11 @@ export default function SampleProjectTab({ data, projects }: Params) {
   return (
     <>
       {isLoading && <LoadingScreen text="" />}
-      <Tabs defaultValue="dokumen" className="flex-1">
-        <SamplingTabsList value1="dokumen" value2="group" />
+      <Tabs defaultValue="dokumen" className="flex-1 mx-4">
+        <TabsList className="grid w-full grid-cols-2">
+          <TabsTrigger value="dokumen">Document</TabsTrigger>
+          <TabsTrigger value="group">Group</TabsTrigger>
+        </TabsList>
 
         <TabsContent className="py-4 w-full" value="dokumen">
           <div className="px-4 py-2 flex flex-col flex-1">

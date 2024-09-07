@@ -140,7 +140,7 @@ export default function TabSampleStaff({
         <TabsContent className="py-4 flex flex-col gap-8" value="Sampel">
           {/* List of Rekaman Sampel */}
           <div>
-            <h1 className="font-bold text-lg text-white bg-moss_green w-fit mb-4 px-4 py-2 rounded-md text-center">
+            <h1 className="font-bold text-xl text-black w-fit mb-4 py-2 rounded-md text-center">
               Verifikasi Rekaman Sampel
             </h1>
             <div className="flex gap-4 flex-col">
@@ -152,41 +152,50 @@ export default function TabSampleStaff({
                   />
 
                   <AlertDialog>
-                    <AlertDialogTrigger>
+                    <AlertDialogTrigger asChild>
                       <Button
                         className="sampling-btn sampling-btn-disabled"
                         disabled={
-                          s.status == "WAITING" || s.status == "ACCEPTED"
+                          s.status === "WAITING" ||
+                          s.status === "ACCEPTED" ||
+                          s.status === "SUBMIT"
                         }
                       >
-                        {s.status == "SUBMIT"
-                          ? "Save"
-                          : s.status == "WAITING"
+                        {s.status === "SUBMIT"
+                          ? "Accepted"
+                          : s.status === "WAITING"
                           ? "Verifying"
-                          : s.status == "ACCEPTED"
+                          : s.status === "ACCEPTED"
                           ? "Verified"
-                          : s.status == "REVISION"
+                          : s.status === "REVISION"
                           ? "Revision"
                           : "Save"}
                       </Button>
                     </AlertDialogTrigger>
 
-                    <AlertDialogContent>
-                      <AlertDialogHeader>
-                        <AlertDialogTitle>
-                          Are you sure to SUBMIT this sampling?
-                        </AlertDialogTitle>
-                      </AlertDialogHeader>
+                    {/* Conditionally render AlertDialogContent based on status */}
+                    {!(
+                      s.status === "WAITING" ||
+                      s.status === "ACCEPTED" ||
+                      s.status === "SUBMIT"
+                    ) && (
+                      <AlertDialogContent>
+                        <AlertDialogHeader>
+                          <AlertDialogTitle>
+                            Are you sure to SUBMIT this sampling?
+                          </AlertDialogTitle>
+                        </AlertDialogHeader>
 
-                      <AlertDialogFooter>
-                        <AlertDialogCancel>Cancel</AlertDialogCancel>
-                        <AlertDialogAction
-                          onClick={(e) => submitSample(e, s._id)}
-                        >
-                          Continue
-                        </AlertDialogAction>
-                      </AlertDialogFooter>
-                    </AlertDialogContent>
+                        <AlertDialogFooter>
+                          <AlertDialogCancel>Cancel</AlertDialogCancel>
+                          <AlertDialogAction
+                            onClick={(e) => submitSample(e, s._id)}
+                          >
+                            Continue
+                          </AlertDialogAction>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    )}
                   </AlertDialog>
                 </div>
               ))}
@@ -195,7 +204,7 @@ export default function TabSampleStaff({
 
           {/* Upload Project Files */}
           <div>
-            <h1 className="font-bold text-lg text-white bg-moss_green w-fit mb-4 px-4 py-2 rounded-md text-center">
+            <h1 className="font-bold text-xl text-black w-fit mb-4 py-2 rounded-md text-center">
               Project Files
             </h1>
             <div>

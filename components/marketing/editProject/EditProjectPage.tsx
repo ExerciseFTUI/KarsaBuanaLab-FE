@@ -50,6 +50,7 @@ import { AlertDialogTrigger } from "@radix-ui/react-alert-dialog";
 import CancelPopup from "@/components/cancelPopup";
 import { revalidatePath } from "next/cache";
 import { addInventoryFile } from "@/lib/actions/inventory.client.action";
+import { log } from "node:console";
 
 interface EditProjectPageProps {
   project: Project;
@@ -409,6 +410,38 @@ export default function EditProjectPage({
 
   // ========================= End of Action to update status payment ============================================== //
 
+  async function updateValuationProject(
+    values: z.infer<typeof createProjectValidation>
+  ) {
+    try {
+      const body = {
+        _id: project._id,
+        valuasi_proyek: values.valuasiProject,
+      };
+
+      //Connect to API
+      const responseInfo = await updateProjectInfo(body, false);
+      if (!responseInfo) {
+        toast({
+          title: "Oops, Failed!",
+          description: "Failed to update payment",
+        });
+
+        return;
+      }
+    } catch (error: any) {
+      const errorMsg = error?.response?.data?.message || error;
+      toast({
+        title: "Oops, Failed!",
+        description: errorMsg,
+        variant: "destructive",
+      });
+      console.error("Error from backend", errorMsg);
+      console.error("Error during project update:", errorMsg);
+    } finally {
+      router.refresh();
+    }
+  }
   //================================= End Project Information Section
 
   //=============================== Document Section
@@ -460,15 +493,42 @@ export default function EditProjectPage({
   //=============================== End Document Section
 
   const handleDeal = async () => {
-    const response = await marketingDeal(project._id);
+    // if valuasi_proyek is empty or 0, show alert
+    console.log("form valueasi", form.getValues("valuasiProject"));
 
+    if (
+      form.getValues("valuasiProject") === "0" ||
+      form.getValues("valuasiProject") === undefined ||
+      form.getValues("valuasiProject") === ""
+    ) {
+      console.log("failed");
+
+      toast({
+        title: "Oops, Failed!",
+        description: "Make sure the valuasi proyek is filled",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    await updateValuationProject(form.getValues());
+
+    const response = await marketingDeal(project._id);
     if (response) {
-      alert("Success");
+      toast({
+        title: "Good Job",
+        description: "Successfully project deal",
+      });
+
       router.push("/marketing");
       return;
     }
 
-    alert("Failed ");
+    toast({
+      title: "Oops, Failed!",
+      description: "Please try again later",
+      variant: "destructive",
+    });
   };
 
   return (
@@ -497,8 +557,9 @@ export default function EditProjectPage({
           password={password}
           updateRevision={updateRevision}
         />
-        <Tabs defaultValue="sampling" className="w-[40rem] max-sm:w-[420px] ">
-          <TabsList className="grid w-full grid-cols-2">
+        <Tabs defaultValue="status" className="w-[40rem] max-sm:w-[420px] ">
+          <TabsList className="grid w-full grid-cols-3">
+            <TabsTrigger value="status">Status</TabsTrigger>
             <TabsTrigger value="sampling">Sampling</TabsTrigger>
             <TabsTrigger value="document">Document</TabsTrigger>
           </TabsList>
@@ -515,6 +576,38 @@ export default function EditProjectPage({
             />
           </TabsContent>
           {/* End Sample Section */}
+
+          {/* Notes Section */}
+          <TabsContent value="status">
+            <Card className="overflow-y-auto md:max-h-[70vh] custom-scrollbar">
+              <CardHeader>
+                <CardTitle className="text-base font-bold">Status</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p
+                  className={`w-full p-2 ${
+                    project.TM_status?.toLowerCase() === "waiting"
+                      ? "bg-yellow-100"
+                      : project.TM_status?.toLowerCase() === "accepted"
+                      ? "bg-light_green"
+                      : "bg-red-400"
+                  } rounded-md font-medium -mt-4`}
+                >
+                  {project.TM_status || "No status from Manager Teknis"}
+                </p>
+              </CardContent>
+              <CardHeader>
+                <CardTitle className="text-base font-bold">
+                  Notes From Manager Teknis
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className=" w-full p-2 bg-light_green rounded-md font-medium -mt-4">
+                  {project.TM_note || "No notes from Manager Teknis"}
+                </p>
+              </CardContent>
+            </Card>
+          </TabsContent>
 
           {/* Document Section */}
           <TabsContent value="document">
@@ -664,14 +757,15 @@ export default function EditProjectPage({
           </div>
           {/* End Button for submit */}
 
-          {project.TM_status?.toLowerCase() == "accepted" && (
-            <Button
-              className="w-full hover:bg-dark_brown bg-light_brown text-lg"
-              onClick={handleDeal}
-            >
-              Deal
-            </Button>
-          )}
+          {project.TM_status?.toLowerCase() == "accepted" &&
+            project.current_division.toLowerCase() == "marketing" && (
+              <Button
+                className="w-full hover:bg-dark_brown bg-light_brown text-lg"
+                onClick={handleDeal}
+              >
+                Deal
+              </Button>
+            )}
 
           {/* End Document Section */}
         </Tabs>

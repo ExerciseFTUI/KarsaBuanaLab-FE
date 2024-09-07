@@ -50,6 +50,7 @@ import { addInventoryFile } from "@/lib/actions/inventory.client.action";
 import ApprovalProjectForm from "./ApprovalProjectForm";
 import { Label } from "@/components/ui/label";
 import { changeTMStatus } from "@/lib/actions/approval.action";
+import { log } from "node:console";
 
 interface ApprovalEditProjectPageProps {
   project: Project;
@@ -471,7 +472,6 @@ export default function ApprovalEditProjectPage({
 
   //=============================== Note Section
   const handleAccept = async () => {
-    alert("Accept");
     //TODO: Add API Call
     const response = await changeTMStatus(
       project._id,
@@ -480,15 +480,22 @@ export default function ApprovalEditProjectPage({
     );
 
     if (response) {
-      router.refresh();
+      toast({
+        title: "Success",
+        description: "Project status changed to Accepted",
+      });
+      router.push("/admin/approval");
       return;
     }
 
-    alert("Failed ");
+    toast({
+      title: "Failed",
+      description: "Failed to change project status",
+      variant: "destructive",
+    });
   };
 
   const handleRevisi = async () => {
-    alert("Revisi");
     //TODO: Add API Call
     const response = await changeTMStatus(
       project._id,
@@ -497,21 +504,20 @@ export default function ApprovalEditProjectPage({
     );
 
     if (response) {
-      router.refresh();
+      toast({
+        title: "Success",
+        description: "Project status changed to Revisi",
+      });
+      router.push("/admin/approval");
       return;
     }
 
-    alert("Failed ");
+    toast({
+      title: "Failed",
+      description: "Failed to change project status",
+      variant: "destructive",
+    });
   };
-
-  useEffect(() => {
-    console.log("Yohooo outaisw");
-
-    if (project.TM_note?.length > 0) {
-      console.log("Yohooo");
-      setNote(project.TM_note);
-    }
-  }, []);
 
   return (
     <>
