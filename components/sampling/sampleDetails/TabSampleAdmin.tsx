@@ -145,15 +145,18 @@ export default function TabSampleAdmin({
                   Waiting
                 </Button>
               ) : (
-                <div className="flex">
+                <div className="flex gap-2">
                   {/* Button for ACCEPT-ing the sample */}
                   <AlertDialog>
                     <AlertDialogTrigger>
                       <Button
-                        className={cn(
-                          "sampling-btn",
-                          s.status == "SUBMIT" ? "hidden" : ""
-                        )}
+                        className={
+                          (cn(
+                            "sampling-btn",
+                            s.status == "SUBMIT" ? "hidden" : ""
+                          ),
+                          " bg-moss_green")
+                        }
                         title="Accept"
                         disabled={s.status == "SUBMIT"}
                       >
@@ -187,10 +190,13 @@ export default function TabSampleAdmin({
                   <AlertDialog>
                     <AlertDialogTrigger>
                       <Button
-                        className={cn(
-                          "sampling-btn",
-                          s.status == "SUBMIT" ? "" : "hidden"
-                        )}
+                        className={
+                          (cn(
+                            "sampling-btn"
+                            // s.status == "SUBMIT" ? "" : "hidden"
+                          ),
+                          " bg-red-500")
+                        }
                         title="Revisi"
                       >
                         Revisi
