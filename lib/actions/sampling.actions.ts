@@ -157,9 +157,13 @@ export const verifySample = async (
         sample_id,
       }
     );
-
+    
     revalidatePath(`/sampling/sample/${projectId}`); // path sekarang
 
+    if (status === "SUBMIT") {
+      revalidatePath(`/sampling/sample`);
+    }
+    
     return response.data as BaseApiResponse<Project>;
   } catch (error: any) {
     console.error("Error getting sample /sampling/change", error.message);

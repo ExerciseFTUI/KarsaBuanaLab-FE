@@ -65,6 +65,42 @@ export default function TabSampleAdmin({
         title: "Sampling Has Been Verified",
         description: "Please check again if its correct",
       });
+
+      if (status == "SUBMIT") {
+        console.log("submitSample", response);
+        console.log("submitSample", response.message);
+
+        // check all sample status, if all sample status is "SUBMIT", then go to path "/sampling/sample"
+        let allSampleSubmitted = true;
+        response.result.sampling_list.forEach((s) => {
+          if (s.status != "SUBMIT") {
+            allSampleSubmitted = false;
+          }
+        });
+
+        console.log("allSampleSubmitted", allSampleSubmitted);
+        if (allSampleSubmitted) {
+          // change the project division to PPLHP
+          const changeDivisionResponse = await changeDivision(
+            project._id,
+            "PPLHP"
+          );
+          if (!changeDivisionResponse) {
+            toast({
+              title: "Failed to Save Project",
+              description: "Please Try Again",
+              variant: "destructive",
+            });
+          } else {
+            toast({
+              title: "Project has been moved to PPLHP Division!",
+              // description: "Please check again if its correct",
+            });
+            router.push("/sampling/sample");
+            return;
+          }
+        }
+      }
     }
 
     router.refresh();
