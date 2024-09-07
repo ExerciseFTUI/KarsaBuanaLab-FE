@@ -497,8 +497,9 @@ export default function EditProjectPage({
           password={password}
           updateRevision={updateRevision}
         />
-        <Tabs defaultValue="sampling" className="w-[40rem] max-sm:w-[420px] ">
-          <TabsList className="grid w-full grid-cols-2">
+        <Tabs defaultValue="status" className="w-[40rem] max-sm:w-[420px] ">
+          <TabsList className="grid w-full grid-cols-3">
+            <TabsTrigger value="status">Status</TabsTrigger>
             <TabsTrigger value="sampling">Sampling</TabsTrigger>
             <TabsTrigger value="document">Document</TabsTrigger>
           </TabsList>
@@ -515,6 +516,38 @@ export default function EditProjectPage({
             />
           </TabsContent>
           {/* End Sample Section */}
+
+          {/* Notes Section */}
+          <TabsContent value="status">
+            <Card className="overflow-y-auto md:max-h-[70vh] custom-scrollbar">
+              <CardHeader>
+                <CardTitle className="text-base font-bold">Status</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p
+                  className={`w-full p-2 ${
+                    project.TM_status?.toLowerCase() === "waiting"
+                      ? "bg-yellow-100"
+                      : project.TM_status?.toLowerCase() === "accepted"
+                      ? "bg-light_green"
+                      : "bg-red-400"
+                  } rounded-md font-medium -mt-4`}
+                >
+                  {project.TM_status || "No status from Manager Teknis"}
+                </p>
+              </CardContent>
+              <CardHeader>
+                <CardTitle className="text-base font-bold">
+                  Notes From Manager Teknis
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className=" w-full p-2 bg-light_green rounded-md font-medium -mt-4">
+                  {project.TM_note || "No notes from Manager Teknis"}
+                </p>
+              </CardContent>
+            </Card>
+          </TabsContent>
 
           {/* Document Section */}
           <TabsContent value="document">
