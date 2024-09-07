@@ -306,15 +306,17 @@ export default function TabSampleStaff({
         </TabsContent>
 
         {/* List of staff with same projects */}
-        <TabsContent className="py-4" value="Group">
+        <TabsContent className="" value="Group">
           {/* mapping the (row) => row.original.username */}
-          <div className=" bg-light_brown rounded-lg px-4 py-2 ">
-            <p className="text-white mb-4">Your teammate : </p>
+          <div className=" text-black px-4 py-2 -mt-8 ">
+            <h1 className="font-bold text-xl text-black w-fit mb-4 py-2 rounded-md text-center">
+              Your Team
+            </h1>
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row, index) => (
                 <div
                   key={row.id}
-                  className="flex gap-4 items-center text-white mb-2"
+                  className="flex gap-4 pl-4 font-medium items-center text-black mb-2"
                 >
                   {index + 1}. {row.original.username}
                 </div>
