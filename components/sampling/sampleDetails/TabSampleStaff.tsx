@@ -207,100 +207,93 @@ export default function TabSampleStaff({
             <h1 className="font-bold text-xl text-black w-fit mb-4 py-2 rounded-md text-center">
               Project Files
             </h1>
-            <div>
-              <Card
-                className={`overflow-y-auto md:max-h-[70vh] custom-scrollbar`}
-              >
-                <div>
-                  <h1 className=" font-semibold mx-5 mt-5 ">
-                    {" "}
-                    Uploaded Files{" "}
-                  </h1>
 
-                  {/* Uploaded files */}
-                  <div className="mx-5 mt-5">
-                    {project.file.length === 0 && (
-                      <p className=" text-sm flex flex-row justify-center py-3">
-                        No uploaded files.
-                      </p>
-                    )}
-                    <div className="grid grid-cols-2 gap-4 justify-center items-center">
-                      {project.file.map((file, index) => (
-                        <div
-                          className="bg-light_green items-center justify-between rounded-lg px-5 py-3 hover:bg-dark_green hover:text-white font-medium flex delay-150"
-                          key={index + file._id}
+            <Card
+              className={`overflow-y-auto md:max-h-[70vh] custom-scrollbar pb-4`}
+            >
+              <div className="">
+                <h1 className=" font-semibold mx-5 mt-5 "> Uploaded Files </h1>
+
+                {/* Uploaded files */}
+                <div className="mx-5 mt-5">
+                  {project.file.length === 0 && (
+                    <p className=" text-sm flex flex-row justify-center py-3">
+                      No uploaded files.
+                    </p>
+                  )}
+                  <div className="grid grid-cols-2 gap-4 justify-center items-center">
+                    {project.file.map((file, index) => (
+                      <div
+                        className="bg-light_green items-center justify-between rounded-lg px-5 py-3 hover:bg-dark_green hover:text-white font-medium flex delay-150"
+                        key={index + file._id}
+                      >
+                        <a
+                          href={`https://drive.google.com/file/d/${file.file_id}/view`}
+                          className="w-full mr-4"
+                          target="_blank"
+                          rel="noopener noreferrer"
                         >
-                          <a
-                            href={`https://drive.google.com/file/d/${file.file_id}/view`}
-                            className="w-full mr-4"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
-                            {file.file_name}
-                          </a>
+                          {file.file_name}
+                        </a>
 
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            className="delay-150"
-                            onClick={() => {
-                              setDialogOpen(true);
-                              setFileIdToDelete(file._id);
-                            }}
-                          >
-                            <TrashIcon className="h-5 w-5 " />
-                          </Button>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                  {/* End of Uploaded files */}
-
-                  <div
-                    className={cn(
-                      "w-full",
-                      uploadedFiles.length > 0 ? "mb-4" : ""
-                    )}
-                  >
-                    {/* Drag and drop files area */}
-                    <h1 className=" font-semibold mx-5 mt-5 ">
-                      {" "}
-                      Upload Files{" "}
-                    </h1>
-
-                    <Dropzone setUploadedFiles={setUploadedFiles} />
-                    {/* End of Drag and drop files area */}
-
-                    {uploadedFiles.length > 0 && (
-                      <AlertDialog>
-                        <AlertDialogTrigger className="flex mx-auto">
-                          <Button className="sampling-btn flex w-fit mx-auto">
-                            Upload
-                          </Button>
-                        </AlertDialogTrigger>
-
-                        <AlertDialogContent>
-                          <AlertDialogHeader>
-                            <AlertDialogTitle>
-                              Are you sure to upload these files?
-                            </AlertDialogTitle>
-                          </AlertDialogHeader>
-
-                          <AlertDialogFooter>
-                            <AlertDialogCancel>Cancel</AlertDialogCancel>
-                            <AlertDialogAction
-                              onClick={(e) => handleUploadFile()}
-                            >
-                              Continue
-                            </AlertDialogAction>
-                          </AlertDialogFooter>
-                        </AlertDialogContent>
-                      </AlertDialog>
-                    )}
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="delay-150"
+                          onClick={() => {
+                            setDialogOpen(true);
+                            setFileIdToDelete(file._id);
+                          }}
+                        >
+                          <TrashIcon className="h-5 w-5 " />
+                        </Button>
+                      </div>
+                    ))}
                   </div>
                 </div>
-              </Card>
-            </div>
+                {/* End of Uploaded files */}
+
+                <div
+                  className={cn(
+                    "w-full",
+                    uploadedFiles.length > 0 ? "mb-4" : ""
+                  )}
+                >
+                  {/* Drag and drop files area */}
+                  <h1 className=" font-semibold mx-5 mt-5 "> Upload Files </h1>
+
+                  <Dropzone setUploadedFiles={setUploadedFiles} />
+                  {/* End of Drag and drop files area */}
+
+                  {uploadedFiles.length > 0 && (
+                    <AlertDialog>
+                      <AlertDialogTrigger className="flex mx-auto">
+                        <Button className="sampling-btn flex w-fit mx-auto">
+                          Upload
+                        </Button>
+                      </AlertDialogTrigger>
+
+                      <AlertDialogContent>
+                        <AlertDialogHeader>
+                          <AlertDialogTitle>
+                            Are you sure to upload these files?
+                          </AlertDialogTitle>
+                        </AlertDialogHeader>
+
+                        <AlertDialogFooter>
+                          <AlertDialogCancel>Cancel</AlertDialogCancel>
+                          <AlertDialogAction
+                            onClick={(e) => handleUploadFile()}
+                          >
+                            Continue
+                          </AlertDialogAction>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    </AlertDialog>
+                  )}
+                </div>
+              </div>
+            </Card>
             {/* Upload Files */}
           </div>
         </TabsContent>
