@@ -539,6 +539,7 @@ const ProjectForm: FC<ProjectFormProps> = ({
                         return field.onChange(projectType); // Update projectType instead of sample
                       }}
                       defaultValue={form.watch("projectType")}
+                      disabled={status?.toLocaleLowerCase() !== "create"}
                     >
                       <SelectTrigger className="">
                         <SelectValue placeholder="Select project type" />
