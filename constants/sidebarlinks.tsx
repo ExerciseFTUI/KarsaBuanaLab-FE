@@ -55,7 +55,7 @@ export const adminLinks: ISidebarLinks[] = [
 ];
 
 export const TMLinks: ISidebarLinks[] = [
-  adminLinks[0],
+  // adminLinks[0],
   adminLinks[2],
   adminLinks[3],
   adminLinks[4],

@@ -19,6 +19,7 @@ import {
 } from "@/constants/sidebarlinks";
 import { signOut, useSession } from "next-auth/react";
 import DeleteDialog from "./DeleteDialog";
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 
 function extractFirstPathSegment(path: string) {
   // Remove leading and trailing slashes and split the path by "/"
@@ -116,6 +117,21 @@ const Sidebar: FC<LeftSidebarProps> = ({}) => {
         })}
       </div>
       <div className="mt-10 px-2">
+        <div className="flex items-center w-full gap-3 py-5 px-2 border-t border-gray-300">
+          <Avatar className="h-12 w-12">
+            <AvatarImage src="/assets/avatar2.png" />
+            <AvatarFallback>RD</AvatarFallback>
+          </Avatar>
+          <div className="flex flex-col ">
+            <p className="`text-xs font-semibold text-moss_green group-hover:!text-dark_green">
+              {currentUser?.name}
+            </p>
+            <p className="text-xs font-light text-moss_green group-hover:!text-dark_green">
+              {currentUser?.role}
+              {/* || {currentUser?.division} */}
+            </p>
+          </div>
+        </div>
         <div
           className="flex gap-3 cursor-pointer p-4 items-center rounded-lg hover:bg-[#C2C5AA] "
           onClick={() => setShowDeleteDialog(true)}

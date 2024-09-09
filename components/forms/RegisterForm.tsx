@@ -236,15 +236,16 @@ const RegisterForm: FC<RegisterFormProps> = ({ isUpdate, account }) => {
                           onSelect={() => {
                             //TODO: change thisssss
                             field.onChange("ADMIN");
-                            form.setValue("division", "Marketing");
+                            form.setValue("division", "Admin");
                           }}
                         >
                           ADMIN
                         </DropdownMenuItem>
                         <DropdownMenuItem
                           onSelect={() => {
+                            //TODO: Change This
                             field.onChange("MANAGER TEKNIS");
-                            form.setValue("division", "Marketing");
+                            form.setValue("division", "Admin");
                           }}
                         >
                           MANAGER TEKNIS

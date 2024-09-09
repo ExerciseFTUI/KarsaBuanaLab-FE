@@ -95,7 +95,8 @@ const Topbar: FC<TopbarProps> = ({ projects, data }) => {
           </div>
 
           <div className="">
-            {pathname.split(" / ")[0] == "Admin" &&
+            {data?.user.role.toLowerCase() == "admin" &&
+              pathname.split(" / ")[0] == "Admin" &&
               pathname.split(" / ")[1] !== "Register" && (
                 <Link href="/admin/register">
                   <Button variant={"outline"}>

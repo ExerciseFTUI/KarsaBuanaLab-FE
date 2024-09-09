@@ -13,6 +13,15 @@ export default withAuth(
   // `withAuth` augments your `Request` with the user's token.
   function middleware(request: NextRequestWithAuth) {
     //TODO: Add Admin page and manajer teknis role
+    //TODO: change manager teknis (using space is not best practice)
+    if (
+      request.nextUrl.pathname.startsWith("/admin") &&
+      request.nextauth.token?.division.toLowerCase() !== "admin" &&
+      request.nextauth.token?.role.toLowerCase() !== "admin" &&
+      request.nextauth.token?.role.toLowerCase() !== "manager teknis"
+    ) {
+      return NextResponse.rewrite(new URL("/denied", request.url));
+    }
     if (
       request.nextUrl.pathname.startsWith("/marketing") &&
       request.nextauth.token?.division.toLowerCase() !== "marketing" &&
@@ -60,5 +69,6 @@ export const config = {
     "/marketing/:path*",
     "/pplhp/:path*",
     "/lab/:path*",
+    "/admin/:path*",
   ],
 };
