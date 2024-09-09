@@ -183,6 +183,7 @@ export default function EditProjectPage({
       is_paid: project.is_paid || false,
       desc_failed: project.desc_failed || "",
       status: project.status || "",
+      projectType: project.project_type || "",
     },
   });
 
@@ -202,6 +203,7 @@ export default function EditProjectPage({
         jumlah_revisi: values.numRevisi,
         valuasi_proyek: values.valuasiProject,
         desc_failed: values.desc_failed,
+        project_type: values.projectType,
       };
 
       // // Check if all properties same exclude the is_paid will increase jumlahRevisi

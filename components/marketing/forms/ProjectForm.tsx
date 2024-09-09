@@ -542,7 +542,11 @@ const ProjectForm: FC<ProjectFormProps> = ({
                       disabled={status?.toLocaleLowerCase() !== "create"}
                     >
                       <SelectTrigger className="">
-                        <SelectValue placeholder="Select project type" />
+                        <SelectValue
+                          placeholder={
+                            form.watch("projectType") || "Select project type"
+                          }
+                        />
                       </SelectTrigger>
                       <SelectContent>
                         <SelectGroup>

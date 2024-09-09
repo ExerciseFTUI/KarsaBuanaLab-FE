@@ -7,6 +7,7 @@ export interface Project {
   no_sampling: string;
   client_name: string;
   project_name: string;
+  project_type: string;
   alamat_kantor: string;
   alamat_sampling: string;
   surel: string;
