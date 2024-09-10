@@ -49,13 +49,17 @@ import {
   DoubleArrowLeftIcon,
   DoubleArrowRightIcon,
 } from "@radix-ui/react-icons";
-import { pplhpReceiveSamplingColumns } from "@/components/columns";
-import { PplhpReceiveSamplingType } from "@/lib/type";
+import {
+  pplhpDashboardColumns,
+  pplhpReceiveSamplingColumns,
+} from "@/components/columns";
+import { PplhpReceiveSamplingType, PPLHPReceiveType } from "@/lib/type";
 import { cn, fetcher } from "@/lib/utils";
 import { ProjectSamplingType } from "@/lib/type";
 
 interface ReceiveDataTableProps {
-  data: PplhpReceiveSamplingType[];
+  // data: PplhpReceiveSamplingType[];
+  data: PPLHPReceiveType[];
 }
 
 const ReceiveDataTable: FC<ReceiveDataTableProps> = ({ data }) => {
@@ -63,13 +67,15 @@ const ReceiveDataTable: FC<ReceiveDataTableProps> = ({ data }) => {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
-    _id: false,
+    sample_id: false,
+    project_id: false,
+    sample_number: false,
   });
   const [rowSelection, setRowSelection] = useState({});
 
   const table = useReactTable({
     data,
-    columns: pplhpReceiveSamplingColumns,
+    columns: pplhpDashboardColumns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
@@ -112,7 +118,7 @@ const ReceiveDataTable: FC<ReceiveDataTableProps> = ({ data }) => {
               <TableRow className="italic" key={headerGroup.id}>
                 {headerGroup.headers.map((header, index) => {
                   let className =
-                    "text-center text-ghost_green italic p-2";
+                    " text-start text-moss_green font-semibold text-base italic p-2";
                   return (
                     <TableHead key={header.id} className={className}>
                       {header.isPlaceholder
@@ -132,7 +138,7 @@ const ReceiveDataTable: FC<ReceiveDataTableProps> = ({ data }) => {
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
-                  className="hover:bg-pastel_moss_green ease-in-out duration-500 text-xs hover:cursor-pointer hover:rounded-xl text-center"
+                  className="hover:bg-pastel_moss_green ease-in-out duration-500 text-xs hover:cursor-pointer hover:rounded-xl text-start"
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
                   onClick={() => router.push("receive/" + row.getValue("_id"))}
