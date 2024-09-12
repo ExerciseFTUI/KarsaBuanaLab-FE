@@ -840,6 +840,34 @@ export const pplhpDashboardColumns: ColumnDef<PPLHPReceiveType>[] = [
     cell: ({ row }) => <div className="">{row.getValue("sample_name")}</div>,
   },
   {
+    accessorKey: "project_type",
+    header: "Project Type",
+    cell: ({ row }) => {
+      const projectType = row.getValue("project_type");
+      let backgroundColor;
+      let displayText;
+
+      if (projectType === "Internal") {
+        backgroundColor = "bg-green-500";
+        displayText = "Internal";
+      } else if (projectType === "External") {
+        backgroundColor = "bg-blue-500";
+        displayText = "External";
+      } else {
+        backgroundColor = "bg-gray-500";
+        displayText = "Hasn't set the project type";
+      }
+
+      return (
+        <div
+          className={`${backgroundColor} text-white p-2 w-fit text-center rounded`}
+        >
+          {displayText}
+        </div>
+      );
+    },
+  },
+  {
     accessorKey: "location",
     header: "Location",
     cell: ({ row }) => <div className="">{row.getValue("location")}</div>,

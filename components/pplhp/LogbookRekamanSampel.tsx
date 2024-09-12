@@ -1,5 +1,5 @@
 "use client";
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { AiOutlineFile } from "react-icons/ai";
 import { BsArrowRight } from "react-icons/bs";
@@ -35,7 +35,7 @@ const LogbookRekamanSampel: FC<LogbookRekamanSampelProps> = ({
 
       // update the data.sampling.status = "ACCEPTED"
       const submitData = {
-        sampling: { ...data.sampling, status: "ACCEPTED" },
+        sampling: { ...data.sampling, status: "LAB_RECEIVE" },
       };
 
       const response = await submitDetailPPLHP(
@@ -70,18 +70,25 @@ const LogbookRekamanSampel: FC<LogbookRekamanSampelProps> = ({
       <h1 className={`text-center text-2xl font-semibold text-${color}`}>
         Logbook Rekaman Sampel
       </h1>
-      <LogbookFile
-        title="Logbook Eksternal"
-        fileName="Logbook Eksternal"
-        link={external}
-        color={color}
-      />
-      <LogbookFile
-        title="Logbook Internal"
-        fileName="Logbook Internal"
-        link={internal}
-        color={color}
-      />
+      {data.project_type && data.project_type.toLowerCase() === "internal" ? (
+        <LogbookFile
+          title="Logbook Internal"
+          fileName="Logbook Internal"
+          link={internal}
+          color={color}
+        />
+      ) : data.project_type &&
+        data.project_type.toLowerCase() === "external" ? (
+        <LogbookFile
+          title="Logbook Eksternal"
+          fileName="Logbook Eksternal"
+          link={external}
+          color={color}
+        />
+      ) : (
+        <div>The project type data hasn&#39;t been set</div>
+      )}
+
       <div>
         <button
           onClick={handleSubmitDraft}

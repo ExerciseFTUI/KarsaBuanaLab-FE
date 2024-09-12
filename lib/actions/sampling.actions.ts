@@ -322,9 +322,6 @@ export const getSampleForLab = async (sampleId: string): Promise<any> => {
         },
       }
     );
-    console.log("id: ", sampleId);
-
-    console.log("response", response.data.result);
 
     return response.data.result; // Access 'result' field
   } catch (error: any) {

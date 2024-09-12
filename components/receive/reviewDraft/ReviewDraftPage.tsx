@@ -42,6 +42,15 @@ export default function ReviewDraftPage({
 
   return (
     <div className="flex-row space-y-10 max-md:flex-col max-md:items-center font-dm-sans">
+      {/* project type information */}
+      <div className="flex flex-row space-x-4 -mb-8 items-center justify-start ">
+        <p className="text-lg font-medium text-light_brown">Tipe Proyek: </p>
+
+        <p className="text-lg font-semibold text-black">
+          {details.project_type}
+        </p>
+      </div>
+
       <Document
         data={details.files.map((file: any) => ({
           url: file.url,
