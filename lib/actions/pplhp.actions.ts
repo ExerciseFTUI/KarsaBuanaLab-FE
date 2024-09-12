@@ -41,8 +41,10 @@ export const getLinkFiles = async (projectId: string): Promise<any> => {
 export const getPPLHPDashboard = async (): Promise<PPLHPReceiveType[]> => {
   try {
     const response = await axios.get(
-      `${apiBaseUrl}/sampling/get-receive-dashboard`
+      // `${apiBaseUrl}/sampling/get-receive-dashboard`
+      `http://localhost:8080/sampling/get-receive-dashboard`
     );
+    console.log(response.data.result);
 
     return response.data.result;
   } catch (error: any) {
