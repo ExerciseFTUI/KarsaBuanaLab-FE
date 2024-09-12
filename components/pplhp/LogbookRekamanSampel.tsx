@@ -73,7 +73,10 @@ const LogbookFile: FC<LogbookFileProps> = ({
   color,
 }) => {
   return (
-    <div className="space-y-3">
+    <div
+      className="space-y-3 hover:cursor-pointer"
+      onClick={() => window.open(link)}
+    >
       <h2 className={`text-${color} text-xl text-center md:text-left`}>
         {title}
       </h2>

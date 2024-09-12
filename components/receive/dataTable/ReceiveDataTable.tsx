@@ -141,7 +141,20 @@ const ReceiveDataTable: FC<ReceiveDataTableProps> = ({ data }) => {
                   className="hover:bg-pastel_moss_green ease-in-out duration-500 text-xs hover:cursor-pointer hover:rounded-xl text-start"
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
-                  onClick={() => router.push("receive/" + row.getValue("_id"))}
+                  onClick={() => {
+                    console.log(
+                      "receive/" +
+                        row.getValue("project_id") +
+                        "/" +
+                        row.getValue("sample_id")
+                    );
+                    router.push(
+                      "receive/" +
+                        row.getValue("project_id") +
+                        "/" +
+                        row.getValue("sample_id")
+                    );
+                  }}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id} className="py-4">

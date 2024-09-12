@@ -55,17 +55,14 @@ export default function ReviewDraftPage({ details }: { details: any }) {
         color="light_brown"
       />
 
-      {details.sampling.map((data: any, index: number) => (
-        <Sampling
-          key={index}
-          sampleName={data.sample_name}
-          regulation={data.regulation_name[0].regulation_name}
-          parameters={data.param.map((item: any) => item.param)}
-          index={index}
-          deleteSample={() => deleteSample(index)}
-          update={update}
-        />
-      ))}
+      <Sampling
+        sampleName={details.sampling.sample_name}
+        regulation={details.sampling.regulation_name[0].regulation_name}
+        parameters={details.sampling.param.map((item: any) => item.param)}
+        index={0} // Since there's only one sample, the index can be 0
+        deleteSample={() => deleteSample(0)} // Also pass 0 here if needed
+        update={update}
+      />
       <div className="space-y-4">
         <p className="text-lg font-medium text-light_brown">
           Tanggal Masuk sampel

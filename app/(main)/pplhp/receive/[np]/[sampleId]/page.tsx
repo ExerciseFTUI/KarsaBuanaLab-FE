@@ -1,4 +1,8 @@
-import { getLinkFiles, getReceiveDetails } from "@/lib/actions/receive.actions";
+import {
+  getDetailPPLHP,
+  getLinkFiles,
+  getReceiveDetails,
+} from "@/lib/actions/receive.actions";
 import ReviewDraftPage from "@/components/receive/reviewDraft/ReviewDraftPage";
 import LogbookRekamanSampel from "@/components/pplhp/LogbookRekamanSampel";
 
@@ -15,9 +19,17 @@ function removeAndReturnRequiredFiles(files: any) {
   return { requiredFiles, remainingFiles };
 }
 
-export default async function Home({ params }: { params: { np: string } }) {
+export default async function Home({
+  params,
+}: {
+  params: {
+    np: string;
+    sampleId: string;
+  };
+}) {
   const linkData = await getLinkFiles(params.np);
-  const details = await getReceiveDetails(params.np);
+  // const details = await getReceiveDetails(params.np);
+  const details = await getDetailPPLHP(params.np, params.sampleId);
 
   // Apply the filter to the file array in the data
   const { requiredFiles, remainingFiles } = removeAndReturnRequiredFiles(
