@@ -3,28 +3,63 @@ import { FC } from "react";
 import { useRouter } from "next/navigation";
 import { AiOutlineFile } from "react-icons/ai";
 import { BsArrowRight } from "react-icons/bs";
-import { SelectSeparator } from "@/components/ui/select";
-import { changeToDraft } from "@/lib/actions/pplhp.actions";
+import { submitDetailPPLHP } from "@/lib/actions/pplhp.actions";
+import { log } from "node:console";
+import { toast } from "../ui/use-toast";
+import { useToast } from "@/components/ui/use-toast";
 
 interface LogbookRekamanSampelProps {
   color: string;
   internal: string;
   external: string;
-  params: { np: string };
+  data: any;
+  onDetailsChange: (newDetails: any) => void;
+  params: { np: string; sampleId: string };
 }
 
 const LogbookRekamanSampel: FC<LogbookRekamanSampelProps> = ({
   color,
   internal,
   external,
+  data,
+  onDetailsChange,
   params,
 }) => {
   const router = useRouter();
+  const { toast } = useToast();
 
   const handleSubmitDraft = async () => {
     try {
-      const message = await changeToDraft(params.np);
-      router.push(`/pplhp/lhpdraft/`);
+      const updatedDetails = { ...data, draftStatus: "submitted" };
+      onDetailsChange(updatedDetails);
+
+      // update the data.sampling.status = "ACCEPTED"
+      const submitData = {
+        sampling: { ...data.sampling, status: "ACCEPTED" },
+      };
+
+      const response = await submitDetailPPLHP(
+        params.np,
+        params.sampleId,
+        submitData
+      );
+
+      if (response) {
+        console.log("response", response);
+        toast({
+          title: "Successfully updated data",
+          description: "The project already in lab division",
+        });
+        router.push(`/pplhp/receive/`);
+        return;
+      } else {
+        toast({
+          title: "Failed to update data",
+          description: "Please try again",
+          variant: "destructive",
+        });
+        return;
+      }
     } catch (error) {
       console.error("Failed to submit draft:", error);
     }
@@ -52,7 +87,7 @@ const LogbookRekamanSampel: FC<LogbookRekamanSampelProps> = ({
           onClick={handleSubmitDraft}
           className={`w-full bg-${color} text-ghost_white p-3 rounded-2xl`}
         >
-          save
+          Save
         </button>
       </div>
     </div>
@@ -89,7 +124,6 @@ const LogbookFile: FC<LogbookFileProps> = ({
             <p className="italic text-[#9fa38f] text-xs">
               Klik doc ini untuk membuat Draft LHP
             </p>
-            <SelectSeparator className="bg-pastel_moss_green" />
           </div>
           <div className="flex items-center justify-between text-ghost_white italic text-sm">
             <p>{fileName}</p>

@@ -63,6 +63,32 @@ export const getPplhpByStatus = async (status: string): Promise<Project[]> => {
   }
 };
 
+export const submitDetailPPLHP = async (
+  projectId: string,
+  samplingId: string,
+  sampling: any
+): Promise<any> => {
+  try {
+    const response = await axios.post(
+      `${apiBaseUrl}/sampling/update-samplestatus-and-date`,
+      // `http://localhost:8080/sampling/update-samplestatus-and-date`,
+      {
+        projectId,
+        samplingId,
+        sampling,
+      }
+    );
+
+    return response.data;
+  } catch (error: any) {
+    console.error(
+      `Error submitting detail for project with ID ${projectId} and sampling ID ${samplingId}:`,
+      error.message
+    );
+    return null as unknown as any;
+  }
+};
+
 export const changeToDraft = async (id: string): Promise<string> => {
   try {
     const response = await axios.post(
