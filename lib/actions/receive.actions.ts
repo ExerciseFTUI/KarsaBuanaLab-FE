@@ -22,6 +22,7 @@ export const getDetailPPLHP = async (
   try {
     const response = await axios.post(
       `${apiBaseUrl}/sampling/get-project-sample-details`,
+      // `http://localhost:8080/sampling/get-project-sample-details`,
       {
         projectId,
         samplingId,

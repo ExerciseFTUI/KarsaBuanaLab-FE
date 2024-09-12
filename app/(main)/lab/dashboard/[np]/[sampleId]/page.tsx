@@ -68,14 +68,6 @@ export default async function LabDetails({
     user: samplingUser || [],
   };
 
-  // useEffect(() => {
-  // console.log("projects current", projects);
-  // console.log("data", data);
-  console.log("project id", params.np);
-  console.log("data.project", data.project);
-
-  // }, []);
-
   const allData = await labDashboard();
   const sample_number = allData.result.find(
     (data: any) => data._id === params.sampleId
