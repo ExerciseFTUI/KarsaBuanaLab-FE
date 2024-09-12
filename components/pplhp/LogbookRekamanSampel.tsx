@@ -86,7 +86,7 @@ const LogbookRekamanSampel: FC<LogbookRekamanSampelProps> = ({
           color={color}
         />
       ) : (
-        <div> The project type data hasn't been set</div>
+        <div>The project type data hasn&#39;t been set</div>
       )}
 
       <div>
