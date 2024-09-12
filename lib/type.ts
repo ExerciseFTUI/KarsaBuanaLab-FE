@@ -86,6 +86,16 @@ export type PplhpReceiveSamplingType = {
   contact_person: string;
 };
 
+export type PPLHPReceiveType = {
+  project_id: string;
+  project_name: string;
+  sample_id: string;
+  sample_name: string;
+  sample_number: number;
+  location: string;
+  project_contact_person: string;
+};
+
 export type ProjectLHPType = {
   _id: string;
   no_penawaran: string;

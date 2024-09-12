@@ -1,11 +1,5 @@
 "use client";
 import { useState } from "react";
-import {
-  FieldValues,
-  SubmitHandler,
-  useFieldArray,
-  useForm,
-} from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import {
   Popover,
@@ -15,35 +9,37 @@ import {
 import { cn } from "@/lib/utils";
 import { CalendarIcon } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
-import { format, differenceInCalendarDays } from "date-fns";
+import { format, isValid } from "date-fns"; // Import isValid from date-fns
 import Document from "@/components/pplhp/Document";
-import { BaseSample } from "@/lib/models/baseSample.model";
 import Sampling from "@/components/marketing/createProject/Sampling";
 
-export default function ReviewDraftPage({ details }: { details: any }) {
-  const [openModal, setOpenModal] = useState(false);
-  const sampleForm = useForm<FieldValues>({
-    defaultValues: {
-      sampling: "",
-      regulation: "",
-      parameters: [""],
-    },
-  });
+export default function ReviewDraftPage({
+  details,
+  onDetailsChange,
+}: {
+  details: any;
+  onDetailsChange: (newDetails: any) => void;
+}) {
+  // Check if receive_date is valid, fallback to undefined if not
+  const initialDate = new Date(details.sampling.receive_date);
+  const [date, setDate] = useState<Date | undefined>(
+    isValid(initialDate) ? initialDate : undefined
+  );
 
-  const { control, watch, setValue, resetField } = sampleForm;
+  const handleDateSelect = (selectedDate: Date | undefined) => {
+    setDate(selectedDate);
 
-  const arrayField = useFieldArray({
-    control,
-    name: "samples",
-  });
+    const updatedDetails = {
+      ...details,
+      sampling: {
+        ...details.sampling,
+        receive_date: selectedDate, // Update the receive_date
+      },
+    };
 
-  //All the samples get save in here
-  const { fields: samples, append, remove, update } = arrayField;
+    onDetailsChange(updatedDetails); // Pass updated details to the parent
+  };
 
-  function deleteSample(index: number) {
-    remove(index);
-  }
-  const [date, setDate] = useState<Date | undefined>(new Date());
   return (
     <div className="flex-row space-y-10 max-md:flex-col max-md:items-center font-dm-sans">
       <Document
@@ -55,17 +51,15 @@ export default function ReviewDraftPage({ details }: { details: any }) {
         color="light_brown"
       />
 
-      {details.sampling.map((data: any, index: number) => (
-        <Sampling
-          key={index}
-          sampleName={data.sample_name}
-          regulation={data.regulation_name[0].regulation_name}
-          parameters={data.param.map((item: any) => item.param)}
-          index={index}
-          deleteSample={() => deleteSample(index)}
-          update={update}
-        />
-      ))}
+      <Sampling
+        sampleName={details.sampling.sample_name}
+        regulation={details.sampling.regulation_name[0].regulation_name}
+        parameters={details.sampling.param.map((item: any) => item.param)}
+        index={0}
+        deleteSample={() => {}}
+        update={() => {}}
+      />
+
       <div className="space-y-4">
         <p className="text-lg font-medium text-light_brown">
           Tanggal Masuk sampel
@@ -84,7 +78,7 @@ export default function ReviewDraftPage({ details }: { details: any }) {
             >
               <CalendarIcon className="mr-2 h-5 w-5 text-light_brown" />
               {date ? (
-                <>{format(date, "LLL dd, y")}</>
+                format(date, "LLL dd, y")
               ) : (
                 <span className="text-light_brown">Pilih tanggal</span>
               )}
@@ -97,7 +91,7 @@ export default function ReviewDraftPage({ details }: { details: any }) {
               mode="single"
               defaultMonth={date}
               selected={date}
-              onSelect={setDate}
+              onSelect={handleDateSelect}
               numberOfMonths={1}
             />
           </PopoverContent>

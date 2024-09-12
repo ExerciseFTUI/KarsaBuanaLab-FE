@@ -22,6 +22,7 @@ import {
   ProjectAdminPplhpType,
   SampleType,
   LabDashboardPageColumnsType,
+  PPLHPReceiveType,
 } from "@/lib/type";
 import Link from "next/link";
 import { ProjectSamplingType } from "@/lib/type";
@@ -814,6 +815,53 @@ export const samplingProjectPageColumns: ColumnDef<ProjectSamplingType>[] = [
         </div>
       );
     },
+  },
+];
+
+// export type PPLHPReceiveType = {
+//   project_id: string;
+//   project_name: string;
+//   sample_id: string;
+//   sample_name: string;
+//   sample_number: number;
+//   location: string;
+//   project_contact_person: string;
+// };
+
+export const pplhpDashboardColumns: ColumnDef<PPLHPReceiveType>[] = [
+  {
+    accessorKey: "project_name",
+    header: "Project Name",
+    cell: ({ row }) => <div className="">{row.getValue("project_name")}</div>,
+  },
+  {
+    accessorKey: "sample_name",
+    header: "Sample Name",
+    cell: ({ row }) => <div className="">{row.getValue("sample_name")}</div>,
+  },
+  {
+    accessorKey: "location",
+    header: "Location",
+    cell: ({ row }) => <div className="">{row.getValue("location")}</div>,
+  },
+  {
+    accessorKey: "project_contact_person",
+    header: "Contact Person",
+    cell: ({ row }) => (
+      <div className="">{row.getValue("project_contact_person")}</div>
+    ),
+  },
+  {
+    accessorKey: "sample_number",
+    enableHiding: true,
+  },
+  {
+    accessorKey: "project_id",
+    enableHiding: true,
+  },
+  {
+    accessorKey: "sample_id",
+    enableHiding: true,
   },
 ];
 
