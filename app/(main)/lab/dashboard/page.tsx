@@ -20,7 +20,6 @@ export default async function Home() {
     newRes = await labDashboard();
   } else {
     let staffID = session?.user.id;
-    console.log("staffID", staffID);
 
     newRes = await staffDashboard(staffID!);
   }

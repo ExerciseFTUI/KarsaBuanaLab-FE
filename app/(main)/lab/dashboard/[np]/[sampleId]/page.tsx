@@ -42,9 +42,7 @@ export default async function LabDetails({
   let sample;
 
   const projects = await getLabProjects();
-  // const resFiles = await getLinkFiles(params.np);
   const resUser = await getAllUser("USER");
-  // const resProject = await getProject(params.np);
 
   const samplingUser = resUser.result.filter(
     (u) => u.division == null || u.division == "Lab"
@@ -68,8 +66,15 @@ export default async function LabDetails({
     project:
       (projects.result.find((p: any) => p._id === params.np) as any) || null,
     user: samplingUser || [],
-    // files: resFiles ? (!resFiles.result ? dokumenData : resFiles.result) : [],
   };
+
+  // useEffect(() => {
+  // console.log("projects current", projects);
+  // console.log("data", data);
+  console.log("project id", params.np);
+  console.log("data.project", data.project);
+
+  // }, []);
 
   const allData = await labDashboard();
   const sample_number = allData.result.find(
@@ -81,18 +86,6 @@ export default async function LabDetails({
   if (session && session.user.role === "USER") {
     isAdmin = false;
   }
-  // ADMIN
-  // if (session && session.user.role !== "USER") {
-  // }
-
-  // // STAFF
-  // if (session && session.user.role === "USER") {
-  //   // project = await getLabDashboardProject(params.sampleId, session.user.id);
-  //   chooseParams = await getChoiceParams(params.sampleId, session.user.id);
-  //   console.log("project return", sample);
-
-  //   isAdmin = false;
-  // }
 
   return (
     <>
@@ -111,43 +104,12 @@ export default async function LabDetails({
                   link="/link1"
                   color="light_brown"
                 />
-                {/* {isAdmin
-                  ? data.files.map((data: any, index: number) => (
-                      <ListDokumen
-                        key={index}
-                        title={data.title}
-                        link={data.link}
-                        color="light_brown"
-                      />
-                    ))
-                  : project.dokumen.map((data: any, index: number) => (
-                      <ListDokumen
-                        key={index}
-                        title={data.judul}
-                        link={data.url}
-                        color="light_brown"
-                      />
-                    ))} */}
               </div>
             </div>
 
             {/* NOTES FROM ADMIN */}
             {isAdmin && <NotesAdmin notes={notesFromAdmin} />}
             {/* END OF NOTES FROM ADMIN */}
-
-            {/* START INPUT DOKUMEN */}
-            {/* {!isAdmin && (
-              <div>
-                <h1 className="text-black_brown text-2xl font-semibold pb-8">
-                  LHP
-                </h1>
-                <InputDokumenFinalReview
-                  fileName="LHP"
-                  url={project.lhp}
-                  color="light_brown"
-                />
-              </div>
-            )} */}
           </div>
 
           <Separator orientation="vertical" className="bg-light_brown mx-12" />
@@ -183,15 +145,6 @@ export default async function LabDetails({
                 />
               </TabsContent>
             </Tabs>
-            // : (
-            //   <InputDokumenUser
-            //     sample={project.input}
-            //     isAdmin={true}
-            //     sampleId={params.sampleId}
-            //     choiceParams={chooseParams}
-            //     // status={project.status}
-            //   />
-            // )
           }
         </div>
       ) : (
@@ -214,11 +167,6 @@ export default async function LabDetails({
                 sampleId={params.sampleId}
                 choiceParams={chooseParams}
               />
-              {/* <SamplingTabsList
-                project={project}
-                sampleId={params.sampleId}
-                userId={session.user.id}
-              /> */}
             </div>
 
             <Separator

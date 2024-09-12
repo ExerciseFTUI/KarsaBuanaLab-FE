@@ -35,7 +35,7 @@ const LogbookRekamanSampel: FC<LogbookRekamanSampelProps> = ({
 
       // update the data.sampling.status = "ACCEPTED"
       const submitData = {
-        sampling: { ...data.sampling, status: "ACCEPTED" },
+        sampling: { ...data.sampling, status: "LAB_RECEIVE" },
       };
 
       const response = await submitDetailPPLHP(

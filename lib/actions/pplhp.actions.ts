@@ -70,8 +70,8 @@ export const submitDetailPPLHP = async (
 ): Promise<any> => {
   try {
     const response = await axios.post(
-      `${apiBaseUrl}/sampling/update-samplestatus-and-date`,
-      // `http://localhost:8080/sampling/update-samplestatus-and-date`,
+      // `${apiBaseUrl}/sampling/update-samplestatus-and-date`,
+      `http://localhost:8080/sampling/update-samplestatus-and-date`,
       {
         projectId,
         samplingId,

@@ -26,6 +26,10 @@ export default function LabAssignStaff({
   const { project, user } = data;
 
   // Find the sampling item that matches the provided sampleId
+  useEffect(() => {
+    console.log("project", project);
+  }, []);
+
   const sampling = project.sampling_list.find((s) => s._id === sampleId);
 
   const router = useRouter();
