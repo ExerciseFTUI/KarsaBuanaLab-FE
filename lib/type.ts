@@ -93,6 +93,7 @@ export type PPLHPReceiveType = {
   sample_name: string;
   sample_number: number;
   location: string;
+  project_type: string;
   project_contact_person: string;
 };
 
