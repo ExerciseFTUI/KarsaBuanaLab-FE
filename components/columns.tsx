@@ -438,44 +438,45 @@ export const pplhpColumns: ColumnDef<PplhpDetail>[] = [
     ),
   },
   //Status
-  {
-    accessorKey: "current_division",
-    header: ({ column }) => {
-      return (
-        <Button
-          className="w-full text-center justify-center"
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Current Progres
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
+  // {
+  //   accessorKey: "current_division",
+  //   header: ({ column }) => {
+  //     return (
+  //       <Button
+  //         className="w-full text-center justify-center"
+  //         variant="ghost"
+  //         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+  //       >
+  //         Current Progres
+  //         <ArrowUpDown className="ml-2 h-4 w-4" />
+  //       </Button>
+  //     );
+  //   },
 
-    cell: ({ row }) => {
-      const status = "SAMPLING";
-      // row.original.current_division !== "SAMPLING"
-      //   ? "ANALYSIS"
-      //   : row.original.current_division;
+  //   cell: ({ row }) => {
+  //     //TODO: Change This
+  //     const status = "SAMPLING";
+  //     // row.original.current_division !== "SAMPLING"
+  //     //   ? "ANALYSIS"
+  //     //   : row.original.current_division;
 
-      return (
-        <div className="flex justify-center items-center w-full">
-          <div
-            className={`font-light text-white w-fit px-6 py-0.5 rounded-full items-center justify-center ${
-              status === "SAMPLING"
-                ? "bg-yellow-700"
-                : status === "ANALYSIS"
-                ? "bg-blue-900"
-                : "bg-moss_green"
-            }`}
-          >
-            {status}
-          </div>
-        </div>
-      );
-    },
-  },
+  //     return (
+  //       <div className="flex justify-center items-center w-full">
+  //         <div
+  //           className={`font-light text-white w-fit px-6 py-0.5 rounded-full items-center justify-center ${
+  //             status === "SAMPLING"
+  //               ? "bg-yellow-700"
+  //               : status === "ANALYSIS"
+  //               ? "bg-blue-900"
+  //               : "bg-moss_green"
+  //           }`}
+  //         >
+  //           {status}
+  //         </div>
+  //       </div>
+  //     );
+  //   },
+  // },
   //Deadline
   {
     accessorKey: "jadwal_sampling.to",
@@ -488,7 +489,8 @@ export const pplhpColumns: ColumnDef<PplhpDetail>[] = [
     },
 
     cell: ({ row }) => {
-      const deadline = "Haven't set deadline yet";
+      const deadline =
+        row.original?.deadline_lhp?.from || "Haven't set deadline yet";
       // row.original.jadwal_sampling?.to || "Haven't set deadline yet";
       return <div className="capitalize text-center ">{deadline}</div>;
     },

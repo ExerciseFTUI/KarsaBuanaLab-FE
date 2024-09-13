@@ -2,13 +2,24 @@
 
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { SelectSeparator } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectSeparator,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { FC, useState } from "react";
 import { AiOutlineFile } from "react-icons/ai";
 import { BsArrowRight } from "react-icons/bs";
-import { Lhp } from "./PplhpType";
-import { lhpAccept, lhpRevision } from "@/lib/actions/admin.action";
+import { Lhp, pplhpSignEnum } from "./PplhpType";
+import {
+  lhpAccept,
+  lhpRevision,
+  updateSignature,
+} from "@/lib/actions/admin.action";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/components/ui/use-toast";
 import LoadingScreen from "@/components/LoadingScreen";
@@ -18,6 +29,7 @@ interface PplhpCheckingProps {
   color: string;
   lhp: Lhp;
   id: string;
+  ttd: string;
 }
 
 export const PplhpChecking: FC<PplhpCheckingProps> = ({
@@ -25,10 +37,12 @@ export const PplhpChecking: FC<PplhpCheckingProps> = ({
   color,
   lhp,
   id,
+  ttd,
 }) => {
   const router = useRouter();
   const { toast } = useToast();
   const [note, setNote] = useState("");
+  const [signature, setSignature] = useState(ttd);
   const [isLoading, setIsLoading] = useState(false);
 
   const handleAccept = async () => {
@@ -76,7 +90,7 @@ export const PplhpChecking: FC<PplhpCheckingProps> = ({
     setIsLoading(true);
     const response = await lhpRevision(body, id);
     setIsLoading(false);
-    
+
     router.push("/admin/pplhp");
 
     if (!response) {
@@ -94,10 +108,32 @@ export const PplhpChecking: FC<PplhpCheckingProps> = ({
     });
   };
 
+  const handleSignature = async (value: string) => {
+    setIsLoading(true);
+
+    const response = await updateSignature(id, value);
+    if (!response) {
+      toast({
+        title: "Failed to update the signature",
+        description: "please resubmit the form.",
+      });
+      setIsLoading(false);
+      router.refresh();
+      return;
+    }
+
+    toast({
+      title: "Update signature success",
+      description: "You already set it up.",
+    });
+    router.refresh();
+    setIsLoading(false);
+  };
+
   return (
     <div className="h-screen px-16 space-y-10 w-full max-w-3xl">
       {isLoading && <LoadingScreen />}
-      
+
       <h1 className={`text-center text-2xl font-semibold text-${color}`}>
         {title}
       </h1>
@@ -123,7 +159,38 @@ export const PplhpChecking: FC<PplhpCheckingProps> = ({
           </div>
         </div>
       </div>
-      <div className="grid w-full gap-1.5">
+      <div className="grid w-full gap-3">
+        <Label htmlFor="message-2">Approved By</Label>
+        <Select
+          value={signature}
+          onValueChange={(val) => {
+            setSignature(val);
+            handleSignature(val);
+          }}
+        >
+          <SelectTrigger className="">
+            <SelectValue placeholder="" />
+          </SelectTrigger>
+          <SelectContent>
+            {pplhpSignEnum.map((sign, index) => (
+              <SelectItem
+                key={index + sign.label}
+                className="p-3"
+                value={sign.value}
+              >
+                {sign.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+
+        {/* <Button
+          className="w-full bg-dark_brown hover:bg-dark_green"
+          onClick={() => handleSignature()}
+        >
+          Update Signature
+        </Button> */}
+
         <Label htmlFor="message-2">Optional Note</Label>
         <Textarea
           value={note}
@@ -153,4 +220,3 @@ export const PplhpChecking: FC<PplhpCheckingProps> = ({
     </div>
   );
 };
-
