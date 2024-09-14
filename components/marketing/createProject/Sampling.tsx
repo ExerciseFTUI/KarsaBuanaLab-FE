@@ -100,6 +100,7 @@ const Sampling: FC<SamplingProps> = ({
     setValue("parameters", [""], { shouldValidate: true });
     resetField("sampling");
     resetField("parameters");
+    setOpenModal(false);
   };
 
   return (

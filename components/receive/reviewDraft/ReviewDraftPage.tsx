@@ -12,12 +12,15 @@ import { Calendar } from "@/components/ui/calendar";
 import { format, isValid } from "date-fns"; // Import isValid from date-fns
 import Document from "@/components/pplhp/Document";
 import Sampling from "@/components/marketing/createProject/Sampling";
+import { BaseSample } from "@/lib/models/baseSample.model";
 
 export default function ReviewDraftPage({
   details,
+  baseSamples,
   onDetailsChange,
 }: {
   details: any;
+  baseSamples: BaseSample[];
   onDetailsChange: (newDetails: any) => void;
 }) {
   // Check if receive_date is valid, fallback to undefined if not
@@ -65,6 +68,7 @@ export default function ReviewDraftPage({
         regulation={details.sampling.regulation_name[0].regulation_name}
         parameters={details.sampling.param.map((item: any) => item.param)}
         index={0}
+        baseSamples={baseSamples}
         deleteSample={() => {}}
         update={() => {}}
       />
