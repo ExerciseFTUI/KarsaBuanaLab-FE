@@ -146,15 +146,10 @@ const Parameter: React.FC<TableParameterProps> = ({
   // TODO : INI BUAT EDIT NAME PARAM DIT
   const handleEditSubmit = async (name: string) => {
     // Log the edited value
-    console.log("name : ", name);
-    console.log("New param name:", editedValue);
-
     setEditingParam("");
 
     //Update the param
     if (bySample && currentSample?.param) {
-      console.log("Sample : ", currentSample);
-
       let newParam = currentSample.param.filter(
         (param) => param.param !== name
       );

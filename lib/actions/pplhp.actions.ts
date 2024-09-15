@@ -178,3 +178,32 @@ export const getProjectDetails = async (projectId: string): Promise<any> => {
     throw new Error(error.message);
   }
 };
+
+// /sampling/update-sample-with-id/
+export const updateSamplePPLHP = async (
+  projectId: string,
+  sampleId: string,
+  param: any
+): Promise<any> => {
+  try {
+    const response = await axios.post(
+      `${apiBaseUrl}/sampling/update-sample-with-id/${projectId}/${sampleId}`,
+      // `http://localhost:8080/sampling/update-sample-with-id/${projectId}/${sampleId}`,
+      {
+        sample_name: param.sampleName,
+        regulation_name: param.regulation,
+        param: param.parameters,
+      }
+    );
+
+    revalidatePath("/pplhp/receive");
+
+    return response.data.result;
+  } catch (error: any) {
+    console.error(
+      `Error updating sample for project with ID ${projectId} and sample ID ${sampleId}:`,
+      error.message
+    );
+    return null as unknown as any;
+  }
+};

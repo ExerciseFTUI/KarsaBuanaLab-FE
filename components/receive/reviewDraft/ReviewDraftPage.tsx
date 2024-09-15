@@ -18,10 +18,12 @@ export default function ReviewDraftPage({
   details,
   baseSamples,
   onDetailsChange,
+  params,
 }: {
   details: any;
   baseSamples: BaseSample[];
   onDetailsChange: (newDetails: any) => void;
+  params: { np: string; sampleId: string };
 }) {
   // Check if receive_date is valid, fallback to undefined if not
   const initialDate = new Date(details.sampling.receive_date);
@@ -71,6 +73,8 @@ export default function ReviewDraftPage({
         baseSamples={baseSamples}
         deleteSample={() => {}}
         update={() => {}}
+        isPPLHP={true}
+        params={params}
       />
 
       <div className="space-y-4">

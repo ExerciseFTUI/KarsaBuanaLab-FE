@@ -73,9 +73,6 @@ export default function TabSampleAdmin({
       });
 
       if (status == "SUBMIT") {
-        console.log("submitSample", response);
-        console.log("submitSample", response.message);
-
         // check all sample status, if all sample status is "SUBMIT", then go to path "/sampling/sample"
         let allSampleSubmitted = true;
         response.result.sampling_list.forEach((s) => {
@@ -84,7 +81,6 @@ export default function TabSampleAdmin({
           }
         });
 
-        console.log("allSampleSubmitted", allSampleSubmitted);
         if (allSampleSubmitted) {
           // change the project division to PPLHP
           const changeDivisionResponse = await changeDivision(

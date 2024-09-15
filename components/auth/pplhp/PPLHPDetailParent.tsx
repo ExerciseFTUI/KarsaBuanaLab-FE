@@ -26,6 +26,7 @@ export default function PPLHPDetailParent({
           details={details}
           onDetailsChange={handleDetailsChange}
           baseSamples={baseSamples}
+          params={params}
         />
       </div>
       <div className="mx-16 lg:w-2/5 py-24 lg:py-0">

@@ -33,8 +33,6 @@ export default function VerifikasiSampling({
   const router = useRouter();
   const { toast } = useToast();
 
-  console.log(data);
-
   const [isLoading, setIsLoading] = useState(false);
 
   const canSave =
@@ -43,7 +41,6 @@ export default function VerifikasiSampling({
 
   async function submitSample(sample_id: string, status: string) {
     setIsLoading(true);
-    console.log("status : ", status);
     const response = await saveSample(project._id, status);
     setIsLoading(false);
 
