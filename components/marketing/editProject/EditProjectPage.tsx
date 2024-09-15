@@ -496,14 +496,11 @@ export default function EditProjectPage({
 
   const handleDeal = async () => {
     // if valuasi_proyek is empty or 0, show alert
-    console.log("form valueasi", form.getValues("valuasiProject"));
-
     if (
       form.getValues("valuasiProject") === "0" ||
       form.getValues("valuasiProject") === undefined ||
       form.getValues("valuasiProject") === ""
     ) {
-      console.log("failed");
 
       toast({
         title: "Oops, Failed!",

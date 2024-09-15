@@ -2,13 +2,16 @@
 import { useState } from "react";
 import ReviewDraftPage from "@/components/receive/reviewDraft/ReviewDraftPage";
 import LogbookRekamanSampel from "@/components/pplhp/LogbookRekamanSampel";
+import { BaseSample } from "@/lib/models/baseSample.model";
 
 export default function PPLHPDetailParent({
   initialDetails,
   params,
+  baseSamples,
 }: {
   initialDetails: any;
   params: { np: string; sampleId: string };
+  baseSamples: BaseSample[];
 }) {
   const [details, setDetails] = useState<any>(initialDetails);
 
@@ -22,6 +25,8 @@ export default function PPLHPDetailParent({
         <ReviewDraftPage
           details={details}
           onDetailsChange={handleDetailsChange}
+          baseSamples={baseSamples}
+          params={params}
         />
       </div>
       <div className="mx-16 lg:w-2/5 py-24 lg:py-0">

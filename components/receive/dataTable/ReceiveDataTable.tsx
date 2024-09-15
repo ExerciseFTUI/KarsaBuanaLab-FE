@@ -141,12 +141,6 @@ const ReceiveDataTable: FC<ReceiveDataTableProps> = ({ data }) => {
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
                   onClick={() => {
-                    console.log(
-                      "receive/" +
-                        row.getValue("project_id") +
-                        "/" +
-                        row.getValue("sample_id")
-                    );
                     router.push(
                       "receive/" +
                         row.getValue("project_id") +

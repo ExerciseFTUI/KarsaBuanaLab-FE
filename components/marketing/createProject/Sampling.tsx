@@ -35,6 +35,10 @@ import {
 import CreateSampleModal from "./CreateSampleModal";
 import { toast, useToast } from "@/components/ui/use-toast";
 import { BaseSample } from "@/lib/models/baseSample.model";
+import { updateSamplePPLHP } from "@/lib/actions/pplhp.actions";
+import { useRouter } from "next/navigation";
+import { loadComponents } from "next/dist/server/load-components";
+import LoadingScreen from "@/components/LoadingComp";
 
 interface SamplingProps {
   sampleName: string;
@@ -45,6 +49,11 @@ interface SamplingProps {
   update: UseFieldArrayUpdate<FieldValues, "samples">;
   baseSamples?: BaseSample[];
   isApproval?: boolean;
+  isPPLHP?: boolean;
+  params?: {
+    np: string;
+    sampleId: string;
+  };
 }
 
 const Sampling: FC<SamplingProps> = ({
@@ -56,11 +65,15 @@ const Sampling: FC<SamplingProps> = ({
   update,
   baseSamples,
   isApproval,
+  isPPLHP,
+  params,
 }) => {
+  const router = useRouter();
   const [openModal, setOpenModal] = useState(false);
   const [isOpen, setIsOpen] = useState(true);
   const [isLoading, startTranstition] = useTransition();
   const { toast } = useToast();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const approval = isApproval || false;
 
@@ -75,7 +88,7 @@ const Sampling: FC<SamplingProps> = ({
 
   const { setValue, resetField } = form;
 
-  const onSubmit: SubmitHandler<FieldValues> = (data) => {
+  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     //Updating Sample
     //Get the parameter only value
     const parametersValue = data.parameters.map(
@@ -89,7 +102,22 @@ const Sampling: FC<SamplingProps> = ({
       parameters: parametersValue,
     };
 
-    update(index, finalSample);
+    if (isPPLHP && params) {
+      setIsSubmitting(true);
+      setOpenModal(false);
+      //Update the sample
+      const successUpdate = await updateSamplePPLHP(
+        params?.np,
+        params?.sampleId,
+        finalSample
+      );
+
+      setIsSubmitting(false);
+
+      router.push(`/pplhp/receive/${params.np}/${successUpdate}`);
+    } else {
+      update(index, finalSample);
+    }
 
     toast({
       title: "Successfully updating the sample",
@@ -100,10 +128,13 @@ const Sampling: FC<SamplingProps> = ({
     setValue("parameters", [""], { shouldValidate: true });
     resetField("sampling");
     resetField("parameters");
+    setOpenModal(false);
   };
 
   return (
     <>
+      {isSubmitting && <LoadingScreen />}
+
       <CreateSampleModal
         title="Update Sample"
         isOpen={openModal}

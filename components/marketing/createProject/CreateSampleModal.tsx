@@ -78,6 +78,9 @@ const CreateSampleModal: FC<CreateSampleModalProps> = ({
     setValue("parameters", transformParameter(), { shouldValidate: true });
   }, []);
 
+  // check watch sampling, regulation, and parameters
+
+
   useEffect(() => {
     setCurrentSample(sampling);
 

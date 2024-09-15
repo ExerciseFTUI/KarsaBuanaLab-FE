@@ -45,7 +45,6 @@ const LogbookRekamanSampel: FC<LogbookRekamanSampelProps> = ({
       );
 
       if (response) {
-        console.log("response", response);
         toast({
           title: "Successfully updated data",
           description: "The project already in lab division",
