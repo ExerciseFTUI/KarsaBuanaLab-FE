@@ -1,16 +1,16 @@
-"use client"
+"use client";
 
-import React from "react"
-import HyperLinkButton from "./HyperlinkButton"
-import { Project } from "@/lib/models/project.model"
+import React from "react";
+import HyperLinkButton from "./HyperlinkButton";
+import { Project } from "@/lib/models/project.model";
 
 interface docParams {
-  data: any
-  className?: string
+  data: any;
+  className?: string;
 }
 
 export default function DocumentList({ data, className = "" }: docParams) {
-  const { file } = data
+  const { file } = data;
 
   return (
     <div className="">
@@ -19,10 +19,10 @@ export default function DocumentList({ data, className = "" }: docParams) {
       <div className="flex flex-wrap gap-4">
         {[
           { title: "Surat Penawaran" },
-          { title: "Daftar Parameter" },
-          { title: "DP Chain of Custody" },
+          // { title: "Daftar Parameter" },
+          // { title: "DP Chain of Custody" },
           // { title: "Sertifikat Akreditasi" },
-          { title: "Form Kaji Ulang" },
+          // { title: "Form Kaji Ulang" },
         ].map((o, i) => (
           <HyperLinkButton
             key={i}
@@ -37,5 +37,5 @@ export default function DocumentList({ data, className = "" }: docParams) {
         ))}
       </div>
     </div>
-  )
+  );
 }
