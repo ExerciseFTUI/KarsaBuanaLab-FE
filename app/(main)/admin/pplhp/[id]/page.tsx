@@ -33,6 +33,7 @@ const PPLHPDetailPage = async ({ params }: { params: { id: string } }) => {
               color="dark_brown"
               lhp={pplhp.lhp}
               id={params.id}
+              ttd={pplhp.ttd_type}
             />
           </div>
         </div>

@@ -4,6 +4,7 @@ import axios from "axios";
 import { revalidatePath } from "next/cache";
 import { UserType } from "../type";
 import { BaseApiResponse } from "../models/baseApiResponse.model";
+import { PplhpDetail } from "@/components/auth/pplhp/PplhpType";
 
 const apiBaseUrl = process.env.API_BASE_URL || "http://localhost:5000";
 
@@ -81,35 +82,54 @@ export const lhpAccept = async (body: any, id: string) => {
   }
 };
 
-export const getAllUser = async () : Promise<BaseApiResponse<UserType[]>> => {
+export const getAllUser = async (): Promise<BaseApiResponse<UserType[]>> => {
   try {
     const response = await axios.get(
       // `http://localhost:8080/auth/getAllUser`
       `${apiBaseUrl}/auth/getAllUser`
-    )
+    );
 
-    return response.data as BaseApiResponse<UserType[]>
+    return response.data as BaseApiResponse<UserType[]>;
   } catch (error: any) {
-    console.error("Error getting user /auth/getAllUser", error.message)
-    console.error(error.response?.data?.message)
-    return null as unknown as BaseApiResponse<UserType[]>
+    console.error("Error getting user /auth/getAllUser", error.message);
+    console.error(error.response?.data?.message);
+    return null as unknown as BaseApiResponse<UserType[]>;
   }
-}
+};
 
-export const getUser = async (_id: string) : Promise<BaseApiResponse<UserType>> => {
+export const getUser = async (
+  _id: string
+): Promise<BaseApiResponse<UserType>> => {
   try {
     const response = await axios.post(
       // `http://localhost:8080/auth/getUser`,
       `${apiBaseUrl}/auth/getUser`,
       {
-        _id
+        _id,
       }
-    )
+    );
 
-    return response.data as BaseApiResponse<UserType>
+    return response.data as BaseApiResponse<UserType>;
   } catch (error: any) {
-    console.error("Error getting user /auth/getUser", error.message)
-    console.error(error.response?.data?.message)
-    return null as unknown as BaseApiResponse<UserType>
+    console.error("Error getting user /auth/getUser", error.message);
+    console.error(error.response?.data?.message);
+    return null as unknown as BaseApiResponse<UserType>;
   }
-}
+};
+
+export const updateSignature = async (projectId: string, ttdType: string) => {
+  try {
+    const body = {
+      projectId: projectId,
+      ttd_type: ttdType,
+    };
+
+    await axios.post(`${apiBaseUrl}/sampling/update-project-ttd-type`, body);
+
+    return true;
+  } catch (error: any) {
+    console.error("Error update signature", error.message);
+    console.error(error.response?.data?.message);
+    return false;
+  }
+};

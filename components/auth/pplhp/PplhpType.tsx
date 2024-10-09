@@ -1,9 +1,26 @@
+export const pplhpSignEnum = [
+  {
+    label: "Direktur Lab",
+    value: "DIRECTOR",
+  },
+  {
+    label: "Manajer Teknis",
+    value: "TM",
+  },
+];
+
 export type PplhpDetail = {
   project_name: string;
   projectID: string;
   sampling_list: SamplingPplhp[];
   lab_files: LabFile[];
   lhp: Lhp;
+  deadline_lhp: {
+    from: string;
+    to: string;
+    _id: string;
+  };
+  ttd_type: "DIRECTOR" | "TM";
 };
 
 export type LabFile = {
