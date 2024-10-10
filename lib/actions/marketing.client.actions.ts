@@ -8,6 +8,8 @@ const apiBaseUrl =
 
 export const createProjectJsonClient = async (body: any) => {
   try {
+    console.log(body);
+
     const response = await axios.post(
       // `http://localhost:8080/projects/createJSON`,
       `${apiBaseUrl}/projects/createJSON`,
@@ -111,7 +113,6 @@ export const updateProjectFile = async (id: string, files: any) => {
     throw new Error(error.message);
   }
 };
-
 
 //Update Project file
 export const deleteProjectFile = async (id: string, file_id: string) => {

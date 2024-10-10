@@ -551,8 +551,8 @@ const ProjectForm: FC<ProjectFormProps> = ({
                       <SelectContent>
                         <SelectGroup>
                           <SelectLabel>Select project type</SelectLabel>
-                          <SelectItem value="Internal">Internal</SelectItem>
-                          <SelectItem value="External">External</SelectItem>
+                          <SelectItem value="internal">Internal</SelectItem>
+                          <SelectItem value="external">External</SelectItem>
                         </SelectGroup>
                       </SelectContent>
                     </Select>
