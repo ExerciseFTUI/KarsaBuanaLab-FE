@@ -25,12 +25,11 @@ export const parameterInputValidation = z.object({
       }
       return value;
     }),
-  lembar_data: lembarDataValidation,
+  // lembar_data: lembarDataValidation,
 });
 
 // Sample validation schema
 export const sampleInputValidation = z.object({
-  // sample_name: z.string({ required_error: "Required Field" }),
   param: z.array(parameterInputValidation),
 });
 
@@ -44,9 +43,20 @@ export type LabInputDocumentValidationType = z.infer<
   typeof labInputDocumentValidation
 >;
 
-// Hook for form handling
-export const useLabForm = () => {
+// Default values type
+type DefaultValues = {
+  sample: {
+    param: {
+      unit: string;
+      method: string[];
+    }[];
+  };
+};
+
+// Hook for form handling with proper types
+export const useLabForm = (props?: { defaultValues?: DefaultValues }) => {
   const form = useForm<LabInputDocumentValidationType>({
+    defaultValues: props?.defaultValues,
     resolver: zodResolver(labInputDocumentValidation),
   });
 
