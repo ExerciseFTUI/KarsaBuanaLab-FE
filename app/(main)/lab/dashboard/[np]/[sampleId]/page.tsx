@@ -132,7 +132,8 @@ export default async function LabDetails({
                   sample={sample}
                   isAdmin={true}
                   sampleId={params.sampleId}
-                  choiceParams={chooseParams}
+                  choiceParams={chooseParams.result}
+                  ldData={chooseParams.ldData}
                   // status={project.status}
                 />
               </TabsContent>
@@ -157,7 +158,8 @@ export default async function LabDetails({
                 sample={sample}
                 isAdmin={false}
                 sampleId={params.sampleId}
-                choiceParams={chooseParams}
+                choiceParams={chooseParams.result}
+                ldData={chooseParams.ldData}
               />
             </div>
 

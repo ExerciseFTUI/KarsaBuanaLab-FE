@@ -35,6 +35,7 @@ interface inputDokumenUserProps {
   isAdmin: boolean;
   sampleId: string;
   choiceParams: [labInputChoice];
+  ldData: [LD];
 }
 
 const InputDokumenUser: FC<inputDokumenUserProps> = ({
@@ -42,6 +43,7 @@ const InputDokumenUser: FC<inputDokumenUserProps> = ({
   isAdmin,
   sampleId,
   choiceParams,
+  ldData,
 }) => {
   const router = useRouter();
   const { toast } = useToast();
@@ -53,7 +55,7 @@ const InputDokumenUser: FC<inputDokumenUserProps> = ({
         // param: string;
         unit?: string;
         method?: string[];
-        lembar_data: LD;
+        // lembar_data: LD;
       }[];
     };
   }>();
@@ -93,9 +95,9 @@ const InputDokumenUser: FC<inputDokumenUserProps> = ({
         param: param.name,
         unit: unitMethodResult.sample.param[paramId].unit ?? param.unit,
         method: unitMethodResult.sample.param[paramId].method ?? param.method,
-        lembar_data:
-          unitMethodResult.sample.param[paramId].lembar_data ??
-          param.lembar_data,
+        // lembar_data:
+        //   unitMethodResult.sample.param[paramId].lembar_data ??
+        //   param.lembar_data,
       })),
     };
 
@@ -128,6 +130,11 @@ const InputDokumenUser: FC<inputDokumenUserProps> = ({
     }
     setIsDialogOpen(false);
   }
+
+  useEffect(() => {
+    console.log("choiceParams", choiceParams);
+    console.log("ldData", ldData);
+  }, []);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
@@ -185,6 +192,19 @@ const InputDokumenUser: FC<inputDokumenUserProps> = ({
                   </div>
                 </TableCell>
                 <TableCell>
+                  {/* <select
+                    {...register(`sample.param.${parameterId}.method`, {
+                      setValueAs: (value) =>
+                        value === "Select Method" ? "" : value,
+                    })}
+                    defaultValue={parameter.method}
+                    className="w-full"
+                    disabled={isAdmin ? false : true}
+                  >
+                    <option className="w-full p-4 rounded bg-gray-100 shadow-none">
+                      {parameter.unit ?? "Select Method"}
+                    </option>
+                  </select> */}
                   {choiceParams
                     .find((param) => param.param === parameter.name)
                     ?.method.map((method) => {
@@ -228,7 +248,7 @@ const InputDokumenUser: FC<inputDokumenUserProps> = ({
                     {errors.sample?.param?.[parameterId]?.method?.message}
                   </div>
                 </TableCell>
-                {!isAdmin && (
+                {/* {!isAdmin && (
                   <TableCell>
                     <select
                       {...register(`sample.param.${parameterId}.lembar_data`, {
@@ -240,9 +260,27 @@ const InputDokumenUser: FC<inputDokumenUserProps> = ({
                     >
                       <option>
                         {parameter.lembar_data?.ld_name ?? "Pilih Lembar Data"}
-                      </option>
+                      </option> */}
 
-                      {/* { choiceParams
+                {/* {choiceParams
+                        .find((param) => param.param === parameter.name)
+                        ?.lembar_data?.filter((lembar_data) => {
+                          // Ensure the current lembar_data is not already selected
+                          return (
+                            !parameter.lembar_data ||
+                            parameter.lembar_data.ld_file_id !==
+                              lembar_data.ld_file_id
+                          );
+                        })
+                        .map((lembar_data) => (
+                          <option
+                            key={lembar_data.ld_file_id}
+                            value={lembar_data.ld_file_id}
+                          >
+                            {lembar_data.ld_name}
+                          </option>
+                        ))} */}
+                {/* {choiceParams
                         .find((param) => param.param === parameter.name)
                         ?.lembar_data.filter((lembar_data) => {
                           // Ensure the current lembar_data is not already selected
@@ -260,7 +298,8 @@ const InputDokumenUser: FC<inputDokumenUserProps> = ({
                             {lembar_data.ld_name}
                           </option>
                         ))} */}
-                    </select>
+
+                {/* </select>
                     <div className="text-xs text-red-600 pt-3 text-center">
                       {
                         errors.sample?.param?.[parameterId]?.lembar_data
@@ -268,7 +307,7 @@ const InputDokumenUser: FC<inputDokumenUserProps> = ({
                       }
                     </div>
                   </TableCell>
-                )}
+                )} */}
               </TableRow>
             ))}
           </TableBody>
@@ -277,6 +316,7 @@ const InputDokumenUser: FC<inputDokumenUserProps> = ({
           <Button
             className="w-2/3 p-6 bg-light_brown hover:bg-dark_brown mb-16 "
             type="submit"
+            onClick={() => {onSubmit}}
           >
             Submit
           </Button>
