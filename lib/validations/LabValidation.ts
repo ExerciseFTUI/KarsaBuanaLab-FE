@@ -3,10 +3,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
 // Validation schema for lembar_data (LD)
-const lembarDataValidation = z.object({
-  ld_name: z.string().nonempty("LD Name is required"),
-  ld_file_id: z.string().nonempty("LD File ID is required"),
-});
+const lembarDataValidation = z.string().nonempty("Lembar Data is required"); // Changed to string for ID
 
 export const parameterInputValidation = z.object({
   unit: z
@@ -25,7 +22,7 @@ export const parameterInputValidation = z.object({
       }
       return value;
     }),
-  // lembar_data: lembarDataValidation,
+  lembar_data: lembarDataValidation,
 });
 
 // Sample validation schema
@@ -49,16 +46,16 @@ type DefaultValues = {
     param: {
       unit: string;
       method: string[];
+      lembar_data: string;
     }[];
   };
 };
 
 // Hook for form handling with proper types
 export const useLabForm = (props?: { defaultValues?: DefaultValues }) => {
-  const form = useForm<LabInputDocumentValidationType>({
+  const form = useForm({
     defaultValues: props?.defaultValues,
     resolver: zodResolver(labInputDocumentValidation),
   });
-
   return form;
 };

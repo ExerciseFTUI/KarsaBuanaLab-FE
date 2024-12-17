@@ -19,7 +19,12 @@ import {
   TableRow,
   TableCell,
 } from "@/components/ui/table";
-import { InputDocumentType, labInputChoice, LD } from "@/lib/type";
+import {
+  InputDocumentType,
+  labInputChoice,
+  LD,
+  MergeInputDocumentType,
+} from "@/lib/type";
 import {
   useLabForm,
   labInputDocumentValidation,
@@ -31,7 +36,7 @@ import { useToast } from "../ui/use-toast";
 import { useRouter } from "next/navigation";
 
 interface inputDokumenUserProps {
-  sample: InputDocumentType;
+  sample: MergeInputDocumentType;
   isAdmin: boolean;
   sampleId: string;
   choiceParams: [labInputChoice];
@@ -61,10 +66,18 @@ const InputDokumenUser: FC<inputDokumenUserProps> = ({
   } = useLabForm({
     defaultValues: {
       sample: {
-        param: sample.parameters.map((param) => ({
-          unit: param.unit || "",
-          method: param.method || [],
-        })),
+        param: sample.parameters.map((param) => {
+          // Get the parameter's choice options
+          const paramChoice = choiceParams.find(
+            (choice) => choice.param === param.name
+          );
+
+          return {
+            unit: param.unit || paramChoice?.unit[0] || "", // Default to first unit if none selected
+            method: param.method?.length ? param.method : [], // Default to existing methods if available
+            lembar_data: param.lembar_data?.[0]?._id || ldData[0]?._id || "", // Default to first lembar data
+          };
+        }),
       },
     },
   });
@@ -72,13 +85,21 @@ const InputDokumenUser: FC<inputDokumenUserProps> = ({
   const currentValues = watch();
 
   useEffect(() => {
-    console.log("Current form values:", currentValues);
-  }, [currentValues]);
+    sample.parameters.forEach((param, index) => {
+      // If no methods are selected, set default methods
+      const currentMethods = getValues(`sample.param.${index}.method`);
+      if (!currentMethods?.length) {
+        const defaultMethods = getDefaultMethods(param.name);
+        setValue(`sample.param.${index}.method`, defaultMethods);
+      }
 
-  useEffect(() => {
-    console.log("Initial sample:", sample);
-    console.log("Initial choiceParams:", choiceParams);
-  }, [sample, choiceParams]);
+      // If no lembar data is selected, set default lembar data
+      const currentLembarData = getValues(`sample.param.${index}.lembar_data`);
+      if (!currentLembarData) {
+        setValue(`sample.param.${index}.lembar_data`, ldData[0]?._id || "");
+      }
+    });
+  }, []);
 
   const onSubmit = async (data: any) => {
     try {
@@ -119,7 +140,19 @@ const InputDokumenUser: FC<inputDokumenUserProps> = ({
       }
 
       setInvalidFields([]); // Clear invalid fields if validation passes
-      setFormData(data);
+      const transformedData = {
+        ...data,
+        sample: {
+          ...data.sample,
+          param: data.sample.param.map((param: any, index: number) => ({
+            ...param,
+            lembar_data:
+              ldData.find((ld) => ld._id === param.lembar_data) || null,
+          })),
+        },
+      };
+
+      setFormData(transformedData);
       setIsDialogOpen(true);
     } catch (error) {
       console.error("Form submission error:", error);
@@ -130,24 +163,33 @@ const InputDokumenUser: FC<inputDokumenUserProps> = ({
     }
   };
 
+  // Helper function to get default methods for a parameter
+  const getDefaultMethods = (paramName: string) => {
+    const paramChoice = choiceParams.find((param) => param.param === paramName);
+    // If there are existing methods, use them; otherwise, select the first available method
+    return paramChoice?.method.slice(0, 1) || [];
+  };
+
   const handleConfirmSubmit = async () => {
+    console.log("form data submitted");
+
     if (!formData) {
       console.error("No form data available");
       return;
     }
 
     try {
-      console.log("Preparing to submit with formData:", formData);
-
       const answer: sampleAnswer = {
         sample_name: sample.sampleName,
         param: sample.parameters.map((param, index) => ({
           param: param.name,
           unit: formData.sample.param[index].unit,
           method: formData.sample.param[index].method,
+          lembar_data: formData.sample.param[index].lembar_data, // Now contains the full LD object
         })),
       };
 
+      // Rest of the submission logic remains the same...
       console.log("Submitting answer:", answer);
 
       const response = await submitLabRev(sampleId, answer);
@@ -204,8 +246,8 @@ const InputDokumenUser: FC<inputDokumenUserProps> = ({
                     {...register(`sample.param.${parameterId}.unit`, {
                       required: "Unit is required",
                     })}
-                    defaultValue={parameter.unit || ""}
-                    className={`w-full ${
+                    defaultValue={parameter.unit || "Select Unit"}
+                    className={`w-full ${isAdmin ? "" : "text-gray-500"} ${
                       invalidFields.includes(parameterId)
                         ? "border-2 border-red-500 focus:ring-red-500 focus:border-red-500"
                         : ""
@@ -232,14 +274,25 @@ const InputDokumenUser: FC<inputDokumenUserProps> = ({
                     {choiceParams
                       .find((param) => param.param === parameter.name)
                       ?.method.map((method) => (
-                        <label key={method} className="block">
+                        <label
+                          key={method}
+                          className={`block ${isAdmin ? "" : "text-gray-500"}`}
+                        >
                           <input
                             type="checkbox"
                             value={method}
                             disabled={isAdmin ? false : true}
-                            {...register(`sample.param.${parameterId}.method`)}
-                            defaultChecked={parameter.method?.includes(method)}
-                            className="mr-2"
+                            {...register(`sample.param.${parameterId}.method`, {
+                              required: "At least one method is required",
+                            })}
+                            defaultChecked={
+                              parameter.method?.includes(method) ||
+                              (!parameter.method?.length &&
+                                getDefaultMethods(parameter.name).includes(
+                                  method
+                                ))
+                            }
+                            className={`mr-2 ${isAdmin ? "" : "text-gray-500"}`}
                           />
                           {method}
                         </label>
@@ -251,6 +304,34 @@ const InputDokumenUser: FC<inputDokumenUserProps> = ({
                     </div>
                   )}
                 </TableCell>
+
+                {!isAdmin && (
+                  <TableCell>
+                    <select
+                      {...register(`sample.param.${parameterId}.lembar_data`, {
+                        required: "Lembar Data is required",
+                      })}
+                      className="w-full"
+                      defaultValue={
+                        parameter.lembar_data?.[0]?._id ||
+                        ldData[0]?._id ||
+                        "Select Lembar Data"
+                      }
+                    >
+                      <option value="">Select Lembar Data</option>
+                      {ldData.map((ld) => (
+                        <option key={ld._id} value={ld._id}>
+                          {ld.ld_name}
+                        </option>
+                      ))}
+                    </select>
+                    {errors.sample?.param?.[parameterId]?.lembar_data && (
+                      <div className="text-xs text-red-600 pt-3 text-center">
+                        {errors.sample.param[parameterId].lembar_data.message}
+                      </div>
+                    )}
+                  </TableCell>
+                )}
               </TableRow>
             ))}
           </TableBody>

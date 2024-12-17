@@ -11,6 +11,7 @@ import {
   LabInputDokumenAnswerType,
   sampleAnswer,
 } from "../type";
+import { log } from "node:console";
 
 const apiBaseUrl =
   process.env.API_BASE_URL + "/lab/" || "http://localhost:5000/lab/";
@@ -172,6 +173,9 @@ export const submitLabRev = async (
   sampleId: string,
   samples: sampleAnswer
 ): Promise<any> => {
+  console.log("response api", JSON.stringify(samples, null, 2));
+  return;
+
   try {
     const response = await axios.post(
       apiBaseUrl + "submit-lab-rev",
