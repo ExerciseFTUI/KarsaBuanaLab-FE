@@ -3,7 +3,7 @@ import React, { FC, useState } from "react";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-
+import { FaEyeSlash, FaEye } from "react-icons/fa";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -54,10 +54,6 @@ const IdCheckForm: FC<IdCheckFormProps> = ({
 }) => {
   const form = useForm<z.infer<typeof clientValidation>>({
     resolver: zodResolver(clientValidation),
-    defaultValues: {
-      resiNumber: "660b67cd2a288e583b6eeaf3",
-      password: "R6SY6Z",
-    },
   });
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
@@ -65,6 +61,7 @@ const IdCheckForm: FC<IdCheckFormProps> = ({
   async function onSubmit(values: z.infer<typeof clientValidation>) {
     try {
       setIsLoading(true);
+      console.log(values);
 
       const response = await getProjectDivision(
         values.resiNumber,
@@ -127,20 +124,37 @@ const IdCheckForm: FC<IdCheckFormProps> = ({
             <FormField
               control={form.control}
               name="password"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Password</FormLabel>
-                  <FormControl>
-                    <Input
-                      className="py-6"
-                      type="password"
-                      placeholder="Input your password here"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
+              render={({ field }) => {
+                const [showPassword, setShowPassword] = useState(false);
+
+                return (
+                  <FormItem>
+                    <FormLabel>Password</FormLabel>
+                    <FormControl>
+                      <div className="relative">
+                        <Input
+                          className="py-6 pr-10" // Adjust padding for the icon
+                          type={showPassword ? "text" : "password"}
+                          placeholder="Input your password here"
+                          {...field}
+                        />
+                        <button
+                          type="button"
+                          className="absolute inset-y-0 right-3 flex items-center"
+                          onClick={() => setShowPassword((prev) => !prev)}
+                        >
+                          {showPassword ? (
+                            <FaEyeSlash className="w-5 h-5 text-gray-500" />
+                          ) : (
+                            <FaEye className="w-5 h-5 text-gray-500" />
+                          )}
+                        </button>
+                      </div>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                );
+              }}
             />
             <div className="flex flex-row space-x-7">
               <Button
