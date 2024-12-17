@@ -1,19 +1,21 @@
-"use client"
+"use client";
 
-import * as React from "react"
+import * as React from "react";
 
-import { cn } from "@/lib/utils"
-import { Label } from "../ui/label"
-import { Input } from "../ui/input"
-import { ReloadIcon } from "@radix-ui/react-icons"
-import { Button } from "../ui/button"
-import { useToast } from "../ui/use-toast"
-import { useRouter, useSearchParams } from "next/navigation"
-import { loginValidation } from "@/lib/validations/LoginValidation"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { z } from "zod"
-import { signIn } from "next-auth/react"
+import { cn } from "@/lib/utils";
+import { Label } from "../ui/label";
+import { Input } from "../ui/input";
+import { ReloadIcon } from "@radix-ui/react-icons";
+import { Button } from "../ui/button";
+import { useToast } from "../ui/use-toast";
+import { useRouter, useSearchParams } from "next/navigation";
+import { loginValidation } from "@/lib/validations/LoginValidation";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { signIn } from "next-auth/react";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { useState } from "react";
 
 import {
   Form,
@@ -23,15 +25,16 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form"
+} from "@/components/ui/form";
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
-  const router = useRouter()
-  const query = useSearchParams()
-  const { toast } = useToast()
-  const [isLoading, setIsLoading] = React.useState<boolean>(false)
+  const router = useRouter();
+  const query = useSearchParams();
+  const { toast } = useToast();
+  const [isLoading, setIsLoading] = React.useState<boolean>(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   // 1. Define your form.
   const form = useForm<z.infer<typeof loginValidation>>({
@@ -40,7 +43,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
       email: "",
       password: "",
     },
-  })
+  });
 
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof loginValidation>) {
@@ -49,7 +52,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
 
-    setIsLoading(true)
+    setIsLoading(true);
     //NextAuth SignIn
     signIn("credentials", {
       ...values,
@@ -61,20 +64,20 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
             description: "Invalid username or password",
             variant: "destructive",
             title: "Uh oh! Something went wrong.",
-          })
+          });
         }
         if (callback?.ok && !callback?.error) {
           toast({
             title: "Successfully logged in",
             description: "Welcome back",
-          })
-          const callbackUrl = query.get("callbackUrl")
-          router.push(callbackUrl || "/gateway")
+          });
+          const callbackUrl = query.get("callbackUrl");
+          router.push(callbackUrl || "/gateway");
         }
       })
       .finally(() => {
-        setIsLoading(false)
-      })
+        setIsLoading(false);
+      });
   }
 
   return (
@@ -84,11 +87,18 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
           <FormField
             control={form.control}
             name="email"
+            rules={{
+              required: "Email is required",
+              pattern: {
+                value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                message: "Invalid email format",
+              },
+            }}
             render={({ field }) => (
               <FormItem>
-                {/* <FormLabel>Email</FormLabel> */}
+                <FormLabel>Email</FormLabel>
                 <FormControl>
-                  <Input className="" placeholder="Email or Username" {...field} />
+                  <Input className="" placeholder="Email" {...field} />
                 </FormControl>
 
                 <FormMessage />
@@ -98,21 +108,35 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
           <FormField
             control={form.control}
             name="password"
-            render={({ field }) => (
-              <FormItem>
-                {/* <FormLabel>Password</FormLabel> */}
-                <FormControl>
-                  <Input
-                    type="password"
-                    className=""
-                    placeholder="Password"
-                    {...field}
-                  />
-                </FormControl>
-
-                <FormMessage />
-              </FormItem>
-            )}
+            render={({ field }) => {
+              return (
+                <FormItem>
+                  <FormLabel>Password</FormLabel>
+                  <FormControl>
+                    <div className="relative">
+                      <Input
+                        className="py-6 pr-10" // Adjust padding for the icon
+                        type={showPassword ? "text" : "password"}
+                        placeholder="Input your password here"
+                        {...field}
+                      />
+                      <button
+                        type="button"
+                        className="absolute inset-y-0 right-3 flex items-center"
+                        onClick={() => setShowPassword((prev) => !prev)}
+                      >
+                        {showPassword ? (
+                          <FaEyeSlash className="w-5 h-5 text-gray-500" />
+                        ) : (
+                          <FaEye className="w-5 h-5 text-gray-500" />
+                        )}
+                      </button>
+                    </div>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              );
+            }}
           />
           <Button disabled={isLoading} className="w-full mt-3  " type="submit">
             {isLoading ? (
@@ -145,5 +169,5 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
         )}{" "}
       </Button>
     </div>
-  )
+  );
 }
