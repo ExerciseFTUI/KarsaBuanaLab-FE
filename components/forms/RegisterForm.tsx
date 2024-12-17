@@ -3,7 +3,7 @@ import React, { FC, useEffect, useState } from "react";
 import axios from "axios";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -173,45 +173,80 @@ const RegisterForm: FC<RegisterFormProps> = ({ isUpdate, account }) => {
             <FormField
               control={form.control}
               name="password"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>
-                    {" "}
-                    {isUpdate ? "New Password" : "Password"}{" "}
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      type="password"
-                      className=""
-                      placeholder=""
-                      {...field}
-                    />
-                  </FormControl>
+              render={({ field }) => {
+                const [showPassword, setShowPassword] = useState(false);
 
-                  <FormMessage />
-                </FormItem>
-              )}
+                return (
+                  <FormItem>
+                    <FormLabel>
+                      {isUpdate ? "New Password" : "Password"}
+                    </FormLabel>
+                    <FormControl>
+                      <div className="relative">
+                        <Input
+                          type={showPassword ? "text" : "password"}
+                          className="pr-10"
+                          placeholder=""
+                          {...field}
+                        />
+                        <button
+                          type="button"
+                          className="absolute inset-y-0 right-3 flex items-center"
+                          onClick={() => setShowPassword((prev) => !prev)}
+                        >
+                          {showPassword ? (
+                            <FaEyeSlash className="w-5 h-5 text-gray-500" />
+                          ) : (
+                            <FaEye className="w-5 h-5 text-gray-500" />
+                          )}
+                        </button>
+                      </div>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                );
+              }}
             />
-            <FormField // Added confirm password field
+
+            <FormField
               control={form.control}
               name="confirmPassword"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>
-                    {isUpdate ? "Confirm New Password" : "Confirm Password"}
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      type="password"
-                      className=""
-                      placeholder=""
-                      {...field}
-                    />
-                  </FormControl>
+              render={({ field }) => {
+                const [showConfirmPassword, setShowConfirmPassword] =
+                  useState(false);
 
-                  <FormMessage />
-                </FormItem>
-              )}
+                return (
+                  <FormItem>
+                    <FormLabel>
+                      {isUpdate ? "Confirm New Password" : "Confirm Password"}
+                    </FormLabel>
+                    <FormControl>
+                      <div className="relative">
+                        <Input
+                          type={showConfirmPassword ? "text" : "password"}
+                          className="pr-10"
+                          placeholder=""
+                          {...field}
+                        />
+                        <button
+                          type="button"
+                          className="absolute inset-y-0 right-3 flex items-center"
+                          onClick={() =>
+                            setShowConfirmPassword((prev) => !prev)
+                          }
+                        >
+                          {showConfirmPassword ? (
+                            <FaEyeSlash className="w-5 h-5 text-gray-500" />
+                          ) : (
+                            <FaEye className="w-5 h-5 text-gray-500" />
+                          )}
+                        </button>
+                      </div>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                );
+              }}
             />
             <FormField
               control={form.control}
