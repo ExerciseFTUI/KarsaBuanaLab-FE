@@ -61,7 +61,6 @@ const IdCheckForm: FC<IdCheckFormProps> = ({
   async function onSubmit(values: z.infer<typeof clientValidation>) {
     try {
       setIsLoading(true);
-      console.log(values);
 
       const response = await getProjectDivision(
         values.resiNumber,
