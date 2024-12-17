@@ -209,7 +209,7 @@ export function InventoryDataTable({ datas }: InventoryDataTableProps) {
                   colSpan={inventoryColumns.length}
                   className="h-24 text-center"
                 >
-                  No results.
+                  No results or no internet connection, please refresh the page.
                 </TableCell>
               </TableRow>
             )}

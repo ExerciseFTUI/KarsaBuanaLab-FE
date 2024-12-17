@@ -157,13 +157,13 @@ export const verifySample = async (
         sample_id,
       }
     );
-    
+
     revalidatePath(`/sampling/sample/${projectId}`); // path sekarang
 
     if (status === "SUBMIT") {
       revalidatePath(`/sampling/sample`);
     }
-    
+
     return response.data as BaseApiResponse<Project>;
   } catch (error: any) {
     console.error("Error getting sample /sampling/change", error.message);
@@ -301,7 +301,9 @@ export const getChoiceParamsRev = async (sampleId: string): Promise<any> => {
       }
     );
 
-    return response.data.result; // Access 'result' field
+    // console.log("response api", response.data);
+
+    return response.data; // Access 'result' field
   } catch (error: any) {
     console.error(`Error getting sample with ID ${sampleId}:`, error.message);
     return null as unknown;

@@ -35,7 +35,7 @@ export default async function InventoryDetailPage({
       <InventoryDetail
         isUpdate={true}
         allUsers={inventoryUsers}
-        inventory={inventory}
+        inventory={inventory ?? []}
         isViewOnly={true}
         allVendor={vendor}
       />
