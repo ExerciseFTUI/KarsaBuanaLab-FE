@@ -267,7 +267,8 @@ const InputDokumenUser: FC<inputDokumenUserProps> = ({
                   </select>
                   {errors.sample?.param?.[parameterId]?.unit && (
                     <div className="text-xs text-red-600 pt-3 text-center">
-                      {errors.sample.param[parameterId].unit.message}
+                      {errors.sample?.param?.[parameterId]?.unit?.message ??
+                        "should be filled"}
                     </div>
                   )}
                 </TableCell>
@@ -302,7 +303,8 @@ const InputDokumenUser: FC<inputDokumenUserProps> = ({
                   </div>
                   {errors.sample?.param?.[parameterId]?.method && (
                     <div className="text-xs text-red-600 pt-3 text-center">
-                      {errors.sample.param[parameterId].method.message}
+                      {errors.sample?.param?.[parameterId]?.method?.message ??
+                        "should be filled"}
                     </div>
                   )}
                 </TableCell>
@@ -329,7 +331,8 @@ const InputDokumenUser: FC<inputDokumenUserProps> = ({
                     </select>
                     {errors.sample?.param?.[parameterId]?.lembar_data && (
                       <div className="text-xs text-red-600 pt-3 text-center">
-                        {errors.sample.param[parameterId].lembar_data.message}
+                        {errors.sample?.param?.[parameterId]?.lembar_data
+                          ?.message ?? "should be filled"}
                       </div>
                     )}
                   </TableCell>
