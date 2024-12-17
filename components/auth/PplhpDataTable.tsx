@@ -204,7 +204,7 @@ export function PPLHPDataTable({ datas }: PPLHPDataTableProps) {
                   colSpan={pplhpColumns.length}
                   className="h-24 text-center"
                 >
-                  No results.
+No results or no internet connection, please refresh the page.
                 </TableCell>
               </TableRow>
             )}

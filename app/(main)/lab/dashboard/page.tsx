@@ -25,11 +25,14 @@ export default async function Home() {
   }
 
   // Update the project status if needed
-  newRes.result.forEach((project: LabDashboardPageColumnsType) => {
-    if (project.status === "LAB_RECEIVE") {
-      project.status = "RECEIVE";
-    }
-  });
+  // if newRes.result is not empty, loop through the result and update the status
+  if (newRes.result) {
+    newRes.result.forEach((project: LabDashboardPageColumnsType) => {
+      if (project.status === "LAB_RECEIVE") {
+        project.status = "RECEIVE";
+      }
+    });
+  }
 
   return (
     <div className="flex justify-between w-full h-screen">

@@ -15,7 +15,6 @@ export const getInventoryUsers = async () => {
     const response = await axios.get(`${apiBaseUrl}/inventory/get-users`);
     return response.data.users as InventoryUser[];
   } catch (error: any) {
-    console.log(error.response.data);
     console.error(`Error getting inventory users :`, error.message);
     return [];
   }
@@ -28,7 +27,6 @@ export const getAllInventory = async () => {
     );
     return response.data.items as Inventory[];
   } catch (error: any) {
-    console.log(error.response.data);
     console.error(`Error getting all inventory :`, error.message);
     return [];
   }
@@ -41,7 +39,6 @@ export const getInventoryById = async (id: string) => {
     );
     return response.data as Inventory;
   } catch (error: any) {
-    console.log(error.response.data);
     console.error(`Error getting single inventory :`, error.message);
     return {} as Inventory;
   }
@@ -52,7 +49,6 @@ export const getAllVendor = async () => {
     const response = await axios.get(`${apiBaseUrl}/inventory/get-vendor`);
     return response.data.vendor as InventoryVendor[];
   } catch (error: any) {
-    console.log(error.response.data);
     console.error(`Error getting all vendor :`, error.message);
     return [];
   }
@@ -71,7 +67,6 @@ export const createVendor = async (vendor: string) => {
 
     return true;
   } catch (error: any) {
-    console.log(error.response.data);
     console.error(`Error creating vendor :`, error.message);
     return false;
   }
@@ -92,7 +87,6 @@ export const deleteVendor = async (vendor: string) => {
 
     return true;
   } catch (error: any) {
-    console.log(error.response.data);
     console.error(`Error creating vendor :`, error.message);
     return false;
   }
@@ -117,7 +111,6 @@ export const createInventory = async (body: createInventoryRequest) => {
 
     return true;
   } catch (error: any) {
-    console.log(error.response.data);
     console.error(`Error creating inventory :`, error.message);
     return false;
   }
@@ -140,7 +133,6 @@ export const updateInventory = async (body: updateInventoryRequest) => {
 
     return true;
   } catch (error: any) {
-    console.log(error.response.data);
     console.error(`Error updating inventory :`, error.message);
     return false;
   }
@@ -158,7 +150,6 @@ export const getInventoryByPIC = async (id: string) => {
 
     return response.data.inventory as Inventory[];
   } catch (error: any) {
-    console.log(error.response.data);
     console.error(`Error getting single inventory :`, error.message);
     return [] as Inventory[];
   }

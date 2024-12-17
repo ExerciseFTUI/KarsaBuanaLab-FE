@@ -297,11 +297,30 @@ export type InputDocumentType = {
   parameters: [ParameterType];
 };
 
+export type MergeInputDocumentType = {
+  sampleName: string;
+  parameters: [MergeParameterType];
+};
+
+export type MergeParameterType = {
+  name: string;
+  unit: string;
+  method: string[];
+  lembar_data: [LD];
+  link_lembar_data?: string;
+};
+
+export type LD = {
+  _id: string;
+  ld_name: string;
+  base_ld_file_name: string;
+};
+
 export type ParameterType = {
   name: string;
   unit: string;
   method: string[];
-  lembar_data: LD;
+  // lembar_data: LD;
   // link_lembar_data: string;
   // analysis_status: string;
 };
@@ -310,14 +329,9 @@ export type labInputChoice = {
   param: string;
   unit: string[];
   method: string[];
-  lembar_data: LD[];
+  // lembar_data: LD[];
   // ld_name: string[];
   // ld_file_id: string;
-};
-
-export type LD = {
-  ld_name: string;
-  ld_file_id: string;
 };
 
 export type sampleAnswer = {
@@ -326,7 +340,7 @@ export type sampleAnswer = {
     param: string;
     unit: string;
     method: string[];
-    lembar_data: LD;
+    // lembar_data: LD;
   }[];
 };
 

@@ -31,7 +31,10 @@ export default async function Home() {
 
   return (
     <div className="flex justify-between w-full h-screen">
-      <LabDataTable data={newRes.result} link="verifikasi-data/" />
+      <LabDataTable
+        data={newRes ? newRes.result : []}
+        link="verifikasi-data/"
+      />
     </div>
   );
 }
