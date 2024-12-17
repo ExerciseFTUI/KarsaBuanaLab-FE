@@ -1,35 +1,38 @@
-"use client"
+"use client";
 
 import {
   marketingLink,
   samplingSPVLinks,
   labLinks,
   pplhpLinks,
+  labUSERLinks,
+  TMLinks,
+  adminLinks,
   // adminLinks,   // NOTE: gatau masih butuh atau engga [DEN]
   samplingUSERLinks,
-} from "@/constants/sidebarlinks"
-import { useSession } from "next-auth/react"
-import Image from "next/image"
-import Link from "next/link"
-import { usePathname } from "next/navigation"
+} from "@/constants/sidebarlinks";
+import { useSession } from "next-auth/react";
+import Image from "next/image";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 // import { sidebarLinks } from "@/constants";
 
 function extractFirstPathSegment(path: string) {
   // Remove leading and trailing slashes and split the path by "/"
-  const segments = path.replace(/^\/|\/$/g, "").split("/")
+  const segments = path.replace(/^\/|\/$/g, "").split("/");
 
   // Return the first segment
-  return segments[0]
+  return segments[0];
 }
 
 function Bottombar() {
-  const pathname = usePathname()
-  const routeSection = "/" + extractFirstPathSegment(pathname)
+  const pathname = usePathname();
+  const routeSection = "/" + extractFirstPathSegment(pathname);
 
-  const currentUser = useSession().data?.user
+  const currentUser = useSession().data?.user;
 
-  const role = currentUser?.role.toUpperCase()
+  const role = currentUser?.role.toUpperCase();
 
   const links = pathname.includes("marketing")
     ? marketingLink
@@ -38,8 +41,14 @@ function Bottombar() {
       ? samplingSPVLinks
       : samplingUSERLinks
     : pathname.includes("lab")
-    ? labLinks
-    : pplhpLinks
+    ? role == "USER"
+      ? labUSERLinks
+      : labLinks
+    : pathname.includes("admin")
+    ? role == "ADMIN"
+      ? adminLinks
+      : TMLinks
+    : pplhpLinks;
 
   return (
     <section className="fixed bottom-0 z-10 w-full rounded-t-3xl p-4 bg-white max-sm:px-7 lg:hidden ">
@@ -47,7 +56,7 @@ function Bottombar() {
         {links.map((link) => {
           const isActive =
             (pathname.includes(link.route) && link.route.length > 1) ||
-            pathname === routeSection + link.route
+            pathname === routeSection + link.route;
 
           return (
             <Link
@@ -81,11 +90,11 @@ function Bottombar() {
                 {link.label.split(/\s+/)[0]}
               </p>
             </Link>
-          )
+          );
         })}
       </div>
     </section>
-  )
+  );
 }
 
-export default Bottombar
+export default Bottombar;

@@ -173,8 +173,6 @@ export const submitLabRev = async (
   sampleId: string,
   samples: sampleAnswer
 ): Promise<any> => {
-  console.log("response api", JSON.stringify(samples, null, 2));
-  return;
 
   try {
     const response = await axios.post(

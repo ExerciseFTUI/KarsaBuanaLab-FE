@@ -43,10 +43,19 @@ export default async function LabDetails({
 
   const projects = await getLabProjects();
   const resUser = await getAllUser("USER");
+  var samplingUser;
 
-  const samplingUser = resUser.result.filter(
-    (u) => u.division == null || u.division == "Lab"
-  );
+  if (resUser) {
+    samplingUser = resUser.result.filter(
+      (u) => u.division == null || u.division == "Lab"
+    );
+  } else {
+    return (
+      <>
+        <div>No Internet, please connect to the internet</div>
+      </>
+    );
+  }
 
   const projectNow =
     projects.result.find((p: any) => p._id === params.np) || null;

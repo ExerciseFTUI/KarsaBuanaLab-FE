@@ -307,6 +307,7 @@ export type MergeParameterType = {
   unit: string;
   method: string[];
   lembar_data: [LD];
+  link_lembar_data?: string;
 };
 
 export type LD = {

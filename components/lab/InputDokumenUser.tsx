@@ -85,6 +85,8 @@ const InputDokumenUser: FC<inputDokumenUserProps> = ({
   const currentValues = watch();
 
   useEffect(() => {
+    console.log("sample", sample);
+
     sample.parameters.forEach((param, index) => {
       // If no methods are selected, set default methods
       const currentMethods = getValues(`sample.param.${index}.method`);
@@ -339,7 +341,7 @@ const InputDokumenUser: FC<inputDokumenUserProps> = ({
 
         <div className="flex justify-center bottom-0 mt-24 text-lg">
           <Button
-            className="w-2/3 p-6 bg-light_brown hover:bg-dark_brown mb-16"
+            className="w-2/3 p-6 bg-light_brown hover:bg-dark_brown mb-32"
             type="submit"
             disabled={isSubmitting}
           >

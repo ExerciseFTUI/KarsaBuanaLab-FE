@@ -81,7 +81,7 @@ const LabDataTable: FC<LabDataTableProps> = ({ data, link, idUser, isLab }) => {
   const [rowSelection, setRowSelection] = useState({});
 
   const table = useReactTable({
-    data,
+    data: data ?? [],
     columns: LabDashboardRev,
     // columns:
     //   idUser !== undefined
@@ -209,7 +209,7 @@ const LabDataTable: FC<LabDataTableProps> = ({ data, link, idUser, isLab }) => {
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  No results.
+                  No results or your device is not connect to the internet.
                 </TableCell>
               </TableRow>
             )}
