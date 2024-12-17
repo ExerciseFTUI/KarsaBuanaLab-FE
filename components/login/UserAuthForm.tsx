@@ -34,6 +34,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   const query = useSearchParams();
   const { toast } = useToast();
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   // 1. Define your form.
   const form = useForm<z.infer<typeof loginValidation>>({
@@ -97,11 +98,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
               <FormItem>
                 <FormLabel>Email</FormLabel>
                 <FormControl>
-                  <Input
-                    className=""
-                    placeholder="Email"
-                    {...field}
-                  />
+                  <Input className="" placeholder="Email" {...field} />
                 </FormControl>
 
                 <FormMessage />
@@ -112,8 +109,6 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
             control={form.control}
             name="password"
             render={({ field }) => {
-              const [showPassword, setShowPassword] = useState(false);
-
               return (
                 <FormItem>
                   <FormLabel>Password</FormLabel>

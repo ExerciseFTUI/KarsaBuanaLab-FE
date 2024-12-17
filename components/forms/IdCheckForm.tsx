@@ -57,6 +57,7 @@ const IdCheckForm: FC<IdCheckFormProps> = ({
   });
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
+  const [showPassword, setShowPassword] = useState(false);
 
   async function onSubmit(values: z.infer<typeof clientValidation>) {
     try {
@@ -124,8 +125,6 @@ const IdCheckForm: FC<IdCheckFormProps> = ({
               control={form.control}
               name="password"
               render={({ field }) => {
-                const [showPassword, setShowPassword] = useState(false);
-
                 return (
                   <FormItem>
                     <FormLabel>Password</FormLabel>

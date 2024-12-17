@@ -54,6 +54,8 @@ const RegisterForm: FC<RegisterFormProps> = ({ isUpdate, account }) => {
   const { toast } = useToast();
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const form = useForm<z.infer<typeof registerValidation>>({
     resolver: zodResolver(registerValidation),
@@ -174,8 +176,6 @@ const RegisterForm: FC<RegisterFormProps> = ({ isUpdate, account }) => {
               control={form.control}
               name="password"
               render={({ field }) => {
-                const [showPassword, setShowPassword] = useState(false);
-
                 return (
                   <FormItem>
                     <FormLabel>
@@ -212,9 +212,6 @@ const RegisterForm: FC<RegisterFormProps> = ({ isUpdate, account }) => {
               control={form.control}
               name="confirmPassword"
               render={({ field }) => {
-                const [showConfirmPassword, setShowConfirmPassword] =
-                  useState(false);
-
                 return (
                   <FormItem>
                     <FormLabel>

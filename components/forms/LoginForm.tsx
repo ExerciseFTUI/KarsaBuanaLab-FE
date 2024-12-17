@@ -64,6 +64,7 @@ const LoginForm: FC<LoginFormProps> = ({}) => {
   const query = useSearchParams();
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   // 1. Define your form.
   const form = useForm<z.infer<typeof loginValidation>>({
@@ -136,8 +137,6 @@ const LoginForm: FC<LoginFormProps> = ({}) => {
               control={form.control}
               name="password"
               render={({ field }) => {
-                const [showPassword, setShowPassword] = useState(false);
-
                 return (
                   <FormItem>
                     <FormLabel>Password</FormLabel>
