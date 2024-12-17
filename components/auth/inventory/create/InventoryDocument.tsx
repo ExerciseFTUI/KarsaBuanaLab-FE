@@ -4,7 +4,7 @@ import DeleteDialog from "@/components/DeleteDialog";
 import Dropzone from "@/components/Dropzone";
 import { Button } from "@/components/ui/button";
 import { ImageIcon, TrashIcon } from "lucide-react";
-import { FC, useState } from "react";
+import { FC, useState, useEffect } from "react";
 import { InventoryFile } from "../InventoryType";
 import { deleteProjectFile } from "@/lib/actions/inventory.client.action";
 import { useRouter } from "next/navigation";
@@ -58,13 +58,21 @@ const InventoryDocument: FC<InventoryDocumentProps> = ({
     }
   };
 
+  if (inventoryDocument == undefined) {
+    return (
+      <p className=" text-sm flex flex-row justify-center py-3">
+        File Not Found or no internet access, please refresh the page
+      </p>
+    );
+  }
+
   return (
     <>
       <div className="px-2 space-y-10">
         <div className="text-dark_brown">
           <div className="mx-5 mt-5 ">
             <h1 className="font-semibold mb-4 text-xl">Uploaded Files</h1>
-            {inventoryDocument.length === 0 && (
+            {inventoryDocument == undefined && (
               <p className=" text-sm flex flex-row justify-center py-3">
                 File Not Found
               </p>

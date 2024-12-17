@@ -200,7 +200,7 @@ export function AdminDataTable({ datas }: AdminDataTableProps) {
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  No results.
+                  No results or no internet connection, please refresh the page.
                 </TableCell>
               </TableRow>
             )}
