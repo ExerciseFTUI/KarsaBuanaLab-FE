@@ -12,10 +12,15 @@ export default async function InventoryPage() {
   }
 
   const inventories = await getInventoryByPIC(data?.user.id);
+  const session = await getSessionServer();
+  let isAdmin = false;
+  if (session) {
+    session.user.role === "ADMIN" ? (isAdmin = true) : (isAdmin = false);
+  }
 
   return (
     <div>
-      <InventoryDataTable datas={inventories} />
+      <InventoryDataTable datas={inventories} isAdmin={isAdmin} />
     </div>
   );
 }
