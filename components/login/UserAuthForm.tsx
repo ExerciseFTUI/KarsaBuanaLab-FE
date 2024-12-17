@@ -86,13 +86,20 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
           <FormField
             control={form.control}
             name="email"
+            rules={{
+              required: "Email is required",
+              pattern: {
+                value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                message: "Invalid email format",
+              },
+            }}
             render={({ field }) => (
               <FormItem>
-                {/* <FormLabel>Email</FormLabel> */}
+                <FormLabel>Email</FormLabel>
                 <FormControl>
                   <Input
                     className=""
-                    placeholder="Email or Username"
+                    placeholder="Email"
                     {...field}
                   />
                 </FormControl>
