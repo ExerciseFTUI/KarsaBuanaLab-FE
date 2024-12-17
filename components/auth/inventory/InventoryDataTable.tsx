@@ -61,6 +61,7 @@ import Link from "next/link";
 import { inventoryColumns } from "./InventoryColumn";
 import { AiFillFolderAdd } from "react-icons/ai";
 import { Inventory } from "./InventoryType";
+import getSessionServer from "@/lib/actions/getSessionServer";
 
 // interface InventoryDataTableProps<TData, TValue> {
 //   columns: ColumnDef<TData, TValue>[];
@@ -69,9 +70,13 @@ import { Inventory } from "./InventoryType";
 
 interface InventoryDataTableProps {
   datas: Inventory[];
+  isAdmin: boolean;
 }
 
-export function InventoryDataTable({ datas }: InventoryDataTableProps) {
+export function InventoryDataTable({
+  datas,
+  isAdmin,
+}: InventoryDataTableProps) {
   const router = useRouter();
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -115,15 +120,17 @@ export function InventoryDataTable({ datas }: InventoryDataTableProps) {
           className="max-w-sm border-pastel_moss_green rounded-full focus-visible:ring-0 bg-pastel_moss_green pl-5 placeholder:text-moss_green"
         />
 
-        <Link className="ml-8" href="/admin/inventory/create">
-          <Button
-            className="rounded-full bg-light_green hover:bg-dark_green hover:text-white text-dark_green "
-            variant={"outline"}
-          >
-            <Plus className="mr-2 h-4 w-4" />
-            <p className="text-sm">Create New Tool</p>
-          </Button>
-        </Link>
+        {isAdmin && (
+          <Link className="ml-8" href="/admin/inventory/create">
+            <Button
+              className="rounded-full bg-light_green hover:bg-dark_green hover:text-white text-dark_green "
+              variant={"outline"}
+            >
+              <Plus className="mr-2 h-4 w-4" />
+              <p className="text-sm">Create New Tool</p>
+            </Button>
+          </Link>
+        )}
 
         {/* Column Visibility */}
         <DropdownMenu>

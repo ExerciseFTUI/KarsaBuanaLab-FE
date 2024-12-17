@@ -1,10 +1,10 @@
-"use client"
-import React, { FC, useState } from "react"
+"use client";
+import React, { FC, useState } from "react";
 
-import { zodResolver } from "@hookform/resolvers/zod"
-import * as z from "zod"
-
-import { Button } from "@/components/ui/button"
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
+import { FaEyeSlash, FaEye } from "react-icons/fa";
+import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -13,7 +13,7 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form"
+} from "@/components/ui/form";
 
 import {
   Card,
@@ -22,20 +22,20 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
+} from "@/components/ui/card";
 
-import { useForm } from "react-hook-form"
+import { useForm } from "react-hook-form";
 import {
   loginValidation,
   loginValidationType,
-} from "@/lib/validations/LoginValidation"
-import { Input } from "../ui/input"
-import { signIn } from "next-auth/react"
-import { useRouter, useSearchParams } from "next/navigation"
-import { useToast } from "../ui/use-toast"
-import axios from "axios"
-import { access } from "fs"
-import { ReloadIcon, TrashIcon } from "@radix-ui/react-icons"
+} from "@/lib/validations/LoginValidation";
+import { Input } from "../ui/input";
+import { signIn } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useToast } from "../ui/use-toast";
+import axios from "axios";
+import { access } from "fs";
+import { ReloadIcon, TrashIcon } from "@radix-ui/react-icons";
 
 interface LoginFormProps {}
 
@@ -60,10 +60,11 @@ interface LoginFormProps {}
 // }
 
 const LoginForm: FC<LoginFormProps> = ({}) => {
-  const router = useRouter()
-  const query = useSearchParams()
-  const { toast } = useToast()
-  const [isLoading, setIsLoading] = useState(false)
+  const router = useRouter();
+  const query = useSearchParams();
+  const { toast } = useToast();
+  const [isLoading, setIsLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   // 1. Define your form.
   const form = useForm<z.infer<typeof loginValidation>>({
@@ -72,7 +73,7 @@ const LoginForm: FC<LoginFormProps> = ({}) => {
       email: "",
       password: "",
     },
-  })
+  });
 
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof loginValidation>) {
@@ -81,7 +82,7 @@ const LoginForm: FC<LoginFormProps> = ({}) => {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
 
-    setIsLoading(true)
+    setIsLoading(true);
     //NextAuth SignIn
     signIn("credentials", {
       ...values,
@@ -93,20 +94,20 @@ const LoginForm: FC<LoginFormProps> = ({}) => {
             description: "Invalid username or password",
             variant: "destructive",
             title: "Uh oh! Something went wrong.",
-          })
+          });
         }
         if (callback?.ok && !callback?.error) {
           toast({
             title: "Successfully logged in",
             description: "Welcome back",
-          })
-          const callbackUrl = query.get("callbackUrl")
-          router.push(callbackUrl || "/admin")
+          });
+          const callbackUrl = query.get("callbackUrl");
+          router.push(callbackUrl || "/admin");
         }
       })
       .finally(() => {
-        setIsLoading(false)
-      })
+        setIsLoading(false);
+      });
   }
 
   return (
@@ -135,21 +136,35 @@ const LoginForm: FC<LoginFormProps> = ({}) => {
             <FormField
               control={form.control}
               name="password"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Password</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="password"
-                      className=""
-                      placeholder=""
-                      {...field}
-                    />
-                  </FormControl>
-
-                  <FormMessage />
-                </FormItem>
-              )}
+              render={({ field }) => {
+                return (
+                  <FormItem>
+                    <FormLabel>Password</FormLabel>
+                    <FormControl>
+                      <div className="relative">
+                        <Input
+                          className="py-6 pr-10" // Adjust padding for the icon
+                          type={showPassword ? "text" : "password"}
+                          placeholder="Input your password here"
+                          {...field}
+                        />
+                        <button
+                          type="button"
+                          className="absolute inset-y-0 right-3 flex items-center"
+                          onClick={() => setShowPassword((prev) => !prev)}
+                        >
+                          {showPassword ? (
+                            <FaEyeSlash className="w-5 h-5 text-gray-500" />
+                          ) : (
+                            <FaEye className="w-5 h-5 text-gray-500" />
+                          )}
+                        </button>
+                      </div>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                );
+              }}
             />
             <Button
               disabled={isLoading}
@@ -169,7 +184,7 @@ const LoginForm: FC<LoginFormProps> = ({}) => {
         </Form>
       </CardContent>
     </Card>
-  )
-}
+  );
+};
 
-export default LoginForm
+export default LoginForm;
